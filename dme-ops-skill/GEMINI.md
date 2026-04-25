@@ -79,12 +79,12 @@ When user ask to finish todo tasks, sequentially execute the unfinished todo tas
 #### san topic
 - [x] 将physical_host主题迁移为san主题下的子主题：physical_host => san physical_host
 - [x] 将physical_host_group主题迁移为san主题下的子主题：physical_host_group => san physical_host_group
-- [ ] 将lun_group主题迁移为san主题下的子主题：lun_group => san lun_group
-- [ ] 将mapping_view主题迁移为san主题下的子主题：mapping_view => san mapping_view
-- [ ] 将storage主题下的host子主题迁移到san主题下并重命名为storage_host：storage host => san storage_host
-- [ ] 将storage主题下的host_group子主题迁移到san主题下并重命名为storage_host_group：storage host_group => san storage_host_group
-- [ ] 将storage主题下的 port_group子主题迁移到san主题下：storage port_group => san port_group
-- [ ] 删除被迁移的主题
+- [x] 将lun_group主题迁移为san主题下的子主题：lun_group => san lun_group
+- [x] 将mapping_view主题迁移为san主题下的子主题：mapping_view => san mapping_view
+- [x] 将storage主题下的host子主题迁移到san主题下并重命名为storage_host：storage host => san storage_host
+- [x] 将storage主题下的host_group子主题迁移到san主题下并重命名为storage_host_group：storage host_group => san storage_host_group
+- [x] 将storage主题下的 port_group子主题迁移到san主题下：storage port_group => san port_group
+- [x] 删除被迁移的主题
 
 #### aiops topic
 - [x] 将alarm主题迁移为aiops主题下的子主题：alarm=> aiops alarm
