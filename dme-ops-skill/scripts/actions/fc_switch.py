@@ -1,0 +1,829 @@
+"""
+FC Switch (光纤交换机) 相关操作
+"""
+
+import sys
+import os
+
+# 添加父目录到路径，以便导入 dme_api_client
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from dme_api_client import DMEAPIClient
+
+
+def list(client: DMEAPIClient, name: str = None, 
+                  page_no: int = 1, page_size: int = 20) -> dict:
+    """
+    批量查询交换机
+    
+    查询光纤交换机列表。
+    
+    Args:
+        client: DME API 客户端
+        name: 交换机名称（可选，支持模糊查询）
+        page_no: 分页查询的页码，默认 1
+        page_size: 每页数量，1~1000，默认 20
+    
+    Returns:
+        响应数据，包含 total 和 fcswitches 字段
+    """
+    url = "/rest/fcswitchmgmt/v1/fcswitches/list"
+    
+    payload = {
+        'page_no': page_no,
+        'page_size': page_size
+    }
+    
+    if name is not None:
+        payload['name'] = name
+    
+    response = client.post(url, json=payload)
+    return response
+
+
+def sync(client: DMEAPIClient, switch_id: str) -> dict:
+    """
+    同步指定交换机
+    
+    同步光纤交换机的配置信息。
+    
+    Args:
+        client: DME API 客户端
+        switch_id: 交换机 ID（必选）
+    
+    Returns:
+        响应数据，包含 task_id
+    """
+    url = f"/rest/fcswitchmgmt/v1/fcswitches/{switch_id}/sync"
+    
+    response = client.post(url)
+    return response
+
+
+def port_list(client: DMEAPIClient, switch_id: str = None,
+                       port_name: str = None, page_no: int = 1, 
+                       page_size: int = 20) -> dict:
+    """
+    批量查询交换机端口
+    
+    查询光纤交换机端口列表。
+    
+    Args:
+        client: DME API 客户端
+        switch_id: 交换机 ID（可选）
+        port_name: 端口名称（可选）
+        page_no: 分页查询的页码，默认 1
+        page_size: 每页数量，1~1000，默认 20
+    
+    Returns:
+        响应数据，包含 total 和 ports 字段
+    """
+    url = "/rest/fcswitchmgmt/v1/fcswitches/ports/query"
+    
+    payload = {
+        'page_no': page_no,
+        'page_size': page_size
+    }
+    
+    if switch_id is not None:
+        payload['switch_id'] = switch_id
+    if port_name is not None:
+        payload['port_name'] = port_name
+    
+    response = client.post(url, json=payload)
+    return response
+
+
+
+def controller_list(client: DMEAPIClient, switch_id: str = None,
+                             page_no: int = 1, page_size: int = 20) -> dict:
+    """
+    批量查询交换机控制处理器
+    
+    查询光纤交换机控制处理器列表。
+    
+    Args:
+        client: DME API 客户端
+        switch_id: 交换机 ID（可选）
+        page_no: 分页查询的页码，默认 1
+        page_size: 每页数量，1~1000，默认 20
+    
+    Returns:
+        响应数据，包含 total 和 controllers 字段
+    """
+    url = "/rest/fcswitchmgmt/v1/fcswitches/controllers/query"
+    
+    payload = {
+        'page_no': page_no,
+        'page_size': page_size
+    }
+    
+    if switch_id is not None:
+        payload['switch_id'] = switch_id
+    
+    response = client.post(url, json=payload)
+    return response
+
+
+def fabric_list(client: DMEAPIClient, name: str = None, 
+                page_no: int = 1, page_size: int = 20) -> dict:
+    """
+    批量查询光纤网络
+    
+    查询光纤网络（Fabric）列表。
+    
+    Args:
+        client: DME API 客户端
+        name: 光纤网络名称（可选，支持模糊查询）
+        page_no: 分页查询的页码，默认 1
+        page_size: 每页数量，1~1000，默认 20
+    
+    Returns:
+        响应数据，包含 total 和 fabrics 字段
+    """
+    url = "/rest/fcswitchmgmt/v1/fabrics/list"
+    
+    payload = {
+        'page_no': page_no,
+        'page_size': page_size
+    }
+    
+    if name is not None:
+        payload['name'] = name
+    
+    response = client.post(url, json=payload)
+    return response
+
+
+def fabric_show_ports(client: DMEAPIClient, fabric_id: str,
+                      page_no: int = 1, page_size: int = 20) -> dict:
+    """
+    查询指定光纤网络的端口列表
+
+    查询指定光纤网络的端口列表。
+
+    Args:
+        client: DME API 客户端
+        fabric_id: 光纤网络 ID（必选）
+        page_no: 分页查询的页码，默认 1
+        page_size: 每页数量，1~1000，默认 20
+
+    Returns:
+        响应数据，包含 total 和 ports 字段
+    """
+    url = f"/rest/fcswitchmgmt/v1/fabrics/{fabric_id}/ports/list"
+    
+    payload = {
+        'page_no': page_no,
+        'page_size': page_size
+    }
+    
+    response = client.post(url, json=payload)
+    return response
+
+
+def fabric_backup(client: DMEAPIClient, fabric_id: str, backup_server_id: str,
+                  backup_type: str = "full") -> dict:
+    """
+    执行光纤网络配置文件备份
+    
+    备份指定光纤网络的配置文件。
+    
+    Args:
+        client: DME API 客户端
+        fabric_id: 光纤网络 ID（必选）
+        backup_server_id: 备份服务器 ID（必选）
+        backup_type: 备份类型，默认 full（full/incremental）
+    
+    Returns:
+        响应数据，包含 task_id
+    """
+    url = f"/rest/fcswitchmgmt/v1/fabrics/{fabric_id}/backup"
+    
+    payload = {
+        'backupRequest': {
+            'backupServerId': backup_server_id,
+            'backupType': backup_type
+        }
+    }
+    
+    response = client.post(url, json=payload)
+    return response
+
+
+# ==================== VSAN 相关操作 ====================
+
+def vsan_list(client: DMEAPIClient, page_no: int = 1, page_size: int = 20) -> dict:
+    """
+    查询 VSAN 列表
+    
+    查询光纤 VSAN（Virtual Storage Area Network）列表。
+    
+    Args:
+        client: DME API 客户端
+        page_no: 分页查询的页码，默认 1
+        page_size: 每页数量，1~1000，默认 20
+    
+    Returns:
+        响应数据，包含 total 和 vsans 字段
+    """
+    url = "/rest/fcswitchmgmt/v1/vsans/query"
+    
+    payload = {
+        'page_no': page_no,
+        'page_size': page_size
+    }
+    
+    response = client.post(url, json=payload)
+    return response
+
+
+# ==================== Zone 相关操作 ====================
+
+def zone_list(client: DMEAPIClient, zone_name: str = None,
+              page_no: int = 1, page_size: int = 20) -> dict:
+    """
+    批量查询 zone
+    
+    查询光纤 Zone 列表。
+    
+    Args:
+        client: DME API 客户端
+        zone_name: Zone 名称（可选，支持模糊查询）
+        page_no: 分页查询的页码，默认 1
+        page_size: 每页数量，1~1000，默认 20
+    
+    Returns:
+        响应数据，包含 total 和 zones 字段
+    """
+    url = "/rest/fcswitchmgmt/v1/zones/list"
+    
+    payload = {
+        'page_no': page_no,
+        'page_size': page_size
+    }
+    
+    if zone_name is not None:
+        payload['zone_name'] = zone_name
+    
+    response = client.post(url, json=payload)
+    return response
+
+
+def zone_show(client: DMEAPIClient, zone_id: str) -> dict:
+    """
+    查询指定 zone 详情
+    
+    查询光纤 Zone 的详细信息。
+    注：DME API 没有单独的 show 接口，通过 list 接口配合 fabric_wwn 查询。
+    此接口会自动遍历所有 fabric 来查找指定的 zone_id。
+    
+    Args:
+        client: DME API 客户端
+        zone_id: Zone ID（必选）
+    
+    Returns:
+        Zone 详细信息
+    """
+    # 先查询 fabric 列表获取 fabric_wwn
+    fabric_url = "/rest/fcswitchmgmt/v1/fabrics/list"
+    fabric_payload = {
+        'page_no': 1,
+        'page_size': 10
+    }
+    
+    fabric_response = client.post(fabric_url, json=fabric_payload)
+    
+    if not fabric_response or 'fabrics' not in fabric_response:
+        return {'error': 'Failed to query fabrics'}
+    
+    # 遍历所有 fabric，查询 zone
+    for fabric in fabric_response.get('fabrics', []):
+        fabric_wwn = fabric.get('wwn')
+        if not fabric_wwn:
+            continue
+            
+        zone_url = "/rest/fcswitchmgmt/v1/zones/list"
+        payload = {
+            'fabric_wwn': fabric_wwn,
+            'page_no': 1,
+            'page_size': 1000
+        }
+        
+        response = client.post(zone_url, json=payload)
+        
+        if response and 'zones' in response:
+            # 在返回的 zone 列表中查找匹配的 zone_id
+            for zone in response.get('zones', []):
+                if zone.get('id') == zone_id:
+                    return {'zone': zone, 'fabric_wwn': fabric_wwn}
+    
+    return {'error': f'Zone {zone_id} not found in any fabric'}
+
+
+def zone_create(client: DMEAPIClient, name: str, fabric_wwn: str = None,
+                vsan_wwn: str = None, wwn_members: list = None,
+                port_members: list = None, fwwn_members: list = None,
+                fcid_members: list = None, device_alias_members: list = None) -> dict:
+    """
+    创建 zone
+    
+    创建新的光纤 Zone。
+    注：根据 DME API 文档，需要提供 fabric_wwn 或 vsan_wwn，以及至少一种成员类型。
+    
+    Args:
+        client: DME API 客户端
+        name: Zone 名称（必选）
+        fabric_wwn: 光纤网络 WWN（条件必选，fabric 创建 zone 时需要）
+        vsan_wwn: VSAN WWN（条件必选，vsan 创建 zone 时需要）
+        wwn_members: WWN 成员列表（可选）
+        port_members: 端口成员列表（可选）
+        fwwn_members: FWWN 成员列表（可选）
+        fcid_members: FCID 成员列表（可选）
+        device_alias_members: 设备别名成员列表（可选）
+    
+    Returns:
+        响应数据，包含新创建的 Zone ID
+    """
+    url = "/rest/fcswitchmgmt/v1/zones"
+    
+    payload = {
+        'name': name
+    }
+    
+    # fabric_wwn 或 vsan_wwn 至少提供一个
+    if fabric_wwn is not None:
+        payload['fabric_wwn'] = fabric_wwn
+    if vsan_wwn is not None:
+        payload['vsan_wwn'] = vsan_wwn
+    
+    # 成员列表
+    if wwn_members is not None:
+        payload['wwn_members'] = wwn_members
+    if port_members is not None:
+        payload['port_members'] = port_members
+    if fwwn_members is not None:
+        payload['fwwn_members'] = fwwn_members
+    if fcid_members is not None:
+        payload['fcid_members'] = fcid_members
+    if device_alias_members is not None:
+        payload['device_alias_members'] = device_alias_members
+    
+    response = client.post(url, json=payload)
+    return response
+
+
+def zone_modify(client: DMEAPIClient, zone_id: str, zone_name: str = None,
+                wwn_members: dict = None, fwwn_members: dict = None,
+                port_members: dict = None, fcid_members: dict = None,
+                device_alias_members: dict = None) -> dict:
+    """
+    修改 zone
+    
+    修改光纤 Zone 的配置信息。
+    
+    Args:
+        client: DME API 客户端
+        zone_id: Zone ID（必选）
+        zone_name: Zone 名称（可选）
+        wwn_members: WWN 成员修改（可选，格式：{'added_members': [...], 'removed_members': [...]}）
+        fwwn_members: FWWN 成员修改（可选）
+        port_members: 端口成员修改（可选）
+        fcid_members: FCID 成员修改（可选）
+        device_alias_members: 设备别名成员修改（可选）
+    
+    Returns:
+        响应数据
+    """
+    url = f"/rest/fcswitchmgmt/v1/zones/{zone_id}"
+    
+    payload = {}
+    if zone_name is not None:
+        payload['zoneName'] = zone_name
+    if wwn_members is not None:
+        payload['wwn_members'] = wwn_members
+    if fwwn_members is not None:
+        payload['fwwn_members'] = fwwn_members
+    if port_members is not None:
+        payload['port_members'] = port_members
+    if fcid_members is not None:
+        payload['fcid_members'] = fcid_members
+    if device_alias_members is not None:
+        payload['device_alias_members'] = device_alias_members
+    
+    response = client.put(url, json=payload)
+    return response
+
+
+def zone_delete(client: DMEAPIClient, zone_id: str) -> dict:
+    """
+    删除 zone
+    
+    删除指定的光纤 Zone。
+    注：根据 DME API 文档，使用 DELETE 方法到 /zones/{zone_id}
+    
+    Args:
+        client: DME API 客户端
+        zone_id: Zone ID（必选）
+    
+    Returns:
+        响应数据
+    """
+    url = f"/rest/fcswitchmgmt/v1/zones/{zone_id}"
+    
+    response = client.delete(url)
+    return response
+
+
+def zone_batch_create(client: DMEAPIClient, is_active_zone: str, zones: list) -> dict:
+    """
+    批量创建 zone
+    
+    批量创建多个光纤 Zone。
+    注：根据 DME API 文档，需要 is_active_zone 和 zone_list 参数。
+    
+    Args:
+        client: DME API 客户端
+        is_active_zone: 是否激活 Zone（必选，字符串 "true" 或 "false"）
+        zones: Zone 配置列表，每个元素应包含:
+            - fabric_wwn: 光纤网络 WWN（必选）
+            - name: Zone 名称（必选）
+            - wwn_members: WWN 成员列表（可选）
+            - port_members: 端口成员列表（可选）
+            - alias_members: 别名成员列表（可选）
+            - device_alias_members: 设备别名成员列表（可选）
+            - fwwn_members: FWWN 成员列表（可选）
+            - fcid_members: FCID 成员列表（可选）
+    
+    Returns:
+        响应数据
+    """
+    url = "/rest/fcswitchmgmt/v1/zones/batch-create"
+    
+    payload = {
+        'is_active_zone': is_active_zone,
+        'zone_list': zones
+    }
+    
+    response = client.post(url, json=payload)
+    return response
+
+
+def zone_show_members(client: DMEAPIClient, zone_id: str, type: str = None) -> dict:
+    """
+    查询 zone 的成员
+
+    查询 Zone 中包含的成员，支持端口成员、WWN 成员和别名成员。
+
+    Args:
+        client: DME API 客户端
+        zone_id: Zone ID（必选）
+        type: 成员类型，可选值：port（端口成员）,wwn（WWN 成员）,alias（别名成员）。
+             不指定时返回所有类型的成员
+
+    Returns:
+        响应数据，包含成员列表
+    """
+    result = {'port_members': [], 'wwn_members': [], 'alias_members': []}
+
+    # 根据 type 参数查询对应类型的成员
+    if type is None or type == 'port':
+        url = f"/rest/fcswitchmgmt/v1/zones/{zone_id}/port-members/list"
+        payload = {}
+        response = client.post(url, json=payload)
+        if response.get('port_members'):
+            result['port_members'] = response.get('port_members')
+
+    if type is None or type == 'wwn':
+        url = f"/rest/fcswitchmgmt/v1/zones/{zone_id}/wwn-members/list"
+        response = client.get(url)
+        if response.get('wwn_members'):
+            result['wwn_members'] = response.get('wwn_members')
+
+    if type is None or type == 'alias':
+        url = f"/rest/fcswitchmgmt/v1/zones/{zone_id}/alias-members/list"
+        payload = {}
+        response = client.post(url, json=payload)
+        if response.get('alias_members'):
+            result['alias_members'] = response.get('alias_members')
+
+    # 如果指定了 type，只返回对应类型的成员
+    if type == 'port':
+        return {'port_members': result['port_members']}
+    elif type == 'wwn':
+        return {'wwn_members': result['wwn_members']}
+    elif type == 'alias':
+        return {'alias_members': result['alias_members']}
+    else:
+        # 返回所有成员
+        all_members = result['port_members'] + result['wwn_members'] + result['alias_members']
+        return {'members': all_members}
+
+
+# ==================== Alias 相关操作 ====================
+
+def alias_list(client: DMEAPIClient, fabric_wwn: str,
+               page_no: int = 1, page_size: int = 20) -> dict:
+    """
+    批量查询别名
+    
+    查询光纤 Alias 列表。
+    
+    Args:
+        client: DME API 客户端
+        fabric_wwn: 光纤网络 WWN（必选）
+        page_no: 分页查询的页码，默认 1
+        page_size: 每页数量，1~1000，默认 20
+    
+    Returns:
+        响应数据，包含 total 和 aliases 字段
+    """
+    url = "/rest/fcswitchmgmt/v1/aliases/list"
+    
+    payload = {
+        'fabric_wwn': fabric_wwn,
+        'page_no': page_no,
+        'page_size': page_size
+    }
+    
+    response = client.post(url, json=payload)
+    return response
+
+
+def alias_create(client: DMEAPIClient, name: str, fabric_wwn: str = None,
+                 vsan_wwn: str = None, wwn_members: list = None,
+                 port_members: list = None, fwwn_members: list = None,
+                 fcid_members: list = None, device_alias_members: list = None) -> dict:
+    """
+    创建别名
+    
+    创建新的光纤 Alias。
+    注：根据 DME API 文档，需要提供 fabric_wwn 或 vsan_wwn，以及至少一种成员类型。
+    
+    Args:
+        client: DME API 客户端
+        name: Alias 名称（必选）
+        fabric_wwn: 光纤网络 WWN（条件必选，fabric 创建别名时需要）
+        vsan_wwn: VSAN WWN（条件必选，vsan 创建别名时需要）
+        wwn_members: WWN 成员列表（可选，思科交换机 PWWN 成员）
+        port_members: 端口成员列表（可选）
+        fwwn_members: FWWN 成员列表（可选）
+        fcid_members: FCID 成员列表（可选）
+        device_alias_members: 设备别名成员列表（可选）
+    
+    Returns:
+        响应数据，包含新创建的 Alias ID
+    """
+    url = "/rest/fcswitchmgmt/v1/aliases"
+    
+    payload = {
+        'name': name
+    }
+    
+    # fabric_wwn 或 vsan_wwn 至少提供一个
+    if fabric_wwn is not None:
+        payload['fabric_wwn'] = fabric_wwn
+    if vsan_wwn is not None:
+        payload['vsan_wwn'] = vsan_wwn
+    
+    # 成员列表
+    if wwn_members is not None:
+        payload['wwn_members'] = wwn_members
+    if port_members is not None:
+        payload['port_members'] = port_members
+    if fwwn_members is not None:
+        payload['fwwn_members'] = fwwn_members
+    if fcid_members is not None:
+        payload['fcid_members'] = fcid_members
+    if device_alias_members is not None:
+        payload['device_alias_members'] = device_alias_members
+    
+    response = client.post(url, json=payload)
+    return response
+
+
+def alias_modify(client: DMEAPIClient, alias_id: str, name: str = None,
+                 wwn_members: dict = None, fwwn_members: dict = None,
+                 port_members: dict = None, fcid_members: dict = None,
+                 device_alias_members: dict = None) -> dict:
+    """
+    修改别名
+    
+    修改光纤 Alias 的配置信息。
+    注：根据 DME API 文档，成员修改需要使用 {type}.added_members 和 {type}.removed_members 格式。
+    
+    Args:
+        client: DME API 客户端
+        alias_id: Alias ID（必选）
+        name: Alias 名称（可选）
+        wwn_members: WWN 成员修改（可选，格式：{'added_members': [...], 'removed_members': [...]}）
+        fwwn_members: FWWN 成员修改（可选）
+        port_members: 端口成员修改（可选）
+        fcid_members: FCID 成员修改（可选）
+        device_alias_members: 设备别名成员修改（可选）
+    
+    Returns:
+        响应数据
+    """
+    url = f"/rest/fcswitchmgmt/v1/aliases/{alias_id}"
+    
+    payload = {}
+    if name is not None:
+        payload['name'] = name
+    if wwn_members is not None:
+        payload['wwn_members'] = wwn_members
+    if fwwn_members is not None:
+        payload['fwwn_members'] = fwwn_members
+    if port_members is not None:
+        payload['port_members'] = port_members
+    if fcid_members is not None:
+        payload['fcid_members'] = fcid_members
+    if device_alias_members is not None:
+        payload['device_alias_members'] = device_alias_members
+    
+    response = client.put(url, json=payload)
+    return response
+
+
+def alias_delete(client: DMEAPIClient, alias_id: str) -> dict:
+    """
+    删除别名
+    
+    删除指定的光纤 Alias。
+    注：根据 DME API 文档，使用 DELETE 方法到 /aliases/{alias_id}
+    
+    Args:
+        client: DME API 客户端
+        alias_id: Alias ID（必选）
+    
+    Returns:
+        响应数据
+    """
+    url = f"/rest/fcswitchmgmt/v1/aliases/{alias_id}"
+    
+    response = client.delete(url)
+    return response
+
+
+def alias_members_list(client: DMEAPIClient, alias_id: str, type: str = None) -> dict:
+    """
+    查询别名的成员
+
+    查询 Alias 中包含的成员，支持查询端口成员和 WWN 成员。
+
+    Args:
+        client: DME API 客户端
+        alias_id: Alias ID（必选）
+        type: 成员类型，可选值：port（端口成员）,wwn（WWN 成员）。
+             不指定时返回所有类型的成员
+
+    Returns:
+        响应数据，包含成员列表
+    """
+    result = {'port_members': [], 'wwn_members': []}
+
+    # 如果指定了 type 或默认为 None 时，查询对应类型的成员
+    if type is None or type == 'port':
+        url = f"/rest/fcswitchmgmt/v1/aliases/{alias_id}/port-members/list"
+        payload = {}
+        response = client.post(url, json=payload)
+        if response.get('port_members'):
+            result['port_members'] = response.get('port_members')
+
+    if type is None or type == 'wwn':
+        url = f"/rest/fcswitchmgmt/v1/aliases/{alias_id}/wwn-members/list"
+        response = client.get(url)
+        # API 返回字段为 wwn_member（单数）
+        if response.get('wwn_member'):
+            result['wwn_members'] = response.get('wwn_member')
+
+    # 如果指定了 type，只返回对应类型的成员
+    if type == 'port':
+        return {'port_members': result['port_members']}
+    elif type == 'wwn':
+        return {'wwn_members': result['wwn_members']}
+    else:
+        # 返回所有成员
+        all_members = result['port_members'] + result['wwn_members']
+        return {'members': all_members}
+
+
+# ACTIONS 字典，定义所有可用动作
+ACTIONS = {
+    'list': {
+        'func': list,
+        'description': '批量查询光纤交换机',
+        'params': ['name', 'page_no', 'page_size'],
+        'subtopic': None
+    },
+    'sync': {
+        'func': sync,
+        'description': '同步交换机配置',
+        'params': ['switch_id'],
+        'subtopic': None
+    },
+    'port_list': {
+        'func': port_list,
+        'description': '查询交换机端口列表',
+        'params': ['switch_id', 'port_name', 'page_no', 'page_size'],
+        'subtopic': 'port'
+    },
+    'controller_list': {
+        'func': controller_list,
+        'description': '查询交换机控制器列表',
+        'params': ['switch_id', 'page_no', 'page_size'],
+        'subtopic': 'controller'
+    },
+    'fabric_list': {
+        'func': fabric_list,
+        'description': '批量查询 fabric',
+        'params': ['name', 'page_no', 'page_size'],
+        'subtopic': 'fabric'
+    },
+    'fabric_show_ports': {
+        'func': fabric_show_ports,
+        'description': '查询 fabric 的端口列表',
+        'params': ['fabric_id', 'page_no', 'page_size'],
+        'subtopic': 'fabric'
+    },
+    'fabric_backup': {
+        'func': fabric_backup,
+        'description': '备份 fabric 配置',
+        'params': ['fabric_id', 'backup_server_id', 'backup_type'],
+        'subtopic': 'fabric'
+    },
+    'vsan_list': {
+        'func': vsan_list,
+        'description': '批量查询 vsan',
+        'params': ['page_no', 'page_size'],
+        'subtopic': 'vsan'
+    },
+    'zone_list': {
+        'func': zone_list,
+        'description': '批量查询 zone',
+        'params': ['zone_name', 'page_no', 'page_size'],
+        'subtopic': 'zone'
+    },
+    'zone_create': {
+        'func': zone_create,
+        'description': '创建 zone',
+        'params': ['name', 'fabric_wwn', 'vsan_wwn', 'wwn_members', 'port_members', 'fwwn_members', 'fcid_members', 'device_alias_members'],
+        'subtopic': 'zone'
+    },
+    'zone_modify': {
+        'func': zone_modify,
+        'description': '修改 zone',
+        'params': ['zone_id', 'zone_name', 'wwn_members', 'fwwn_members', 'port_members', 'fcid_members', 'device_alias_members'],
+        'subtopic': 'zone'
+    },
+    'zone_delete': {
+        'func': zone_delete,
+        'description': '删除 zone',
+        'params': ['zone_id'],
+        'subtopic': 'zone'
+    },
+    'zone_batch_create': {
+        'func': zone_batch_create,
+        'description': '批量创建 zone',
+        'params': ['is_active_zone', 'zones'],
+        'subtopic': 'zone'
+    },
+    'zone_show_members': {
+        'func': zone_show_members,
+        'description': '查询 zone 的成员',
+        'params': ['zone_id', 'type'],
+        'subtopic': 'zone'
+    },
+    'alias_list': {
+        'func': alias_list,
+        'description': '批量查询别名',
+        'params': ['fabric_wwn', 'page_no', 'page_size'],
+        'subtopic': 'alias'
+    },
+    'alias_create': {
+        'func': alias_create,
+        'description': '创建别名',
+        'params': ['name', 'fabric_wwn', 'vsan_wwn', 'wwn_members', 'port_members', 'fwwn_members', 'fcid_members', 'device_alias_members'],
+        'subtopic': 'alias'
+    },
+    'alias_modify': {
+        'func': alias_modify,
+        'description': '修改别名',
+        'params': ['alias_id', 'name', 'wwn_members', 'fwwn_members', 'port_members', 'fcid_members', 'device_alias_members'],
+        'subtopic': 'alias'
+    },
+    'alias_delete': {
+        'func': alias_delete,
+        'description': '删除别名',
+        'params': ['alias_id'],
+        'subtopic': 'alias'
+    },
+    'alias_show_members': {
+        'func': alias_members_list,
+        'description': '查询别名的成员',
+        'params': ['alias_id', 'type'],
+        'subtopic': 'alias'
+    },
+}
+
+
