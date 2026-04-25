@@ -2650,104 +2650,6 @@ ACTIONS = {
         'params': ['initiator_id', 'vstore_id', 'alias', 'multi_path'],
         'subtopic': 'initiator'
     },
-    # host 子主题（存储主机）
-    'host_create': {
-        'func': host_create,
-        'description': '创建存储主机',
-        'params': ['storage_id', 'name', 'os_type', 'ip', 'description',
-                   'initiators', 'multipath', 'task_remarks', 'vstore_id'],
-        'subtopic': 'host'
-    },
-    'host_query': {
-        'func': host_batch_query,
-        'description': '根据存储主机 ID 列表批量查询存储主机',
-        'params': ['ids'],
-        'subtopic': 'host'
-    },
-    'host_list': {
-        'func': host_list,
-        'description': '批量查询存储主机',
-        'params': ['page_size', 'page_no', 'sort_key', 'sort_dir', 'name',
-                   'raw_id', 'host_group_id', 'avaliable_add_to_host_group_id',
-                   'host_group_name', 'ip', 'health_status', 'os_type',
-                   'storage_id', 'avaiable_mapping_for_lun_group_id',
-                   'avaiable_mapping_for_lun_id', 'support_provisioning',
-                   'manufacturer', 'vstore_raw_id', 'vstore_name'],
-        'subtopic': 'host'
-    },
-    'host_modify': {
-        'func': host_modify,
-        'description': '修改存储主机',
-        'params': ['storage_host_id', 'storage_host_name', 'storage_host_description',
-                   'storage_host_ip', 'storage_host_os_type', 'add_initiators',
-                   'remove_initiators', 'multipath', 'access_mode',
-                   'hyper_metro_path_optimized', 'task_remarks'],
-        'subtopic': 'host'
-    },
-    'host_delete': {
-        'func': host_delete,
-        'description': '批量删除存储主机',
-        'params': ['host_ids'],
-        'subtopic': 'host'
-    },
-    'host_show_paths': {
-        'func': host_show_paths,
-        'description': '批量查询存储主机的路径信息',
-        'params': ['page_no', 'page_size', 'storage_id', 'storage_host_ids',
-                   'storage_host_raw_ids', 'health_status', 'running_status',
-                   'initiator_type'],
-        'subtopic': 'host'
-    },
-    # host_group 子主题（存储主机组）
-    'host_group_create': {
-        'func': host_group_create,
-        'description': '创建存储主机组',
-        'params': ['storage_id', 'name', 'description', 'exist_host_ids',
-                   'create_storage_host_params', 'task_remarks', 'vstore_id'],
-        'subtopic': 'host_group'
-    },
-    'host_group_list': {
-        'func': host_group_list,
-        'description': '批量查询存储主机组',
-        'params': ['storage_id', 'name', 'raw_id', 'vstore_id', 'vstore_name',
-                   'page_no', 'page_size', 'sort_key', 'sort_dir',
-                   'avaiable_mapping_for_lun_group_id', 'avaiable_mapping_for_lun_id',
-                   'support_provisioning'],
-        'subtopic': 'host_group'
-    },
-    'host_group_add_hosts': {
-        'func': host_group_add_hosts,
-        'description': '添加存储主机到存储主机组',
-        'params': ['storage_host_group_id', 'storage_host_id_ids',
-                   'create_storage_host_params', 'task_remarks'],
-        'subtopic': 'host_group'
-    },
-    'host_group_remove_hosts': {
-        'func': host_group_remove_hosts,
-        'description': '从存储主机组中移除主机',
-        'params': ['storage_host_group_id', 'storage_host_ids', 'task_remarks'],
-        'subtopic': 'host_group'
-    },
-    'host_group_delete': {
-        'func': host_group_delete,
-        'description': '批量删除存储主机组',
-        'params': ['host_group_ids', 'task_remarks'],
-        'subtopic': 'host_group'
-    },
-    # host 子主题动作 - 查询存储主机映射的 LUN
-    'host_show_luns': {
-        'func': host_show_luns,
-        'description': '查询存储主机映射的 LUN 信息列表',
-        'params': ['storage_host_id', 'name', 'page_size', 'page_no', 'sort_key', 'sort_dir'],
-        'subtopic': 'host'
-    },
-    # host_group 子主题动作 - 查询存储主机组映射的 LUN
-    'host_group_show_luns': {
-        'func': host_group_show_luns,
-        'description': '查询存储主机组映射的 LUN 信息列表',
-        'params': ['storage_host_group_id', 'name', 'page_size', 'page_no', 'sort_key', 'sort_dir'],
-        'subtopic': 'host_group'
-    },
     # account 子主题动作（认证用户）
     'account_show_local_users': {
         'func': show_local_users,
@@ -2920,31 +2822,6 @@ ACTIONS = {
         'description': '查询指定绑定端口的成员列表信息',
         'params': ['bond_port_id'],
         'subtopic': 'port'
-    },
-    # port_group 子主题动作（存储端口组）
-    'port_group_list': {
-        'func': port_group_list,
-        'description': '批量查询端口组',
-        'params': ['storage_id', 'name', 'page_no', 'page_size'],
-        'subtopic': 'port_group'
-    },
-    'port_group_create': {
-        'func': port_group_create,
-        'description': '创建端口组（仅支持 OceanStor 1800 系列存储）',
-        'params': ['storage_id', 'name', 'description'],
-        'subtopic': 'port_group'
-    },
-    'port_group_show_ports': {
-        'func': port_group_show_ports,
-        'description': '批量查询指定端口组的端口',
-        'params': ['storage_id', 'port_group_id'],
-        'subtopic': 'port_group'
-    },
-    'port_group_show_relations': {
-        'func': port_group_show_relations,
-        'description': '批量查询端口组与端口关联关系',
-        'params': ['storage_id', 'port_group_id'],
-        'subtopic': 'port_group'
     },
     # vlan 子主题动作（存储 VLAN）
     'vlan_list': {
