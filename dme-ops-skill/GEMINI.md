@@ -90,11 +90,11 @@ When user ask to finish todo tasks, sequentially execute the unfinished todo tas
 
 #### aiops topic
 - [x] 将alarm主题迁移为aiops主题下的子主题：alarm=> aiops alarm
-- [x] 将diagnose task 迁移到aiops主题下：diagnose task => aiops diagnose_task; 
-- [x] 将performance主题下的动作迁移到aiops主题：performance collect_task create/download => aiops performance create_collect_task/download_collect_result, performance data query => aiops performance query, performance indicator detail/list => aiops performance show_indicators/list_indicators, performance object_type list=> aiops performance list_object_types; 
-- [ ] 将policy result迁移到aiops主题：policy result show/list => aiops check_result show/list，迁移完成后移除policy.py中被迁移到aiops.py的函数
-- [ ] 将policy主题迁移为aiops子主题：policy => aiops check_policy; 
-- [ ] 将topology主题迁移为aiops子主题：topology => aiops topology. 
-- [ ] 删除被迁移的主题. 
+- [x] 将diagnose task 迁移到aiops主题下：diagnose task => aiops diagnose_task;
+- [x] 将performance主题下的动作迁移到aiops主题：performance collect_task create/download => aiops performance create_collect_task/download_collect_result, performance data query => aiops performance query, performance indicator detail/list => aiops performance show_indicators/list_indicators, performance object_type list=> aiops performance list_object_types;
+- [x] 将policy result迁移到aiops主题：policy result show/list => aiops check_result show/list，迁移完成后移除policy.py中被迁移到aiops.py的函数
+- [x] 将policy主题迁移为aiops子主题：policy => aiops check_policy;
+- [x] 将topology主题迁移为aiops子主题：topology => aiops topology.
+- [x] 删除被迁移的主题.
 
 

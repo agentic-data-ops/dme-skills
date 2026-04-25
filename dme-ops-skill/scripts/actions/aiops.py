@@ -618,6 +618,593 @@ def diagnose_task_status(client: DMEAPIClient, task_id: str) -> dict:
     return response
 
 
+# ============================================================================
+# 检查策略 (check_policy) 子主题函数
+# ============================================================================
+
+def list_check_policies(client: DMEAPIClient, policy_name: str = None, exact_query: bool = None,
+                        status: str = None, policy_type: str = None, policy_source: str = None,
+                        alarm_type: str = None, object_type: str = None, page_no: int = 1,
+                        page_size: int = 20, sort_key: str = None, sort_dir: str = None,
+                        administrative_status: str = None, policy_category: str = None,
+                        object_category: str = None) -> dict:
+    """
+    查询检查策略列表
+
+    查询检查策略列表，支持多种过滤条件和分页查询。
+
+    Args:
+        client: DME API 客户端
+        policy_name: 策略名称（支持模糊查询，1~256 个字符）
+        exact_query: 名称是否精确查询（true-精确查询，false-模糊查询），默认 false
+        status: 策略状态（normal-正常，checking-检查中，failed-检查失败，queuing-排队中）
+        policy_type: 策略类型（performance-性能阈值，capacity-容量阈值，availability-可用性，
+                    configuration-配置，recyclable-可回收资源，lowload-低负载资源，
+                    performance_anomaly-性能异常，performance_prediction-性能预警，
+                    capacity_prediction-容量预警，history_performance-历史性能，
+                    load_imbalance-负载失衡，highload-高负载资源）
+        policy_source: 来源（pre-define-预置，user-define-自定义）
+        alarm_type: 告警类型（violation-异常，alarm-告警，event-事件）
+        object_type: 对象类型（storage-存储，lun-逻辑单元，host-主机等）
+        page_no: 分页查询的页码，1~1000，默认 1
+        page_size: 分页查询的个数，1~100，默认 20
+        sort_key: 排序字段（last_check_time-最后检查时间，failed_count-检查不通过的对象个数）
+        sort_dir: 排序方式（asc-正序，desc-降序）
+        administrative_status: 管理状态（enable-启用，disable-禁用）
+        policy_category: 检查分类（configuration-配置，performance-性能，capacity-容量，faults-故障，optimization-优化）
+        object_category: 对象分类（Storage-存储设备，IPSwitch-以太网交换机，FCSwitch-光纤交换机，
+                       Virtualization-虚拟化，Server-服务器，HCI-超融合，Client-客户端）
+
+    Returns:
+        响应数据，包含 total（总数）和 policies（策略列表）
+    """
+    url = "/rest/policymgmt/v2/policies/query"
+
+    body_params = {
+        'page_no': page_no,
+        'page_size': page_size
+    }
+
+    if policy_name is not None:
+        body_params['policy_name'] = policy_name
+    if exact_query is not None:
+        body_params['exact_query'] = exact_query
+    if status is not None:
+        body_params['status'] = status
+    if policy_type is not None:
+        body_params['policy_type'] = policy_type
+    if policy_source is not None:
+        body_params['policy_source'] = policy_source
+    if alarm_type is not None:
+        body_params['alarm_type'] = alarm_type
+    if object_type is not None:
+        body_params['object_type'] = object_type
+    if sort_key is not None:
+        body_params['sort_key'] = sort_key
+    if sort_dir is not None:
+        body_params['sort_dir'] = sort_dir
+    if administrative_status is not None:
+        body_params['administrative_status'] = administrative_status
+    if policy_category is not None:
+        body_params['policy_category'] = policy_category
+    if object_category is not None:
+        body_params['object_category'] = object_category
+
+    response = client.post(url, json=body_params)
+    return response
+
+
+def execute_check_policy(client: DMEAPIClient, policy_id: str) -> dict:
+    """
+    执行检查策略
+
+    执行指定的检查策略。
+
+    Args:
+        client: DME API 客户端
+        policy_id: 策略 ID（1~64 个字符）
+
+    Returns:
+        响应数据
+    """
+    url = f"/rest/policymgmt/v1/policies/{policy_id}/execute"
+
+    response = client.post(url)
+    return response
+
+
+def enable_check_policy(client: DMEAPIClient, policy_id: str) -> dict:
+    """
+    启用检查策略
+
+    启用指定的检查策略。
+
+    Args:
+        client: DME API 客户端
+        policy_id: 策略 ID（1~64 个字符）
+
+    Returns:
+        响应数据
+    """
+    url = f"/rest/policymgmt/v1/policies/{policy_id}/enable"
+
+    response = client.post(url)
+    return response
+
+
+def disable_check_policy(client: DMEAPIClient, policy_id: str) -> dict:
+    """
+    禁用检查策略
+
+    禁用指定的检查策略。
+
+    Args:
+        client: DME API 客户端
+        policy_id: 策略 ID（1~64 个字符）
+
+    Returns:
+        响应数据
+    """
+    url = f"/rest/policymgmt/v1/policies/{policy_id}/disable"
+
+    response = client.post(url)
+    return response
+
+
+def delete_check_policy(client: DMEAPIClient, policy_id: str) -> dict:
+    """
+    删除检查策略
+
+    删除指定的检查策略。
+
+    Args:
+        client: DME API 客户端
+        policy_id: 策略 ID（1~64 个字符）
+
+    Returns:
+        响应数据
+    """
+    url = f"/rest/policymgmt/v1/policies/{policy_id}"
+
+    response = client.delete(url)
+    return response
+
+
+# ============================================================================
+# 检查结果 (check_result) 子主题函数
+# ============================================================================
+
+def list_abnormal_results(client: DMEAPIClient, object_name: str = None, level: str = None,
+                          object_ids: list = None, object_native_id: str = None,
+                          object_type: str = None, policy_id: str = None,
+                          policy_name: str = None, policy_types: list = None,
+                          cause: str = None, alarm_type: str = None,
+                          first_occur_time: dict = None, last_occur_time: dict = None,
+                          page_no: int = 1, page_size: int = 20, sort_key: str = None,
+                          sort_dir: str = None) -> dict:
+    """
+    查询检查策略异常检查结果列表
+
+    查询检查策略的异常检查结果，支持多种过滤条件和分页查询。
+
+    Args:
+        client: DME API 客户端
+        object_name: 对象名称（支持模糊查询，1~256 个字符）
+        level: 异常级别（critical-紧急，major-重要，minor-次要，info-提示）
+        object_ids: 对象 ID 列表（最多 100 个）
+        object_native_id: 对象 nativeId（1~384 个字符）
+        object_type: 对象类型（storage-存储，lun-逻辑单元，host-主机等）
+        policy_id: 策略 ID（精确查询，1~64 个字符）
+        policy_name: 策略名称（支持模糊查询，1~256 个字符）
+        policy_types: 策略类型列表（最多 30 个）
+        cause: 异常原因（支持模糊查询，1~768 个字符）
+        alarm_type: 告警类型（violation-异常，alarm-告警，event-事件）
+        first_occur_time: 第一次异常时间范围（{beginTime, endTime}，UTC 时间戳，单位 ms）
+        last_occur_time: 最后一次异常时间范围（{beginTime, endTime}，UTC 时间戳，单位 ms）
+        page_no: 分页查询的页码，1~10000，默认 1
+        page_size: 分页查询的个数，1~2000，默认 20
+        sort_key: 排序字段（violation_count-异常次数）
+        sort_dir: 排序方式（asc-正序，desc-降序）
+
+    Returns:
+        响应数据，包含 total（总数）和 results（异常检查结果列表）
+    """
+    url = "/rest/policymgmt/v1/abnormal-check-results/query"
+
+    body_params = {
+        'page_no': page_no,
+        'page_size': page_size
+    }
+
+    if object_name is not None:
+        body_params['object_name'] = object_name
+    if level is not None:
+        body_params['level'] = level
+    if object_ids is not None:
+        body_params['object_ids'] = object_ids
+    if object_native_id is not None:
+        body_params['object_native_id'] = object_native_id
+    if object_type is not None:
+        body_params['object_type'] = object_type
+    if policy_id is not None:
+        body_params['policy_id'] = policy_id
+    if policy_name is not None:
+        body_params['policy_name'] = policy_name
+    if policy_types is not None:
+        body_params['policy_types'] = policy_types
+    if cause is not None:
+        body_params['cause'] = cause
+    if alarm_type is not None:
+        body_params['alarm_type'] = alarm_type
+    if first_occur_time is not None:
+        body_params['first_occur_time'] = first_occur_time
+    if last_occur_time is not None:
+        body_params['last_occur_time'] = last_occur_time
+    if sort_key is not None:
+        body_params['sort_key'] = sort_key
+    if sort_dir is not None:
+        body_params['sort_dir'] = sort_dir
+
+    response = client.post(url, json=body_params)
+    return response
+
+
+def show_abnormal_result(client: DMEAPIClient, check_result_id: str) -> dict:
+    """
+    查询检查策略异常检查结果详情
+
+    查询指定检查结果的详细信息。
+
+    Args:
+        client: DME API 客户端
+        check_result_id: 检查结果 ID（1~64 个字符）
+
+    Returns:
+        响应数据，包含检查结果的详细信息
+    """
+    url = f"/rest/policymgmt/v1/abnormal-check-results/{check_result_id}"
+
+    response = client.get(url)
+    return response
+
+
+# 动作列表，用于 CLI 帮助
+# ============================================================================
+# 拓扑管理 (topology) 子主题函数
+# ============================================================================
+
+def query_luns(client: DMEAPIClient, entry_objects: list, storage_pool_id: str,
+               lun_name: str = None, san_type: str = None, page_size: int = 20, page_no: int = 1) -> dict:
+    r"""
+    查询拓扑图 Lun 列表
+
+    根据指定入口对象查询拓扑图中的 LUN 列表。
+
+    Args:
+        client: DME API 客户端
+        entry_objects: 入口对象列表（必选），支持类型：
+            - host: 主机
+            - storage: 存储设备
+            - host_group: 主机组
+            - lun: LUN
+            - vm: 虚拟机
+            - datastore: 数据存储
+            - application: 应用
+            - switch_port: 交换机端口
+            - storage_pool: 存储池
+        storage_pool_id: 存储池 ID（必选）
+        lun_name: LUN 名称，支持模糊匹配
+        san_type: SAN 类型，可选值：ip_san, fc_san
+        page_size: 分页查询的个数，1~20，默认 20
+        page_no: 分页查询的起始位置，默认 1
+
+    Returns:
+        响应数据，包含 LUN 拓扑列表
+    """
+    url = "/rest/topomgmt/v1/topo-data/luns/query"
+
+    payload = {
+        "entry_objects": entry_objects,
+        "storage_pool_id": storage_pool_id
+    }
+
+    if lun_name is not None:
+        payload["lun_name"] = lun_name
+
+    if san_type is not None:
+        payload["san_type"] = san_type
+
+    if page_size is not None:
+        payload["page_size"] = page_size
+
+    if page_no is not None:
+        payload["page_no"] = page_no
+
+    print(f"请求 URL: {url}")
+    print(f"请求负载：{json.dumps(payload, ensure_ascii=False, indent=2)}")
+
+    response = client.post(url, json=payload)
+    return response
+
+
+def query_san_path(client: DMEAPIClient, entry_objects: list, san_type: str = None) -> dict:
+    r"""
+    查询 SAN 路径拓扑结构
+
+    根据指定入口对象查询 SAN 网络中从主机到存储池之间的拓扑结构。
+    支持 IP_SAN 和 FC_SAN 两种类型。
+
+    Args:
+        client: DME API 客户端
+        entry_objects: 入口对象列表（必选），支持类型：
+            - host: 主机
+            - storage: 存储设备
+            - lun: LUN
+            - host_group: 主机组
+            - vm: 虚拟机
+            - datastore: 数据存储（仅 FC_SAN）
+            - application: 应用（仅 FC_SAN）
+            - switch_port: 交换机端口（仅 FC_SAN）
+            - storage_pool: 存储池
+        san_type: SAN 类型（可选），可选值：ip_san, fc_san
+                  - 不指定时，同时调用 IP_SAN 和 FC_SAN 两个 API，组合返回数据
+                  - 指定为 ip_san 时，仅调用 IP_SAN API
+                  - 指定为 fc_san 时，仅调用 FC_SAN API
+
+    Returns:
+        响应数据，包含主机到存储池的拓扑结构：
+        - ip_san 数据：
+          - switches: 交换机列表
+          - hosts: 主机列表
+          - storages: 存储列表
+          - switch_links: 交换机连接关系列表
+          - port_links: 端口连接关系列表
+        - fc_san 数据：
+          - fabrics: fabric 列表
+          - hosts: 主机列表
+          - storages: 存储列表
+    """
+    result = {}
+
+    # 如果未指定 san_type，同时调用两个 API
+    if san_type is None:
+        # 调用 IP_SAN API
+        ip_san_url = "/rest/topomgmt/v1/topo-data/ipsan/host-storage/query"
+        ip_san_payload = {"entry_objects": entry_objects}
+        print(f"请求 URL: {ip_san_url}")
+        print(f"请求负载：{json.dumps(ip_san_payload, ensure_ascii=False, indent=2)}")
+        ip_san_response = client.post(ip_san_url, json=ip_san_payload)
+        result['ip_san'] = ip_san_response
+
+        # 调用 FC_SAN API
+        fc_san_url = "/rest/topomgmt/v1/topo-data/host-storage/query"
+        fc_san_payload = {"entry_objects": entry_objects}
+        print(f"请求 URL: {fc_san_url}")
+        print(f"请求负载：{json.dumps(fc_san_payload, ensure_ascii=False, indent=2)}")
+        fc_san_response = client.post(fc_san_url, json=fc_san_payload)
+        result['fc_san'] = fc_san_response
+
+        return result
+
+    # 如果指定了 san_type，只调用对应的 API
+    elif san_type == 'ip_san':
+        url = "/rest/topomgmt/v1/topo-data/ipsan/host-storage/query"
+        payload = {"entry_objects": entry_objects}
+        print(f"请求 URL: {url}")
+        print(f"请求负载：{json.dumps(payload, ensure_ascii=False, indent=2)}")
+        response = client.post(url, json=payload)
+        return response
+
+    elif san_type == 'fc_san':
+        url = "/rest/topomgmt/v1/topo-data/host-storage/query"
+        payload = {"entry_objects": entry_objects}
+        print(f"请求 URL: {url}")
+        print(f"请求负载：{json.dumps(payload, ensure_ascii=False, indent=2)}")
+        response = client.post(url, json=payload)
+        return response
+
+    else:
+        raise ValueError(f"无效的 san_type 参数：{san_type}，仅支持：ip_san, fc_san")
+
+
+def ipsan_query(client: DMEAPIClient, entry_objects: list) -> dict:
+    r"""
+    查询 IP_SAN 网络从主机到存储池间的拓扑结构
+
+    根据指定入口对象查询 IP_SAN 网络中从主机到存储池之间的拓扑结构。
+
+    Args:
+        client: DME API 客户端
+        entry_objects: 入口对象列表（必选），支持类型：
+            - host: 主机
+            - storage: 存储设备
+            - lun: LUN
+            - host_group: 主机组
+            - vm: 虚拟机
+            - storage_pool: 存储池
+
+    Returns:
+        响应数据，包含主机到存储池的拓扑结构，包括：
+        - switches: 交换机列表
+        - hosts: 主机列表
+        - storages: 存储列表
+        - switch_links: 交换机连接关系列表
+        - port_links: 端口连接关系列表
+    """
+    url = "/rest/topomgmt/v1/topo-data/ipsan/host-storage/query"
+
+    payload = {
+        "entry_objects": entry_objects
+    }
+
+    print(f"请求 URL: {url}")
+    print(f"请求负载：{json.dumps(payload, ensure_ascii=False, indent=2)}")
+
+    response = client.post(url, json=payload)
+    return response
+
+
+def fcsan_query(client: DMEAPIClient, entry_objects: list) -> dict:
+    r"""
+    查询 FC_SAN 网络从主机到存储池间的拓扑结构
+
+    根据指定入口对象查询 FC_SAN 网络中从主机到存储池之间的拓扑结构。
+
+    Args:
+        client: DME API 客户端
+        entry_objects: 入口对象列表（必选），支持类型：
+            - host: 主机
+            - storage: 存储设备
+            - lun: LUN
+            - host_group: 主机组
+            - vm: 虚拟机
+            - datastore: 数据存储
+            - application: 应用
+            - switch_port: 交换机端口
+            - storage_pool: 存储池
+
+    Returns:
+        响应数据，包含主机到存储池的拓扑结构，包括：
+        - fabrics: fabric 列表
+        - hosts: 主机列表
+        - storages: 存储列表
+    """
+    url = "/rest/topomgmt/v1/topo-data/host-storage/query"
+
+    payload = {
+        "entry_objects": entry_objects
+    }
+
+    print(f"请求 URL: {url}")
+    print(f"请求负载：{json.dumps(payload, ensure_ascii=False, indent=2)}")
+
+    response = client.post(url, json=payload)
+    return response
+
+
+def query_vms(client: DMEAPIClient, entry_objects: list, host_id: str,
+              vm_name: str = None, page_size: int = 20, page_no: int = 1) -> dict:
+    r"""
+    查询拓扑图虚拟机和虚拟磁盘列表，或查询 BMS 下物理磁盘列表
+
+    根据指定入口对象查询虚拟化资源，包括虚拟机和虚拟磁盘列表，
+    或者查询 BMS（裸金属服务器）下的物理磁盘列表。
+
+    Args:
+        client: DME API 客户端
+        entry_objects: 入口对象列表（必选），支持类型：
+            - vm: 虚拟机
+            - host_group: 主机组
+            - host: 主机
+            - storage: 存储设备
+            - lun: LUN
+            - datastore: 数据存储
+            - switch_port: 交换机端口
+            - storage_pool: 存储池
+        host_id: 主机 ID（必选）
+        vm_name: 虚拟机名称搜索参数，支持模糊匹配
+        page_size: 分页查询的个数，1~20，默认 20
+        page_no: 分页查询的起始位置，默认 1
+
+    Returns:
+        响应数据，包含：
+        - total: 查询结果总数
+        - vms: 虚拟机列表
+        - disks: 物理主机关联的物理磁盘列表
+    """
+    url = "/rest/topomgmt/v1/topo-data/vms/query"
+
+    payload = {
+        "entry_objects": entry_objects,
+        "host_id": host_id
+    }
+
+    if vm_name is not None:
+        payload["vm_name"] = vm_name
+
+    if page_size is not None:
+        payload["page_size"] = page_size
+
+    if page_no is not None:
+        payload["page_no"] = page_no
+
+    print(f"请求 URL: {url}")
+    print(f"请求负载：{json.dumps(payload, ensure_ascii=False, indent=2)}")
+
+    response = client.post(url, json=payload)
+    return response
+
+
+def graph_query(client: DMEAPIClient, entry_res_type: str, entry_res_id: str,
+                type: str = None, filter: list = None) -> dict:
+    r"""
+    查询拓扑图库信息
+
+    根据指定入口资源查询拓扑图库信息，支持 NAS、K8s、DB 等业务类型。
+
+    Args:
+        client: DME API 客户端
+        entry_res_type: 入口资源类型（必选），支持类型：
+            - storage_device: 存储设备
+            - disk: 磁盘
+            - storage_pool: 存储池
+            - hyper_scale_pool: 超大规模池
+            - file_system: 文件系统
+            - controller: 控制器
+            - eth_port: 以太网端口
+            - ib_port: InfiniBand 端口
+            - logic_port: 逻辑端口
+            - ip_client: IP 客户端
+            - dtree: Dtree
+            - lun: LUN
+            - k8s_application: K8s 应用
+            - k8s_workload: K8s 工作负载
+            - k8s_pod: K8s Pod
+            - k8s_pvc: K8s PVC
+            - k8s_pv: K8s PV
+            - k8s_cluster: K8s 集群
+            - k8s_node: K8s 节点
+            - k8s_vc_job: K8s VC 任务
+            - dturbo_client: DataTurbo 客户端
+            - enclosures: 机柜
+            - eth_switch: 以太网交换机
+            - storage_zone: 存储区域
+            - service_network: 服务网络
+            - db_instance: 数据库实例
+            - db_node: 数据库节点
+        entry_res_id: 入口资源 ID（必选）
+        type: 业务类型，可选值：nas, k8s, db
+        filter: 过滤条件列表，最多 10 个
+
+    Returns:
+        响应数据，包含：
+        - nodes: 节点列表，每个节点包含 id, type, label, sub_type
+        - edges: 边列表，每条边包含 source, target, edge_type
+    """
+    url = "/rest/dmegraphanalysis/v1/topo-data/query"
+
+    payload = {
+        "entry_res_type": entry_res_type,
+        "entry_res_id": entry_res_id
+    }
+
+    if type is not None:
+        payload["type"] = type
+
+    if filter is not None:
+        payload["filter"] = filter
+
+    print(f"请求 URL: {url}")
+    print(f"请求负载：{json.dumps(payload, ensure_ascii=False, indent=2)}")
+
+    response = client.post(url, json=payload)
+    return response
+
+
+# ============================================================================
+# 动作列表，用于 CLI 帮助
+# ============================================================================
+
 ACTIONS = {
     'alarm_list': {
         'func': list_alarms,
@@ -687,5 +1274,104 @@ ACTIONS = {
         'description': '获取所有监控对象类型',
         'params': ['filter'],
         'subtopic': 'performance'
+    },
+    # check_result 子主题动作
+    'check_result_list': {
+        'func': list_abnormal_results,
+        'description': '查询检查策略异常检查结果列表',
+        'params': ['object_name', 'level', 'object_ids', 'object_native_id', 'object_type', 'policy_id', 'policy_name', 'policy_types', 'cause', 'alarm_type', 'first_occur_time', 'last_occur_time', 'page_no', 'page_size', 'sort_key', 'sort_dir'],
+        'subtopic': 'check_result'
+    },
+    'check_result_show': {
+        'func': show_abnormal_result,
+        'description': '查询检查策略异常检查结果详情',
+        'params': ['check_result_id'],
+        'subtopic': 'check_result'
+    },
+    # check_policy 子主题动作
+    'check_policy_list': {
+        'func': list_check_policies,
+        'description': '查询检查策略列表',
+        'params': ['policy_name', 'exact_query', 'status', 'policy_type', 'policy_source', 'alarm_type', 'object_type', 'page_no', 'page_size', 'sort_key', 'sort_dir', 'administrative_status', 'policy_category', 'object_category'],
+        'subtopic': 'check_policy'
+    },
+    'check_policy_execute': {
+        'func': execute_check_policy,
+        'description': '执行检查策略',
+        'params': ['policy_id'],
+        'subtopic': 'check_policy'
+    },
+    'check_policy_enable': {
+        'func': enable_check_policy,
+        'description': '启用检查策略',
+        'params': ['policy_id'],
+        'subtopic': 'check_policy'
+    },
+    'check_policy_disable': {
+        'func': disable_check_policy,
+        'description': '禁用检查策略',
+        'params': ['policy_id'],
+        'subtopic': 'check_policy'
+    },
+    'check_policy_delete': {
+        'func': delete_check_policy,
+        'description': '删除检查策略',
+        'params': ['policy_id'],
+        'subtopic': 'check_policy'
+    },
+    # topology 子主题动作
+    'topology_query_san_path': {
+        'func': query_san_path,
+        'description': '查询 SAN 路径拓扑结构（支持 IP_SAN 和 FC_SAN）',
+        'params': ['entry_objects', 'san_type'],
+        'subtopic': 'topology'
+    },
+    'topology_query_luns': {
+        'func': query_luns,
+        'description': '查询拓扑图 LUN 列表',
+        'params': ['entry_objects', 'storage_pool_id', 'lun_name', 'san_type', 'page_size', 'page_no'],
+        'subtopic': 'topology'
+    },
+    'topology_query_vms': {
+        'func': query_vms,
+        'description': '查询拓扑图虚拟机和虚拟磁盘列表，或查询 BMS 下物理磁盘列表',
+        'params': ['entry_objects', 'host_id', 'vm_name', 'page_size', 'page_no'],
+        'subtopic': 'topology'
+    },
+    'topology_query_graph_path': {
+        'func': graph_query,
+        'description': '查询拓扑图库信息（支持 NAS、K8s、DB 等业务类型）',
+        'params': ['entry_res_type', 'entry_res_id', 'type', 'filter'],
+        'subtopic': 'topology'
+    },
+    'topology_lun_list': {
+        'func': query_luns,
+        'description': '查询拓扑图 LUN 列表',
+        'params': ['entry_objects', 'storage_pool_id', 'lun_name', 'san_type', 'page_size', 'page_no'],
+        'subtopic': 'topology_lun'
+    },
+    'topology_ipsan_query': {
+        'func': ipsan_query,
+        'description': '查询 IP_SAN 网络从主机到存储池间的拓扑结构',
+        'params': ['entry_objects'],
+        'subtopic': 'topology_ipsan'
+    },
+    'topology_fcsan_query': {
+        'func': fcsan_query,
+        'description': '查询 FC_SAN 网络从主机到存储池间的拓扑结构',
+        'params': ['entry_objects'],
+        'subtopic': 'topology_fcsan'
+    },
+    'topology_vm_list': {
+        'func': query_vms,
+        'description': '查询拓扑图虚拟机和虚拟磁盘列表，或查询 BMS 下物理磁盘列表',
+        'params': ['entry_objects', 'host_id', 'vm_name', 'page_size', 'page_no'],
+        'subtopic': 'topology_vm'
+    },
+    'topology_graph_query': {
+        'func': graph_query,
+        'description': '查询拓扑图库信息（支持 NAS、K8s、DB 等业务类型）',
+        'params': ['entry_res_type', 'entry_res_id', 'type', 'filter'],
+        'subtopic': 'topology_graph'
     }
 }
