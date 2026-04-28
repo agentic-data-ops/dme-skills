@@ -2,10 +2,10 @@
 
 ## 测试环境准备
 
-- [ ] 配置环境变量：`export DME_API_URL=<your-dme-api-url>`
-- [ ] 配置认证信息：`export DME_USERNAME=<username>`
-- [ ] 配置认证信息：`export DME_PASSWORD=<password>`
-- [ ] 验证连接：`python scripts/dme_cli.py --list-topics`
+- [x] 配置环境变量：`export DME_API_URL=<your-dme-api-url>`
+- [x] 配置认证信息：`export DME_USERNAME=<username>`
+- [x] 配置认证信息：`export DME_PASSWORD=<password>`
+
 
 ---
 
