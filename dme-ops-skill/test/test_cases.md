@@ -12,7 +12,7 @@
 ## 主题覆盖统计
 
 **总主题数**: 18
-**总动作数**: 348
+**总动作数**: 345
 
 ---
 
@@ -20,9 +20,9 @@
 
 ### 1. aiops (AIOps 智能运维相关操作)
 
-**子主题**: alarm, check_policy, check_result, diagnose_task, performance, topology, topology_fcsan, topology_graph, topology_ipsan, topology_lun, topology_vm
+**子主题**: alarm, check_policy, check_result, diagnose_task, performance, topology
 
-**动作总数**: 27
+**动作总数**: 24
 
 **测试用例生成命令**:
 ```bash
@@ -49,11 +49,8 @@ python scripts/dme_cli.py aiops topology query_san_path --help
 python scripts/dme_cli.py aiops topology query_luns --help
 python scripts/dme_cli.py aiops topology query_vms --help
 python scripts/dme_cli.py aiops topology query_graph_path --help
-python scripts/dme_cli.py aiops topology_fcsan query --help
-python scripts/dme_cli.py aiops topology_ipsan query --help
-python scripts/dme_cli.py aiops topology_lun list --help
-python scripts/dme_cli.py aiops topology_vm list --help
-python scripts/dme_cli.py aiops topology_graph query --help
+python scripts/dme_cli.py aiops topology ipsan_query --help
+python scripts/dme_cli.py aiops topology fcsan_query --help
 ```
 
 ### 2. backup (数据备份管理)
