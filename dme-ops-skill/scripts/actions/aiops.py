@@ -1344,34 +1344,16 @@ ACTIONS = {
         'params': ['entry_res_type', 'entry_res_id', 'type', 'filter'],
         'subtopic': 'topology'
     },
-    'topology_lun_list': {
-        'func': query_luns,
-        'description': '查询拓扑图 LUN 列表',
-        'params': ['entry_objects', 'storage_pool_id', 'lun_name', 'san_type', 'page_size', 'page_no'],
-        'subtopic': 'topology_lun'
-    },
     'topology_ipsan_query': {
         'func': ipsan_query,
         'description': '查询 IP_SAN 网络从主机到存储池间的拓扑结构',
         'params': ['entry_objects'],
-        'subtopic': 'topology_ipsan'
+        'subtopic': 'topology'
     },
     'topology_fcsan_query': {
         'func': fcsan_query,
         'description': '查询 FC_SAN 网络从主机到存储池间的拓扑结构',
         'params': ['entry_objects'],
-        'subtopic': 'topology_fcsan'
-    },
-    'topology_vm_list': {
-        'func': query_vms,
-        'description': '查询拓扑图虚拟机和虚拟磁盘列表，或查询 BMS 下物理磁盘列表',
-        'params': ['entry_objects', 'host_id', 'vm_name', 'page_size', 'page_no'],
-        'subtopic': 'topology_vm'
-    },
-    'topology_graph_query': {
-        'func': graph_query,
-        'description': '查询拓扑图库信息（支持 NAS、K8s、DB 等业务类型）',
-        'params': ['entry_res_type', 'entry_res_id', 'type', 'filter'],
-        'subtopic': 'topology_graph'
+        'subtopic': 'topology'
     }
 }
