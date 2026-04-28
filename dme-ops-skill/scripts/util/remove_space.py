@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 """删除输入内容中英文之间的空格"""
 import re
 import sys

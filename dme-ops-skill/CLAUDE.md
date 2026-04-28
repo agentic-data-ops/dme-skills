@@ -38,22 +38,22 @@ export DME_API_PASSWORD="your-password"
 
 - **List all available topics and actions**:
   ```bash
-  python3 scripts/dme_cli.py --list-topics
+  python scripts/dme_cli.py --list-topics
   ```
 
 - **Check help for a specific topic**:
   ```bash
-  python3 scripts/dme_cli.py storage --help
+  python scripts/dme_cli.py storage --help
   ```
 
 - **List storage devices**:
   ```bash
-  python3 scripts/dme_cli.py storage list
+  python scripts/dme_cli.py storage list
   ```
 
 - **Wait for an asynchronous task**:
   ```bash
-  python3 scripts/dme_cli.py task wait --task_id <id>
+  python scripts/dme_cli.py task wait --task_id <id>
   ```
 
 ## Development Conventions
@@ -75,8 +75,8 @@ When user ask to finish todo tasks, sequentially execute the unfinished todo tas
 
 **注意**：
 - 迁移合并时不要产生依赖关系，每个主题迁移完成后，测试迁移后的命令帮助是否正确。
-- 列出主题：python3 scripts/dme_cli.py --list-topics
-- 主题帮助：python3 scripts/dme_cli.py <topic> <subtopic> --help
+- 列出主题：python scripts/dme_cli.py --list-topics
+- 主题帮助：python scripts/dme_cli.py <topic> <subtopic> --help
 
 #### san topic
 - [x] 将physical_host主题迁移为san主题下的子主题：physical_host => san physical_host

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 """读取 API 文档，获取 API 描述、方法、URI、参数、响应，以 markdown 格式输出"""
 
 import os

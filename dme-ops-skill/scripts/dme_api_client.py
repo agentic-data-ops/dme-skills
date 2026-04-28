@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 """
 DME API Client - 用于 DME 软件的 REST API 调用
 支持 login, get, put, post, delete, wait_task 等方法

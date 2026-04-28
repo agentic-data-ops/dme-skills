@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 """
 DME 运维命令行工具
 提供存储运维操作的命令行入口，支持参数解析和帮助
