@@ -1,4 +1,4 @@
-# GEMINI Context: dme-ops-skill
+# Claude Code: dme-ops-skill
 
 This project is a Python-based CLI tool for the operation and maintenance (O&M) of Huawei DME (Data Management Engine) storage management software. It provides a modular framework for managing SAN, NAS, alarms, health status, and other storage-related tasks via the DME REST API.
 
@@ -12,7 +12,7 @@ This project is a Python-based CLI tool for the operation and maintenance (O&M) 
 
 - **`scripts/dme_cli.py`**: The central controller. It dynamically loads "topics" from the `actions/` directory and dispatches commands to the appropriate action functions.
 - **`scripts/dme_api_client.py`**: Handles authentication and REST API communication (GET, POST, PUT, DELETE). It supports automatic login and session management.
-- **`scripts/actions/`**: Contains topic-specific modules (e.g., `storage.py`, `nas.py`, `alarm.py`). Each module defines an `ACTIONS` dictionary that maps CLI action names to implementation functions and specifies their parameters.
+- **`scripts/actions/`**: Contains topic-specific modules (e.g., `storage.py`, `nas.py`, `aiops.py`). Each module defines an `ACTIONS` dictionary that maps CLI action names to implementation functions and specifies their parameters.
 - **`scripts/util/`**: Includes utility scripts like `read_api_reference.py` for processing documentation.
 
 ## Running the Project
@@ -61,7 +61,7 @@ export DME_API_PASSWORD="your-password"
 - **Action Implementation**:
   - Each action file in `scripts/actions/` should define functions that take a `DMEAPIClient` instance as the first argument.
   - Actions must be registered in a global `ACTIONS` dictionary at the end of the file.
-- **Naming Convention**: 
+- **Naming Convention**:
   - Topics correspond to filenames in `scripts/actions/`.
   - Actions within a topic are either "direct" (e.g., `storage list`) or grouped under a "subtopic" (e.g., `storage disk list`).
 - **Error Handling**: Use the response from `DMEAPIClient` which returns JSON data from the API. Raise `ValueError` for missing required parameters before making API calls.
@@ -69,32 +69,78 @@ export DME_API_PASSWORD="your-password"
 
 ## Todo Tasks
 
-When user ask to finish todo tasks, sequentially execute the unfinished todo tasks step by step. When eath task finished, update the todo task checkbox, and execute git commit and push.
+When user ask to finish todo tasks, sequentially execute the unfinished todo tasks step by step. When each task finished, update the todo task checkbox, and execute git commit and push.
 
-### 代码重构合并任务
+### Code Refactoring and Consolidation Tasks
 
-**注意**：
-- 迁移合并时不要产生依赖关系，每个主题迁移完成后，测试迁移后的命令帮助是否正确。
-- 列出主题：python scripts/dme_cli.py --list-topics
-- 主题帮助：python scripts/dme_cli.py <topic> <subtopic> --help
+**Notes**:
+- Do not create dependencies during migration and consolidation. After each topic migration is completed, test whether the migrated command help is correct.
+- List topics: `python scripts/dme_cli.py --list-topics`
+- Topic help: `python scripts/dme_cli.py <topic> <subtopic> --help`
 
 #### san topic
-- [x] 将physical_host主题迁移为san主题下的子主题：physical_host => san physical_host
-- [x] 将physical_host_group主题迁移为san主题下的子主题：physical_host_group => san physical_host_group
-- [x] 将lun_group主题迁移为san主题下的子主题：lun_group => san lun_group
-- [x] 将mapping_view主题迁移为san主题下的子主题：mapping_view => san mapping_view
-- [x] 将storage主题下的host子主题迁移到san主题下并重命名为storage_host：storage host => san storage_host
-- [x] 将storage主题下的host_group子主题迁移到san主题下并重命名为storage_host_group：storage host_group => san storage_host_group
-- [x] 将storage主题下的 port_group子主题迁移到san主题下：storage port_group => san port_group
-- [x] 删除被迁移的主题
+- [x] Migrate physical_host topic to san subtopic: physical_host => san physical_host
+- [x] Migrate physical_host_group topic to san subtopic: physical_host_group => san physical_host_group
+- [x] Migrate lun_group topic to san subtopic: lun_group => san lun_group
+- [x] Migrate mapping_view topic to san subtopic: mapping_view => san mapping_view
+- [x] Migrate storage host subtopic to san and rename to storage_host: storage host => san storage_host
+- [x] Migrate storage host_group subtopic to san and rename to storage_host_group: storage host_group => san storage_host_group
+- [x] Migrate storage port_group subtopic to san: storage port_group => san port_group
+- [x] Delete migrated topics
 
 #### aiops topic
-- [x] 将alarm主题迁移为aiops主题下的子主题：alarm=> aiops alarm
-- [x] 将diagnose task 迁移到aiops主题下：diagnose task => aiops diagnose_task;
-- [x] 将performance主题下的动作迁移到aiops主题：performance collect_task create/download => aiops performance create_collect_task/download_collect_result, performance data query => aiops performance query, performance indicator detail/list => aiops performance show_indicators/list_indicators, performance object_type list=> aiops performance list_object_types;
-- [x] 将policy result迁移到aiops主题：policy result show/list => aiops check_result show/list，迁移完成后移除policy.py中被迁移到aiops.py的函数
-- [x] 将policy主题迁移为aiops子主题：policy => aiops check_policy;
-- [x] 将topology主题迁移为aiops子主题：topology => aiops topology.
-- [x] 删除被迁移的主题.
+- [x] Migrate alarm topic to aiops subtopic: alarm => aiops alarm
+- [x] Migrate diagnose task to aiops: diagnose task => aiops diagnose_task
+- [x] Migrate performance actions to aiops:
+  - performance collect_task create/download => aiops performance create_collect_task/download_collect_result
+  - performance data query => aiops performance query
+  - performance indicator detail/list => aiops performance show_indicators/list_indicators
+  - performance object_type list => aiops performance list_object_types
+- [x] Migrate policy result to aiops: policy result show/list => aiops check_result show/list, remove migrated functions from policy.py after migration
+- [x] Migrate policy topic to aiops subtopic: policy => aiops check_policy
+- [x] Migrate topology topic to aiops subtopic: topology => aiops topology
+- [x] Delete migrated topics
+- [x] Remove redundant topology subtopics (topology_fcsan, topology_ipsan, topology_lun, topology_vm, topology_graph) and merge into main topology subtopic
 
+### Documentation and Testing Tasks
 
+- [x] Update Python references from python3 to python
+- [x] Rename GEMINI.md to CLAUDE.md
+- [x] Create comprehensive test cases documentation covering all 345 actions
+- [x] Generate executable test checklist with checkbox tracking in test/todo.md
+- [x] Remove redundant test/test_cases.md, use test/todo.md as single test guide
+
+### Current Project Status
+
+**Active Topics**: 18
+**Total Actions**: 345
+
+**Topic Structure**:
+1. aiops (24 actions) - AIOps intelligent operations
+2. backup (3 actions) - Data backup management
+3. cmdb (6 actions) - Configuration management database
+4. fc_switch (19 actions) - FC fiber switch management
+5. gfs (14 actions) - Global file system
+6. health (3 actions) - Health monitoring
+7. ip_switch (6 actions) - IP switch management
+8. kubernetes (6 actions) - Kubernetes management
+9. nas (42 actions) - Network attached storage
+10. resource (22 actions) - Resource management
+11. san (60 actions) - Storage area network
+12. server (2 actions) - Server management
+13. storage (23 actions) - Storage device management
+14. system (8 actions) - System management
+15. task (18 actions) - Task management
+16. user (45 actions) - User management
+17. virtualization (14 actions) - Virtualization services
+18. workflow (7 actions) - Workflow management
+
+**Documentation**:
+- CLAUDE.md - Development guide and task tracking
+- SKILL.md - Skill definition for AI agents
+- test/todo.md - Executable test checklist with 345 test cases
+
+**Recent Changes**:
+- Refactored aiops topology subtopics for better organization
+- Consolidated test documentation into single todo.md file
+- All Python references updated from python3 to python
