@@ -341,17 +341,17 @@
 
 - [ ] **health data query**
   - 描述: 查询健康度相关数据（容量预测/性能预测/性能异常）
-  - 命令: `python scripts/dme_cli.py health data query --mo_dn <对象DN> --data_type <数据类型>`
+  - 命令: `python scripts/dme_cli.py health data query --type <数据类型> --object_id <资源ID> --begin_time <开始时间> --end_time <结束时间> --object_type <资源类型> --indicator <指标>`
 
 #### 6.2 score 子主题
 
 - [ ] **health score list**
   - 描述: 查询对象健康度
-  - 命令: `python scripts/dme_cli.py health score list`
+  - 命令: `python scripts/dme_cli.py health score list --object_type <对象类型>`
 
 - [ ] **health score detail**
   - 描述: 查询健康维度的扣分详情
-  - 命令: `python scripts/dme_cli.py health score detail --mo_dn <对象DN>`
+  - 命令: `python scripts/dme_cli.py health score detail --object_id <对象ID> --object_type <对象类型> --health_dimension <健康维度>`
 
 ---
 
