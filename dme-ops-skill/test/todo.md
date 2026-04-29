@@ -111,7 +111,7 @@
 
 - [ ] **aiops topology query_graph_path**
   - 描述: 查询拓扑图库信息（支持 NAS、K8s、DB 等业务类型）
-  - 命令: `python scripts/dme_cli.py aiops topology query_graph_path --mo_dn <对象DN>`
+  - 命令: `python scripts/dme_cli.py aiops topology query_graph_path --entry_res_type <入口资源类型> --entry_res_id <入口资源ID>`
 
 - [ ] **aiops topology ipsan_query**
   - 描述: 查询 IP_SAN 网络从主机到存储池间的拓扑结构
