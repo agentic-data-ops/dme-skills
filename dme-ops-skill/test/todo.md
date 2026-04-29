@@ -77,7 +77,7 @@
 
 - [ ] **aiops performance create_collect_task**
   - 描述: 创建性能文件收集任务
-  - 命令: `python scripts/dme_cli.py aiops performance create_collect_task --mo_dn <对象DN> --indicators <指标列表> --start_time <开始时间> --end_time <结束时间>`
+  - 命令: `python scripts/dme_cli.py aiops performance create_collect_task --object_type_id <对象类型ID> --object_ids <对象ID列表> --indicator_ids <指标ID列表> --begin_time <开始时间> --end_time <结束时间>`
 
 - [ ] **aiops performance download_collect_result**
   - 描述: 下载性能文件
@@ -85,7 +85,7 @@
 
 - [ ] **aiops performance query**
   - 描述: 查询历史性能数据
-  - 命令: `python scripts/dme_cli.py aiops performance query --mo_dn <对象DN> --indicators <指标列表> --start_time <开始时间> --end_time <结束时间>`
+  - 命令: `python scripts/dme_cli.py aiops performance query --obj_type_id <对象类型ID> --obj_ids <对象ID列表> --indicator_ids <指标ID列表> --begin_time <开始时间> --end_time <结束时间>`
 
 - [ ] **aiops performance show_indicators**
   - 描述: 显示监控指标详细信息
@@ -179,7 +179,7 @@
 
 - [ ] **cmdb instance show**
   - 描述: 查询单个资源实例
-  - 命令: `python scripts/dme_cli.py cmdb instance show --mo_dn <对象DN>`
+  - 命令: `python scripts/dme_cli.py cmdb instance show --class_name <类名> --instance_id <实例ID>`
 
 #### 3.3 relation 子主题
 
