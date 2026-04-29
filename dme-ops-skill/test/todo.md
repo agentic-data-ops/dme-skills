@@ -65,6 +65,10 @@
 
 #### 1.4 diagnose_task 子主题
 
+- [ ] **aiops diagnose_task create**
+  - 描述: 创建智能分析任务
+  - 命令: `python scripts/dme_cli.py aiops diagnose_task create --object_ids <对象ID列表> --object_type <对象类型> --begin_time <开始时间> --end_time <结束时间> --analysis_types <分析类型列表>`
+
 - [ ] **aiops diagnose_task status**
   - 描述: 查询性能诊断任务状态
   - 命令: `python scripts/dme_cli.py aiops diagnose_task status --task_id <任务ID>`
@@ -1489,7 +1493,7 @@
 
 ## 测试执行统计
 
-- **总测试用例数**: 307
+- **总测试用例数**: 308
 - **已执行**: 0
 - **待执行**: 307
 - **通过**: 0

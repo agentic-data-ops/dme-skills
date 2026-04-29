@@ -370,7 +370,25 @@ def diagnose_task_create(client: DMEAPIClient, object_ids: list, object_type: st
             - trafficAnalysis: 流量分析
 
 
+    Returns:
+        响应数据,包含 task_id 等信息
     """
+    url = "/rest/dmegraphanalysis/v1/perf-tasks/create"
+
+    payload = {
+        'object_ids': object_ids,
+        'object_type': object_type,
+        'begin_time': begin_time,
+        'end_time': end_time,
+        'analysis_types': analysis_types
+    }
+
+    print(f"请求 URL: {url}")
+    print(f"请求负载:{json.dumps(payload, ensure_ascii=False, indent=2)}")
+
+    response = client.post(url, json=payload)
+    return response
+
 
 # ============ Performance 性能监控子主题函数 ============
 
@@ -1357,6 +1375,12 @@ ACTIONS = {
         'description': '清除告警',
         'params': ['csns'],
         'subtopic': 'alarm'
+    },
+    'diagnose_task_create': {
+        'func': diagnose_task_create,
+        'description': '创建智能分析任务',
+        'params': ['object_ids', 'object_type', 'begin_time', 'end_time', 'analysis_types'],
+        'subtopic': 'diagnose_task'
     },
     'diagnose_task_status': {
         'func': diagnose_task_status,
