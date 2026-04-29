@@ -108,12 +108,13 @@ When user ask to finish todo tasks, sequentially execute the unfinished todo tas
 
 ### Testing Tasks
 
-**注意**
-- 待执行用例见文件：test/todo.md
-- 每执行完一个用例，更新test/report.md，记录执行结果总结
-- 如果用例执行成功，更新test/todo.md，将用例标记为完成
-
 - [ ] 执行测试用例：test/todo.md
+
+**注意**
+- 如果测试命令需要参数，请思考并执行依赖命令，获取必要参数取值
+- 每执行完一个用例，更新test/report.md记录用例执行结果，如果用例执行失败，记录失败详情
+- 如果用例执行成功，更新test/todo.md，标记用例执行完成
+
 
 ### Current Project Status
 
