@@ -84,12 +84,12 @@
   - 命令: `python scripts/dme_cli.py aiops performance query --mo_dn <对象DN> --indicators <指标列表> --start_time <开始时间> --end_time <结束时间>`
 
 - [ ] **aiops performance show_indicators**
-  - 描述: 获取监控对象类型支持的监控指标
-  - 命令: `python scripts/dme_cli.py aiops performance show_indicators --object_type <对象类型>`
+  - 描述: 显示监控指标详细信息
+  - 命令: `python scripts/dme_cli.py aiops performance show_indicators --indicators <指标ID列表>`
 
 - [ ] **aiops performance list_indicators**
-  - 描述: 获取监控指标
-  - 命令: `python scripts/dme_cli.py aiops performance list_indicators`
+  - 描述: 列出监控对象类型支持的监控指标
+  - 命令: `python scripts/dme_cli.py aiops performance list_indicators --obj_type_id <对象类型ID>`
 
 - [ ] **aiops performance list_object_types**
   - 描述: 获取所有监控对象类型

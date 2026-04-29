@@ -501,26 +501,9 @@ def query(client: DMEAPIClient, obj_type_id: int, indicator_ids: list,
     return response
 
 
-def show_indicators(client: DMEAPIClient, obj_type_id: int) -> dict:
+def show_indicators(client: DMEAPIClient, indicators: list) -> dict:
     """
-    获取监控对象类型支持的监控指标
-
-    Args:
-        client: DME API 客户端
-        obj_type_id: 监控对象类型标识(必填)
-
-    Returns:
-        监控指标信息,包含 indicator_ids 列表
-    """
-    url = f"/rest/metrics/v1/mgr-svc/obj-types/{obj_type_id}/indicators"
-
-    response = client.get(url)
-    return response
-
-
-def list_indicators(client: DMEAPIClient, indicators: list) -> dict:
-    """
-    获取监控指标
+    显示监控指标详细信息
 
     Args:
         client: DME API 客户端
@@ -538,6 +521,23 @@ def list_indicators(client: DMEAPIClient, indicators: list) -> dict:
 
     # API 要求直接传递数组,而不是对象
     response = client.post(url, json=indicators)
+    return response
+
+
+def list_indicators(client: DMEAPIClient, obj_type_id: int) -> dict:
+    """
+    列出监控对象类型支持的监控指标
+
+    Args:
+        client: DME API 客户端
+        obj_type_id: 监控对象类型标识(必填)
+
+    Returns:
+        监控指标信息,包含 indicator_ids 列表
+    """
+    url = f"/rest/metrics/v1/mgr-svc/obj-types/{obj_type_id}/indicators"
+
+    response = client.get(url)
     return response
 
 
@@ -1259,14 +1259,14 @@ ACTIONS = {
     },
     'performance_show_indicators': {
         'func': show_indicators,
-        'description': '获取监控对象类型支持的监控指标',
-        'params': ['obj_type_id'],
+        'description': '显示监控指标详细信息',
+        'params': ['indicators'],
         'subtopic': 'performance'
     },
     'performance_list_indicators': {
         'func': list_indicators,
-        'description': '获取监控指标',
-        'params': ['indicators'],
+        'description': '列出监控对象类型支持的监控指标',
+        'params': ['obj_type_id'],
         'subtopic': 'performance'
     },
     'performance_list_object_types': {
