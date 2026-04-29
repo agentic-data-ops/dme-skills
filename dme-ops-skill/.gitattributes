@@ -1,0 +1,19 @@
+# 强制所有文本文件使用Unix行结束符(LF)
+* text=auto eol=lf
+
+# 特定文件类型
+*.py text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.sh text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# 二进制文件不转换
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.zip binary
+*.skill binary
