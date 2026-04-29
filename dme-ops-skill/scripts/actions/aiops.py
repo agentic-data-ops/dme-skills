@@ -368,19 +368,25 @@ def diagnose_task_create(client: DMEAPIClient, object_ids: list, object_type: st
             - highReadLatency: 高读时延
             - highWriteLatency: 高写时延
             - trafficAnalysis: 流量分析
-
+            - cpuUsageAnalysis: cpu 消耗分析
 
     Returns:
-        响应数据,包含 task_id 等信息
+        响应数据，包含:
+        - total: 智能分析任务总数
+        - data: 智能分析任务响应结果列表，每项包含:
+            - id: 任务 ID
+            - analysis_type: 分析类型
+            - error_msg: 错误信息
+            - is_succeed: 是否创建成功
     """
-    url = "/rest/dmegraphanalysis/v1/perf-tasks/create"
+    url = "/rest/diagnosis/v1/tasks"
 
     payload = {
-        'object_ids': object_ids,
-        'object_type': object_type,
-        'begin_time': begin_time,
-        'end_time': end_time,
-        'analysis_types': analysis_types
+        "object_ids": object_ids,
+        "object_type": object_type,
+        "begin_time": begin_time,
+        "end_time": end_time,
+        "analysis_types": analysis_types
     }
 
     print(f"请求 URL: {url}")
