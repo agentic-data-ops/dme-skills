@@ -102,13 +102,14 @@ When user ask to finish todo tasks, sequentially execute the unfinished todo tas
 - [x] Delete migrated topics
 - [x] Remove redundant topology subtopics (topology_fcsan, topology_ipsan, topology_lun, topology_vm, topology_graph) and merge into main topology subtopic
 
-### Documentation and Testing Tasks
+### Testing Tasks
 
-- [x] Update Python references from python3 to python
-- [x] Rename GEMINI.md to CLAUDE.md
-- [x] Create comprehensive test cases documentation covering all 345 actions
-- [x] Generate executable test checklist with checkbox tracking in test/todo.md
-- [x] Remove redundant test/test_cases.md, use test/todo.md as single test guide
+**注意**
+- 待执行用例见文件：test/todo.md
+- 每执行完一个用例，更新test/report.md，记录执行结果总结
+- 如果用例执行成功，更新test/todo.md，将用例标记为完成
+
+- [ ] 执行测试用例：test/todo.md
 
 ### Current Project Status
 
