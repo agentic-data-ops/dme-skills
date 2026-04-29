@@ -121,6 +121,20 @@
   - 描述: 查询 FC_SAN 网络从主机到存储池间的拓扑结构
   - 命令: `python scripts/dme_cli.py aiops topology fcsan_query --host_wwn <主机WWN> --pool_id <存储池ID>`
 
+#### 1.7 health 子主题
+
+- [ ] **aiops health query_data**
+  - 描述: 查询健康度相关数据（容量预测/性能预测/性能异常）
+  - 命令: `python scripts/dme_cli.py aiops health query_data --type <数据类型> --object_id <资源ID> --begin_time <开始时间> --end_time <结束时间> --object_type <资源类型> --indicator <指标>`
+
+- [ ] **aiops health show_score**
+  - 描述: 查询对象健康度
+  - 命令: `python scripts/dme_cli.py aiops health show_score --object_type <对象类型>`
+
+- [ ] **aiops health show_detail**
+  - 描述: 查询健康维度的扣分详情
+  - 命令: `python scripts/dme_cli.py aiops health show_detail --object_id <对象ID> --object_type <对象类型> --health_dimension <健康维度>`
+
 ---
 
 ### 2. backup - 数据备份管理
@@ -335,27 +349,7 @@
 
 ---
 
-### 6. health - 健康度
-
-#### 6.1 data 子主题
-
-- [ ] **health data query**
-  - 描述: 查询健康度相关数据（容量预测/性能预测/性能异常）
-  - 命令: `python scripts/dme_cli.py health data query --type <数据类型> --object_id <资源ID> --begin_time <开始时间> --end_time <结束时间> --object_type <资源类型> --indicator <指标>`
-
-#### 6.2 score 子主题
-
-- [ ] **health score list**
-  - 描述: 查询对象健康度
-  - 命令: `python scripts/dme_cli.py health score list --object_type <对象类型>`
-
-- [ ] **health score detail**
-  - 描述: 查询健康维度的扣分详情
-  - 命令: `python scripts/dme_cli.py health score detail --object_id <对象ID> --object_type <对象类型> --health_dimension <健康维度>`
-
----
-
-### 7. ip_switch - IP 交换机
+### 6. ip_switch - IP 交换机
 
 #### 7.1 直接动作
 
@@ -401,7 +395,7 @@
 
 ---
 
-### 8. kubernetes - Kubernetes
+### 7. kubernetes - Kubernetes
 
 #### 8.1 cluster 子主题
 
@@ -441,7 +435,7 @@
 
 ---
 
-### 9. nas - NAS
+### 8. nas - NAS
 
 #### 9.1 cifs_share 子主题
 
@@ -633,7 +627,7 @@
 
 ---
 
-### 10. resource - 资源管理
+### 9. resource - 资源管理
 
 #### 10.1 storage_pool 子主题
 
@@ -759,7 +753,7 @@
 
 ---
 
-### 11. san - SAN 存储区域网络
+### 10. san - SAN 存储区域网络
 
 #### 11.1 lun 子主题
 
@@ -999,7 +993,7 @@
 
 ---
 
-### 12. server - 服务器
+### 11. server - 服务器
 
 #### 12.1 直接动作
 
@@ -1013,7 +1007,7 @@
 
 ---
 
-### 13. storage - 存储
+### 12. storage - 存储
 
 #### 13.1 直接动作
 
@@ -1107,7 +1101,7 @@
 
 ---
 
-### 14. system - 系统
+### 13. system - 系统
 
 #### 14.1 直接动作
 
@@ -1169,7 +1163,7 @@
 
 ---
 
-### 15. task - 任务
+### 14. task - 任务
 
 #### 15.1 async_task 子主题
 
@@ -1263,7 +1257,7 @@
 
 ---
 
-### 16. user - 用户
+### 15. user - 用户
 
 #### 16.1 task 子主题
 
@@ -1395,7 +1389,7 @@
 
 ---
 
-### 17. virtualization - 虚拟化服务
+### 16. virtualization - 虚拟化服务
 
 #### 17.1 直接动作
 
@@ -1457,7 +1451,7 @@
 
 ---
 
-### 18. workflow - 工作流
+### 17. workflow - 工作流
 
 #### 18.1 instance 子主题
 
@@ -1495,9 +1489,9 @@
 
 ## 测试执行统计
 
-- **总测试用例数**: 345
+- **总测试用例数**: 307
 - **已执行**: 0
-- **待执行**: 345
+- **待执行**: 307
 - **通过**: 0
 - **失败**: 0
 

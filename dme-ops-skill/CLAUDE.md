@@ -99,6 +99,10 @@ When user ask to finish todo tasks, sequentially execute the unfinished todo tas
 - [x] Migrate policy result to aiops: policy result show/list => aiops check_result show/list, remove migrated functions from policy.py after migration
 - [x] Migrate policy topic to aiops subtopic: policy => aiops check_policy
 - [x] Migrate topology topic to aiops subtopic: topology => aiops topology
+- [x] Migrate health topic to aiops subtopic:
+  - health data query => aiops health query_data
+  - health score list => aiops health show_score
+  - health score detail => aiops health show_detail
 - [x] Delete migrated topics
 - [x] Remove redundant topology subtopics (topology_fcsan, topology_ipsan, topology_lun, topology_vm, topology_graph) and merge into main topology subtopic
 
@@ -113,28 +117,27 @@ When user ask to finish todo tasks, sequentially execute the unfinished todo tas
 
 ### Current Project Status
 
-**Active Topics**: 18
-**Total Actions**: 345
+**Active Topics**: 17
+**Total Actions**: 307
 
 **Topic Structure**:
-1. aiops (24 actions) - AIOps intelligent operations
+1. aiops (27 actions) - AIOps intelligent operations
 2. backup (3 actions) - Data backup management
 3. cmdb (6 actions) - Configuration management database
 4. fc_switch (19 actions) - FC fiber switch management
 5. gfs (14 actions) - Global file system
-6. health (3 actions) - Health monitoring
-7. ip_switch (6 actions) - IP switch management
-8. kubernetes (6 actions) - Kubernetes management
-9. nas (42 actions) - Network attached storage
-10. resource (22 actions) - Resource management
-11. san (60 actions) - Storage area network
-12. server (2 actions) - Server management
-13. storage (23 actions) - Storage device management
-14. system (8 actions) - System management
-15. task (18 actions) - Task management
-16. user (45 actions) - User management
-17. virtualization (14 actions) - Virtualization services
-18. workflow (7 actions) - Workflow management
+6. ip_switch (6 actions) - IP switch management
+7. kubernetes (6 actions) - Kubernetes management
+8. nas (42 actions) - Network attached storage
+9. resource (22 actions) - Resource management
+10. san (60 actions) - Storage area network
+11. server (2 actions) - Server management
+12. storage (23 actions) - Storage device management
+13. system (8 actions) - System management
+14. task (18 actions) - Task management
+15. user (45 actions) - User management
+16. virtualization (14 actions) - Virtualization services
+17. workflow (7 actions) - Workflow management
 
 **Documentation**:
 - CLAUDE.md - Development guide and task tracking
@@ -142,6 +145,8 @@ When user ask to finish todo tasks, sequentially execute the unfinished todo tas
 - test/todo.md - Executable test checklist with 345 test cases
 
 **Recent Changes**:
-- Refactored aiops topology subtopics for better organization
-- Consolidated test documentation into single todo.md file
+- Migrated health topic to aiops subtopic
+- aiops now has 7 subtopics including health
+- aiops actions increased from 24 to 27
 - All Python references updated from python3 to python
+- Removed health.py, consolidated into aiops.py
