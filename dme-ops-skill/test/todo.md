@@ -19,9 +19,9 @@
   python scripts/dme_cli.py system login --help
   ```
 
-### 1. aiops 主题
+### aiops 主题
 
-#### 1.2 alarm 子主题
+#### alarm 子主题
 
 - [x] **aiops ack**
   - 描述: ack
@@ -39,7 +39,7 @@
   - 描述: unack
   - 命令: `python scripts/dme_cli.py aiops alarm unack`
 
-#### 2.3 check_policy 子主题
+#### check_policy 子主题
 
 - [x] **aiops delete**
   - 描述: delete
@@ -61,7 +61,7 @@
   - 描述: list
   - 命令: `python scripts/dme_cli.py aiops check_policy list`
 
-#### 3.4 check_result 子主题
+#### check_result 子主题
 
 - [x] **aiops list**
   - 描述: list
@@ -71,7 +71,7 @@
   - 描述: show
   - 命令: `python scripts/dme_cli.py aiops check_result show`
 
-#### 4.5 diagnose_task 子主题
+#### diagnose_task 子主题
 
 - [ ] **aiops create**
   - 描述: create
@@ -81,7 +81,7 @@
   - 描述: status
   - 命令: `python scripts/dme_cli.py aiops diagnose_task status`
 
-#### 5.6 health 子主题
+#### health 子主题
 
 - [ ] **aiops query_data**
   - 描述: query_data
@@ -95,7 +95,7 @@
   - 描述: show_score
   - 命令: `python scripts/dme_cli.py aiops health show_score`
 
-#### 6.7 performance 子主题
+#### performance 子主题
 
 - [ ] **aiops create_collect_task**
   - 描述: create_collect_task
@@ -121,7 +121,7 @@
   - 描述: show_indicators
   - 命令: `python scripts/dme_cli.py aiops performance show_indicators`
 
-#### 7.8 topology 子主题
+#### topology 子主题
 
 - [ ] **aiops fcsan_query**
   - 描述: fcsan_query
@@ -147,9 +147,9 @@
   - 描述: query_vms
   - 命令: `python scripts/dme_cli.py aiops topology query_vms`
 
-### 2. backup 主题
+### backup 主题
 
-#### 1.2 cluster 子主题
+#### cluster 子主题
 
 - [ ] **backup capacity**
   - 描述: capacity
@@ -163,9 +163,9 @@
   - 描述: quota
   - 命令: `python scripts/dme_cli.py backup cluster quota`
 
-### 3. cmdb 主题
+### cmdb 主题
 
-#### 1.2 class 子主题
+#### class 子主题
 
 - [ ] **cmdb list**
   - 描述: list
@@ -175,7 +175,7 @@
   - 描述: show
   - 命令: `python scripts/dme_cli.py cmdb class show`
 
-#### 2.3 instance 子主题
+#### instance 子主题
 
 - [ ] **cmdb list**
   - 描述: list
@@ -185,7 +185,7 @@
   - 描述: show
   - 命令: `python scripts/dme_cli.py cmdb instance show`
 
-#### 3.4 relation 子主题
+#### relation 子主题
 
 - [ ] **cmdb list**
   - 描述: list
@@ -195,9 +195,9 @@
   - 描述: show
   - 命令: `python scripts/dme_cli.py cmdb relation show`
 
-### 4. fc_switch 主题
+### fc_switch 主题
 
-#### 1.2 alias 子主题
+#### alias 子主题
 
 - [ ] **fc_switch create**
   - 描述: create
@@ -219,13 +219,13 @@
   - 描述: show_members
   - 命令: `python scripts/dme_cli.py fc_switch alias show_members`
 
-#### 2.3 controller 子主题
+#### controller 子主题
 
 - [x] **fc_switch list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py fc_switch controller list`
 
-#### 3.4 fabric 子主题
+#### fabric 子主题
 
 - [ ] **fc_switch backup**
   - 描述: backup
@@ -239,19 +239,19 @@
   - 描述: show_ports
   - 命令: `python scripts/dme_cli.py fc_switch fabric show_ports`
 
-#### 4.5 port 子主题
+#### port 子主题
 
 - [x] **fc_switch list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py fc_switch port list`
 
-#### 5.6 vsan 子主题
+#### vsan 子主题
 
 - [x] **fc_switch list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py fc_switch vsan list`
 
-#### 6.7 zone 子主题
+#### zone 子主题
 
 - [ ] **fc_switch batch_create**
   - 描述: batch_create
@@ -277,7 +277,7 @@
   - 描述: show_members
   - 命令: `python scripts/dme_cli.py fc_switch zone show_members`
 
-#### 7.1 直接动作
+#### 直接动作
 
 - [x] **fc_switch list**
   - 描述: list
@@ -287,9 +287,9 @@
   - 描述: sync
   - 命令: `python scripts/dme_cli.py fc_switch sync`
 
-### 5. gfs 主题
+### gfs 主题
 
-#### 1.2 dataspace 子主题
+#### dataspace 子主题
 
 - [ ] **gfs list**
   - 描述: list
@@ -303,7 +303,7 @@
   - 描述: site_list
   - 命令: `python scripts/dme_cli.py gfs dataspace site_list`
 
-#### 2.3 migration_task 子主题
+#### migration_task 子主题
 
 - [ ] **gfs create**
   - 描述: create
@@ -329,7 +329,7 @@
   - 描述: show
   - 命令: `python scripts/dme_cli.py gfs migration_task show`
 
-#### 3.4 namespace 子主题
+#### namespace 子主题
 
 - [ ] **gfs create**
   - 描述: create
@@ -351,91 +351,91 @@
   - 描述: show
   - 命令: `python scripts/dme_cli.py gfs namespace show`
 
-### 6. ip_switch 主题
+### ip_switch 主题
 
-#### 1.2 board 子主题
+#### board 子主题
 
 - [x] **ip_switch list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py ip_switch board list`
 
-#### 2.3 fan 子主题
+#### fan 子主题
 
 - [x] **ip_switch list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py ip_switch fan list`
 
-#### 3.4 frame 子主题
+#### frame 子主题
 
 - [x] **ip_switch list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py ip_switch frame list`
 
-#### 4.5 port 子主题
+#### port 子主题
 
 - [x] **ip_switch list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py ip_switch port list`
 
-#### 5.6 power 子主题
+#### power 子主题
 
 - [x] **ip_switch list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py ip_switch power list`
 
-#### 6.7 subcard 子主题
+#### subcard 子主题
 
 - [x] **ip_switch list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py ip_switch subcard list`
 
-#### 7.1 直接动作
+#### 直接动作
 
 - [x] **ip_switch list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py ip_switch list`
 
-### 7. kubernetes 主题
+### kubernetes 主题
 
-#### 1.2 cluster 子主题
+#### cluster 子主题
 
 - [ ] **kubernetes list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py kubernetes cluster list`
 
-#### 2.3 namespace 子主题
+#### namespace 子主题
 
 - [ ] **kubernetes list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py kubernetes namespace list`
 
-#### 3.4 node 子主题
+#### node 子主题
 
 - [ ] **kubernetes list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py kubernetes node list`
 
-#### 4.5 pod 子主题
+#### pod 子主题
 
 - [ ] **kubernetes list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py kubernetes pod list`
 
-#### 5.6 pv 子主题
+#### pv 子主题
 
 - [ ] **kubernetes list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py kubernetes pv list`
 
-#### 6.7 pvc 子主题
+#### pvc 子主题
 
 - [ ] **kubernetes list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py kubernetes pvc list`
 
-### 8. nas 主题
+### nas 主题
 
-#### 1.2 cifs_share 子主题
+#### cifs_share 子主题
 
 - [ ] **nas create**
   - 描述: create
@@ -461,7 +461,7 @@
   - 描述: show_permissions
   - 命令: `python scripts/dme_cli.py nas cifs_share show_permissions`
 
-#### 2.3 dataturbo_share 子主题
+#### dataturbo_share 子主题
 
 - [ ] **nas create**
   - 描述: create
@@ -487,7 +487,7 @@
   - 描述: show_permissions
   - 命令: `python scripts/dme_cli.py nas dataturbo_share show_permissions`
 
-#### 3.4 dpc 子主题
+#### dpc 子主题
 
 - [ ] **nas list**
   - 描述: list
@@ -497,7 +497,7 @@
   - 描述: show
   - 命令: `python scripts/dme_cli.py nas dpc show`
 
-#### 4.5 dtree 子主题
+#### dtree 子主题
 
 - [ ] **nas create**
   - 描述: create
@@ -519,7 +519,7 @@
   - 描述: show
   - 命令: `python scripts/dme_cli.py nas dtree show`
 
-#### 5.6 filesystem 子主题
+#### filesystem 子主题
 
 - [ ] **nas batch_modify**
   - 描述: batch_modify
@@ -549,7 +549,7 @@
   - 描述: show
   - 命令: `python scripts/dme_cli.py nas filesystem show`
 
-#### 6.7 namespace 子主题
+#### namespace 子主题
 
 - [ ] **nas create**
   - 描述: create
@@ -571,7 +571,7 @@
   - 描述: show
   - 命令: `python scripts/dme_cli.py nas namespace show`
 
-#### 7.8 nfs_share 子主题
+#### nfs_share 子主题
 
 - [ ] **nas create**
   - 描述: create
@@ -593,7 +593,7 @@
   - 描述: show
   - 命令: `python scripts/dme_cli.py nas nfs_share show`
 
-#### 8.9 quota 子主题
+#### quota 子主题
 
 - [ ] **nas create**
   - 描述: create
@@ -615,9 +615,9 @@
   - 描述: show
   - 命令: `python scripts/dme_cli.py nas quota show`
 
-### 9. protection 主题
+### protection 主题
 
-#### 1.2 clone_group 子主题
+#### clone_group 子主题
 
 - [ ] **protection create**
   - 描述: create
@@ -631,13 +631,13 @@
   - 描述: sync
   - 命令: `python scripts/dme_cli.py protection clone_group sync`
 
-#### 2.3 device_pair 子主题
+#### device_pair 子主题
 
 - [ ] **protection list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py protection device_pair list`
 
-#### 3.4 group 子主题
+#### group 子主题
 
 - [ ] **protection add_luns**
   - 描述: add_luns
@@ -663,13 +663,13 @@
   - 描述: remove_luns
   - 命令: `python scripts/dme_cli.py protection group remove_luns`
 
-#### 4.5 hypermetro_domain 子主题
+#### hypermetro_domain 子主题
 
 - [ ] **protection list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py protection hypermetro_domain list`
 
-#### 5.6 hypermetro_group 子主题
+#### hypermetro_group 子主题
 
 - [ ] **protection add_pairs**
   - 描述: add_pairs
@@ -707,7 +707,7 @@
   - 描述: switch_priority
   - 命令: `python scripts/dme_cli.py protection hypermetro_group switch_priority`
 
-#### 6.7 hypermetro_pair 子主题
+#### hypermetro_pair 子主题
 
 - [ ] **protection create**
   - 描述: create
@@ -741,7 +741,7 @@
   - 描述: sync
   - 命令: `python scripts/dme_cli.py protection hypermetro_pair sync`
 
-#### 7.8 replication_group 子主题
+#### replication_group 子主题
 
 - [ ] **protection add_pairs**
   - 描述: add_pairs
@@ -779,13 +779,13 @@
   - 描述: sync
   - 命令: `python scripts/dme_cli.py protection replication_group sync`
 
-#### 8.9 replication_link 子主题
+#### replication_link 子主题
 
 - [ ] **protection list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py protection replication_link list`
 
-#### 9.10 replication_pair 子主题
+#### replication_pair 子主题
 
 - [ ] **protection create**
   - 描述: create
@@ -819,7 +819,7 @@
   - 描述: sync
   - 命令: `python scripts/dme_cli.py protection replication_pair sync`
 
-#### 10.11 snapshot 子主题
+#### snapshot 子主题
 
 - [ ] **protection create**
   - 描述: create
@@ -837,7 +837,7 @@
   - 描述: rollback
   - 命令: `python scripts/dme_cli.py protection snapshot rollback`
 
-#### 11.12 snapshot_group 子主题
+#### snapshot_group 子主题
 
 - [ ] **protection activate**
   - 描述: activate
@@ -859,9 +859,9 @@
   - 描述: rollback
   - 命令: `python scripts/dme_cli.py protection snapshot_group rollback`
 
-### 10. san 主题
+### san 主题
 
-#### 1.2 lun 子主题
+#### lun 子主题
 
 - [ ] **san connection**
   - 描述: connection
@@ -899,7 +899,7 @@
   - 描述: show
   - 命令: `python scripts/dme_cli.py san lun show`
 
-#### 2.3 lun_group 子主题
+#### lun_group 子主题
 
 - [ ] **san add_luns**
   - 描述: add_luns
@@ -929,7 +929,7 @@
   - 描述: show_luns
   - 命令: `python scripts/dme_cli.py san lun_group show_luns`
 
-#### 3.4 mapping_view 子主题
+#### mapping_view 子主题
 
 - [ ] **san create**
   - 描述: create
@@ -947,7 +947,7 @@
   - 描述: query
   - 命令: `python scripts/dme_cli.py san mapping_view query`
 
-#### 4.5 physical_host 子主题
+#### physical_host 子主题
 
 - [ ] **san add_initiators**
   - 描述: add_initiators
@@ -1005,7 +1005,7 @@
   - 描述: unmap_luns
   - 命令: `python scripts/dme_cli.py san physical_host unmap_luns`
 
-#### 5.6 physical_host_group 子主题
+#### physical_host_group 子主题
 
 - [ ] **san add_hosts**
   - 描述: add_hosts
@@ -1043,7 +1043,7 @@
   - 描述: unmap_luns
   - 命令: `python scripts/dme_cli.py san physical_host_group unmap_luns`
 
-#### 6.7 port_group 子主题
+#### port_group 子主题
 
 - [ ] **san create**
   - 描述: create
@@ -1061,7 +1061,7 @@
   - 描述: show_relations
   - 命令: `python scripts/dme_cli.py san port_group show_relations`
 
-#### 7.8 storage_host 子主题
+#### storage_host 子主题
 
 - [ ] **san batch_query**
   - 描述: batch_query
@@ -1091,7 +1091,7 @@
   - 描述: show_paths
   - 命令: `python scripts/dme_cli.py san storage_host show_paths`
 
-#### 8.9 storage_host_group 子主题
+#### storage_host_group 子主题
 
 - [ ] **san add_hosts**
   - 描述: add_hosts
@@ -1117,9 +1117,9 @@
   - 描述: show_luns
   - 命令: `python scripts/dme_cli.py san storage_host_group show_luns`
 
-### 11. self_service 主题
+### self_service 主题
 
-#### 1.2 lun 子主题
+#### lun 子主题
 
 - [ ] **self_service bind_project**
   - 描述: bind_project
@@ -1145,7 +1145,7 @@
   - 描述: unbind_tier
   - 命令: `python scripts/dme_cli.py self_service lun unbind_tier`
 
-#### 2.3 project 子主题
+#### project 子主题
 
 - [ ] **self_service list**
   - 描述: list
@@ -1155,7 +1155,7 @@
   - 描述: show_tiers
   - 命令: `python scripts/dme_cli.py self_service project show_tiers`
 
-#### 3.4 tier 子主题
+#### tier 子主题
 
 - [ ] **self_service list**
   - 描述: list
@@ -1165,57 +1165,57 @@
   - 描述: show_projects
   - 命令: `python scripts/dme_cli.py self_service tier show_projects`
 
-### 12. server 主题
+### server 主题
 
-#### 1.2 cpu 子主题
+#### cpu 子主题
 
 - [x] **server list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py server cpu list`
 
-#### 2.3 disk 子主题
+#### disk 子主题
 
 - [x] **server list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py server disk list`
 
-#### 3.4 fan 子主题
+#### fan 子主题
 
 - [x] **server list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py server fan list`
 
-#### 4.5 memory 子主题
+#### memory 子主题
 
 - [x] **server list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py server memory list`
 
-#### 5.6 nic 子主题
+#### nic 子主题
 
 - [x] **server list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py server nic list`
 
-#### 6.7 pcie_card 子主题
+#### pcie_card 子主题
 
 - [x] **server list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py server pcie_card list`
 
-#### 7.8 power 子主题
+#### power 子主题
 
 - [x] **server list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py server power list`
 
-#### 8.9 raid_card 子主题
+#### raid_card 子主题
 
 - [x] **server list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py server raid_card list`
 
-#### 9.1 直接动作
+#### 直接动作
 
 - [x] **server list**
   - 描述: list
@@ -1225,9 +1225,9 @@
   - 描述: show
   - 命令: `python scripts/dme_cli.py server show`
 
-### 13. storage 主题
+### storage 主题
 
-#### 1.2 account 子主题
+#### account 子主题
 
 - [ ] **storage show_dataturbo_admin_users**
   - 描述: show_dataturbo_admin_users
@@ -1257,43 +1257,43 @@
   - 描述: show_windows_users
   - 命令: `python scripts/dme_cli.py storage account show_windows_users`
 
-#### 2.3 app_type 子主题
+#### app_type 子主题
 
 - [x] **storage list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py storage app_type list`
 
-#### 3.4 bbu 子主题
+#### bbu 子主题
 
 - [x] **storage list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py storage bbu list`
 
-#### 4.5 controller 子主题
+#### controller 子主题
 
 - [x] **storage list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py storage controller list`
 
-#### 5.6 disk 子主题
+#### disk 子主题
 
 - [x] **storage list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py storage disk list`
 
-#### 6.7 disk_pool 子主题
+#### disk_pool 子主题
 
 - [x] **storage list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py storage disk_pool list`
 
-#### 7.8 enclosure 子主题
+#### enclosure 子主题
 
 - [x] **storage list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py storage enclosure list`
 
-#### 8.9 failover_group 子主题
+#### failover_group 子主题
 
 - [x] **storage list**
   - 描述: list
@@ -1307,19 +1307,19 @@
   - 描述: show_vlans
   - 命令: `python scripts/dme_cli.py storage failover_group show_vlans`
 
-#### 9.10 fan 子主题
+#### fan 子主题
 
 - [x] **storage list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py storage fan list`
 
-#### 10.11 hyperscale_pool 子主题
+#### hyperscale_pool 子主题
 
 - [x] **storage list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py storage hyperscale_pool list`
 
-#### 11.12 initiator 子主题
+#### initiator 子主题
 
 - [ ] **storage delete**
   - 描述: delete
@@ -1333,7 +1333,7 @@
   - 描述: modify
   - 命令: `python scripts/dme_cli.py storage initiator modify`
 
-#### 12.13 logic_port 子主题
+#### logic_port 子主题
 
 - [ ] **storage create**
   - 描述: create
@@ -1359,19 +1359,19 @@
   - 描述: update
   - 命令: `python scripts/dme_cli.py storage logic_port update`
 
-#### 13.14 node 子主题
+#### node 子主题
 
 - [x] **storage list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py storage node list`
 
-#### 14.15 pool 子主题
+#### pool 子主题
 
 - [x] **storage list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py storage pool list`
 
-#### 15.16 port 子主题
+#### port 子主题
 
 - [x] **storage list**
   - 描述: list
@@ -1381,19 +1381,19 @@
   - 描述: show_bond_members
   - 命令: `python scripts/dme_cli.py storage port show_bond_members`
 
-#### 16.17 power 子主题
+#### power 子主题
 
 - [ ] **storage show**
   - 描述: show
   - 命令: `python scripts/dme_cli.py storage power show`
 
-#### 17.18 psu 子主题
+#### psu 子主题
 
 - [x] **storage list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py storage psu list`
 
-#### 18.19 qos 子主题
+#### qos 子主题
 
 - [ ] **storage activate**
   - 描述: activate
@@ -1431,13 +1431,13 @@
   - 描述: unassociate
   - 命令: `python scripts/dme_cli.py storage qos unassociate`
 
-#### 19.20 token 子主题
+#### token 子主题
 
 - [ ] **storage show**
   - 描述: show
   - 命令: `python scripts/dme_cli.py storage token show`
 
-#### 20.21 vlan 子主题
+#### vlan 子主题
 
 - [ ] **storage create**
   - 描述: create
@@ -1455,7 +1455,7 @@
   - 描述: modify
   - 命令: `python scripts/dme_cli.py storage vlan modify`
 
-#### 21.22 vstore 子主题
+#### vstore 子主题
 
 - [ ] **storage create**
   - 描述: create
@@ -1477,7 +1477,7 @@
   - 描述: show
   - 命令: `python scripts/dme_cli.py storage vstore show`
 
-#### 22.1 直接动作
+#### 直接动作
 
 - [ ] **storage add**
   - 描述: add
@@ -1503,21 +1503,21 @@
   - 描述: sync
   - 命令: `python scripts/dme_cli.py storage sync`
 
-### 14. system 主题
+### system 主题
 
-#### 1.2 az 子主题
+#### az 子主题
 
 - [ ] **system list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py system az list`
 
-#### 2.3 backup_server 子主题
+#### backup_server 子主题
 
 - [ ] **system list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py system backup_server list`
 
-#### 3.4 dc 子主题
+#### dc 子主题
 
 - [ ] **system list**
   - 描述: list
@@ -1531,13 +1531,13 @@
   - 描述: show_devices
   - 命令: `python scripts/dme_cli.py system dc show_devices`
 
-#### 4.5 role 子主题
+#### role 子主题
 
 - [ ] **system list**
   - 描述: list
   - 命令: `python scripts/dme_cli.py system role list`
 
-#### 5.6 tag 子主题
+#### tag 子主题
 
 - [ ] **system bind**
   - 描述: bind
@@ -1563,7 +1563,7 @@
   - 描述: unbind
   - 命令: `python scripts/dme_cli.py system tag unbind`
 
-#### 6.7 tag_type 子主题
+#### tag_type 子主题
 
 - [ ] **system create**
   - 描述: create
@@ -1581,7 +1581,7 @@
   - 描述: modify
   - 命令: `python scripts/dme_cli.py system tag_type modify`
 
-#### 7.8 task 子主题
+#### task 子主题
 
 - [ ] **system list**
   - 描述: list
@@ -1599,7 +1599,7 @@
   - 描述: wait
   - 命令: `python scripts/dme_cli.py system task wait`
 
-#### 8.9 todo_task 子主题
+#### todo_task 子主题
 
 - [ ] **system audit**
   - 描述: audit
@@ -1625,7 +1625,7 @@
   - 描述: show
   - 命令: `python scripts/dme_cli.py system todo_task show`
 
-#### 9.10 todo_task_group 子主题
+#### todo_task_group 子主题
 
 - [ ] **system confirm**
   - 描述: confirm
@@ -1639,7 +1639,7 @@
   - 描述: list
   - 命令: `python scripts/dme_cli.py system todo_task_group list`
 
-#### 10.11 user 子主题
+#### user 子主题
 
 - [ ] **system create**
   - 描述: create
@@ -1657,7 +1657,7 @@
   - 描述: show
   - 命令: `python scripts/dme_cli.py system user show`
 
-#### 11.1 直接动作
+#### 直接动作
 
 - [x] **system certificate**
   - 描述: certificate
@@ -1675,9 +1675,9 @@
   - 描述: show
   - 命令: `python scripts/dme_cli.py system show`
 
-### 15. virtualization 主题
+### virtualization 主题
 
-#### 1.1 直接动作
+#### 直接动作
 
 - [x] **virtualization cluster list**
   - 描述: cluster list
@@ -1735,9 +1735,9 @@
   - 描述: vm show
   - 命令: `python scripts/dme_cli.py virtualization vm show`
 
-### 16. workflow 主题
+### workflow 主题
 
-#### 1.2 instance 子主题
+#### instance 子主题
 
 - [ ] **workflow create**
   - 描述: create
@@ -1755,7 +1755,7 @@
   - 描述: stop
   - 命令: `python scripts/dme_cli.py workflow instance stop`
 
-#### 2.3 template 子主题
+#### template 子主题
 
 - [ ] **workflow groups**
   - 描述: groups
@@ -1769,7 +1769,7 @@
   - 描述: show
   - 命令: `python scripts/dme_cli.py workflow template show`
 
-#### 3.1 直接动作
+#### 直接动作
 
 - [ ] **workflow 直接动作**
   - 描述: 直接动作
