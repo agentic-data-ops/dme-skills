@@ -1,11 +1,12 @@
-# DME CLI 测试执行清单
+# DME CLI 测试用例
 
 ## 测试环境准备
 
-- [ ] 配置环境变量
-  - 配置DME API端点：`export DME_API_ENDPOINT=<your-dme-api-url>`
-  - 配置用户名：`export DME_API_USERNAME=<username>`
-  - 配置密码：`export DME_API_PASSWORD=<password>`
+- [ ] 配置环境变量：`export DME_API_URL=<your-dme-api-url>`
+- [ ] 配置认证信息：`export DME_API_USERNAME=<username>`
+- [ ] 配置认证信息：`export DME_API_PASSWORD=<password>`
+
+---
 
 ## aiops AIOps 智能运维相关操作
 
@@ -135,8 +136,6 @@
   - 描述：查询拓扑图虚拟机和虚拟磁盘列表，或查询 BMS 下物理磁盘列表
   - 命令：python scripts/dme_cli.py aiops topology query_vms --entry_objects <entry_objects> --host_id <host_id>
 
----
-
 ## backup 数据备份管理 (Backup) 相关操作
 
 ### cluster
@@ -152,8 +151,6 @@
 - [ ] **backup cluster quota**
   - 描述：查询备份集群租户配额列表
   - 命令：python scripts/dme_cli.py backup cluster quota --cluster_id <cluster_id>
-
----
 
 ## cmdb CMDB (Configuration Management Database) 相关操作
 
@@ -186,8 +183,6 @@
 - [ ] **cmdb relation show**
   - 描述：查询单个资源关系的实例
   - 命令：python scripts/dme_cli.py cmdb relation show
-
----
 
 ## fc_switch FC Switch (光纤交换机) 相关操作
 
@@ -281,8 +276,6 @@
   - 描述：同步交换机配置
   - 命令：python scripts/dme_cli.py fc_switch sync --switch_id <switch_id>
 
----
-
 ## gfs GFS (Global File System) 相关操作
 
 ### dataspace
@@ -347,8 +340,6 @@
   - 描述：查询全局命名空间详情
   - 命令：python scripts/dme_cli.py gfs namespace show
 
----
-
 ## ip_switch IP 交换机 (IPSwitch) 管理相关操作
 
 ### board
@@ -393,8 +384,6 @@
   - 描述：查询以太网交换机列表信息
   - 命令：python scripts/dme_cli.py ip_switch list
 
----
-
 ## kubernetes Kubernetes 相关操作
 
 ### cluster
@@ -432,8 +421,6 @@
 - [ ] **kubernetes pvc list**
   - 描述：查询容器持久卷声明列表
   - 命令：python scripts/dme_cli.py kubernetes pvc list
-
----
 
 ## nas NAS 相关操作
 
@@ -616,8 +603,6 @@
 - [ ] **nas quota show**
   - 描述：查询指定配额详情
   - 命令：python scripts/dme_cli.py nas quota show
-
----
 
 ## protection 保护 (Protection) 相关操作
 
@@ -862,8 +847,6 @@
 - [ ] **protection snapshot_group rollback**
   - 描述：回滚快照一致性组
   - 命令：python scripts/dme_cli.py protection snapshot_group rollback
-
----
 
 ## san SAN (Storage Area Network) 相关操作
 
@@ -1123,8 +1106,6 @@
   - 描述：查询存储主机组映射的 LUN 信息列表
   - 命令：python scripts/dme_cli.py san storage_host_group show_luns --storage_host_group_id <storage_host_group_id>
 
----
-
 ## self_service 租户自助服务 (Self Service) 相关操作
 
 ### lun
@@ -1172,8 +1153,6 @@
 - [ ] **self_service tier show_projects**
   - 描述：批量查询业务群组与服务等级关联关系
   - 命令：python scripts/dme_cli.py self_service tier show_projects
-
----
 
 ## server 服务器管理 (Server) 相关操作
 
@@ -1234,8 +1213,6 @@
 - [ ] **server show**
   - 描述：查询指定服务器的概览信息
   - 命令：python scripts/dme_cli.py server show
-
----
 
 ## storage 存储设备 (Storage) 相关操作
 
@@ -1515,8 +1492,6 @@
   - 描述：同步存储设备信息
   - 命令：python scripts/dme_cli.py storage sync
 
----
-
 ## system 系统管理 (System) 相关操作
 
 ### az
@@ -1689,8 +1664,6 @@
   - 描述：查询产品系统信息
   - 命令：python scripts/dme_cli.py system show
 
----
-
 ## virtualization 虚拟化服务 (Virtualization) 相关操作
 
 ### cluster
@@ -1763,8 +1736,6 @@
   - 描述：查询指定虚拟机详情
   - 命令：python scripts/dme_cli.py virtualization vm show --vm_id <vm_id>
 
----
-
 ## workflow 工作流 (Workflow) 相关操作
 
 ### instance
@@ -1807,8 +1778,16 @@
 
 ---
 
-## 测试统计
+## 测试执行统计
 
-- 总主题数：16
-- 总动作数：376
-- 带必选参数的动作数：137
+- **主题数**：16
+- **测试用例数**：376
+- **已完成**：0
+- **通过率**：0%
+
+## 注意事项
+
+1. 执行前请先配置环境变量
+2. 命令中的 `<...>` 需替换为实际值
+3. 部分命令需要管理员权限
+4. 测试完成后请更新checkbox状态

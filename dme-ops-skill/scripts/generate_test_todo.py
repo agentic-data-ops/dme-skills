@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
-生成正确的test/todo.md测试用例文档
-按照 test/spec.txt 的规则生成
+按照test/spec.txt规则生成测试用例
 """
 import subprocess
 import re
+import os
+import sys
 
 def get_all_commands():
-    """获取所有命令及其描述"""
+    """从CLI获取所有命令及其描述"""
     result = subprocess.run(['python', 'scripts/dme_cli.py', '--list-topics'],
-                           capture_output=True, text=True)
+                          capture_output=True, text=True, encoding='utf-8')
     output = result.stdout
 
     commands = []
@@ -26,14 +28,13 @@ def get_all_commands():
                 current_topic = match.group(1).strip()
                 current_topic_desc = match.group(2).strip()
                 current_subtopic = None
-        # 匹配子主题
+        # 匹配子主题（带虚线的格式）
         elif '├── 📂 ' in line:
             match = re.search(r'📂 (.+?)$', line)
             if match:
                 current_subtopic = match.group(1).strip()
         # 匹配子主题下的动作
         elif '│       ├─── ' in line or '│   ├─── ' in line:
-            # 解析动作和描述
             parts = line.split('├─── ')
             if len(parts) > 1:
                 action_part = parts[1].strip()
@@ -48,7 +49,7 @@ def get_all_commands():
                         'action': action,
                         'action_desc': action_desc
                     })
-        # 匹配直接动作（│     ├──）
+        # 匹配直接动作
         elif '│     ├── ' in line:
             parts = line.split('├── ')
             if len(parts) > 1:
@@ -57,75 +58,78 @@ def get_all_commands():
                 if last_dash > 0:
                     action = action_part[:last_dash].strip()
                     action_desc = action_part[last_dash + 3:].strip()
-                    
-                    # 对于virtualization主题，动作格式是 "<subtopic> <action>"
-                    # 例如：cluster list, host adapter_list
-                    subtopic = None
-                    if current_topic == 'virtualization':
-                        action_parts = action.split(' ')
-                        if len(action_parts) >= 2:
-                            subtopic = action_parts[0]
-                            action = ' '.join(action_parts[1:])
-                    
                     commands.append({
                         'topic': current_topic,
                         'topic_desc': current_topic_desc,
-                        'subtopic': subtopic,
+                        'subtopic': None,
                         'action': action,
                         'action_desc': action_desc
                     })
 
     return commands
 
-def get_action_params(topic, subtopic, action):
-    """获取动作的必选参数名"""
+def get_action_help(topic, subtopic, action):
+    """获取动作的帮助信息"""
     if subtopic:
         cmd = f'python scripts/dme_cli.py {topic} {subtopic} {action}'
     else:
         cmd = f'python scripts/dme_cli.py {topic} {action}'
 
-    try:
-        result = subprocess.run(cmd + ' --help', shell=True,
-                               capture_output=True, text=True, timeout=5)
-        output = result.stdout
+    result = subprocess.run(cmd + ' --help', shell=True,
+                          capture_output=True, text=True, encoding='utf-8')
+    output = result.stdout
 
-        # 提取必选参数
-        params = []
-        in_param_section = False
-        lines = output.split('\n')
+    # 提取必选参数
+    params = []
+    in_param_section = False
+    current_param = None
+    current_param_desc = []
+    lines = output.split('\n')
 
-        for line in lines:
-            if '参数说明' in line:
-                in_param_section = True
-                continue
-            if in_param_section:
-                if line.strip().startswith('=='):
+    for i, line in enumerate(lines):
+        if '参数说明' in line:
+            in_param_section = True
+            continue
+        if in_param_section:
+            param_match = re.match(r'^\s+--(\S+)', line)
+            if param_match:
+                if current_param and ' '.join(current_param_desc).strip():
+                    full_desc = ' '.join(current_param_desc).strip()
+                    if '必选' in full_desc:
+                        params.append((current_param, full_desc))
+                current_param = param_match.group(1)
+                current_param_desc = [line.strip()]
+            elif current_param:
+                stripped = line.strip()
+                if stripped.startswith('=='):
+                    full_desc = ' '.join(current_param_desc).strip()
+                    if '必选' in full_desc:
+                        params.append((current_param, full_desc))
+                    current_param = None
                     break
-                param_match = re.match(r'^\s+--(\S+)', line)
-                if param_match:
-                    param = param_match.group(1)
-                    # 检查描述行是否有必选
-                    next_line = lines[lines.index(line) + 1] if lines.index(line) + 1 < len(lines) else ''
-                    if '必选' in next_line:
-                        params.append(param)
-                    else:
-                        # 检查参数后面几行
-                        for i in range(lines.index(line) + 1, min(lines.index(line) + 5, len(lines))):
-                            if '必选' in lines[i]:
-                                params.append(param)
-                                break
-                            elif lines[i].strip().startswith('--'):
-                                break
+                elif not stripped:
+                    pass
+                elif stripped.startswith('- '):
+                    current_param_desc.append(stripped)
+                elif stripped:
+                    current_param_desc.append(stripped)
 
-        return params
-    except:
-        return []
+    if current_param and ' '.join(current_param_desc).strip():
+        full_desc = ' '.join(current_param_desc).strip()
+        if '必选' in full_desc:
+            params.append((current_param, full_desc))
 
-def generate_md():
-    """生成Markdown文档"""
+    return params
+
+def generate_test_todo():
+    """生成测试用例文件"""
     commands = get_all_commands()
 
-    # 按主题和子主题分组
+    if not commands:
+        print("错误：未获取到任何命令")
+        return
+
+    # 组织命令按主题和子主题分组
     topics = {}
     for cmd in commands:
         topic = cmd['topic']
@@ -144,79 +148,82 @@ def generate_md():
             topics[topic]['direct_actions'].append(cmd)
 
     # 生成Markdown
-    md = """# DME CLI 测试执行清单
+    md = "# DME CLI 测试用例\n\n"
+    md += "## 测试环境准备\n\n"
+    md += "- [ ] 配置环境变量：`export DME_API_URL=<your-dme-api-url>`\n"
+    md += "- [ ] 配置认证信息：`export DME_API_USERNAME=<username>`\n"
+    md += "- [ ] 配置认证信息：`export DME_API_PASSWORD=<password>`\n\n"
+    md += "---\n\n"
 
-## 测试环境准备
+    total_count = 0
+    topic_count = 0
 
-- [ ] 配置环境变量
-  - 配置DME API端点：`export DME_API_ENDPOINT=<your-dme-api-url>`
-  - 配置用户名：`export DME_API_USERNAME=<username>`
-  - 配置密码：`export DME_API_PASSWORD=<password>`
-
-"""
-
-    # 遍历所有主题
-    for topic_name, topic_data in topics.items():
+    # 按字母顺序排列主题
+    for topic_name in sorted(topics.keys()):
+        topic_data = topics[topic_name]
         md += f"## {topic_name} {topic_data['desc']}\n\n"
+        topic_count += 1
 
         # 子主题
-        for subtopic_name, actions in topic_data['subtopics'].items():
+        for subtopic_name in sorted(topic_data['subtopics'].keys()):
+            actions = topic_data['subtopics'][subtopic_name]
             md += f"### {subtopic_name}\n\n"
+
             for action in actions:
-                # 获取必选参数
-                params = get_action_params(topic_name, subtopic_name, action['action'])
+                total_count += 1
+                # 按spec.txt格式输出：- [ ] <主题> <子主题> <动作>
+                md += f"- [ ] **{action['topic']} {action['subtopic']} {action['action']}**\n"
+                md += f"  - 描述：{action['action_desc']}\n"
 
-                # 构建命令
-                cmd = f"python scripts/dme_cli.py {topic_name} {subtopic_name} {action['action']}"
+                # 获取动作帮助
+                params = get_action_help(action['topic'], action['subtopic'], action['action'])
                 if params:
-                    param_str = ' '.join([f'--{p} <{p}>' for p in params])
-                    cmd += f' {param_str}'
-
-                # 使用 --list-topics 中的动作描述
-                action_desc = action.get('action_desc') or action['action']
-
-                md += f"- [ ] **{topic_name} {subtopic_name} {action['action']}**\n"
-                md += f"  - 描述：{action_desc}\n"
-                md += f"  - 命令：{cmd}\n\n"
+                    # 按spec.txt格式输出：- 命令：python scripts/dme_cli.py <主题> <子主题> <动作> --<必选参数1> <必选参数1描述> --<必选参数2> <必选参数2描述> ...
+                    param_strs = [f'--{p[0]} <{p[0]}>' for p in params]
+                    cmd_str = f"python scripts/dme_cli.py {action['topic']} {action['subtopic']} {action['action']} {' '.join(param_strs)}"
+                else:
+                    cmd_str = f"python scripts/dme_cli.py {action['topic']} {action['subtopic']} {action['action']}"
+                md += f"  - 命令：{cmd_str}\n\n"
 
         # 直接动作
         if topic_data['direct_actions']:
             md += f"### 直接动作\n\n"
             for action in topic_data['direct_actions']:
-                # 获取必选参数
-                params = get_action_params(topic_name, None, action['action'])
+                total_count += 1
+                # 按spec.txt格式输出：- [ ] <主题> <动作>
+                md += f"- [ ] **{action['topic']} {action['action']}**\n"
+                md += f"  - 描述：{action['action_desc']}\n"
 
-                # 构建命令
-                cmd = f"python scripts/dme_cli.py {topic_name} {action['action']}"
+                # 获取动作帮助
+                params = get_action_help(action['topic'], None, action['action'])
                 if params:
-                    param_str = ' '.join([f'--{p} <{p}>' for p in params])
-                    cmd += f' {param_str}'
+                    param_strs = [f'--{p[0]} <{p[0]}>' for p in params]
+                    cmd_str = f"python scripts/dme_cli.py {action['topic']} {action['action']} {' '.join(param_strs)}"
+                else:
+                    cmd_str = f"python scripts/dme_cli.py {action['topic']} {action['action']}"
+                md += f"  - 命令：{cmd_str}\n\n"
 
-                # 使用 --list-topics 中的动作描述
-                action_desc = action.get('action_desc') or action['action']
+    # 测试执行统计
+    md += "---\n\n"
+    md += "## 测试执行统计\n\n"
+    md += f"- **主题数**：{topic_count}\n"
+    md += f"- **测试用例数**：{total_count}\n"
+    md += f"- **已完成**：0\n"
+    md += f"- **通过率**：0%\n\n"
+    md += "## 注意事项\n\n"
+    md += "1. 执行前请先配置环境变量\n"
+    md += "2. 命令中的 `<...>` 需替换为实际值\n"
+    md += "3. 部分命令需要管理员权限\n"
+    md += "4. 测试完成后请更新checkbox状态\n"
 
-                md += f"- [ ] **{topic_name} {action['action']}**\n"
-                md += f"  - 描述：{action_desc}\n"
-                md += f"  - 命令：{cmd}\n\n"
+    # 写入文件
+    output_path = 'test/todo.md'
+    with open(output_path, 'w', encoding='utf-8') as f:
+        f.write(md)
 
-        md += "---\n\n"
-
-    # 添加统计
-    total_topics = len(topics)
-    total_actions = len(commands)
-    total_with_params = sum(1 for cmd in commands if get_action_params(cmd['topic'], cmd['subtopic'], cmd['action']))
-
-    md += f"""## 测试统计
-
-- 总主题数：{total_topics}
-- 总动作数：{total_actions}
-- 带必选参数的动作数：{total_with_params}
-"""
-
-    return md
+    print(f"✅ 测试用例已生成：{output_path}")
+    print(f"   - 主题数：{topic_count}")
+    print(f"   - 测试用例数：{total_count}")
 
 if __name__ == '__main__':
-    md = generate_md()
-    with open('test/todo.md', 'w', encoding='utf-8') as f:
-        f.write(md)
-    print(f"✅ 已生成 test/todo.md")
+    generate_test_todo()
