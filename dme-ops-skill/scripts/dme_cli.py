@@ -76,10 +76,18 @@ class DMECLI:
                                         sub_subtopic = sub_action_info.get('subtopic')
                                         if sub_subtopic == subtopic or sub_subtopic == action_key:
                                             sub_action_name = sub_action_key
-                                            if sub_action_key.startswith(f"{subtopic}_"):
-                                                sub_action_name = sub_action_key[len(subtopic) + 1:]
-                                            elif sub_action_key.startswith(f"{action_key}_"):
-                                                sub_action_name = sub_action_key[len(action_key) + 1:]
+                                            prefix_space = f"{subtopic} "
+                                            prefix_underscore = f"{subtopic}_"
+                                            prefix_action_space = f"{action_key} "
+                                            prefix_action_underscore = f"{action_key}_"
+                                            if sub_action_key.startswith(prefix_space):
+                                                sub_action_name = sub_action_key[len(prefix_space):]
+                                            elif sub_action_key.startswith(prefix_underscore):
+                                                sub_action_name = sub_action_key[len(prefix_underscore):]
+                                            elif sub_action_key.startswith(prefix_action_space):
+                                                sub_action_name = sub_action_key[len(prefix_action_space):]
+                                            elif sub_action_key.startswith(prefix_action_underscore):
+                                                sub_action_name = sub_action_key[len(prefix_action_underscore):]
                                             if sub_action_name not in topics[topic]['_subtopics'][subtopic]:
                                                 topics[topic]['_subtopics'][subtopic].append(sub_action_name)
                             except ImportError:
@@ -90,9 +98,14 @@ class DMECLI:
                             # 子主题动作（三级结构）
                             if subtopic not in topics[topic]['_subtopics']:
                                 topics[topic]['_subtopics'][subtopic] = []
-                            # 提取动作名（去掉子主题前缀）
-                            if action_key.startswith(f"{subtopic}_"):
-                                action_name = action_key[len(subtopic) + 1:]
+                            # 提取动作名（去掉子主题前缀，支持空格或下划线分隔）
+                            action_name = action_key
+                            prefix_space = f"{subtopic} "
+                            prefix_underscore = f"{subtopic}_"
+                            if action_key.startswith(prefix_space):
+                                action_name = action_key[len(prefix_space):]
+                            elif action_key.startswith(prefix_underscore):
+                                action_name = action_key[len(prefix_underscore):]
                             topics[topic]['_subtopics'][subtopic].append(action_name)
                         else:
                             # 直接动作（两级结构）
@@ -648,21 +661,29 @@ def main():
                     # 获取动作描述
                     try:
                         module = importlib.import_module(f'actions.{topic}')
-                        # 构造完整的 action_key（subtopic_action）
-                        full_action_key = f"{subtopic}_{action_name}"
+                        # 构造完整的 action_key，支持空格和下划线分隔
+                        # 例如: subtopic="cluster", action_name="list" -> "cluster_list" 或 "cluster list"
+                        full_action_key_space = f"{subtopic} {action_name}"
+                        full_action_key_underscore = f"{subtopic}_{action_name}"
                         
                         # 先尝试从主模块获取
-                        if hasattr(module, 'ACTIONS') and full_action_key in module.ACTIONS:
-                            action_desc = module.ACTIONS[full_action_key].get('description', '')
-                        else:
-                            # 尝试从子模块获取（支持子主题模块引用）
-                            if hasattr(module, 'ACTIONS'):
+                        if hasattr(module, 'ACTIONS'):
+                            # 尝试多种key格式
+                            for key_format in [full_action_key_space, full_action_key_underscore]:
+                                if key_format in module.ACTIONS:
+                                    action_desc = module.ACTIONS[key_format].get('description', '')
+                                    break
+                            else:
+                                # 尝试从子模块获取（支持子主题模块引用）
                                 for ak, ai in module.ACTIONS.items():
                                     if ai.get('module') and ai.get('subtopic') == subtopic:
                                         try:
                                             sub_module = importlib.import_module(ai['module'])
-                                            if hasattr(sub_module, 'ACTIONS') and full_action_key in sub_module.ACTIONS:
-                                                action_desc = sub_module.ACTIONS[full_action_key].get('description', '')
+                                            for key_format in [full_action_key_space, full_action_key_underscore]:
+                                                if hasattr(sub_module, 'ACTIONS') and key_format in sub_module.ACTIONS:
+                                                    action_desc = sub_module.ACTIONS[key_format].get('description', '')
+                                                    break
+                                            if action_desc:
                                                 break
                                         except ImportError:
                                             pass
