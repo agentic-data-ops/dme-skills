@@ -57,10 +57,20 @@ def get_all_commands():
                 if last_dash > 0:
                     action = action_part[:last_dash].strip()
                     action_desc = action_part[last_dash + 3:].strip()
+                    
+                    # 对于virtualization主题，动作格式是 "<subtopic> <action>"
+                    # 例如：cluster list, host adapter_list
+                    subtopic = None
+                    if current_topic == 'virtualization':
+                        action_parts = action.split(' ')
+                        if len(action_parts) >= 2:
+                            subtopic = action_parts[0]
+                            action = ' '.join(action_parts[1:])
+                    
                     commands.append({
                         'topic': current_topic,
                         'topic_desc': current_topic_desc,
-                        'subtopic': None,
+                        'subtopic': subtopic,
                         'action': action,
                         'action_desc': action_desc
                     })

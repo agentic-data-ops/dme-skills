@@ -1693,7 +1693,7 @@
 
 ## virtualization 虚拟化服务 (Virtualization) 相关操作
 
-### 直接动作
+### cluster
 
 - [ ] **virtualization cluster list**
   - 描述：查询集群列表
@@ -1703,6 +1703,8 @@
   - 描述：查询指定集群详情
   - 命令：python scripts/dme_cli.py virtualization cluster show --cluster_id <cluster_id>
 
+### datastore
+
 - [ ] **virtualization datastore list**
   - 描述：查询数据存储列表
   - 命令：python scripts/dme_cli.py virtualization datastore list
@@ -1711,9 +1713,13 @@
   - 描述：查询指定数据存储详情
   - 命令：python scripts/dme_cli.py virtualization datastore show --datastore_id <datastore_id>
 
+### disk
+
 - [ ] **virtualization disk list**
   - 描述：查询物理盘信息
   - 命令：python scripts/dme_cli.py virtualization disk list
+
+### host
 
 - [ ] **virtualization host adapter_list**
   - 描述：查询指定主机存储适配器列表
@@ -1727,6 +1733,8 @@
   - 描述：查询指定主机详情
   - 命令：python scripts/dme_cli.py virtualization host show --host_id <host_id>
 
+### site
+
 - [ ] **virtualization site list**
   - 描述：查询站点列表
   - 命令：python scripts/dme_cli.py virtualization site list
@@ -1735,6 +1743,8 @@
   - 描述：查询指定站点详情
   - 命令：python scripts/dme_cli.py virtualization site show --site_id <site_id>
 
+### vdisk
+
 - [ ] **virtualization vdisk list**
   - 描述：查询虚拟磁盘信息列表
   - 命令：python scripts/dme_cli.py virtualization vdisk list
@@ -1742,6 +1752,8 @@
 - [ ] **virtualization vdisk show**
   - 描述：查询指定虚拟磁盘信息
   - 命令：python scripts/dme_cli.py virtualization vdisk show --virtual_disk_id <virtual_disk_id>
+
+### vm
 
 - [ ] **virtualization vm list**
   - 描述：查询虚拟机列表
@@ -1786,6 +1798,12 @@
 - [ ] **workflow template show**
   - 描述：查询模板详细信息
   - 命令：python scripts/dme_cli.py workflow template show --template_id <template_id>
+
+### 直接动作
+
+- [ ] **workflow 直接动作**
+  - 描述：动作描述
+  - 命令：python scripts/dme_cli.py workflow 直接动作
 
 ---
 
