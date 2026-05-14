@@ -560,6 +560,8 @@ def create_parser(cli: DMECLI) -> argparse.ArgumentParser:
                         default=os.environ.get('DME_API_PASSWORD'))
     parser.add_argument('--token', help='DME API 认证密钥（可选，提供则跳过登录）',
                         default=os.environ.get('DME_API_AUTH_TOKEN'))
+    parser.add_argument('--timeout', type=int, default=10,
+                        help='API 请求超时时间（秒），默认 10 秒')
 
     # 全局选项
     parser.add_argument('--list-topics', action='store_true',
@@ -750,7 +752,8 @@ def main():
                 endpoint=endpoint,
                 username=username,
                 password=password,
-                auth_token=auth_token
+                auth_token=auth_token,
+                timeout=args.timeout
             )
 
             if not auth_token:
@@ -889,7 +892,8 @@ def main():
             endpoint=endpoint,
             username=username,
             password=password,
-            auth_token=auth_token
+            auth_token=auth_token,
+            timeout=args.timeout
         )
 
         if not auth_token:
