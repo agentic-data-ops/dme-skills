@@ -418,33 +418,33 @@ def zone_delete(client: DMEAPIClient, zone_id: str) -> dict:
 def zone_batch_create(client: DMEAPIClient, is_active_zone: str, zones: list) -> dict:
     """
     批量创建 zone
-    
+
     批量创建多个光纤 Zone。
     注：根据 DME API 文档，需要 is_active_zone 和 zone_list 参数。
-    
+
     Args:
         client: DME API 客户端
         is_active_zone: 是否激活 Zone（必选，字符串 "true" 或 "false"）
         zones: Zone 配置列表，每个元素应包含:
             - fabric_wwn: 光纤网络 WWN（必选）
             - name: Zone 名称（必选）
-            - wwn_members: WWN 成员列表（可选）
-            - port_members: 端口成员列表（可选）
-            - alias_members: 别名成员列表（可选）
-            - device_alias_members: 设备别名成员列表（可选）
-            - fwwn_members: FWWN 成员列表（可选）
-            - fcid_members: FCID 成员列表（可选）
-    
+            - wwn_members: WWN 成员列表（可选），格式：["<wwn>",...]
+            - port_members: 端口成员列表（可选），格式：[{"domain_id":"<domainId>","port_index":"<portIndex>","port_name":"portName"},...]，其中博科交换机指定port_index，思科交换机指定port_name
+            - fwwn_members: FWWN 成员列表（可选），格式：["<fwwn>",...]
+            - fcid_members: FCID 成员列表（可选），格式：["<fcid>",...]
+            - alias_members: 别名成员列表（可选），格式：["<alias>",...]
+            - device_alias_members: 设备别名成员列表（可选），格式：["<deviceAlias>",...]
+
     Returns:
         响应数据
     """
     url = "/rest/fcswitchmgmt/v1/zones/batch-create"
-    
+
     payload = {
         'is_active_zone': is_active_zone,
         'zone_list': zones
     }
-    
+
     response = client.post(url, json=payload)
     return response
 
