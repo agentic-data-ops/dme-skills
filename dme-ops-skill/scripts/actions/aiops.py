@@ -1500,18 +1500,6 @@ ACTIONS = {
         'params': ['entry_res_type', 'entry_res_id', 'type', 'filter'],
         'subtopic': 'topology'
     },
-    'topology_ipsan_query': {
-        'func': ipsan_query,
-        'description': '查询 IP_SAN 网络从主机到存储池间的拓扑结构',
-        'params': ['entry_objects'],
-        'subtopic': 'topology'
-    },
-    'topology_fcsan_query': {
-        'func': fcsan_query,
-        'description': '查询 FC_SAN 网络从主机到存储池间的拓扑结构',
-        'params': ['entry_objects'],
-        'subtopic': 'topology'
-    },
     # health 子主题动作
     'health_query_data': {
         'func': health_query_data,

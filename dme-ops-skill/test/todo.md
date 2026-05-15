@@ -112,14 +112,6 @@
 
 ### topology
 
-- [ ] **aiops topology fcsan_query**
-  - 描述：查询 FC_SAN 网络从主机到存储池间的拓扑结构
-  - 命令：python scripts/dme_cli.py aiops topology fcsan_query --entry_objects <entry_objects>
-
-- [ ] **aiops topology ipsan_query**
-  - 描述：查询 IP_SAN 网络从主机到存储池间的拓扑结构
-  - 命令：python scripts/dme_cli.py aiops topology ipsan_query --entry_objects <entry_objects>
-
 - [ ] **aiops topology query_graph_path**
   - 描述：查询拓扑图库信息（支持 NAS、K8s、DB 等业务类型）
   - 命令：python scripts/dme_cli.py aiops topology query_graph_path --entry_res_type <entry_res_type> --entry_res_id <entry_res_id>
@@ -1781,7 +1773,7 @@
 ## 测试执行统计
 
 - **主题数**：16
-- **测试用例数**：376
+- **测试用例数**：374
 - **已完成**：0
 - **通过率**：0%
 
