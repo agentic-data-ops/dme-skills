@@ -294,57 +294,6 @@ def zone_list(client: DMEAPIClient, fabric_wwn: str = None, name: str = None,
     return response
 
 
-def zone_show(client: DMEAPIClient, zone_id: str) -> dict:
-    """
-    查询指定 zone 详情
-    
-    查询光纤 Zone 的详细信息。
-    注：DME API 没有单独的 show 接口，通过 list 接口配合 fabric_wwn 查询。
-    此接口会自动遍历所有 fabric 来查找指定的 zone_id。
-    
-    Args:
-        client: DME API 客户端
-        zone_id: Zone ID（必选）
-    
-    Returns:
-        Zone 详细信息
-    """
-    # 先查询 fabric 列表获取 fabric_wwn
-    fabric_url = "/rest/fcswitchmgmt/v1/fabrics/list"
-    fabric_payload = {
-        'page_no': 1,
-        'page_size': 10
-    }
-    
-    fabric_response = client.post(fabric_url, json=fabric_payload)
-    
-    if not fabric_response or 'fabrics' not in fabric_response:
-        return {'error': 'Failed to query fabrics'}
-    
-    # 遍历所有 fabric，查询 zone
-    for fabric in fabric_response.get('fabrics', []):
-        fabric_wwn = fabric.get('wwn')
-        if not fabric_wwn:
-            continue
-            
-        zone_url = "/rest/fcswitchmgmt/v1/zones/list"
-        payload = {
-            'fabric_wwn': fabric_wwn,
-            'page_no': 1,
-            'page_size': 1000
-        }
-        
-        response = client.post(zone_url, json=payload)
-        
-        if response and 'zones' in response:
-            # 在返回的 zone 列表中查找匹配的 zone_id
-            for zone in response.get('zones', []):
-                if zone.get('id') == zone_id:
-                    return {'zone': zone, 'fabric_wwn': fabric_wwn}
-    
-    return {'error': f'Zone {zone_id} not found in any fabric'}
-
-
 def zone_create(client: DMEAPIClient, name: str, fabric_wwn: str = None,
                 vsan_wwn: str = None, wwn_members: list = None,
                 port_members: list = None, fwwn_members: list = None,
