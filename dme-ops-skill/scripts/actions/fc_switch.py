@@ -297,39 +297,41 @@ def zone_list(client: DMEAPIClient, fabric_wwn: str = None, name: str = None,
 def zone_create(client: DMEAPIClient, name: str, fabric_wwn: str = None,
                 vsan_wwn: str = None, wwn_members: list = None,
                 port_members: list = None, fwwn_members: list = None,
-                fcid_members: list = None, device_alias_members: list = None) -> dict:
+                fcid_members: list = None, alias_members: list = None,
+                device_alias_members: list = None) -> dict:
     """
     创建 zone
-    
+
     创建新的光纤 Zone。
     注：根据 DME API 文档，需要提供 fabric_wwn 或 vsan_wwn，以及至少一种成员类型。
-    
+
     Args:
         client: DME API 客户端
         name: Zone 名称（必选）
         fabric_wwn: 光纤网络 WWN（条件必选，fabric 创建 zone 时需要）
         vsan_wwn: VSAN WWN（条件必选，vsan 创建 zone 时需要）
-        wwn_members: WWN 成员列表（可选）
-        port_members: 端口成员列表（可选）
-        fwwn_members: FWWN 成员列表（可选）
-        fcid_members: FCID 成员列表（可选）
-        device_alias_members: 设备别名成员列表（可选）
-    
+        wwn_members: WWN 成员列表（可选），格式：["<wwn>",...]
+        port_members: 端口成员列表（可选），格式：[{"domain_id":"<domainId>","port_index":"<portIndex>","port_name":"portName"},...]，其中博科交换机指定port_index，思科交换机指定port_name
+        fwwn_members: FWWN 成员列表（可选），格式：["<fwwn>",...]
+        fcid_members: FCID 成员列表（可选），格式：["<fcid>",...]
+        alias_members: 别名成员列表（可选），格式：["<alias>",...]
+        device_alias_members: 设备别名成员列表（可选），格式：["<deviceAlias>",...]
+
     Returns:
         响应数据，包含新创建的 Zone ID
     """
     url = "/rest/fcswitchmgmt/v1/zones"
-    
+
     payload = {
         'name': name
     }
-    
+
     # fabric_wwn 或 vsan_wwn 至少提供一个
     if fabric_wwn is not None:
         payload['fabric_wwn'] = fabric_wwn
     if vsan_wwn is not None:
         payload['vsan_wwn'] = vsan_wwn
-    
+
     # 成员列表
     if wwn_members is not None:
         payload['wwn_members'] = wwn_members
@@ -339,9 +341,11 @@ def zone_create(client: DMEAPIClient, name: str, fabric_wwn: str = None,
         payload['fwwn_members'] = fwwn_members
     if fcid_members is not None:
         payload['fcid_members'] = fcid_members
+    if alias_members is not None:
+        payload['alias_members'] = alias_members
     if device_alias_members is not None:
         payload['device_alias_members'] = device_alias_members
-    
+
     response = client.post(url, json=payload)
     return response
 
