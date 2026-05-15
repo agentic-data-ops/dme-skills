@@ -1588,7 +1588,7 @@ def fs_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
         client: DME API 客户端
         storage_id: 存储设备 ID
         pool_raw_id: 存储池在指定存储设备上的 ID
-        filesystem_specs: 文件系统规格列表，每个元素包含 name、count、capacity 等
+        filesystem_specs: 文件系统规格列表，格式：[{"name":"<名称>","count":<数量>,"start_suffix":<起始后缀编号>, "capacity":<容量>, "description":"<描述>"}, ...]，其中capacity单位为GB
         vstore_id: 租户 ID（可选）
         zone_id: 所属 zone 的 ID（可选）
         task_remarks: 异步任务备注信息（可选）
