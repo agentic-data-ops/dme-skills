@@ -1032,7 +1032,7 @@ def query_luns(client: DMEAPIClient, entry_objects: list, storage_pool_id: str,
 
     Args:
         client: DME API 客户端
-        entry_objects: 入口对象列表（必选），支持类型：
+        entry_objects: 入口对象列表（必选），格式：[{"id":"<入口对象ID>","type":"<入口对象类型>"},...]，支持类型：
             - host: 主机
             - storage: 存储设备
             - host_group: 主机组
@@ -1086,7 +1086,7 @@ def query_san_path(client: DMEAPIClient, entry_objects: list, san_type: str = No
 
     Args:
         client: DME API 客户端
-        entry_objects: 入口对象列表（必选），支持类型：
+        entry_objects: 入口对象列表（必选），格式：[{"id":"<入口对象ID>","type":"<入口对象类型>"},...]，支持类型：
             - host: 主机
             - storage: 存储设备
             - lun: LUN
@@ -1169,7 +1169,7 @@ def query_vms(client: DMEAPIClient, entry_objects: list, host_id: str,
 
     Args:
         client: DME API 客户端
-        entry_objects: 入口对象列表（必选），支持类型：
+        entry_objects: 入口对象列表（必选），格式：[{"id":"<入口对象ID>","type":"<入口对象类型>"},...]，支持类型：
             - vm: 虚拟机
             - host_group: 主机组
             - host: 主机
