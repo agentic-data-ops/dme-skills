@@ -62,6 +62,7 @@ python dme_cli.py <topic> <subtopic> <action> --param1 value1 --param2 value2
 - `--user` / `-u`: DME API 的用户名，可通过 `DME_API_USERNAME` 环境变量传入
 - `--password` / `-p`: DME API 的密码，可通过 `DME_API_PASSWORD` 环境变量传入
 - `--token`: DME API 的认证密钥，提供则跳过登录，可通过 `DME_API_AUTH_TOKEN` 环境变量传入
+- `--timeout`: API 请求超时时间（秒），默认 10 秒
 - `--list-topics`: 列出所有可用的主题（树形结构展示）
 
 **位置参数**：
