@@ -351,34 +351,37 @@ def zone_create(client: DMEAPIClient, name: str, fabric_wwn: str = None,
 
 
 def zone_modify(client: DMEAPIClient, zone_id: str, zone_name: str = None,
-                wwn_members: dict = None, fwwn_members: dict = None,
-                port_members: dict = None, fcid_members: dict = None,
-                device_alias_members: dict = None) -> dict:
+                wwn_members: dict = None, alias_members: dict = None,
+                fwwn_members: dict = None, port_members: dict = None,
+                fcid_members: dict = None, device_alias_members: dict = None) -> dict:
     """
     修改 zone
-    
+
     修改光纤 Zone 的配置信息。
-    
+
     Args:
         client: DME API 客户端
         zone_id: Zone ID（必选）
         zone_name: Zone 名称（可选）
-        wwn_members: WWN 成员修改（可选，格式：{'added_members': [...], 'removed_members': [...]}）
-        fwwn_members: FWWN 成员修改（可选）
-        port_members: 端口成员修改（可选）
-        fcid_members: FCID 成员修改（可选）
-        device_alias_members: 设备别名成员修改（可选）
-    
+        wwn_members: WWN 成员修改（可选），格式：{"added_members": ["<wwn>",...], "removed_members": ["<wwn>",...]}
+        alias_members: 别名成员修改（可选），格式：{"added_members": ["<alias>",...], "removed_members": ["<alias>",...]}
+        fwwn_members: FWWN 成员修改（可选），格式：{"added_members": ["<fwwn>",...], "removed_members": ["<fwwn>",...]}
+        port_members: 端口成员修改（可选），格式：{"added_members": [{"domain_id":"<domainId>","port_index":"<portIndex>","port_name":"portName"},...], "removed_members": [{"domain_id":"<domainId>","port_index":"<portIndex>","port_name":"portName"},...]}，其中博科交换机指定port_index，思科交换机指定port_name
+        fcid_members: FCID 成员修改（可选），格式：{"added_members": ["<fcid>",...], "removed_members": ["<fcid>",...]}
+        device_alias_members: 设备别名成员修改（可选），格式：{"added_members": ["<deviceAlias>",...], "removed_members": ["<deviceAlias>",...]}
+
     Returns:
         响应数据
     """
     url = f"/rest/fcswitchmgmt/v1/zones/{zone_id}"
-    
+
     payload = {}
     if zone_name is not None:
         payload['zoneName'] = zone_name
     if wwn_members is not None:
         payload['wwn_members'] = wwn_members
+    if alias_members is not None:
+        payload['alias_members'] = alias_members
     if fwwn_members is not None:
         payload['fwwn_members'] = fwwn_members
     if port_members is not None:
@@ -387,7 +390,7 @@ def zone_modify(client: DMEAPIClient, zone_id: str, zone_name: str = None,
         payload['fcid_members'] = fcid_members
     if device_alias_members is not None:
         payload['device_alias_members'] = device_alias_members
-    
+
     response = client.put(url, json=payload)
     return response
 
