@@ -240,32 +240,56 @@ def vsan_list(client: DMEAPIClient, page_no: int = 1, page_size: int = 20) -> di
 
 # ==================== Zone 相关操作 ====================
 
-def zone_list(client: DMEAPIClient, zone_name: str = None,
-              page_no: int = 1, page_size: int = 20) -> dict:
+def zone_list(client: DMEAPIClient, fabric_wwn: str = None, name: str = None,
+              cfg_name: str = None, zone_set: str = None, active_status: list = None,
+              member_count: int = None, sort_key: str = None, sort_dir: str = None,
+              page_no: int = None, page_size: int = None) -> dict:
     """
     批量查询 zone
-    
+
     查询光纤 Zone 列表。
-    
+
     Args:
         client: DME API 客户端
-        zone_name: Zone 名称（可选，支持模糊查询）
-        page_no: 分页查询的页码，默认 1
-        page_size: 每页数量，1~1000，默认 20
-    
+        fabric_wwn: 光纤网络 WWN（可选），1~1024 个字符
+        name: Zone 名称（可选），支持模糊查询，1~1024 个字符
+        cfg_name: 所属 CFG 名称（可选），支持模糊查询，0~1024 个字符
+        zone_set: 所属 Zone 集合（可选），支持模糊查询，0~1024 个字符
+        active_status: Zone 状态列表（可选），数组最大成员个数：2
+        member_count: 成员数量（可选），0~2147483647
+        sort_key: 排序字段（可选），支持 member_count
+        sort_dir: 排序方向（可选），asc：升序；desc：降序
+        page_no: 分页查询的页码（可选），1~65535
+        page_size: 每页数量（可选），1~1000
+
     Returns:
         响应数据，包含 total 和 zones 字段
     """
     url = "/rest/fcswitchmgmt/v1/zones/list"
-    
-    payload = {
-        'page_no': page_no,
-        'page_size': page_size
-    }
-    
-    if zone_name is not None:
-        payload['zone_name'] = zone_name
-    
+
+    payload = {}
+
+    if fabric_wwn is not None:
+        payload['fabric_wwn'] = fabric_wwn
+    if name is not None:
+        payload['name'] = name
+    if cfg_name is not None:
+        payload['cfg_name'] = cfg_name
+    if zone_set is not None:
+        payload['zone_set'] = zone_set
+    if active_status is not None:
+        payload['active_status'] = active_status
+    if member_count is not None:
+        payload['member_count'] = member_count
+    if sort_key is not None:
+        payload['sort_key'] = sort_key
+    if sort_dir is not None:
+        payload['sort_dir'] = sort_dir
+    if page_no is not None:
+        payload['page_no'] = page_no
+    if page_size is not None:
+        payload['page_size'] = page_size
+
     response = client.post(url, json=payload)
     return response
 
