@@ -1580,7 +1580,8 @@ def fs_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
                                  atime_update_mode: str = None, schedule_name: str = None,
                                  quota_switch: bool = None, vaai_switch: bool = None,
                                  initial_distribute_policy: str = None,
-                                 capacity_threshold: int = None) -> dict:
+                                 capacity_threshold: int = None,
+                                 tuning: dict = None) -> dict:
     """
     自定义创建文件系统
 
@@ -1600,6 +1601,12 @@ def fs_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
         vaai_switch: VAAI 开关（可选）
         initial_distribute_policy: 容量初始分配策略，auto/highest_perf/performance/capacity（可选）
         capacity_threshold: 总空间容量告警阈值 50-99（可选）
+        tuning: 调优参数（可选），格式为json字典，可设置如下参数：
+            - deduplication_enabled: 是否开启重复数据删除，可选：true/false，默认false
+            - compression_enabled: 是否开启数据压缩，可选：true/false，默认false
+            - block_size: 文件系统块大小，单位KB，可选：4/8/16/32/64/128，默认64
+            - allocation_type: 应用类型ID，取值：thin/thick，默认为thin
+            - qos_policy_id: QoS策略ID
 
     Returns:
         响应数据，包含 task_id
@@ -1634,6 +1641,8 @@ def fs_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
         payload['initial_distribute_policy'] = initial_distribute_policy
     if capacity_threshold is not None:
         payload['capacity_threshold'] = capacity_threshold
+    if tuning is not None:
+        payload['tuning'] = tuning
 
     response = client.post(url, json=payload)
     return response
