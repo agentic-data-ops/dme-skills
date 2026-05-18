@@ -490,7 +490,8 @@ def nfs_share_create(client: DMEAPIClient, create_nfs_share_param: dict,
             - name: NFS共享别名（可选）
             - description: 描述信息（可选）
             - share_path: 共享路径（必选）
-            - character_encoding: 字符编码（可选）。
+            - character_encoding: 字符编码（可选）
+            - audit_items: 支持审计的事件列表（可选）
             - show_snapshot_enable: 是否开启显示Snapshot（可选）。可选值：true/false
             - nfs_share_client_addition: NFS共享客户端权限列表（可选）
             - file_name_extension_filters: 文件扩展名过滤规则列表（可选）
