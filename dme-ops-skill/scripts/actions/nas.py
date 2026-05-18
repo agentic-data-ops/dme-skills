@@ -488,7 +488,16 @@ def nfs_share_create(client: DMEAPIClient, create_nfs_share_param: dict,
 
     Args:
         client: DME API 客户端
-        create_nfs_share_param: 创建 NFS 共享参数，包含 name, share_path, fs_id/namespace_id 等
+        create_nfs_share_param: 创建 NFS 共享参数，包含如下属性：
+            - name: NFS共享别名（可选）
+            - description: 描述信息（可选）
+            - share_path: 共享路径（必选）
+            - character_encoding: 字符编码（可选）。可选值：utf-8，zh，gbk，euc-tw，big5，euc-jp，jis，s-jis，de，pt，es，fr，it，ko，ar，cs，da，fi，he，hr，hu，no，nl，pl，ro，ru，sk，sl，sv，tr，en-us，euc-kr
+            - show_snapshot_enable: 是否开启显示Snapshot（可选）。可选值：true/false
+            - nfs_share_client_addition: NFS共享客户端权限列表（可选）
+            - file_name_extension_filters: 文件扩展名过滤规则列表（可选）
+            - fs_id: 文件系统的id，与namespace_id互斥
+            - namespace_id: 命名空间的id，与fs_id互斥
         task_remarks: 异步任务备注信息
 
     Returns:
