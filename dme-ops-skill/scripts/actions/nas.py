@@ -737,7 +737,27 @@ def cifs_create(client: DMEAPIClient, create_cifs_param: dict, fs_id: str = None
 
     Args:
         client: DME API 客户端
-        create_cifs_param: 创建 CIFS 共享参数，包含 name、share_path 等
+        create_cifs_param: 创建 CIFS 共享参数，属性如下：
+            - name: 共享名称（必选）
+            - description: 描述信息
+            - share_path: 共享路径（必选）
+            - op_lock_enabled: Oplock功能开关
+            - notify_enabled: Notify功能开关
+            - ca_enabled: Failover连续可用特性开关
+            - offline_file_mode: 离线缓存模式。可选值：none（关闭），manual（手动），documents（文档），programs（程序）
+            - ip_control_enabled: IP访问控制特性开关
+            - abe_enabled: ABE功能开关
+            - audititem_list: 支持审计的事件列表
+            - apply_default_acl: 是否添加默认ACL
+            - file_extension_filter_enabled: 是否开启文件扩展名过滤特性
+            - show_previous_versions_enabled: 是否开启显示历史版本的功能
+            - show_snapshot_enabled: 是否开启显示Snapshot的功能
+            - user_and_user_group_info: 用户和用户组列表
+            - ip_addresses_and_segments: IP地址和IP地址段列表
+            - file_name_extension_filters: 文件扩展名过滤规则列表
+            - smb3_encryption_enable: 是否开启SMB3加密功能
+            - unencrypted_access: 是否允许未加密客户端访问
+            - enable_lease: 是否开启租约锁定开关
         fs_id: 文件系统的 ID，与 namespace_id 互斥
         namespace_id: 命名空间的 ID，与 fs_id 互斥
         task_remarks: 异步任务备注信息
