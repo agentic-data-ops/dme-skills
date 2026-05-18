@@ -813,9 +813,9 @@ def cifs_modify(client: DMEAPIClient, cifs_share_id: str, description: str = Non
         file_extension_filter_enabled: 是否开启文件扩展名过滤特性
         show_previous_versions_enabled: 是否开启显示以前的版本的功能
         show_snapshot_enabled: 是否开启显示 Snapshot 的功能
-        user_and_user_group_info: 用户和用户组信息
-        ip_and_segments: IP 地址和 IP 地址段信息
-        file_name_ex_filters: 扩展名过滤规则
+        user_and_user_group_info: 用户和用户组列表
+        ip_and_segments: IP 地址和 IP 地址段列表
+        file_name_ex_filters: 扩展名过滤规则列表
         task_remarks: 异步任务备注信息
         smb3_encryption_enable: 是否开启 SMB3 加密功能
         unencrypted_access: 是否允许未加密客户端访问
