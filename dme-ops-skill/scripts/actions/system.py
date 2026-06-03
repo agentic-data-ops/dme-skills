@@ -518,7 +518,7 @@ def todo_task_close(client: DMEAPIClient, item_id: str, reason: str) -> dict:
 
 import time
 
-def task_show(client: DMEAPIClient, task_id: str) -> dict:
+def task_show(client: DMEAPIClient, task_id: str) -> list:
     """
     查询指定任务详情
     
@@ -643,17 +643,17 @@ def task_wait(client: DMEAPIClient, task_id: str, timeout: int = 300,
     while True:
         task_info = task_show(client, task_id)
 
-        # API 返回的是列表，取第一个元素
-        if isinstance(task_info, list) and len(task_info) > 0:
-            task_detail = task_info[0]
-        else:
-            task_detail = task_info
+        # API 返回的是列表，获取根任务详情
+        for task in task_info:
+            if task["id"] == task_id:
+                root_task = task
+                break
 
-        status = task_detail.get('status')
+        status = root_task.get('status')
 
         # 检查任务是否完成
         if status in [3, 4, 5, 6]:  # 成功、部分成功、失败、超时
-            return task_detail
+            return root_task
 
         # 检查是否超时
         elapsed = time.time() - start_time

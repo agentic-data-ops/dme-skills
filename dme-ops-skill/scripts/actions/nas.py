@@ -1633,7 +1633,7 @@ def fs_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
             - deduplication_enabled: 是否开启重复数据删除，可选：true/false，默认false
             - compression_enabled: 是否开启数据压缩，可选：true/false，默认false
             - block_size: 文件系统块大小，单位KB，可选：4/8/16/32/64/128，默认64
-            - allocation_type: 应用类型ID，取值：thin/thick，默认为thin
+            - allocation_type: 分配类型，取值：thin/thick，默认为thin
             - qos_policy_id: QoS策略ID
 
     Returns:
