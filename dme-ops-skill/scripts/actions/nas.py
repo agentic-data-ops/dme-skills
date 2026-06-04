@@ -494,7 +494,12 @@ def nfs_share_create(client: DMEAPIClient, create_nfs_share_param: dict,
             - audit_items: 支持审计的事件列表（可选）
             - show_snapshot_enable: 是否开启显示Snapshot（可选）。可选值：true/false
             - nfs_share_client_addition: NFS共享客户端权限列表（可选）
-            - file_name_extension_filters: 文件扩展名过滤规则列表（可选）
+            - file_name_extension_filters: 文件扩展名过滤规则列表，格式：[{
+                file_name_ex_id_in_storage: 文件扩展名过滤规则在存储上的ID（可选，1~64字符，变更已添加的规则时必填）,
+                file_name_extension: 文件扩展名（必选，1~127字符，支持通配符?和*）,
+                rule_type: 规则类型（可选），取值：reject/permit，默认为reject,
+                fileoperations: 文件扩展名过滤规则操作类型列表（可选）
+              }, ...]（可选）
             - fs_id: 文件系统的id，与namespace_id互斥
             - namespace_id: 命名空间的id，与fs_id互斥
         task_remarks: 异步任务备注信息
@@ -762,7 +767,12 @@ def cifs_create(client: DMEAPIClient, create_cifs_param: dict, fs_id: str = None
                 ip_or_segments_id_in_storage: IP地址（段）在存储上的ID（可选，1~64字符，变更已添加的IP或IP段时必填）,
                 ip_addresses_or_segments: IP地址（段）（可选，1~128字符，最多支持32条）
               }, ...]
-            - file_name_extension_filters: 文件扩展名过滤规则列表
+            - file_name_extension_filters: 文件扩展名过滤规则列表，格式：[{
+                file_name_ex_id_in_storage: 文件扩展名过滤规则在存储上的ID（可选，1~64字符，变更已添加的规则时必填）,
+                file_name_extension: 文件扩展名（必选，1~127字符，支持通配符?和*）,
+                rule_type: 规则类型（可选），取值：reject/permit，默认为reject,
+                fileoperations: 文件扩展名过滤规则操作类型列表（可选）
+              }, ...]
             - smb3_encryption_enable: 是否开启SMB3加密功能
             - unencrypted_access: 是否允许未加密客户端访问
             - enable_lease: 是否开启租约锁定开关
