@@ -1717,7 +1717,16 @@ def fs_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
         ads_enabled: 是否开启交换数据流功能（可选）。true/false，默认开启
         security_mode: 安全模式（可选）。取值：mixed/native/ntfs/unix
         nas_locking_policy: NAS锁策略（可选）。取值：mandatory/advisory/unknown
-        capacity_autonegotiation: 容量自适应参数（可选）
+        capacity_autonegotiation: 容量自适应参数（可选），格式：{
+            capacity_self_adjusting_mode: 容量自动调整模式（可选），取值：grow_off（关闭）/grow（自动扩容）/grow_shrink（自动扩缩容），默认关闭,
+            capacity_recycle_mode: 容量回收模式（可选），取值：expand_capacity（优先扩容）/delete_snapshots（优先删除旧快照），默认优先扩容,
+            auto_size_enable: 自动调整容量开关（可选），true/false，默认true,
+            auto_grow_threshold_percent: 自动扩容触发门限百分比（可选），2~99，默认85,
+            auto_shrink_threshold_percent: 自动缩容触发门限百分比（可选），1~98，默认50,
+            max_auto_size: 自动扩容上限，单位GB（可选），1~33554432，默认33554432GB,
+            min_auto_size: 自动缩容下限，单位GB（可选），1~33554432，默认33554432GB,
+            auto_size_increment: 自动扩缩容单次变化量，单位MB（可选），64~102400，默认1024MB
+          }
         worm: 文件系统Worm参数（可选）
         snapshot_reserved_space_percentage: 快照预留空间百分比（可选），0~90
         periodic_snapshots_limit: 定时快照数量限制（可选），1~2048
