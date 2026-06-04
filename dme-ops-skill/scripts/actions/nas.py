@@ -1727,7 +1727,21 @@ def fs_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
             min_auto_size: 自动缩容下限，单位GB（可选），1~33554432，默认33554432GB,
             auto_size_increment: 自动扩缩容单次变化量，单位MB（可选），64~102400，默认1024MB
           }
-        worm: 文件系统Worm参数（可选）
+        worm: 文件系统Worm参数（可选），格式：{
+            type: WORM保护模式（可选），取值：none_mode（无默认策略）/enterprise_mode（企业遵从模式）/compliance_mode（法规遵从模式）/advance_mode（高安遵从模式）/audit_log（审计日志）/non_worm（非WORM场景）,
+            min_protect_period: 最小保护期（可选），单位分钟/小时/日/月/年，默认0,
+            min_protect_period_unit: 最小保护期单位（可选），取值：minute/hour/day/month/year，默认year,
+            max_protect_period: 最大保护期（可选），0~4294967295，默认70,
+            max_protect_period_unit: 最大保护期单位（可选），取值：minute/hour/day/month/year，默认year,
+            def_protect_period: 默认保护期（可选），不小于最小保护期且不大于最大保护期，默认70,
+            def_protect_period_unit: 默认保护期单位（可选），取值：minute/hour/day/month/year，默认year,
+            auto_lock: WORM自动锁定模式（可选），true/false，默认开启,
+            auto_lock_time: 自动锁定的时间（可选），默认2小时,
+            auto_lock_time_unit: 自动锁定时间单位（可选），取值：minute/hour/day/month/year，默认hour,
+            auto_del: 自动删除模式（可选），true/false，默认关闭,
+            is_worm_audit_log_fs: WORM审计日志文件系统（可选），true/false，默认关闭,
+            worm_append_unit: WORM追加态文件保护粒度（可选），取值：256KB/512KB/1M，仅advance_mode支持
+          }
         snapshot_reserved_space_percentage: 快照预留空间百分比（可选），0~90
         periodic_snapshots_limit: 定时快照数量限制（可选），1~2048
         snapshot_dir_visible: 快照目录是否可见（可选）。true/false
