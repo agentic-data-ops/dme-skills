@@ -758,7 +758,10 @@ def cifs_create(client: DMEAPIClient, create_cifs_param: dict, fs_id: str = None
                 domain_type: 域类型（可选），取值：ad_domain/ldap_domain/local/nis_domain，默认为local,
                 permission: 权限（可选），取值：read/full_control/forbidden/read_and_write/read_and_write_not_del_rename，默认为read
               }, ...]
-            - ip_addresses_and_segments: IP地址和IP地址段列表
+            - ip_addresses_and_segments: IP地址和IP地址段列表，格式：[{
+                ip_or_segments_id_in_storage: IP地址（段）在存储上的ID（可选，1~64字符，变更已添加的IP或IP段时必填）,
+                ip_addresses_or_segments: IP地址（段）（可选，1~128字符，最多支持32条）
+              }, ...]
             - file_name_extension_filters: 文件扩展名过滤规则列表
             - smb3_encryption_enable: 是否开启SMB3加密功能
             - unencrypted_access: 是否允许未加密客户端访问
