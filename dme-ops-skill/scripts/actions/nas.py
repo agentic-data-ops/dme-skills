@@ -1630,7 +1630,22 @@ def fs_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
                                  tuning: dict = None,
                                  create_cifs_share_param: dict = None,
                                  create_nfs_share_param: dict = None,
-                                 create_dpc_share_param: dict = None) -> dict:
+                                 create_dpc_share_param: dict = None,
+                                 owning_controller: str = None,
+                                 snapshot_expired_enabled: bool = None,
+                                 checksum_enabled: bool = None,
+                                 ads_enabled: bool = None,
+                                 security_mode: str = None,
+                                 nas_locking_policy: str = None,
+                                 capacity_autonegotiation: dict = None,
+                                 worm: dict = None,
+                                 snapshot_reserved_space_percentage: int = None,
+                                 periodic_snapshots_limit: int = None,
+                                 snapshot_dir_visible: bool = None,
+                                 object_service_optimization: bool = None,
+                                 case_sensitive: bool = None,
+                                 audit_log_rules: list = None,
+                                 unix_permissions: str = None) -> dict:
     """
     自定义创建文件系统
 
@@ -1659,6 +1674,21 @@ def fs_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
         create_cifs_share_param: 自动创建CIFS共享参数（可选）。格式参见动作帮助：nas cifs_share create
         create_nfs_share_param: 自动创建NFS共享参数（可选）。格式参见动作帮助：nas nfs_share create
         create_dpc_share_param: 自动创建DataTurbo共享参数（可选）。格式参见动作帮助：nas dataturbo_share create
+        owning_controller: 归属控制器（可选），2~16个字符，格式如0A、1B
+        snapshot_expired_enabled: 是否开启删除旧的只读快照（可选）。true/false，默认关闭
+        checksum_enabled: 数据校验开关（可选）。true/false，默认开启
+        ads_enabled: 是否开启交换数据流功能（可选）。true/false，默认开启
+        security_mode: 安全模式（可选）。取值：mixed/native/ntfs/unix
+        nas_locking_policy: NAS锁策略（可选）。取值：mandatory/advisory/unknown
+        capacity_autonegotiation: 容量自适应参数（可选）
+        worm: 文件系统Worm参数（可选）
+        snapshot_reserved_space_percentage: 快照预留空间百分比（可选），0~90
+        periodic_snapshots_limit: 定时快照数量限制（可选），1~2048
+        snapshot_dir_visible: 快照目录是否可见（可选）。true/false
+        object_service_optimization: 对象服务优化（可选）。true/false
+        case_sensitive: 大小写敏感模式（可选）。true/false
+        audit_log_rules: 审计日志规则集合（可选），如：set_security、get_security、set_attr、get_attr等，最多100条
+        unix_permissions: 文件系统目录权限（可选），格式如0755
 
     Returns:
         响应数据，包含 task_id
@@ -1701,6 +1731,36 @@ def fs_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
         payload['create_nfs_share_param'] = create_nfs_share_param
     if create_dpc_share_param is not None:
         payload['create_dpc_share_param'] = create_dpc_share_param
+    if owning_controller is not None:
+        payload['owning_controller'] = owning_controller
+    if snapshot_expired_enabled is not None:
+        payload['snapshot_expired_enabled'] = snapshot_expired_enabled
+    if checksum_enabled is not None:
+        payload['checksum_enabled'] = checksum_enabled
+    if ads_enabled is not None:
+        payload['ads_enabled'] = ads_enabled
+    if security_mode is not None:
+        payload['security_mode'] = security_mode
+    if nas_locking_policy is not None:
+        payload['nas_locking_policy'] = nas_locking_policy
+    if capacity_autonegotiation is not None:
+        payload['capacity_autonegotiation'] = capacity_autonegotiation
+    if worm is not None:
+        payload['worm'] = worm
+    if snapshot_reserved_space_percentage is not None:
+        payload['snapshot_reserved_space_percentage'] = snapshot_reserved_space_percentage
+    if periodic_snapshots_limit is not None:
+        payload['periodic_snapshots_limit'] = periodic_snapshots_limit
+    if snapshot_dir_visible is not None:
+        payload['snapshot_dir_visible'] = snapshot_dir_visible
+    if object_service_optimization is not None:
+        payload['object_service_optimization'] = object_service_optimization
+    if case_sensitive is not None:
+        payload['case_sensitive'] = case_sensitive
+    if audit_log_rules is not None:
+        payload['audit_log_rules'] = audit_log_rules
+    if unix_permissions is not None:
+        payload['unix_permissions'] = unix_permissions
 
     response = client.post(url, json=payload)
     return response
