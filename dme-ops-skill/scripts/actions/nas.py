@@ -1627,7 +1627,10 @@ def fs_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
                                  quota_switch: bool = None, vaai_switch: bool = None,
                                  initial_distribute_policy: str = None,
                                  capacity_threshold: int = None,
-                                 tuning: dict = None) -> dict:
+                                 tuning: dict = None,
+                                 create_cifs_share_param: dict = None,
+                                 create_nfs_share_param: dict = None,
+                                 create_dpc_share_param: dict = None) -> dict:
     """
     自定义创建文件系统
 
@@ -1653,6 +1656,9 @@ def fs_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
             - block_size: 文件系统块大小，单位KB，可选：4/8/16/32/64/128，默认64
             - allocation_type: 分配类型，取值：thin/thick，默认为thin
             - qos_policy_id: QoS策略ID
+        create_cifs_share_param: 自动创建CIFS共享参数（可选）。格式参见动作帮助：nas cifs_share create
+        create_nfs_share_param: 自动创建NFS共享参数（可选）。格式参见动作帮助：nas nfs_share create
+        create_dpc_share_param: 自动创建DataTurbo共享参数（可选）。格式参见动作帮助：nas dataturbo_share create
 
     Returns:
         响应数据，包含 task_id
@@ -1689,6 +1695,12 @@ def fs_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
         payload['capacity_threshold'] = capacity_threshold
     if tuning is not None:
         payload['tuning'] = tuning
+    if create_cifs_share_param is not None:
+        payload['create_cifs_share_param'] = create_cifs_share_param
+    if create_nfs_share_param is not None:
+        payload['create_nfs_share_param'] = create_nfs_share_param
+    if create_dpc_share_param is not None:
+        payload['create_dpc_share_param'] = create_dpc_share_param
 
     response = client.post(url, json=payload)
     return response
