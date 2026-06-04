@@ -752,7 +752,12 @@ def cifs_create(client: DMEAPIClient, create_cifs_param: dict, fs_id: str = None
             - file_extension_filter_enabled: 是否开启文件扩展名过滤特性
             - show_previous_versions_enabled: 是否开启显示历史版本的功能
             - show_snapshot_enabled: 是否开启显示Snapshot的功能
-            - user_and_user_group_info: 用户和用户组列表
+            - user_and_user_group_info: 用户和用户组列表，格式：[{
+                user_or_user_group_id_in_storage: 用户或用户组在存储上的id（可选，1~64字符，变更已添加的用户或用户组时必填）,
+                user_or_user_group_name: 用户名或用户组名（可选，1~255字符，填写用户组名称时需要加前缀@）,
+                domain_type: 域类型（可选），取值：ad_domain/ldap_domain/local/nis_domain，默认为local,
+                permission: 权限（可选），取值：read/full_control/forbidden/read_and_write/read_and_write_not_del_rename，默认为read
+              }, ...]
             - ip_addresses_and_segments: IP地址和IP地址段列表
             - file_name_extension_filters: 文件扩展名过滤规则列表
             - smb3_encryption_enable: 是否开启SMB3加密功能
