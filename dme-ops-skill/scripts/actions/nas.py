@@ -491,7 +491,7 @@ def nfs_share_create(client: DMEAPIClient, create_nfs_share_param: dict,
             - description: 描述信息（可选）
             - share_path: 共享路径（必选）
             - character_encoding: 字符编码（可选）
-            - audit_items: 支持审计的事件列表（可选）
+            - audit_items: 支持审计的事件列表（可选）。取值：none（无操作），all（所有操作），open（打开），create（创建），read（读），write（写），close（关闭），delete（删除），rename（重命名），get_security（获取安全属性），set_security（设置安全属性），get_attr（获取属性），set_attr（设置属性）
             - show_snapshot_enable: 是否开启显示Snapshot（可选）。可选值：true/false
             - nfs_share_client_addition: NFS共享客户端权限列表（可选）
             - file_name_extension_filters: 文件扩展名过滤规则列表，格式：[{
