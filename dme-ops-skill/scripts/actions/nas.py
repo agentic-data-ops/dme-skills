@@ -1674,7 +1674,40 @@ def fs_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
             - application_scenario: 应用场景（可选），取值：database/VM/user_defined/container，默认为user_defined
             - workload_type_id: 应用类型id（可选），1~32个字符
             - dist_alg: 文件系统目录打散策略（可选），取值：capacity_balance/subdirectory_round_robin，仅A800设备支持
-            - qos_policy: SmartQos策略参数信息（可选）
+            - qos_policy: SmartQos策略参数信息（可选），格式：{
+                max_bandwidth: 最大带宽，单位MB/s（可选），1~999999999,
+                max_iops: 最大iops（可选），1~999999999,
+                min_bandwidth: 最小带宽，单位MB/s（可选），1~999999999,
+                min_iops: 最小iops（可选），1~999999999,
+                burst_band_width: 突发带宽，单位MB/s（可选）,
+                burst_iops: 突发IOPS（可选）,
+                burst_time: 最大突发时间，单位秒（可选）,
+                latency: 时延（可选），仅保护下限支持,
+                max_read_bandwidth: 最大读带宽，单位MB/s（可选）,
+                max_write_bandwidth: 最大写带宽，单位MB/s（可选）,
+                burst_read_band_width: 突发读带宽，单位MB/s（可选）,
+                burst_write_band_width: 突发写带宽，单位MB/s（可选）,
+                max_read_iops: 最大读iops（可选）,
+                max_write_iops: 最大写iops（可选）,
+                burst_read_iops: 突发读iops（可选）,
+                burst_write_iops: 突发写iops（可选）,
+                schedule_policy: 调度策略（可选），取值：once/daily/weekly,
+                schedule_start_date: 生效开始日期（可选），格式yyyy-MM-dd,
+                start_time: 生效开始时间（可选），格式hh:mm,
+                duration: 生效持续时间（可选），单位秒，1800~86400,
+                weekly_days: 周调度策略（可选），1~6对应周一到周六,
+                alarm_switch: 限高告警开关（可选），取值：off/on,
+                alarm_level: 告警级别（可选），取值：event/alarm,
+                alarm_threshold: 告警阈值%（可选），0~100,
+                resume_threshold: 恢复阈值%（可选），0~100,
+                storage_divice_id: 所属存储设备id（可选）,
+                name: QoS名称（可选）,
+                description: 描述（可选）,
+                iotype: 策略类型（可选），2=总上限，3=读写上限,
+                vstore_id: 所属租户id（可选）,
+                vstore_name: 所属租户名称（可选）,
+                global_flag: 是否全局（可选）
+              }
         create_cifs_share_param: 自动创建CIFS共享参数（可选）。格式参见动作帮助：nas cifs_share create
         create_nfs_share_param: 自动创建NFS共享参数（可选）。格式参见动作帮助：nas nfs_share create
         create_dpc_share_param: 自动创建DataTurbo共享参数（可选）。格式参见动作帮助：nas dataturbo_share create
