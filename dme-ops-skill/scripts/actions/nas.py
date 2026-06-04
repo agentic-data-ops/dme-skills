@@ -1671,6 +1671,10 @@ def fs_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
             - block_size: 文件系统块大小，单位KB，可选：4/8/16/32/64/128，默认64
             - allocation_type: 分配类型，取值：thin/thick，默认为thin
             - qos_policy_id: QoS策略ID
+            - application_scenario: 应用场景（可选），取值：database/VM/user_defined/container，默认为user_defined
+            - workload_type_id: 应用类型id（可选），1~32个字符
+            - dist_alg: 文件系统目录打散策略（可选），取值：capacity_balance/subdirectory_round_robin，仅A800设备支持
+            - qos_policy: SmartQos策略参数信息（可选）
         create_cifs_share_param: 自动创建CIFS共享参数（可选）。格式参见动作帮助：nas cifs_share create
         create_nfs_share_param: 自动创建NFS共享参数（可选）。格式参见动作帮助：nas nfs_share create
         create_dpc_share_param: 自动创建DataTurbo共享参数（可选）。格式参见动作帮助：nas dataturbo_share create
