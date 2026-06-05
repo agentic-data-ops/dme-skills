@@ -256,7 +256,7 @@ def lun_modify(client: DMEAPIClient, volume_id: str, name: str = None,
     return response
 
 
-def batch_modify_names(client: DMEAPIClient, volumes: list) -> dict:
+def lun_modify_name(client: DMEAPIClient, volumes: list) -> dict:
     """
     批量修改 LUN 名称
 
@@ -277,7 +277,7 @@ def batch_modify_names(client: DMEAPIClient, volumes: list) -> dict:
     return response
 
 
-def expand(client: DMEAPIClient, volumes: list, task_remarks: str = None) -> dict:
+def lun_expand(client: DMEAPIClient, volumes: list, task_remarks: str = None) -> dict:
     """
     批量扩容 LUN
 
@@ -303,7 +303,7 @@ def expand(client: DMEAPIClient, volumes: list, task_remarks: str = None) -> dic
 
 
 
-def get_connection_info(client: DMEAPIClient, volume_ids: list) -> dict:
+def lun_connection(client: DMEAPIClient, volume_ids: list) -> dict:
     """
     查询指定 LUN ID 的连接信息
 
@@ -324,78 +324,7 @@ def get_connection_info(client: DMEAPIClient, volume_ids: list) -> dict:
     return response
 
 
-def list_host_luns(
-    client: DMEAPIClient,
-    storage_host_id: str = None,
-    storage_host_group_id: str = None,
-    name: str = None,
-    page_size: int = 20,
-    page_no: int = 1,
-    sort_key: str = None,
-    sort_dir: str = None
-) -> dict:
-    """
-    指定存储主机或存储主机组查询映射 LUN 信息列表
-
-    查询指定存储主机或存储主机组映射的 LUN 信息，包含 LUN 信息和主机 LUN ID 信息。
-
-    Args:
-        client: DME API 客户端
-        storage_host_id: 存储主机 ID，与 storage_host_group_id 互斥且必须有一个下发
-        storage_host_group_id: 存储主机组 ID，与 storage_host_id 互斥且必须有一个下发
-        name: LUN 名称，支持模糊搜索
-        page_size: 分页查询的个数，1~1000，默认 20
-        page_no: 分页查询的起始位置，1~10000000，默认 1
-        sort_key: 排序字段（host_lun_id、mapping_view_raw_id、lun_raw_id）
-        sort_dir: 排序方向（asc 升序，desc 降序），默认 desc
-
-    Returns:
-        响应数据，包含 LUN 映射列表
-    """
-    url = "/rest/blockservice/v1/lun-mapping/query"
-
-    body_params = {}
-
-    if storage_host_id is not None:
-        body_params['storage_host_id'] = storage_host_id
-
-    if storage_host_group_id is not None:
-        body_params['storage_host_group_id'] = storage_host_group_id
-
-    if name is not None:
-        body_params['name'] = name
-
-    body_params['page_size'] = page_size
-    body_params['page_no'] = page_no
-
-    if sort_key is not None:
-        body_params['sort_key'] = sort_key
-
-    if sort_dir is not None:
-        body_params['sort_dir'] = sort_dir
-
-    response = client.post(url, json=body_params)
-    return response
-
-
-# 动作列表，用于 CLI 帮助
-
-# ============================================================================
-# LUN 组 (lun_group) 子主题函数
-# ============================================================================
-
-
-
-import sys
-import os
-
-# 添加父目录到路径，以便导入 dme_api_client
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from dme_api_client import DMEAPIClient
-
-
-def list_lun_groups(client: DMEAPIClient, storage_id: str, name: str = None,
+def lun_group_list(client: DMEAPIClient, storage_id: str, name: str = None,
                     page_no: int = 1, page_size: int = 100) -> dict:
     """
     批量查询 LUN 组
@@ -427,7 +356,7 @@ def list_lun_groups(client: DMEAPIClient, storage_id: str, name: str = None,
     return response
 
 
-def show_lun_group(client: DMEAPIClient, group_id: str, storage_id: str = None) -> dict:
+def lun_group_show(client: DMEAPIClient, group_id: str, storage_id: str = None) -> dict:
     """
     查询指定 LUN 组详情
 
@@ -447,7 +376,7 @@ def show_lun_group(client: DMEAPIClient, group_id: str, storage_id: str = None) 
     return response
 
 
-def create_lun_group(client: DMEAPIClient, storage_id: str, name: str,
+def lun_group_create(client: DMEAPIClient, storage_id: str, name: str,
                      description: str = None) -> dict:
     """
     创建 LUN 组
@@ -477,7 +406,7 @@ def create_lun_group(client: DMEAPIClient, storage_id: str, name: str,
     return response
 
 
-def delete_lun_group(client: DMEAPIClient, storage_id: str, group_id: str) -> dict:
+def lun_group_delete(client: DMEAPIClient, storage_id: str, group_id: str) -> dict:
     """
     删除 LUN 组
 
@@ -502,7 +431,7 @@ def delete_lun_group(client: DMEAPIClient, storage_id: str, group_id: str) -> di
     return response
 
 
-def add_luns_to_group(client: DMEAPIClient, storage_id: str, group_id: str,
+def lun_group_add_luns(client: DMEAPIClient, storage_id: str, group_id: str,
                       lun_ids: list) -> dict:
     """
     向 LUN 组添加 LUN
@@ -529,7 +458,7 @@ def add_luns_to_group(client: DMEAPIClient, storage_id: str, group_id: str,
     return response
 
 
-def remove_luns_from_group(client: DMEAPIClient, group_id: str,
+def lun_group_remove_luns(client: DMEAPIClient, group_id: str,
                            lun_ids: list, storage_id: str = None) -> dict:
     """
     从 LUN 组移除 LUN
@@ -553,7 +482,7 @@ def remove_luns_from_group(client: DMEAPIClient, group_id: str,
     return response
 
 
-def list_lun_group_luns(client: DMEAPIClient, group_id: str, storage_id: str = None) -> dict:
+def lun_group_show_luns(client: DMEAPIClient, group_id: str, storage_id: str = None) -> dict:
     """
     查询 LUN 组中的 LUN
 
@@ -588,7 +517,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from dme_api_client import DMEAPIClient
 
 
-def create_mapping_view(
+def mapping_view_create(
     client: DMEAPIClient,
     storage_id: str,
     port_group_id: str = None,
@@ -678,7 +607,7 @@ def create_mapping_view(
     return response
 
 
-def batch_delete_mapping_views(client: DMEAPIClient, mapping_view_ids: list) -> dict:
+def mapping_view_delete(client: DMEAPIClient, mapping_view_ids: list) -> dict:
     """
     批量删除映射视图
 
@@ -702,7 +631,7 @@ def batch_delete_mapping_views(client: DMEAPIClient, mapping_view_ids: list) -> 
     return response
 
 
-def query_mapping_views(
+def mapping_view_list(
     client: DMEAPIClient,
     page_size: int = 100,
     page_no: int = 1,
@@ -868,7 +797,7 @@ def query_host_lun_mapping(
     return response
 
 
-def query_mapping_views_by_host(
+def mapping_view_query(
     client: DMEAPIClient,
     type: str,
     request_id: str,
@@ -900,7 +829,7 @@ def query_mapping_views_by_host(
     return response
 
 
-def list_host_luns(
+def lun_mapping(
     client: DMEAPIClient,
     storage_host_id: str = None,
     storage_host_group_id: str = None,
@@ -1111,7 +1040,7 @@ def map_host_group(
 # 存储主机 (storage_host) 子主题函数
 # ============================================================================
 
-def host_create(client: DMEAPIClient, storage_id: str, name: str, os_type: str,
+def storage_host_create(client: DMEAPIClient, storage_id: str, name: str, os_type: str,
                 ip: str = None, description: str = None, initiators: list = None,
                 multipath: dict = None, task_remarks: str = None,
                 vstore_id: str = None) -> dict:
@@ -1164,7 +1093,7 @@ def host_create(client: DMEAPIClient, storage_id: str, name: str, os_type: str,
     return response
 
 
-def host_batch_query(client: DMEAPIClient, ids: list) -> dict:
+def storage_host_batch_query(client: DMEAPIClient, ids: list) -> dict:
     """
     根据存储主机 ID 列表批量查询存储主机
 
@@ -1187,7 +1116,7 @@ def host_batch_query(client: DMEAPIClient, ids: list) -> dict:
     return response
 
 
-def host_list(client: DMEAPIClient, page_size: int = None, page_no: int = None,
+def storage_host_list(client: DMEAPIClient, page_size: int = None, page_no: int = None,
               sort_key: str = None, sort_dir: str = None, name: str = None,
               raw_id: str = None, host_group_id: str = None,
               avaliable_add_to_host_group_id: str = None, host_group_name: str = None,
@@ -1273,7 +1202,7 @@ def host_list(client: DMEAPIClient, page_size: int = None, page_no: int = None,
     return response
 
 
-def host_modify(client: DMEAPIClient, storage_host_id: str,
+def storage_host_modify(client: DMEAPIClient, storage_host_id: str,
                 storage_host_name: str = None, storage_host_description: str = None,
                 storage_host_ip: str = None, storage_host_os_type: str = None,
                 add_initiators: list = None, remove_initiators: list = None,
@@ -1332,7 +1261,7 @@ def host_modify(client: DMEAPIClient, storage_host_id: str,
     return response
 
 
-def host_delete(client: DMEAPIClient, host_ids: list) -> dict:
+def storage_host_delete(client: DMEAPIClient, host_ids: list) -> dict:
     """
     批量删除存储主机
 
@@ -1355,7 +1284,7 @@ def host_delete(client: DMEAPIClient, host_ids: list) -> dict:
     return response
 
 
-def host_show_paths(client: DMEAPIClient, page_no: int = None, page_size: int = None,
+def storage_host_show_paths(client: DMEAPIClient, page_no: int = None, page_size: int = None,
                     storage_id: str = None, storage_host_ids: list = None,
                     storage_host_raw_ids: list = None, health_status: str = None,
                     running_status: str = None, initiator_type: str = None) -> dict:
@@ -1406,7 +1335,7 @@ def host_show_paths(client: DMEAPIClient, page_no: int = None, page_size: int = 
 # 存储主机组 (storage_host_group) 子主题函数
 # ============================================================================
 
-def host_group_create(client: DMEAPIClient, storage_id: str, name: str,
+def storage_host_group_create(client: DMEAPIClient, storage_id: str, name: str,
                       description: str = None, exist_host_ids: list = None,
                       create_storage_host_params: dict = None,
                       task_remarks: str = None, vstore_id: str = None) -> dict:
@@ -1451,7 +1380,7 @@ def host_group_create(client: DMEAPIClient, storage_id: str, name: str,
     return response
 
 
-def host_group_list(client: DMEAPIClient, storage_id: str = None, name: str = None,
+def storage_host_group_list(client: DMEAPIClient, storage_id: str = None, name: str = None,
                     raw_id: str = None, vstore_id: str = None,
                     vstore_name: str = None, page_no: int = None,
                     page_size: int = None, sort_key: str = None,
@@ -1514,7 +1443,7 @@ def host_group_list(client: DMEAPIClient, storage_id: str = None, name: str = No
     return response
 
 
-def host_group_add_hosts(client: DMEAPIClient, storage_host_group_id: str,
+def storage_host_group_add_hosts(client: DMEAPIClient, storage_host_group_id: str,
                          storage_host_id_ids: list = None,
                          create_storage_host_params: dict = None,
                          task_remarks: str = None) -> dict:
@@ -1549,7 +1478,7 @@ def host_group_add_hosts(client: DMEAPIClient, storage_host_group_id: str,
     return response
 
 
-def host_group_remove_hosts(client: DMEAPIClient, storage_host_group_id: str,
+def storage_host_group_remove_hosts(client: DMEAPIClient, storage_host_group_id: str,
                             storage_host_ids: list,
                             task_remarks: str = None) -> dict:
     """
@@ -1579,7 +1508,7 @@ def host_group_remove_hosts(client: DMEAPIClient, storage_host_group_id: str,
     return response
 
 
-def host_group_delete(client: DMEAPIClient, host_group_ids: list,
+def storage_host_group_delete(client: DMEAPIClient, host_group_ids: list,
                       task_remarks: str = None) -> dict:
     """
     批量删除存储主机组
@@ -1607,7 +1536,7 @@ def host_group_delete(client: DMEAPIClient, host_group_ids: list,
     return response
 
 
-def host_show_luns(client: DMEAPIClient, storage_host_id: str,
+def storage_host_show_luns(client: DMEAPIClient, storage_host_id: str,
                    name: str = None, page_size: int = 20,
                    page_no: int = 1, sort_key: str = None,
                    sort_dir: str = None) -> dict:
@@ -1647,7 +1576,7 @@ def host_show_luns(client: DMEAPIClient, storage_host_id: str,
     return response
 
 
-def host_group_show_luns(client: DMEAPIClient, storage_host_group_id: str,
+def storage_host_group_show_luns(client: DMEAPIClient, storage_host_group_id: str,
                          name: str = None, page_size: int = 20,
                          page_no: int = 1, sort_key: str = None,
                          sort_dir: str = None) -> dict:
@@ -2037,7 +1966,7 @@ def physical_host_delete(client: DMEAPIClient, host_id: str,
     return response
 
 
-def physical_host_initiator_add(client: DMEAPIClient, host_id: str,
+def physical_host_add_initiators(client: DMEAPIClient, host_id: str,
                   initiators: list) -> dict:
     """
     为物理主机添加启动器
@@ -2062,7 +1991,7 @@ def physical_host_initiator_add(client: DMEAPIClient, host_id: str,
     return response
 
 
-def physical_host_initiator_remove(client: DMEAPIClient, host_id: str,
+def physical_host_remove_initiators(client: DMEAPIClient, host_id: str,
                      initiators: list) -> dict:
     """
     从物理主机移除启动器
@@ -2087,7 +2016,7 @@ def physical_host_initiator_remove(client: DMEAPIClient, host_id: str,
     return response
 
 
-def physical_host_initiator_list(client: DMEAPIClient, host_id: str,
+def physical_host_show_initiators(client: DMEAPIClient, host_id: str,
                    port_name: str = None, protocol: str = None,
                    status: str = None) -> dict:
     """
@@ -2162,7 +2091,7 @@ def physical_host_test(client: DMEAPIClient, storage_id: str,
     return response
 
 
-def physical_host_sshkey_save(client: DMEAPIClient, ip: str, key: str,
+def physical_host_save_sshkey(client: DMEAPIClient, ip: str, key: str,
                 port: int = None) -> dict:
     """
     保存指定物理主机 SSH 公钥
@@ -2192,7 +2121,7 @@ def physical_host_sshkey_save(client: DMEAPIClient, ip: str, key: str,
     return response
 
 
-def physical_host_sshkey_query(client: DMEAPIClient, ip: str,
+def physical_host_query_sshkey(client: DMEAPIClient, ip: str,
                  port: int = None) -> dict:
     """
     查询指定物理主机 SSH 公钥
@@ -2220,7 +2149,7 @@ def physical_host_sshkey_query(client: DMEAPIClient, ip: str,
     return response
 
 
-def physical_host_initiator_show_owner(client: DMEAPIClient, initiator_id: str = None,
+def physical_host_query_by_initiator(client: DMEAPIClient, initiator_id: str = None,
                          raw_id: str = None, protocol: str = None) -> dict:
     """
     根据启动器查询关联的物理主机
@@ -2251,7 +2180,7 @@ def physical_host_initiator_show_owner(client: DMEAPIClient, initiator_id: str =
     return response
 
 
-def physical_host_map_lun(client: DMEAPIClient, volume_ids: list, host_id: str,
+def physical_host_map_luns(client: DMEAPIClient, volume_ids: list, host_id: str,
             mapping_policy: str = None, task_remarks: str = None) -> dict:
     """
     LUN 映射给物理主机
@@ -2285,7 +2214,7 @@ def physical_host_map_lun(client: DMEAPIClient, volume_ids: list, host_id: str,
     return response
 
 
-def physical_host_unmap_lun(client: DMEAPIClient, volume_ids: list, host_id: str,
+def physical_host_unmap_luns(client: DMEAPIClient, volume_ids: list, host_id: str,
               host_type: str = "host", task_remarks: str = None) -> dict:
     """
     解除主机映射
@@ -2521,7 +2450,7 @@ def physical_host_group_remove_hosts(client: DMEAPIClient, hostgroup_id: str,
     return response
 
 
-def physical_host_group_map_lun(client: DMEAPIClient, volume_ids: list, hostgroup_id: str,
+def physical_host_group_map_luns(client: DMEAPIClient, volume_ids: list, hostgroup_id: str,
             mapping_policy: str = None, task_remarks: str = None) -> dict:
     """
     LUN 映射给物理主机组
@@ -2555,7 +2484,7 @@ def physical_host_group_map_lun(client: DMEAPIClient, volume_ids: list, hostgrou
     return response
 
 
-def physical_host_group_unmap_lun(client: DMEAPIClient, volume_ids: list, hostgroup_id: str,
+def physical_host_group_unmap_luns(client: DMEAPIClient, volume_ids: list, hostgroup_id: str,
               host_group_type: str = "host_group", task_remarks: str = None) -> dict:
     """
     解除主机组映射
@@ -2625,75 +2554,75 @@ ACTIONS = {
         'subtopic': 'lun'
     },
     'lun_modify_name': {
-        'func': batch_modify_names,
+        'func': lun_modify_name,
         'description': '批量修改 LUN 名称',
         'params': ['volumes'],
         'subtopic': 'lun'
     },
     'lun_expand': {
-        'func': expand,
+        'func': lun_expand,
         'description': '批量扩容 LUN',
         'params': ['volumes', 'task_remarks'],
         'subtopic': 'lun'
     },
     'lun_connection': {
-        'func': get_connection_info,
+        'func': lun_connection,
         'description': '查询指定 LUN ID 的连接信息',
         'params': ['volume_ids'],
         'subtopic': 'lun'
     },
     'lun_mapping': {
-        'func': list_host_luns,
+        'func': lun_mapping,
         'description': '指定存储主机或存储主机组查询映射 LUN 信息列表',
         'params': ['storage_host_id', 'storage_host_group_id', 'name', 'page_size', 'page_no', 'sort_key', 'sort_dir'],
         'subtopic': 'lun'
     },
     # LUN 组子主题动作（san lun_group xxx）
     'lun_group_list': {
-        'func': list_lun_groups,
+        'func': lun_group_list,
         'description': '批量查询 LUN 组',
         'params': ['storage_id', 'name', 'page_no', 'page_size'],
         'subtopic': 'lun_group'
     },
     'lun_group_show': {
-        'func': show_lun_group,
+        'func': lun_group_show,
         'description': '查询指定 LUN 组详情',
         'params': ['group_id', 'storage_id'],
         'subtopic': 'lun_group'
     },
     'lun_group_create': {
-        'func': create_lun_group,
+        'func': lun_group_create,
         'description': '创建 LUN 组',
         'params': ['storage_id', 'name', 'description'],
         'subtopic': 'lun_group'
     },
     'lun_group_delete': {
-        'func': delete_lun_group,
+        'func': lun_group_delete,
         'description': '删除 LUN 组',
         'params': ['storage_id', 'group_id'],
         'subtopic': 'lun_group'
     },
     'lun_group_add_luns': {
-        'func': add_luns_to_group,
+        'func': lun_group_add_luns,
         'description': '向 LUN 组添加 LUN',
         'params': ['storage_id', 'group_id', 'lun_ids'],
         'subtopic': 'lun_group'
     },
     'lun_group_remove_luns': {
-        'func': remove_luns_from_group,
+        'func': lun_group_remove_luns,
         'description': '从 LUN 组移除 LUN',
         'params': ['group_id', 'lun_ids', 'storage_id'],
         'subtopic': 'lun_group'
     },
     'lun_group_show_luns': {
-        'func': list_lun_group_luns,
+        'func': lun_group_show_luns,
         'description': '查询 LUN 组中的 LUN',
         'params': ['group_id', 'storage_id'],
         'subtopic': 'lun_group'
     },
     # 映射视图子主题动作（san mapping_view xxx）
     'mapping_view_create': {
-        'func': create_mapping_view,
+        'func': mapping_view_create,
         'description': '创建映射视图',
         'params': ['storage_id', 'port_group_id', 'name', 'start_host_lun_id',
                    'host_id', 'host_name', 'host_group_id', 'host_group_name',
@@ -2701,13 +2630,13 @@ ACTIONS = {
         'subtopic': 'mapping_view'
     },
     'mapping_view_delete': {
-        'func': batch_delete_mapping_views,
+        'func': mapping_view_delete,
         'description': '批量删除映射视图',
         'params': ['mapping_view_ids'],
         'subtopic': 'mapping_view'
     },
     'mapping_view_list': {
-        'func': query_mapping_views,
+        'func': mapping_view_list,
         'description': '批量查询映射视图列表',
         'params': ['page_size', 'page_no', 'name', 'raw_id', 'storage_id',
                    'lun_id', 'lun_name', 'lun_group_id', 'lun_group_raw_id',
@@ -2718,26 +2647,26 @@ ACTIONS = {
         'subtopic': 'mapping_view'
     },
     'mapping_view_query': {
-        'func': query_mapping_views_by_host,
+        'func': mapping_view_query,
         'description': '查询物理主机（组）关联的映射关系',
         'params': ['type', 'request_id', 'storage_id'],
         'subtopic': 'mapping_view'
     },
     # 存储主机子主题动作（san storage_host xxx）
     'storage_host_create': {
-        'func': host_create,
+        'func': storage_host_create,
         'description': '创建存储主机',
         'params': ['storage_id', 'name', 'os_type', 'ip', 'description', 'initiators', 'multipath', 'task_remarks', 'vstore_id'],
         'subtopic': 'storage_host'
     },
     'storage_host_batch_query': {
-        'func': host_batch_query,
+        'func': storage_host_batch_query,
         'description': '根据存储主机 ID 列表批量查询存储主机',
         'params': ['ids'],
         'subtopic': 'storage_host'
     },
     'storage_host_list': {
-        'func': host_list,
+        'func': storage_host_list,
         'description': '批量查询存储主机',
         'params': ['page_size', 'page_no', 'sort_key', 'sort_dir', 'name', 'raw_id', 'host_group_id',
                    'avaliable_add_to_host_group_id', 'host_group_name', 'ip', 'health_status', 'os_type',
@@ -2746,7 +2675,7 @@ ACTIONS = {
         'subtopic': 'storage_host'
     },
     'storage_host_modify': {
-        'func': host_modify,
+        'func': storage_host_modify,
         'description': '修改存储主机',
         'params': ['storage_host_id', 'storage_host_name', 'storage_host_description', 'storage_host_ip',
                    'storage_host_os_type', 'add_initiators', 'remove_initiators', 'multipath', 'access_mode',
@@ -2754,33 +2683,33 @@ ACTIONS = {
         'subtopic': 'storage_host'
     },
     'storage_host_delete': {
-        'func': host_delete,
+        'func': storage_host_delete,
         'description': '批量删除存储主机',
         'params': ['host_ids'],
         'subtopic': 'storage_host'
     },
     'storage_host_show_paths': {
-        'func': host_show_paths,
+        'func': storage_host_show_paths,
         'description': '批量查询存储主机的路径信息',
         'params': ['page_no', 'page_size', 'storage_id', 'storage_host_ids', 'storage_host_raw_ids',
                    'health_status', 'running_status', 'initiator_type'],
         'subtopic': 'storage_host'
     },
     'storage_host_show_luns': {
-        'func': host_show_luns,
+        'func': storage_host_show_luns,
         'description': '查询存储主机映射的 LUN 信息列表',
         'params': ['storage_host_id', 'name', 'page_size', 'page_no', 'sort_key', 'sort_dir'],
         'subtopic': 'storage_host'
     },
     # 存储主机组子主题动作（san storage_host_group xxx）
     'storage_host_group_create': {
-        'func': host_group_create,
+        'func': storage_host_group_create,
         'description': '创建存储主机组',
         'params': ['storage_id', 'name', 'description', 'exist_host_ids', 'create_storage_host_params', 'task_remarks', 'vstore_id'],
         'subtopic': 'storage_host_group'
     },
     'storage_host_group_list': {
-        'func': host_group_list,
+        'func': storage_host_group_list,
         'description': '批量查询存储主机组',
         'params': ['storage_id', 'name', 'raw_id', 'vstore_id', 'vstore_name', 'page_no', 'page_size',
                    'sort_key', 'sort_dir', 'avaiable_mapping_for_lun_group_id', 'avaiable_mapping_for_lun_id',
@@ -2788,25 +2717,25 @@ ACTIONS = {
         'subtopic': 'storage_host_group'
     },
     'storage_host_group_add_hosts': {
-        'func': host_group_add_hosts,
+        'func': storage_host_group_add_hosts,
         'description': '添加存储主机到存储主机组',
         'params': ['storage_host_group_id', 'storage_host_id_ids', 'create_storage_host_params', 'task_remarks'],
         'subtopic': 'storage_host_group'
     },
     'storage_host_group_remove_hosts': {
-        'func': host_group_remove_hosts,
+        'func': storage_host_group_remove_hosts,
         'description': '从存储主机组中移除主机',
         'params': ['storage_host_group_id', 'storage_host_ids', 'task_remarks'],
         'subtopic': 'storage_host_group'
     },
     'storage_host_group_delete': {
-        'func': host_group_delete,
+        'func': storage_host_group_delete,
         'description': '批量删除存储主机组',
         'params': ['host_group_ids', 'task_remarks'],
         'subtopic': 'storage_host_group'
     },
     'storage_host_group_show_luns': {
-        'func': host_group_show_luns,
+        'func': storage_host_group_show_luns,
         'description': '查询存储主机组映射的 LUN 信息列表',
         'params': ['storage_host_group_id', 'name', 'page_size', 'page_no', 'sort_key', 'sort_dir'],
         'subtopic': 'storage_host_group'
@@ -2873,19 +2802,19 @@ ACTIONS = {
         'subtopic': 'physical_host'
     },
     'physical_host_add_initiators': {
-        'func': physical_host_initiator_add,
+        'func': physical_host_add_initiators,
         'description': '为物理主机添加启动器',
         'params': ['host_id', 'initiators'],
         'subtopic': 'physical_host'
     },
     'physical_host_remove_initiators': {
-        'func': physical_host_initiator_remove,
+        'func': physical_host_remove_initiators,
         'description': '从物理主机移除启动器',
         'params': ['host_id', 'initiators'],
         'subtopic': 'physical_host'
     },
     'physical_host_show_initiators': {
-        'func': physical_host_initiator_list,
+        'func': physical_host_show_initiators,
         'description': '查询指定物理主机的启动器',
         'params': ['host_id', 'port_name', 'protocol', 'status'],
         'subtopic': 'physical_host'
@@ -2897,31 +2826,31 @@ ACTIONS = {
         'subtopic': 'physical_host'
     },
     'physical_host_query_sshkey': {
-        'func': physical_host_sshkey_query,
+        'func': physical_host_query_sshkey,
         'description': '查询指定物理主机SSH公钥',
         'params': ['ip', 'port'],
         'subtopic': 'physical_host'
     },
     'physical_host_save_sshkey': {
-        'func': physical_host_sshkey_save,
+        'func': physical_host_save_sshkey,
         'description': '保存指定物理主机SSH公钥',
         'params': ['ip', 'key', 'port'],
         'subtopic': 'physical_host'
     },
     'physical_host_query_by_initiator': {
-        'func': physical_host_initiator_show_owner,
+        'func': physical_host_query_by_initiator,
         'description': '根据启动器查询关联的物理主机',
         'params': ['initiator_id', 'raw_id', 'protocol'],
         'subtopic': 'physical_host'
     },
     'physical_host_map_luns': {
-        'func': physical_host_map_lun,
+        'func': physical_host_map_luns,
         'description': 'LUN映射给物理主机',
         'params': ['volume_ids', 'host_id', 'mapping_policy', 'task_remarks'],
         'subtopic': 'physical_host'
     },
     'physical_host_unmap_luns': {
-        'func': physical_host_unmap_lun,
+        'func': physical_host_unmap_luns,
         'description': '解除主机映射',
         'params': ['volume_ids', 'host_id', 'host_type', 'task_remarks'],
         'subtopic': 'physical_host'
@@ -2970,13 +2899,13 @@ ACTIONS = {
         'subtopic': 'physical_host_group'
     },
     'physical_host_group_map_luns': {
-        'func': physical_host_group_map_lun,
+        'func': physical_host_group_map_luns,
         'description': 'LUN映射给物理主机组',
         'params': ['volume_ids', 'hostgroup_id', 'mapping_policy', 'task_remarks'],
         'subtopic': 'physical_host_group'
     },
     'physical_host_group_unmap_luns': {
-        'func': physical_host_group_unmap_lun,
+        'func': physical_host_group_unmap_luns,
         'description': '解除物理主机组映射',
         'params': ['volume_ids', 'hostgroup_id', 'host_group_type', 'task_remarks'],
         'subtopic': 'physical_host_group'
