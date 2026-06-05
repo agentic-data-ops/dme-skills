@@ -1160,9 +1160,10 @@ def dataturbo_share_create(client: DMEAPIClient, charset: str, fs_id: str = None
         fs_id: 需共享的文件系统的 ID，与 dtree_id 互斥，必传其中一个
         dtree_id: 需共享的 Dtree 的 ID，与 fs_id 互斥，必传其中一个
         description: DataTurbo 共享描述
-        dataturbo_share_auth: DataTurbo 管理员列表，每个元素包含以下字段：
-            - dpc_user_id (str): DataTurbo管理员ID，长度1-64
-            - permission (str): DataTurbo管理员权限，支持 read_and_write（读写）
+        dataturbo_share_auth: DataTurbo 管理员列表，格式：[{
+            dpc_user_id (str): DataTurbo管理员ID，长度1-64,
+            permission (str): DataTurbo管理员权限，支持 read_and_write（读写）
+        }, ...]
         task_remarks: 异步任务备注信息
 
     Returns:
