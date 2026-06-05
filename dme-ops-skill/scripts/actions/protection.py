@@ -195,7 +195,10 @@ def group_add_luns(client: DMEAPIClient, pg_id: str, lun_ids: list = None,
                         remote_lun_name_rule: LUN 的名称策略（可选），可选值：same_as_local（与本端资源名称保持一致）、prefix_and_suffix（前缀+本端资源名称+后缀）、prefix_and_num（前缀+自动序号）；自动创建模式下有效
                         name_prefix: 远端 LUN 名称前缀（可选），0~251 个字符；自动创建模式且名称规则为 prefix_and_suffix 或 prefix_and_num 时有效；prefix_and_suffix 前缀最长 32 字节，prefix_and_num 前缀最长 251 字节
                         name_suffix: 远端 LUN 名称后缀（可选），0~16 个字符；自动创建模式且名称规则为 prefix_and_suffix 时有效
-                        lun_pairs: 手动配置的远程复制 Pair 信息列表（可选），数组最大成员个数 100；当 create_mode 为 manual 时有效
+                        lun_pairs: 手动配置的远程复制 Pair 信息列表（可选），数组最大成员个数 100；当 create_mode 为 manual 时有效。格式：[{
+                                local_lun_id: 本端 LUN 的 ID（必填），1~32 个字符，正则 ^[a-fA-F0-9]+$；下发操作的设备端定义为本端，其对端设备定义为远端
+                                remote_lun_id: 远端 LUN 的 ID（必填），1~32 个字符，正则 ^[a-fA-F0-9]+$
+                        },...]
         },...]
 
     Returns:
