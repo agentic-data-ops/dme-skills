@@ -28,7 +28,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from dme_api_client import DMEAPIClient
 
 
-def list(client: DMEAPIClient, limit: int = 1000, offset: int = 0,
+def lun_list(client: DMEAPIClient, limit: int = 1000, offset: int = 0,
                  sort_dir: str = None, sort_key: str = None, name: str = None,
                  vstore_raw_id: str = None, vstore_name: str = None,
                  status: str = None, health_status: str = None,
@@ -99,7 +99,7 @@ def list(client: DMEAPIClient, limit: int = 1000, offset: int = 0,
     return response
 
 
-def show(client: DMEAPIClient, volume_id: str) -> dict:
+def lun_show(client: DMEAPIClient, volume_id: str) -> dict:
     """
     查询指定 LUN
 
@@ -116,7 +116,7 @@ def show(client: DMEAPIClient, volume_id: str) -> dict:
     return response
 
 
-def create(client: DMEAPIClient, storage_id: str, lun_specs: list = None,
+def lun_create(client: DMEAPIClient, storage_id: str, lun_specs: list = None,
                   lun_specs_pass_through: list = None, pool_id: str = None,
                   vstore_id: str = None, owner_controller: str = None,
                   initial_distribute_policy: str = None, prefetch_policy: str = None,
@@ -182,7 +182,7 @@ def create(client: DMEAPIClient, storage_id: str, lun_specs: list = None,
     return response
 
 
-def delete(client: DMEAPIClient, volume_ids: list, task_remarks: str = None) -> dict:
+def lun_delete(client: DMEAPIClient, volume_ids: list, task_remarks: str = None) -> dict:
     """
     批量删除 LUN
 
@@ -207,7 +207,7 @@ def delete(client: DMEAPIClient, volume_ids: list, task_remarks: str = None) -> 
     return response
 
 
-def modify(client: DMEAPIClient, volume_id: str, name: str = None,
+def lun_modify(client: DMEAPIClient, volume_id: str, name: str = None,
                   description: str = None, owner_controller: str = None,
                   prefetch_policy: str = None, prefetch_value: int = None,
                   tuning: dict = None, task_remarks: str = None) -> dict:
@@ -2251,7 +2251,7 @@ def initiator_show_owner(client: DMEAPIClient, initiator_id: str = None,
     return response
 
 
-def map_lun(client: DMEAPIClient, volume_ids: list, host_id: str,
+def ph_map_lun(client: DMEAPIClient, volume_ids: list, host_id: str,
             mapping_policy: str = None, task_remarks: str = None) -> dict:
     """
     LUN 映射给物理主机
@@ -2285,7 +2285,7 @@ def map_lun(client: DMEAPIClient, volume_ids: list, host_id: str,
     return response
 
 
-def unmap_lun(client: DMEAPIClient, volume_ids: list, host_id: str,
+def ph_unmap_lun(client: DMEAPIClient, volume_ids: list, host_id: str,
               host_type: str = "host", task_remarks: str = None) -> dict:
     """
     解除主机映射
@@ -2317,104 +2317,12 @@ def unmap_lun(client: DMEAPIClient, volume_ids: list, host_id: str,
     return response
 
 
-# 动作列表，用于 CLI 帮助
-ACTIONS = {
-    'list': {
-        'func': list_hosts,
-        'description': '批量查询物理主机',
-        'params': ['limit', 'start', 'sort_key', 'sort_dir', 'name',
-                   'host_group_name', 'ip', 'display_status', 'managed_status',
-                   'os_type', 'access_mode', 'az_id', 'az_ids', 'project_id'],
-        'subtopic': None
-    },
-    'show': {
-        'func': show_host,
-        'description': '查询指定物理主机',
-        'params': ['host_id'],
-        'subtopic': None
-    },
-    'create': {
-        'func': create_host,
-        'description': '接入物理主机',
-        'params': ['access_mode', 'type', 'host_name', 'ip', 'port',
-                   'host_username', 'host_password', 'description', 'initiator',
-                   'azs', 'project_id', 'sync_to_storage', 'multipath_type',
-                   'path_type', 'failover_mode', 'special_mode_type', 'save_public_key'],
-        'subtopic': None
-    },
-    'modify': {
-        'func': modify_host,
-        'description': '修改物理主机基本信息',
-        'params': ['host_id', 'ip', 'host_name', 'os_type', 'azs', 'project_id'],
-        'subtopic': None
-    },
-    'delete': {
-        'func': delete_host,
-        'description': '移除物理主机',
-        'params': ['host_id', 'sync_to_storage'],
-        'subtopic': None
-    },
-    'add_initiators': {
-        'func': initiator_add,
-        'description': '为物理主机添加启动器',
-        'params': ['host_id', 'initiators'],
-        'subtopic': None
-    },
-    'remove_initiators': {
-        'func': initiator_remove,
-        'description': '从物理主机移除启动器',
-        'params': ['host_id', 'initiators'],
-        'subtopic': None
-    },
-    'show_initiators': {
-        'func': initiator_list,
-        'description': '查询指定物理主机的启动器',
-        'params': ['host_id', 'port_name', 'protocol', 'status'],
-        'subtopic': None
-    },
-    'test': {
-        'func': test,
-        'description': '检测存储设备和物理主机连通性',
-        'params': ['storage_id', 'host_ids', 'hostgroup_id', 'auto_zoning', 'target_fcports', 'target_fcportgroups'],
-        'subtopic': None
-    },
-    'query_sshkey': {
-        'func': sshkey_query,
-        'description': '查询指定物理主机SSH公钥',
-        'params': ['ip', 'port'],
-        'subtopic': None
-    },
-    'save_sshkey': {
-        'func': sshkey_save,
-        'description': '保存指定物理主机SSH公钥',
-        'params': ['ip', 'key', 'port'],
-        'subtopic': None
-    },
-    'query_by_initiator': {
-        'func': initiator_show_owner,
-        'description': '根据启动器查询关联的物理主机',
-        'params': ['initiator_id', 'raw_id', 'protocol'],
-        'subtopic': None
-    },
-    'map_luns': {
-        'func': map_lun,
-        'description': 'LUN映射给物理主机',
-        'params': ['volume_ids', 'host_id', 'mapping_policy', 'task_remarks'],
-        'subtopic': None
-    },
-    'unmap_luns': {
-        'func': unmap_lun,
-        'description': '解除主机映射',
-        'params': ['volume_ids', 'host_id', 'host_type', 'task_remarks'],
-        'subtopic': None
-    },
-    }
 
 # ============================================================================
 # 物理主机组 (physical_host_group) 子主题函数
 # ============================================================================
 
-def list(client: DMEAPIClient, limit: int = None, start: int = None,
+def phg_list(client: DMEAPIClient, limit: int = None, start: int = None,
          name: str = None, project_id: str = None) -> dict:
     """
     批量查询物理主机组
@@ -2448,7 +2356,7 @@ def list(client: DMEAPIClient, limit: int = None, start: int = None,
     return response
 
 
-def show(client: DMEAPIClient, hostgroup_id: str) -> dict:
+def phg_show(client: DMEAPIClient, hostgroup_id: str) -> dict:
     """
     查询指定物理主机组
 
@@ -2467,7 +2375,7 @@ def show(client: DMEAPIClient, hostgroup_id: str) -> dict:
     return response
 
 
-def create(client: DMEAPIClient, name: str, host_ids: list,
+def phg_create(client: DMEAPIClient, name: str, host_ids: list,
            azs: list = None, project_id: str = None,
            description: str = None) -> dict:
     """
@@ -2504,7 +2412,7 @@ def create(client: DMEAPIClient, name: str, host_ids: list,
     return response
 
 
-def modify(client: DMEAPIClient, hostgroup_id: str,
+def phg_modify(client: DMEAPIClient, hostgroup_id: str,
            name: str = None, description: str = None,
            azs: list = None, project_id: str = None) -> dict:
     """
@@ -2540,7 +2448,7 @@ def modify(client: DMEAPIClient, hostgroup_id: str,
     return response
 
 
-def delete(client: DMEAPIClient, hostgroup_id: str,
+def phg_delete(client: DMEAPIClient, hostgroup_id: str,
            sync_to_storage: bool = False) -> dict:
     """
     删除指定物理主机组
@@ -2613,7 +2521,7 @@ def host_remove(client: DMEAPIClient, hostgroup_id: str,
     return response
 
 
-def map_lun(client: DMEAPIClient, volume_ids: list, hostgroup_id: str,
+def phg_map_lun(client: DMEAPIClient, volume_ids: list, hostgroup_id: str,
             mapping_policy: str = None, task_remarks: str = None) -> dict:
     """
     LUN 映射给物理主机组
@@ -2647,7 +2555,7 @@ def map_lun(client: DMEAPIClient, volume_ids: list, hostgroup_id: str,
     return response
 
 
-def unmap_lun(client: DMEAPIClient, volume_ids: list, hostgroup_id: str,
+def phg_unmap_lun(client: DMEAPIClient, volume_ids: list, hostgroup_id: str,
               host_group_type: str = "host_group", task_remarks: str = None) -> dict:
     """
     解除主机组映射
@@ -2679,63 +2587,6 @@ def unmap_lun(client: DMEAPIClient, volume_ids: list, hostgroup_id: str,
     return response
 
 
-# 动作列表，用于 CLI 帮助
-ACTIONS = {
-    'list': {
-        'func': list,
-        'description': '批量查询物理主机组',
-        'params': ['limit', 'start', 'name', 'project_id'],
-        'subtopic': None
-    },
-    'show': {
-        'func': show,
-        'description': '查询指定物理主机组',
-        'params': ['hostgroup_id'],
-        'subtopic': None
-    },
-    'create': {
-        'func': create,
-        'description': '创建物理主机组',
-        'params': ['name', 'host_ids', 'azs', 'project_id', 'description'],
-        'subtopic': None
-    },
-    'modify': {
-        'func': modify,
-        'description': '修改物理主机组基本信息',
-        'params': ['hostgroup_id', 'name', 'description', 'azs', 'project_id'],
-        'subtopic': None
-    },
-    'delete': {
-        'func': delete,
-        'description': '删除指定物理主机组',
-        'params': ['hostgroup_id', 'sync_to_storage'],
-        'subtopic': None
-    },
-    'add_hosts': {
-        'func': host_add,
-        'description': '向物理主机组中增加物理主机',
-        'params': ['hostgroup_id', 'host_ids', 'sync_to_storage'],
-        'subtopic': None
-    },
-    'remove_hosts': {
-        'func': host_remove,
-        'description': '物理主机组移除物理主机',
-        'params': ['hostgroup_id', 'host_ids', 'sync_to_storage'],
-        'subtopic': None
-    },
-    'map_luns': {
-        'func': map_lun,
-        'description': 'LUN映射给物理主机组',
-        'params': ['volume_ids', 'hostgroup_id', 'mapping_policy', 'task_remarks'],
-        'subtopic': None
-    },
-    'unmap_luns': {
-        'func': unmap_lun,
-        'description': '解除主机组映射',
-        'params': ['volume_ids', 'hostgroup_id', 'host_group_type', 'task_remarks'],
-        'subtopic': None
-    },
-    }
 
 # ============================================================================
 # 动作列表，用于 CLI 帮助
@@ -2744,31 +2595,31 @@ ACTIONS = {
 ACTIONS = {
     # LUN 子主题动作（san lun xxx）
     'lun_list': {
-        'func': list,
+        'func': lun_list,
         'description': '批量查询 LUN',
         'params': ['limit', 'offset', 'sort_dir', 'sort_key', 'name', 'vstore_raw_id', 'vstore_name', 'status', 'health_status', 'tier_id', 'volume_wwn', 'storage_id', 'pool_raw_id', 'host_id'],
         'subtopic': 'lun'
     },
     'lun_show': {
-        'func': show,
+        'func': lun_show,
         'description': '查询指定 LUN',
         'params': ['volume_id'],
         'subtopic': 'lun'
     },
     'lun_create': {
-        'func': create,
+        'func': lun_create,
         'description': '自定义创建 LUN',
         'params': ['storage_id', 'lun_specs', 'lun_specs_pass_through', 'pool_id', 'vstore_id', 'owner_controller', 'initial_distribute_policy', 'prefetch_policy', 'prefetch_value', 'tuning', 'mapping', 'task_remarks'],
         'subtopic': 'lun'
     },
     'lun_delete': {
-        'func': delete,
+        'func': lun_delete,
         'description': '批量删除 LUN',
         'params': ['volume_ids', 'task_remarks'],
         'subtopic': 'lun'
     },
     'lun_modify': {
-        'func': modify,
+        'func': lun_modify,
         'description': '修改指定 LUN',
         'params': ['volume_id', 'name', 'description', 'owner_controller', 'prefetch_policy', 'prefetch_value', 'tuning', 'task_remarks'],
         'subtopic': 'lun'
@@ -3064,44 +2915,44 @@ ACTIONS = {
         'subtopic': 'physical_host'
     },
     'physical_host_map_luns': {
-        'func': map_lun,
+        'func': ph_map_lun,
         'description': 'LUN映射给物理主机',
         'params': ['volume_ids', 'host_id', 'mapping_policy', 'task_remarks'],
         'subtopic': 'physical_host'
     },
     'physical_host_unmap_luns': {
-        'func': unmap_lun,
+        'func': ph_unmap_lun,
         'description': '解除主机映射',
         'params': ['volume_ids', 'host_id', 'host_type', 'task_remarks'],
         'subtopic': 'physical_host'
     },
     # 物理主机组子主题动作（san physical_host_group xxx）
     'physical_host_group_list': {
-        'func': list,
+        'func': phg_list,
         'description': '批量查询物理主机组',
         'params': ['limit', 'start', 'name', 'project_id'],
         'subtopic': 'physical_host_group'
     },
     'physical_host_group_show': {
-        'func': show,
+        'func': phg_show,
         'description': '查询指定物理主机组',
         'params': ['hostgroup_id'],
         'subtopic': 'physical_host_group'
     },
     'physical_host_group_create': {
-        'func': create,
+        'func': phg_create,
         'description': '创建物理主机组',
         'params': ['name', 'host_ids', 'azs', 'project_id', 'description'],
         'subtopic': 'physical_host_group'
     },
     'physical_host_group_modify': {
-        'func': modify,
+        'func': phg_modify,
         'description': '修改物理主机组基本信息',
         'params': ['hostgroup_id', 'name', 'description', 'azs', 'project_id'],
         'subtopic': 'physical_host_group'
     },
     'physical_host_group_delete': {
-        'func': delete,
+        'func': phg_delete,
         'description': '删除指定物理主机组',
         'params': ['hostgroup_id', 'sync_to_storage'],
         'subtopic': 'physical_host_group'
@@ -3119,13 +2970,13 @@ ACTIONS = {
         'subtopic': 'physical_host_group'
     },
     'physical_host_group_map_luns': {
-        'func': map_lun,
+        'func': phg_map_lun,
         'description': 'LUN映射给物理主机组',
         'params': ['volume_ids', 'hostgroup_id', 'mapping_policy', 'task_remarks'],
         'subtopic': 'physical_host_group'
     },
     'physical_host_group_unmap_luns': {
-        'func': unmap_lun,
+        'func': phg_unmap_lun,
         'description': '解除物理主机组映射',
         'params': ['volume_ids', 'hostgroup_id', 'host_group_type', 'task_remarks'],
         'subtopic': 'physical_host_group'
