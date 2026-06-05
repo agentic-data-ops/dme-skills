@@ -1492,7 +1492,11 @@ def quota_create(client: DMEAPIClient, parent_id: str, parent_type: str,
         parent_id: 父资源 ID（必填），1~64 个字符
         parent_type: 父资源类型（必填），可选值：filesystem（文件系统）、dtree（dtree，存储集群不支持）、namespace（命名空间）
         quota_type: 配额类型（必填），可选值：directory_quota（目录配额）、user_quota（用户配额）、user_group_quota（用户组配额）
-        quota_owner: 配额用户（条件必传），QuotaOwner 对象；当配额类型为用户配额（user_quota）或用户组配额（user_group_quota）时必传
+        quota_owner: 配额用户（条件必传），QuotaOwner 对象。格式：{
+                        name: 用户（组）名称（必填），1~64 个字符，* 表示所有用户（组）
+                        type: 用户（组）类型（必填），当 quota_type 为 user_quota 时可选值：unix_local_user（unix 本地用户）、domain_user（域用户）、windows_user（windows 用户）；当 quota_type 为 user_group_quota 时可选值：unix_local_user_group（unix 本地用户组）、domain_user_group（域用户组）、windows_user_group（windows 用户组）
+                        domain_type: 域用户类型（条件必传），当 type 为 domain_user 或 domain_user_group 时必传；可选值：local（本地）、ad_domain（AD 域）、ldap_domain（LDAP 域）、nis_domain（NIS 域）；OceanStor Pacific、OceanStor Dorado V6、OceanProtect 支持该字段
+        }
         dir_quota_target: 目录配额作用目标（可选），可选值：dtree（模板目录配额，作用于当前文件系统下的所有 Dtree）、filesystem（根目录配额，作用于当前文件系统）；当父资源类型为 filesystem 且配额类型为 directory_quota 时有效
         task_remarks: 异步任务备注信息
 
@@ -1539,14 +1543,14 @@ def quota_modify(client: DMEAPIClient, quota_id: str,
     Args:
         client: DME API 客户端
         quota_id: 配额 ID
-        space_soft_quota: 空间软配额，单位 Byte，-1 表示无效
-        space_hard_quota: 空间硬配额，单位 Byte，-1 表示无效
-        space_advisory_quota: 空间建议配额，单位 Byte，-1 表示无效（仅 OceanStor Pacific 支持）
-        file_soft_quota: 文件数软配额，-1 表示无效
-        file_hard_quota: 文件数硬配额，-1 表示无效
-        file_advisory_quota: 文件数建议配额，-1 表示无效（仅 OceanStor Pacific 支持）
-        snap_space_switch: 是否统计快照空间，true（统计），false（不统计）
-        soft_grace_time: 超限时间，单位天（仅 OceanStor Pacific 支持）
+        space_soft_quota: 空间软配额（可选），单位 Byte，-1 表示字段无效；当空间硬配额和空间软配额均有效时，空间硬配额需大于空间软配额
+        space_hard_quota: 空间硬配额（可选），单位 Byte，-1 表示字段无效；当空间硬配额和空间软配额均有效时，空间硬配额需大于空间软配额
+        space_advisory_quota: 空间建议配额（可选），单位 Byte，-1 表示字段无效；仅 OceanStor Pacific 设备支持；当空间建议配额和空间硬配额或空间软配额均有效时，空间建议配额需小于空间硬配额或空间软配额
+        file_soft_quota: 文件数软配额（可选），-1 表示字段无效；当文件数硬配额和文件数软配额均有效时，文件数硬配额需大于文件数软配额
+        file_hard_quota: 文件数硬配额（可选），-1 表示字段无效；当文件数硬配额和文件数软配额均有效时，文件数硬配额需大于文件数软配额
+        file_advisory_quota: 文件数建议配额（可选），-1 表示字段无效；仅 OceanStor Pacific 设备支持；当文件数建议配额和文件数硬配额或文件数软配额均有效时，文件数建议配额需小于文件数硬配额或文件数软配额
+        snap_space_switch: 是否统计快照空间（可选），true：统计快照空间；false：不统计快照空间；仅 OceanStor Pacific 设备支持
+        soft_grace_time: 超限时间（可选），0~4294967294，单位（天）；表示软配超限多长时间后自动转硬超限；不下发或取值 0 时达到软配额只告警；仅 OceanStor Pacific 支持
         task_remarks: 异步任务备注信息
 
     Returns:
