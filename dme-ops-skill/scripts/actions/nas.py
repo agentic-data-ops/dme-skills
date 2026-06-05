@@ -2287,7 +2287,7 @@ def namespace_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
            show_snap_dir: bool = None, rdc: str = None, worm: dict = None,
            qos_policy: dict = None, public_network_qos_policy: dict = None,
            private_network_qos_policy: dict = None,
-           create_s3_param: dict = None, application_type: dict = None,
+           create_s3_param: dict = None, application_type: str = None,
            task_remarks: str = None) -> dict:
     """
     批量创建命名空间
@@ -2298,11 +2298,12 @@ def namespace_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
         client: DME API 客户端
         storage_id: 存储设备 ID（必填）
         pool_raw_id: 存储池在存储设备上的 ID（必填）
-        namespace_specs: 命名空间批量参数（必填），列表格式，每个元素包含：
-                        - name: 名称（必填，1~255 个字符）
-                        - count: 数量（必填，1~500）
-                        - start_suffix: 起始后缀编号（可选，0~9999）
-                        - isInGfs: 是否在全局命名空间中（可选）
+        namespace_specs: 命名空间批量参数，支持批量创建，格式：[{
+                        name: 名称（必填，1~255 个字符），只支持数字、字母、下划线和中文字符，特殊字符支持 "."、"-"
+                        count: 数量（必填，1~500）
+                        start_suffix: 起始后缀编号（可选，0~9999），起始后缀编号加命名空间数量小于等于 9999
+                        isInGfs: 是否在全局命名空间中（可选），true：是；false：否
+        },...]
         enable_update_atime: 是否更新 Atime
         trash_visible: 回收站目录是否可见，默认不可见
         trash_enable: 回收站功能是否开启，默认不开启
@@ -2316,16 +2317,81 @@ def namespace_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
         atime_update_mode: atime 更新频率，4294967295 关闭，3600 1 小时，86400 1 天
         acl_policy_type: 安全模式，可选值：mixed, unix, native, ntfs，默认 unix
         enable_encrypt: 是否开启加密
-        crypt_alg: 加密算法类型，可选值：XTS_AES_128, XTS_AES_256, XTS_SM4
+        crypt_alg: 加密算法类型，可选值：XTS_AES_128, XTS_AES_256, XTS_SM4, UNKNOWN
         case_sensitive: 大小写是否敏感，默认不敏感
         show_snap_dir: 快照目录是否可见
         rdc: 数据冗余份数，可选值：redundancy_2, redundancy_3, redundancy_4
-        worm: WORM 参数对象，包含 worm_mode, min_protect_period, max_protect_period 等
-        qos_policy: QoS 策略参数对象
-        public_network_qos_policy: 公网 QoS 参数对象
-        private_network_qos_policy: 私网 QoS 参数对象
-        create_s3_param: 创建 S3 协议参数对象
-        application_type: 应用类型对象
+        worm: WORM 配置。格式：{
+                        worm_mode: WORM 策略模式（可选），可选值：non_worm（None类型），enterprise_mode（企业级），compliance_mode（法规级）
+                        min_protect_period: 最小保护期（可选），0~4294967295，默认 0；支持无限期（infinite，值为 4294967295）
+                        min_protect_period_unit: 最小保留时间单位（可选），可选值：day、year、month、hour、minute，默认 year
+                        max_protect_period: 最大保护期（可选），1~4294967295，默认 70；支持无限期（infinite，值为 4294967295）
+                        max_protect_period_unit: 最大保留时间单位（可选），可选值：day、year、month、hour、minute、infinite，默认 year
+                        def_protect_period: 默认保护期（可选），0~4294967295，默认 70
+                        def_protect_period_unit: 默认保留时间单位（可选），可选值：day、year、month、hour、minute、infinite，默认 year
+                        auto_lock_enabled: WORM 是否自动锁定（可选），true：是；false：否，默认 false
+                        auto_lock_time: 自动锁定时间（可选），1~64800，默认 2；当 auto_lock_unit 为 day 时范围 1~45，hour 时 1~1080，minute 时 1~64800
+                        auto_lock_unit: 自动锁定时间单位（可选），可选值：day、minute、hour，默认 hour
+                        legal_hold_modify: 诉讼保留文件是否可以修改保留期开关（可选），true：是；false：否，默认 false
+        }
+        qos_policy: QoS 策略配置。格式：{
+                        qos_scale: 上限控制维度（必填），可选值：namespace、client、account、user、innertask
+                        name: QoS 策略名称（可选），1~63 个字符，正则 ^[a-zA-Z0-9][a-zA-Z0-9_-]*，只能以数字或字母开头
+                        qos_mode: QoS 模式（必填），可选值：by_usage（按已使用量）、by_package（按固定容量）、manual（按上限）
+                        account_raw_id: 帐户在指定存储设备上的 id（可选），0~4294967293，当 qos_scale 为 namespace、account 或 user 时必选
+                        package_size: 包容量（可选），0~94371840（GB），当 qos_mode 为 by_package 时必选
+                        max_iops: IOPS 上限（可选），0~1073741824000，批量创建命名空间时为必选
+                        max_mbps: 带宽上限（可选），0~1073741824（Mbps），当 qos_mode 为 manual 时必选
+                        max_band_width: 最大带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选
+                        basic_band_width: 基础带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选
+                        bps_density: 带宽密度（可选），1~1024000（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选
+                        max_conn_cluster: 最大连接数（可选）
+                        max_lock_cluster: 最大锁数量（可选）
+                        max_open_file_cluster: 最大打开文件数量（可选）
+                        read_ops: 读 OPS 限制（可选），0~1073741824000，仅当 qos_mode 为 manual 且 qos_scale 不为 account 时可选
+                        write_ops: 写 OPS 限制（可选），0~1073741824000，仅当 qos_mode 为 manual 且 qos_scale 不为 account 时可选
+                        read_mbps: 读带宽限制（可选），0~1073741824（Mbps），仅当 qos_mode 为 manual 且 qos_scale 不为 account 时可选
+                        write_mbps: 写带宽限制（可选），0~1073741824（Mbps），仅当 qos_mode 为 manual 且 qos_scale 不为 account 时可选
+        }
+        public_network_qos_policy: 公网 QoS 策略配置。格式：{
+                        name: QoS 策略名称（可选），1~63 个字符，正则 ^[a-zA-Z0-9][a-zA-Z0-9_-]*，只能以数字或字母开头
+                        qos_mode: QoS 模式（条件必选），可选值：by_usage（按已使用量）、by_package（按固定容量）、manual（按上限）；批量创建命名空间时为必选，修改时为非必选
+                        package_size: 包容量（可选），0~94371840（GB），当 qos_mode 为 by_package 时必选
+                        max_iops: IOPS 上限（条件必选），0~1073741824000，批量创建命名空间时为必选，修改时为非必选
+                        max_mbps: 带宽上限（可选），0~1073741824（Mbps），当 qos_mode 为 manual 时必选
+                        max_band_width: 最大带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选
+                        basic_band_width: 基础带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选
+                        bps_density: 带宽密度（可选），1~1024000（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选
+                        max_conn_cluster: 最大连接数（可选）
+                        max_lock_cluster: 最大锁数量（可选）
+                        max_open_file_cluster: 最大打开文件数量（可选）
+                        read_ops: 读 OPS 限制（可选），0~1073741824000，仅当 qos_mode 为 manual 且 qos_scale 不为 account 时可选
+                        write_ops: 写 OPS 限制（可选），0~1073741824000，仅当 qos_mode 为 manual 且 qos_scale 不为 account 时可选
+                        read_mbps: 读带宽限制（可选），0~1073741824（Mbps），仅当 qos_mode 为 manual 且 qos_scale 不为 account 时可选
+                        write_mbps: 写带宽限制（可选），0~1073741824（Mbps），仅当 qos_mode 为 manual 且 qos_scale 不为 account 时可选
+        }
+        private_network_qos_policy: 私网 QoS 策略配置。格式：{
+                        name: QoS 策略名称（可选），1~63 个字符，正则 ^[a-zA-Z0-9][a-zA-Z0-9_-]*，只能以数字或字母开头
+                        qos_mode: QoS 模式（条件必选），可选值：by_usage（按已使用量）、by_package（按固定容量）、manual（按上限）；批量创建命名空间时为必选，修改时为非必选
+                        package_size: 包容量（可选），0~94371840（GB），当 qos_mode 为 by_package 时必选
+                        max_iops: IOPS 上限（条件必选），0~1073741824000，批量创建命名空间时为必选，修改时为非必选
+                        max_mbps: 带宽上限（可选），0~1073741824（Mbps），当 qos_mode 为 manual 时必选
+                        max_band_width: 最大带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选
+                        basic_band_width: 基础带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选
+                        bps_density: 带宽密度（可选），1~1024000（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选
+                        max_conn_cluster: 最大连接数（可选）
+                        max_lock_cluster: 最大锁数量（可选）
+                        max_open_file_cluster: 最大打开文件数量（可选）
+                        read_ops: 读 OPS 限制（可选），0~1073741824000，仅当 qos_mode 为 manual 且 qos_scale 不为 account 时可选
+                        write_ops: 写 OPS 限制（可选），0~1073741824000，仅当 qos_mode 为 manual 且 qos_scale 不为 account 时可选
+                        read_mbps: 读带宽限制（可选），0~1073741824（Mbps），仅当 qos_mode 为 manual 且 qos_scale 不为 account 时可选
+                        write_mbps: 写带宽限制（可选），0~1073741824（Mbps），仅当 qos_mode 为 manual 且 qos_scale 不为 account 时可选
+        }
+        create_s3_param: 创建 S3 协议参数。格式：{
+                        bucket_permission: 策略类型（必填），可选值：private（私有）、public_read_only（公共读）、public_write_only（公共写）、public_read_write（公共读写）
+                        version_status: 对象多版本状态（可选），0~2，0：关闭；1：打开；2：暂停
+        }
+        application_type: 应用类型，可选值：PACS（医疗影像场景）, GENERAL（通用场景）
         task_remarks: 异步任务备注信息
     
     Returns:
@@ -2398,7 +2464,7 @@ def namespace_modify(client: DMEAPIClient, namespace_id: str,
            acl_policy_type: str = None, enable_encrypt: bool = None,
            qos_policy: dict = None, public_network_qos_policy: dict = None,
            private_network_qos_policy: dict = None,
-           application_type: dict = None, task_remarks: str = None) -> dict:
+           application_type: str = None, task_remarks: str = None) -> dict:
     """
     修改指定命名空间
     
@@ -2407,22 +2473,78 @@ def namespace_modify(client: DMEAPIClient, namespace_id: str,
     Args:
         client: DME API 客户端
         namespace_id: 命名空间 ID（必选，1~64 个字符）
-        enable_update_atime: 是否更新 Atime
-        show_snap_dir: 快照目录是否可见
-        trash_visible: 回收站目录是否可见
-        trash_enable: 回收站功能是否开启
-        interval_trash: 回收站保护时长（分钟）
-        dps_switch: 元数据检索开关
-        forbidden_dpc: 是否禁止 dpc 挂载
-        audit_log_switch: 是否开启审计日志
-        audit_log_rule: 审计日志规则列表
-        atime_update_mode: atime 更新频率
-        acl_policy_type: 安全模式，可选值：mixed, unix, native, ntfs
-        enable_encrypt: 是否开启加密
-        qos_policy: QoS 参数对象
-        public_network_qos_policy: 公网 QoS 参数对象
-        private_network_qos_policy: 私网 QoS 参数对象
-        application_type: 应用类型对象
+        enable_update_atime: 是否更新 Atime，true：更新；false：不更新
+        show_snap_dir: 快照目录是否可见，true：可见；false：不可见
+        trash_visible: 回收站目录是否可见，true：可见；false：不可见，默认不可见
+        trash_enable: 回收站功能是否开启，true：开启；false：不开启，默认不开启
+        interval_trash: 回收站保护时长（分钟），0 表示永久保留，不自动删除，最大 4294967295
+        dps_switch: 元数据检索开关，true：开启；false：关闭
+        forbidden_dpc: 是否禁止 dpc 挂载，true：禁止；false：不禁止
+        audit_log_switch: 是否开启审计日志，缺省关闭，true：开启；false：关闭
+        audit_log_rule: 审计日志规则列表，可选值：open, create, read, write, close, delete, rename,
+                       get_attr, set_attr, get_security, set_security, get_xattr, set_xattr,
+                       list_dir, contact, mount_or_unmount, login_or_logoff
+        atime_update_mode: atime 更新频率，4294967295：关闭更新；3600：1 小时更新；86400：1 天更新
+        acl_policy_type: 命名空间安全模式，可选值：mixed（同时支持 UNIX 和 Windows 权限），
+                        unix（适用于 NFS 用户的权限由 Unix Mode/NFSv4 ACL 权限控制），
+                        native（与 Mixed 模式适用于相同的场景），
+                        ntfs（适用于 CIFS 用户的权限由 Windows NT ACL 权限控制）
+        enable_encrypt: 是否开启加密，true：开启；false：关闭
+        qos_policy: QoS 策略配置。格式：{
+                        qos_switch: QoS 开关（必填），可选值：on、off
+                        name: QoS 策略名称（可选），1~63 个字符，正则 ^[a-zA-Z0-9][a-zA-Z0-9_-]*，只能以数字或字母开头
+                        qos_mode: QoS 模式（条件必选），可选值：by_usage（按已使用量）、by_package（按固定容量）、manual（按上限）；批量创建命名空间时为必选，修改时为非必选
+                        package_size: 包容量（可选），0~94371840（GB），当 qos_mode 为 by_package 时必选
+                        max_iops: IOPS 上限（条件必选），0~1073741824000，批量创建命名空间时为必选，修改时为非必选
+                        max_mbps: 带宽上限（可选），0~1073741824（Mbps），当 qos_mode 为 manual 时必选
+                        max_band_width: 最大带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选
+                        basic_band_width: 基础带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选
+                        bps_density: 带宽密度（可选），1~1024000（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选
+                        max_conn_cluster: 最大连接数（可选）
+                        max_lock_cluster: 最大锁数量（可选）
+                        max_open_file_cluster: 最大打开文件数量（可选）
+                        read_ops: 读 OPS 限制（可选），0~1073741824000，仅当 qos_mode 为 manual 且 qos_scale 不为 account 时可选
+                        write_ops: 写 OPS 限制（可选），0~1073741824000，仅当 qos_mode 为 manual 且 qos_scale 不为 account 时可选
+                        read_mbps: 读带宽限制（可选），0~1073741824（Mbps），仅当 qos_mode 为 manual 且 qos_scale 不为 account 时可选
+                        write_mbps: 写带宽限制（可选），0~1073741824（Mbps），仅当 qos_mode 为 manual 且 qos_scale 不为 account 时可选
+        }
+        public_network_qos_policy: 公网 QoS 策略配置。格式：{
+                        qos_switch: QoS 开关（必填），可选值：on、off
+                        name: QoS 策略名称（可选），1~63 个字符，正则 ^[a-zA-Z0-9][a-zA-Z0-9_-]*，只能以数字或字母开头
+                        qos_mode: QoS 模式（条件必选），可选值：by_usage（按已使用量）、by_package（按固定容量）、manual（按上限）；批量创建命名空间时为必选，修改时为非必选
+                        package_size: 包容量（可选），0~94371840（GB），当 qos_mode 为 by_package 时必选
+                        max_iops: IOPS 上限（条件必选），0~1073741824000，批量创建命名空间时为必选，修改时为非必选
+                        max_mbps: 带宽上限（可选），0~1073741824（Mbps），当 qos_mode 为 manual 时必选
+                        max_band_width: 最大带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选
+                        basic_band_width: 基础带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选
+                        bps_density: 带宽密度（可选），1~1024000（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选
+                        max_conn_cluster: 最大连接数（可选）
+                        max_lock_cluster: 最大锁数量（可选）
+                        max_open_file_cluster: 最大打开文件数量（可选）
+                        read_ops: 读 OPS 限制（可选），0~1073741824000，仅当 qos_mode 为 manual 且 qos_scale 不为 account 时可选
+                        write_ops: 写 OPS 限制（可选），0~1073741824000，仅当 qos_mode 为 manual 且 qos_scale 不为 account 时可选
+                        read_mbps: 读带宽限制（可选），0~1073741824（Mbps），仅当 qos_mode 为 manual 且 qos_scale 不为 account 时可选
+                        write_mbps: 写带宽限制（可选），0~1073741824（Mbps），仅当 qos_mode 为 manual 且 qos_scale 不为 account 时可选
+        }
+        private_network_qos_policy: 私网 QoS 策略配置。格式：{
+                        qos_switch: QoS 开关（必填），可选值：on、off
+                        name: QoS 策略名称（可选），1~63 个字符，正则 ^[a-zA-Z0-9][a-zA-Z0-9_-]*，只能以数字或字母开头
+                        qos_mode: QoS 模式（条件必选），可选值：by_usage（按已使用量）、by_package（按固定容量）、manual（按上限）；批量创建命名空间时为必选，修改时为非必选
+                        package_size: 包容量（可选），0~94371840（GB），当 qos_mode 为 by_package 时必选
+                        max_iops: IOPS 上限（条件必选），0~1073741824000，批量创建命名空间时为必选，修改时为非必选
+                        max_mbps: 带宽上限（可选），0~1073741824（Mbps），当 qos_mode 为 manual 时必选
+                        max_band_width: 最大带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选
+                        basic_band_width: 基础带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选
+                        bps_density: 带宽密度（可选），1~1024000（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选
+                        max_conn_cluster: 最大连接数（可选）
+                        max_lock_cluster: 最大锁数量（可选）
+                        max_open_file_cluster: 最大打开文件数量（可选）
+                        read_ops: 读 OPS 限制（可选），0~1073741824000，仅当 qos_mode 为 manual 且 qos_scale 不为 account 时可选
+                        write_ops: 写 OPS 限制（可选），0~1073741824000，仅当 qos_mode 为 manual 且 qos_scale 不为 account 时可选
+                        read_mbps: 读带宽限制（可选），0~1073741824（Mbps），仅当 qos_mode 为 manual 且 qos_scale 不为 account 时可选
+                        write_mbps: 写带宽限制（可选），0~1073741824（Mbps），仅当 qos_mode 为 manual 且 qos_scale 不为 account 时可选
+        }
+        application_type: 应用类型，可选值：PACS（医疗影像场景）, GENERAL（通用场景）
         task_remarks: 异步任务备注信息
     
     Returns:
