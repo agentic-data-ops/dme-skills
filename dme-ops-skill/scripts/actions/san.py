@@ -1809,7 +1809,7 @@ def port_group_show_relations(client: DMEAPIClient, storage_id: str,
 # 物理主机 (physical_host) 子主题函数
 # ============================================================================
 
-def list_hosts(client: DMEAPIClient, limit: int = None, start: int = None,
+def physical_host_list(client: DMEAPIClient, limit: int = None, start: int = None,
                sort_key: str = None, sort_dir: str = None, name: str = None,
                host_group_name: str = None, ip: str = None,
                display_status: str = None, managed_status: list = None,
@@ -1878,7 +1878,7 @@ def list_hosts(client: DMEAPIClient, limit: int = None, start: int = None,
     return response
 
 
-def show_host(client: DMEAPIClient, host_id: str) -> dict:
+def physical_host_show(client: DMEAPIClient, host_id: str) -> dict:
     """
     查询指定物理主机
 
@@ -1897,7 +1897,7 @@ def show_host(client: DMEAPIClient, host_id: str) -> dict:
     return response
 
 
-def create_host(client: DMEAPIClient, access_mode: str, type: str,
+def physical_host_create(client: DMEAPIClient, access_mode: str, type: str,
                 host_name: str = None, ip: str = None, port: int = None,
                 host_username: str = None, host_password: str = None,
                 description: str = None, initiator: list = None,
@@ -1976,7 +1976,7 @@ def create_host(client: DMEAPIClient, access_mode: str, type: str,
     return response
 
 
-def modify_host(client: DMEAPIClient, host_id: str,
+def physical_host_modify(client: DMEAPIClient, host_id: str,
                 ip: str = None, host_name: str = None,
                 os_type: str = None, azs: list = None,
                 project_id: str = None) -> dict:
@@ -2016,7 +2016,7 @@ def modify_host(client: DMEAPIClient, host_id: str,
     return response
 
 
-def delete_host(client: DMEAPIClient, host_id: str,
+def physical_host_delete(client: DMEAPIClient, host_id: str,
                 sync_to_storage: bool = False) -> dict:
     """
     移除物理主机
@@ -2037,7 +2037,7 @@ def delete_host(client: DMEAPIClient, host_id: str,
     return response
 
 
-def initiator_add(client: DMEAPIClient, host_id: str,
+def physical_host_initiator_add(client: DMEAPIClient, host_id: str,
                   initiators: list) -> dict:
     """
     为物理主机添加启动器
@@ -2062,7 +2062,7 @@ def initiator_add(client: DMEAPIClient, host_id: str,
     return response
 
 
-def initiator_remove(client: DMEAPIClient, host_id: str,
+def physical_host_initiator_remove(client: DMEAPIClient, host_id: str,
                      initiators: list) -> dict:
     """
     从物理主机移除启动器
@@ -2087,7 +2087,7 @@ def initiator_remove(client: DMEAPIClient, host_id: str,
     return response
 
 
-def initiator_list(client: DMEAPIClient, host_id: str,
+def physical_host_initiator_list(client: DMEAPIClient, host_id: str,
                    port_name: str = None, protocol: str = None,
                    status: str = None) -> dict:
     """
@@ -2119,7 +2119,7 @@ def initiator_list(client: DMEAPIClient, host_id: str,
     return response
 
 
-def test(client: DMEAPIClient, storage_id: str,
+def physical_host_test(client: DMEAPIClient, storage_id: str,
          host_ids: list = None, hostgroup_id: str = None,
          auto_zoning: bool = False,
          target_fcports: list = None,
@@ -2162,7 +2162,7 @@ def test(client: DMEAPIClient, storage_id: str,
     return response
 
 
-def sshkey_save(client: DMEAPIClient, ip: str, key: str,
+def physical_host_sshkey_save(client: DMEAPIClient, ip: str, key: str,
                 port: int = None) -> dict:
     """
     保存指定物理主机 SSH 公钥
@@ -2192,7 +2192,7 @@ def sshkey_save(client: DMEAPIClient, ip: str, key: str,
     return response
 
 
-def sshkey_query(client: DMEAPIClient, ip: str,
+def physical_host_sshkey_query(client: DMEAPIClient, ip: str,
                  port: int = None) -> dict:
     """
     查询指定物理主机 SSH 公钥
@@ -2220,7 +2220,7 @@ def sshkey_query(client: DMEAPIClient, ip: str,
     return response
 
 
-def initiator_show_owner(client: DMEAPIClient, initiator_id: str = None,
+def physical_host_initiator_show_owner(client: DMEAPIClient, initiator_id: str = None,
                          raw_id: str = None, protocol: str = None) -> dict:
     """
     根据启动器查询关联的物理主机
@@ -2251,7 +2251,7 @@ def initiator_show_owner(client: DMEAPIClient, initiator_id: str = None,
     return response
 
 
-def ph_map_lun(client: DMEAPIClient, volume_ids: list, host_id: str,
+def physical_host_map_lun(client: DMEAPIClient, volume_ids: list, host_id: str,
             mapping_policy: str = None, task_remarks: str = None) -> dict:
     """
     LUN 映射给物理主机
@@ -2285,7 +2285,7 @@ def ph_map_lun(client: DMEAPIClient, volume_ids: list, host_id: str,
     return response
 
 
-def ph_unmap_lun(client: DMEAPIClient, volume_ids: list, host_id: str,
+def physical_host_unmap_lun(client: DMEAPIClient, volume_ids: list, host_id: str,
               host_type: str = "host", task_remarks: str = None) -> dict:
     """
     解除主机映射
@@ -2322,7 +2322,7 @@ def ph_unmap_lun(client: DMEAPIClient, volume_ids: list, host_id: str,
 # 物理主机组 (physical_host_group) 子主题函数
 # ============================================================================
 
-def phg_list(client: DMEAPIClient, limit: int = None, start: int = None,
+def physical_host_group_list(client: DMEAPIClient, limit: int = None, start: int = None,
          name: str = None, project_id: str = None) -> dict:
     """
     批量查询物理主机组
@@ -2356,7 +2356,7 @@ def phg_list(client: DMEAPIClient, limit: int = None, start: int = None,
     return response
 
 
-def phg_show(client: DMEAPIClient, hostgroup_id: str) -> dict:
+def physical_host_group_show(client: DMEAPIClient, hostgroup_id: str) -> dict:
     """
     查询指定物理主机组
 
@@ -2375,7 +2375,7 @@ def phg_show(client: DMEAPIClient, hostgroup_id: str) -> dict:
     return response
 
 
-def phg_create(client: DMEAPIClient, name: str, host_ids: list,
+def physical_host_group_create(client: DMEAPIClient, name: str, host_ids: list,
            azs: list = None, project_id: str = None,
            description: str = None) -> dict:
     """
@@ -2412,7 +2412,7 @@ def phg_create(client: DMEAPIClient, name: str, host_ids: list,
     return response
 
 
-def phg_modify(client: DMEAPIClient, hostgroup_id: str,
+def physical_host_group_modify(client: DMEAPIClient, hostgroup_id: str,
            name: str = None, description: str = None,
            azs: list = None, project_id: str = None) -> dict:
     """
@@ -2448,7 +2448,7 @@ def phg_modify(client: DMEAPIClient, hostgroup_id: str,
     return response
 
 
-def phg_delete(client: DMEAPIClient, hostgroup_id: str,
+def physical_host_group_delete(client: DMEAPIClient, hostgroup_id: str,
            sync_to_storage: bool = False) -> dict:
     """
     删除指定物理主机组
@@ -2469,7 +2469,7 @@ def phg_delete(client: DMEAPIClient, hostgroup_id: str,
     return response
 
 
-def host_add(client: DMEAPIClient, hostgroup_id: str,
+def physical_host_group_add_hosts(client: DMEAPIClient, hostgroup_id: str,
              host_ids: list, sync_to_storage: bool = False) -> dict:
     """
     向物理主机组中增加物理主机
@@ -2495,7 +2495,7 @@ def host_add(client: DMEAPIClient, hostgroup_id: str,
     return response
 
 
-def host_remove(client: DMEAPIClient, hostgroup_id: str,
+def physical_host_group_remove_hosts(client: DMEAPIClient, hostgroup_id: str,
                 host_ids: list, sync_to_storage: bool = False) -> dict:
     """
     物理主机组移除物理主机
@@ -2521,7 +2521,7 @@ def host_remove(client: DMEAPIClient, hostgroup_id: str,
     return response
 
 
-def phg_map_lun(client: DMEAPIClient, volume_ids: list, hostgroup_id: str,
+def physical_host_group_map_lun(client: DMEAPIClient, volume_ids: list, hostgroup_id: str,
             mapping_policy: str = None, task_remarks: str = None) -> dict:
     """
     LUN 映射给物理主机组
@@ -2555,7 +2555,7 @@ def phg_map_lun(client: DMEAPIClient, volume_ids: list, hostgroup_id: str,
     return response
 
 
-def phg_unmap_lun(client: DMEAPIClient, volume_ids: list, hostgroup_id: str,
+def physical_host_group_unmap_lun(client: DMEAPIClient, volume_ids: list, hostgroup_id: str,
               host_group_type: str = "host_group", task_remarks: str = None) -> dict:
     """
     解除主机组映射
@@ -2838,7 +2838,7 @@ ACTIONS = {
     },
     # 物理主机子主题动作（san physical_host xxx）
     'physical_host_list': {
-        'func': list_hosts,
+        'func': physical_host_list,
         'description': '批量查询物理主机',
         'params': ['limit', 'start', 'sort_key', 'sort_dir', 'name',
                    'host_group_name', 'ip', 'display_status', 'managed_status',
@@ -2846,13 +2846,13 @@ ACTIONS = {
         'subtopic': 'physical_host'
     },
     'physical_host_show': {
-        'func': show_host,
+        'func': physical_host_show,
         'description': '查询指定物理主机',
         'params': ['host_id'],
         'subtopic': 'physical_host'
     },
     'physical_host_create': {
-        'func': create_host,
+        'func': physical_host_create,
         'description': '接入物理主机',
         'params': ['access_mode', 'type', 'host_name', 'ip', 'port',
                    'host_username', 'host_password', 'description', 'initiator',
@@ -2861,122 +2861,122 @@ ACTIONS = {
         'subtopic': 'physical_host'
     },
     'physical_host_modify': {
-        'func': modify_host,
+        'func': physical_host_modify,
         'description': '修改物理主机基本信息',
         'params': ['host_id', 'ip', 'host_name', 'os_type', 'azs', 'project_id'],
         'subtopic': 'physical_host'
     },
     'physical_host_delete': {
-        'func': delete_host,
+        'func': physical_host_delete,
         'description': '移除物理主机',
         'params': ['host_id', 'sync_to_storage'],
         'subtopic': 'physical_host'
     },
     'physical_host_add_initiators': {
-        'func': initiator_add,
+        'func': physical_host_initiator_add,
         'description': '为物理主机添加启动器',
         'params': ['host_id', 'initiators'],
         'subtopic': 'physical_host'
     },
     'physical_host_remove_initiators': {
-        'func': initiator_remove,
+        'func': physical_host_initiator_remove,
         'description': '从物理主机移除启动器',
         'params': ['host_id', 'initiators'],
         'subtopic': 'physical_host'
     },
     'physical_host_show_initiators': {
-        'func': initiator_list,
+        'func': physical_host_initiator_list,
         'description': '查询指定物理主机的启动器',
         'params': ['host_id', 'port_name', 'protocol', 'status'],
         'subtopic': 'physical_host'
     },
     'physical_host_test': {
-        'func': test,
+        'func': physical_host_test,
         'description': '检测存储设备和物理主机连通性',
         'params': ['storage_id', 'host_ids', 'hostgroup_id', 'auto_zoning', 'target_fcports', 'target_fcportgroups'],
         'subtopic': 'physical_host'
     },
     'physical_host_query_sshkey': {
-        'func': sshkey_query,
+        'func': physical_host_sshkey_query,
         'description': '查询指定物理主机SSH公钥',
         'params': ['ip', 'port'],
         'subtopic': 'physical_host'
     },
     'physical_host_save_sshkey': {
-        'func': sshkey_save,
+        'func': physical_host_sshkey_save,
         'description': '保存指定物理主机SSH公钥',
         'params': ['ip', 'key', 'port'],
         'subtopic': 'physical_host'
     },
     'physical_host_query_by_initiator': {
-        'func': initiator_show_owner,
+        'func': physical_host_initiator_show_owner,
         'description': '根据启动器查询关联的物理主机',
         'params': ['initiator_id', 'raw_id', 'protocol'],
         'subtopic': 'physical_host'
     },
     'physical_host_map_luns': {
-        'func': ph_map_lun,
+        'func': physical_host_map_lun,
         'description': 'LUN映射给物理主机',
         'params': ['volume_ids', 'host_id', 'mapping_policy', 'task_remarks'],
         'subtopic': 'physical_host'
     },
     'physical_host_unmap_luns': {
-        'func': ph_unmap_lun,
+        'func': physical_host_unmap_lun,
         'description': '解除主机映射',
         'params': ['volume_ids', 'host_id', 'host_type', 'task_remarks'],
         'subtopic': 'physical_host'
     },
     # 物理主机组子主题动作（san physical_host_group xxx）
     'physical_host_group_list': {
-        'func': phg_list,
+        'func': physical_host_group_list,
         'description': '批量查询物理主机组',
         'params': ['limit', 'start', 'name', 'project_id'],
         'subtopic': 'physical_host_group'
     },
     'physical_host_group_show': {
-        'func': phg_show,
+        'func': physical_host_group_show,
         'description': '查询指定物理主机组',
         'params': ['hostgroup_id'],
         'subtopic': 'physical_host_group'
     },
     'physical_host_group_create': {
-        'func': phg_create,
+        'func': physical_host_group_create,
         'description': '创建物理主机组',
         'params': ['name', 'host_ids', 'azs', 'project_id', 'description'],
         'subtopic': 'physical_host_group'
     },
     'physical_host_group_modify': {
-        'func': phg_modify,
+        'func': physical_host_group_modify,
         'description': '修改物理主机组基本信息',
         'params': ['hostgroup_id', 'name', 'description', 'azs', 'project_id'],
         'subtopic': 'physical_host_group'
     },
     'physical_host_group_delete': {
-        'func': phg_delete,
+        'func': physical_host_group_delete,
         'description': '删除指定物理主机组',
         'params': ['hostgroup_id', 'sync_to_storage'],
         'subtopic': 'physical_host_group'
     },
     'physical_host_group_add_hosts': {
-        'func': host_add,
+        'func': physical_host_group_add_hosts,
         'description': '向物理主机组中增加物理主机',
         'params': ['hostgroup_id', 'host_ids', 'sync_to_storage'],
         'subtopic': 'physical_host_group'
     },
     'physical_host_group_remove_hosts': {
-        'func': host_remove,
+        'func': physical_host_group_remove_hosts,
         'description': '物理主机组移除物理主机',
         'params': ['hostgroup_id', 'host_ids', 'sync_to_storage'],
         'subtopic': 'physical_host_group'
     },
     'physical_host_group_map_luns': {
-        'func': phg_map_lun,
+        'func': physical_host_group_map_lun,
         'description': 'LUN映射给物理主机组',
         'params': ['volume_ids', 'hostgroup_id', 'mapping_policy', 'task_remarks'],
         'subtopic': 'physical_host_group'
     },
     'physical_host_group_unmap_luns': {
-        'func': phg_unmap_lun,
+        'func': physical_host_group_unmap_lun,
         'description': '解除物理主机组映射',
         'params': ['volume_ids', 'hostgroup_id', 'host_group_type', 'task_remarks'],
         'subtopic': 'physical_host_group'
