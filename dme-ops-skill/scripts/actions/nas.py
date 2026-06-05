@@ -497,6 +497,7 @@ def nfs_share_create(client: DMEAPIClient, create_nfs_share_param: dict,
             - show_snapshot_enable: 是否开启显示Snapshot（可选）。可选值：true/false
             - nfs_share_client_addition: NFS共享客户端权限列表，格式：[{
                 name: 客户端IP或主机名或网络组名（必选，取值说明：网络组名称格式以@开头，由字母，数字、“_”，“-”，“.”，以及中文字符组成）,
+                name: 客户端IP或主机名或网络组名（必选，取值说明：网络组名称格式以@开头，由字母，数字、"_"，"-"，"."，以及中文字符组成）,
                 permission: 权限（必选，取值范围：read（读），read_and_write（读写），no_permission（无权限），read_and_write_not_del_rename（读写，不能删除、重命名））,
                 accesskrb5: krb5权限（可选，取值范围：read（读），read_and_write（读写），no_permission（无权限），read_and_write_not_del_rename（读写，不能删除、重命名））,
                 accesskrb5i: krb5i权限（可选，取值范围：read（读），read_and_write（读写），no_permission（无权限），read_and_write_not_del_rename（读写，不能删除、重命名））,
@@ -511,6 +512,7 @@ def nfs_share_create(client: DMEAPIClient, create_nfs_share_param: dict,
             - file_name_extension_filters: 文件扩展名过滤规则列表，格式：[{
                 file_name_ex_id_in_storage: 文件扩展名过滤规则在存储上的ID（可选，1~64字符，变更已添加的规则时必填）,
                 file_name_extension: 文件扩展名（必选，1~127个可见的ASCII字符，只能由数字、字母、空格或部分特殊字符组成，且支持通配符“?”和“*”，且通配符“*”只能位于最后一个字符。单个共享支持的最大过滤项个数为128个）,
+                file_name_extension: 文件扩展名（必选，1~127个可见的ASCII字符，只能由数字、字母、空格或部分特殊字符组成，且支持通配符"?"和"*"，"*"只能位于最后一个字符。单个共享支持的最大过滤项个数为128个）,
                 rule_type: 文件扩展名过滤规则允许/拒绝（可选，取值：reject/permit，默认为reject）,
                 fileoperations: 文件扩展名过滤规则操作类型列表（可选，取值范围：close（关闭），create（创建），create_dir（创建目录），delete（删除），delete_dir（删除目录），getattr（获取属性），link（创建硬链接），lookup（查找），open（打开），read（读），write（写），rename（重命名），rename_dir（重命名目录），setattr（设置属性），symlink（创建符号链接））
               }, ...]（可选）
@@ -1158,7 +1160,9 @@ def dataturbo_share_create(client: DMEAPIClient, charset: str, fs_id: str = None
         fs_id: 需共享的文件系统的 ID，与 dtree_id 互斥，必传其中一个
         dtree_id: 需共享的 Dtree 的 ID，与 fs_id 互斥，必传其中一个
         description: DataTurbo 共享描述
-        dataturbo_share_auth: DataTurbo 管理员列表，每个元素包含 dpc_user_id 和 permission
+        dataturbo_share_auth: DataTurbo 管理员列表，每个元素包含以下字段：
+            - dpc_user_id (str): DataTurbo管理员ID，长度1-64
+            - permission (str): DataTurbo管理员权限，支持 read_and_write（读写）
         task_remarks: 异步任务备注信息
 
     Returns:
