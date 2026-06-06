@@ -1498,18 +1498,18 @@ def storage_host_group_list(client: DMEAPIClient, storage_id: str = None, name: 
 
     Args:
         client: DME API 客户端
-        storage_id: 存储设备 ID（可选，1~64 字符）
-        name: 主机组名称（可选，支持模糊匹配）
-        raw_id: 主机组在设备侧的 ID（可选）
-        vstore_id: 租户 ID（可选）
-        vstore_name: 租户名称（可选）
-        page_no: 分页查询的页码（可选，默认 1）
-        page_size: 分页查询的每页大小（可选，1~1000，默认 20）
-        sort_key: 排序关键字（可选）
-        sort_dir: 排序方式（可选，desc/asc）
-        avaiable_mapping_for_lun_group_id: 可映射的 LUN 组 ID（可选）
-        avaiable_mapping_for_lun_id: 可映射的 LUN ID（可选）
-        support_provisioning: 是否支持发放（可选）
+        raw_id: 主机组在设备侧的ID (可选, 0~256个字符)
+        storage_id: 设备ID (可选, 0~64个字符)
+        page_size: 分页查询的个数 (可选, 1~1000, 默认100)
+        page_no: 分页查询的页码 (可选, 1~10000000, 默认1)
+        sort_dir: 排序方向 (可选, sort_key不填时不生效)。可选值：desc (降序), asc (升序)
+        sort_key: 排序关键字 (可选)。可选值：name, host_count, lun_group_count, lun_count, raw_id
+        name: 主机组名称 (可选, 0~256个字符, 支持模糊匹配)
+        vstore_id: 租户ID (可选)
+        vstore_name: 租户名称 (可选)
+        avaiable_mapping_for_lun_group_id: 待映射的LUN组ID (可选, 0~64个字符; 查询可映射给指定LUN组的主机组时必传)
+        avaiable_mapping_for_lun_id: 待映射的LUN ID (可选, 0~64个字符; 查询可映射给指定LUN的主机组时必传)
+        support_provisioning: 是否支持发放 (可选)。可选值：true, false
 
     Returns:
         响应数据，包含存储主机组列表和总数
