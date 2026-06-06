@@ -2792,6 +2792,36 @@ def physical_host_group_unmap_luns(client: DMEAPIClient, volume_ids: list, hostg
     return response
 
 
+def storage_host_group_unmap_luns(client: DMEAPIClient, volume_ids: list, hostgroup_id: str,
+              task_remarks: str = None) -> dict:
+    """
+    解除存储主机组映射
+
+    解除 LUN 与存储主机组的映射关系。
+
+    Args:
+        client: DME API 客户端
+        volume_ids: LUN ID 列表 (必选, 数组最大成员个数: 1000)
+        hostgroup_id: 主机组 ID (必选, 1~64个字符)
+        task_remarks: 异步任务备注信息 (可选, 最多1024个字符)
+
+    Returns:
+        响应数据，包含 task_id
+    """
+    url = "/rest/blockservice/v1/volumes/hostgroup-unmapping"
+
+    payload = {
+        'volume_ids': volume_ids,
+        'hostgroup_id': hostgroup_id,
+        'host_group_type': "storage_host_group"
+    }
+
+    if task_remarks is not None:
+        payload['task_remarks'] = task_remarks
+
+    response = client.post(url, json=payload)
+    return response
+
 
 # ============================================================================
 # 动作列表，用于 CLI 帮助
@@ -3015,6 +3045,12 @@ ACTIONS = {
         'func': storage_host_group_show_luns,
         'description': '查询存储主机组映射的 LUN 信息列表',
         'params': ['storage_host_group_id', 'name', 'page_size', 'page_no', 'sort_key', 'sort_dir'],
+        'subtopic': 'storage_host_group'
+    },
+    'storage_host_group_unmap_luns': {
+        'func': storage_host_group_unmap_luns,
+        'description': '解除存储主机组映射',
+        'params': ['volume_ids', 'hostgroup_id', 'task_remarks'],
         'subtopic': 'storage_host_group'
     },
     # 端口组子主题动作（san port_group xxx）
