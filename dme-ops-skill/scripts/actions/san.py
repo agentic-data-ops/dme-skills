@@ -1100,58 +1100,7 @@ def mapping_view_query(
     return response
 
 
-def lun_mapping(
-    client: DMEAPIClient,
-    storage_host_id: str = None,
-    storage_host_group_id: str = None,
-    name: str = None,
-    page_size: int = 20,
-    page_no: int = 1,
-    sort_key: str = None,
-    sort_dir: str = None
-) -> dict:
-    """
-    指定存储主机或存储主机组查询映射 LUN 信息列表
 
-    查询指定存储主机或存储主机组映射的 LUN 信息，包含 LUN 信息和主机 LUN ID 信息。
-
-    Args:
-        client: DME API 客户端
-        storage_host_id: 存储主机 ID，与 storage_host_group_id 互斥且必须有一个下发
-        storage_host_group_id: 存储主机组 ID，与 storage_host_id 互斥且必须有一个下发
-        name: LUN 名称，支持模糊搜索
-        page_size: 分页查询的个数，1~1000，默认 20
-        page_no: 分页查询的起始位置，1~10000000，默认 1
-        sort_key: 排序字段（host_lun_id、mapping_view_raw_id、lun_raw_id）
-        sort_dir: 排序方向（asc 升序，desc 降序），默认 desc
-
-    Returns:
-        响应数据，包含 LUN 映射列表
-    """
-    url = "/rest/blockservice/v1/lun-mapping/query"
-
-    body_params = {}
-
-    if storage_host_id is not None:
-        body_params['storage_host_id'] = storage_host_id
-
-    if storage_host_group_id is not None:
-        body_params['storage_host_group_id'] = storage_host_group_id
-
-    if name is not None:
-        body_params['name'] = name
-
-    body_params['page_size'] = page_size
-    body_params['page_no'] = page_no
-
-    if sort_key is not None:
-        body_params['sort_key'] = sort_key
-
-    if sort_dir is not None:
-        body_params['sort_dir'] = sort_dir
-
-    response = client.post(url, json=body_params)
-    return response
 
 
 def unmapping_host(
@@ -2870,12 +2819,7 @@ ACTIONS = {
         'params': ['volume_ids'],
         'subtopic': 'lun'
     },
-    'lun_mapping': {
-        'func': lun_mapping,
-        'description': '指定存储主机或存储主机组查询映射 LUN 信息列表',
-        'params': ['storage_host_id', 'storage_host_group_id', 'name', 'page_size', 'page_no', 'sort_key', 'sort_dir'],
-        'subtopic': 'lun'
-    },
+
     # LUN 组子主题动作（san lun_group xxx）
     'lun_group_list': {
         'func': lun_group_list,
