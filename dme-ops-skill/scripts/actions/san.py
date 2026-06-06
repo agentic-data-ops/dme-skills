@@ -741,21 +741,33 @@ def lun_group_remove_luns(client: DMEAPIClient, group_id: str,
     return response
 
 
-def lun_group_show_luns(client: DMEAPIClient, group_id: str, storage_id: str = None) -> dict:
+def lun_group_show_luns(client: DMEAPIClient, group_id: str,
+                         page_size: int = 100, page_no: int = 1,
+                         health_status: str = None) -> dict:
     """
     查询 LUN 组中的 LUN
 
     Args:
         client: DME API 客户端
         group_id: LUN 组 ID
-        storage_id: 存储设备 ID（可选，实际不需要）
+        page_size: 分页查询的个数 (可选, 1~1000, 默认100)
+        page_no: 分页查询的页码 (可选, 1~10000000, 默认1)
+        health_status: 健康状态 (可选)。可选值：normal (正常), faulty (故障), write_protected (写保护)
 
     Returns:
         响应数据，包含 LUN 列表
     """
     url = f"/rest/blockservice/v1/lun-groups/{group_id}/luns/query"
 
-    response = client.post(url, json={})
+    body_params = {
+        'page_size': page_size,
+        'page_no': page_no
+    }
+
+    if health_status is not None:
+        body_params['health_status'] = health_status
+
+    response = client.post(url, json=body_params)
     return response
 
 
@@ -2876,7 +2888,7 @@ ACTIONS = {
     'lun_group_show_luns': {
         'func': lun_group_show_luns,
         'description': '查询 LUN 组中的 LUN',
-        'params': ['group_id', 'storage_id'],
+        'params': ['group_id', 'page_size', 'page_no', 'health_status'],
         'subtopic': 'lun_group'
     },
     # 映射视图子主题动作（san mapping_view xxx）
