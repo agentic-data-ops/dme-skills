@@ -1838,20 +1838,20 @@ def physical_host_list(client: DMEAPIClient, limit: int = None, start: int = Non
 
     Args:
         client: DME API 客户端
-        limit: 分页查询的个数（可选，1~1000，默认无限制）
-        start: 分页查询的起始位置（可选，0~10000000）
-        sort_key: 排序关键字（可选，initiator_count/ip/name）
-        sort_dir: 排序方式（可选，desc/asc）
-        name: 物理主机名称（可选，支持模糊匹配）
-        host_group_name: 物理主机组名称（可选，支持模糊匹配）
-        ip: 物理主机 IP（可选，支持模糊匹配）
-        display_status: 展示状态（可选，OFFLINE/NOT_RESPONDING/GRAY/NORMAL/RED/YELLOW 等）
-        managed_status: 物理主机纳管状态列表（可选，UNKNOWN/NORMAL/TAKE_OVERING 等）
-        os_type: 操作系统类型（可选，UNKNOWN/LINUX/WINDOWS/SUSE 等）
-        access_mode: 接入方式（可选，ACCOUNT/NONE/VCENTER/FUSIONSPHERE 等）
-        az_id: 可用分区 ID（可选）
-        az_ids: 可用分区 ID 列表（可选，最多 40 个）
-        project_id: 业务群组 ID（可选）
+        limit: 分页查询的个数 (可选, 1~1000)
+        start: 分页查询的起始位置 (可选, 0~10000000)
+        sort_key: 排序关键字 (可选)。可选值：initiator_count, ip, name
+        sort_dir: 排序方向 (可选, sort_key不填时不生效)。可选值：desc (降序), asc (升序)
+        name: 物理主机名称 (可选, 1~256个字符, 支持模糊匹配)
+        host_group_name: 物理主机组名称 (可选, 1~256个字符, 支持模糊匹配)
+        ip: 物理主机IP (可选, 1~256个字符, 支持模糊匹配)
+        display_status: 展示状态 (可选, 1~32个字符)。可选值：OFFLINE (断开), NOT_RESPONDING (未响应), GRAY (未知), NORMAL (正常), RED (存在问题), YELLOW (可能存在问题), REBOOTING (重启中), INITIAL (初始化), BOOTING (重启), SHUTDOWNING (下电中)
+        managed_status: 物理主机纳管状态列表 (可选, 数组最大成员个数: 1000)。可选值：UNKNOWN (未知), NORMAL (正常), TAKE_OVERING (纳管中), TAKE_ERROR (错误), TAKE_OVER_ALARM (纳管告警)
+        os_type: 主机类型 (可选)。可选值：UNKNOWN, LINUX, WINDOWS, SUSE, EULER, REDHAT, CENTOS, WINDOWSSERVER2012, SOLARIS, LINUX_VIS, HPUX, AIX, XENSERVER, MACOS, VMWAREESX, ORACLE, OPENVMS, ORACLE_VM_SERVER_FOR_X86, ORACLE_VM_SERVER_FOR_SPARC
+        access_mode: 物理主机接入方式 (可选)。可选值：ACCOUNT (账号密码), NONE (手动接入), VCENTER (vCenter纳管), FUSIONSPHERE (FusionSphere纳管), HCS (HCS纳管), TPOPS (TPOPS纳管)
+        az_id: 可用分区ID (可选, 1~64个字符; 当提供az_ids时此参数无效)
+        az_ids: 可用分区ID列表 (可选, 数组最大成员个数: 40)
+        project_id: 业务群组ID (可选, 1~64个字符)
 
     Returns:
         响应数据，包含物理主机列表和总数
