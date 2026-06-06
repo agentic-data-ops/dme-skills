@@ -617,8 +617,6 @@ def lun_group_delete(client: DMEAPIClient, lun_group_ids: list,
     """
     批量删除 LUN 组
 
-    批量删除 LUN 组。
-
     Args:
         client: DME API 客户端
         lun_group_ids: LUN组ID列表 (必选, 数组最大成员个数: 500)
@@ -640,28 +638,77 @@ def lun_group_delete(client: DMEAPIClient, lun_group_ids: list,
     return response
 
 
-def lun_group_add_luns(client: DMEAPIClient, storage_id: str, group_id: str,
-                      lun_ids: list) -> dict:
+def lun_group_add_luns(client: DMEAPIClient, group_id: str,
+                       existing_lun_ids: list = None,
+                       customize_volumes: dict = None,
+                       host_lun_id_infos: list = None,
+                       host_lun_id_verify: bool = False,
+                       task_remarks: str = None) -> dict:
     """
     向 LUN 组添加 LUN
 
     Args:
         client: DME API 客户端
-        storage_id: 存储设备 ID
         group_id: LUN 组 ID
-        lun_ids: LUN ID 列表
+        existing_lun_ids: 已有LUN集合 (可选, 与customize_volumes互斥, 数组最大成员个数: 1000)。参数格式如下：[{
+                lun_id: 已有LUN ID (必选, 1~64个字符)
+             }, ...]
+        customize_volumes: CustomizeVolumesParam对象 (可选, 与existing_lun_ids互斥)。参数格式如下：{
+                volume_specs: VolumeSpecsParam列表 (可选, 与lun_specs_pass_through互斥, 数组最大成员个数: 1000)。参数格式如下：[{
+                        name: LUN名称 (必选, 1~255个字符, 支持字母数字._-和中文字符; count>1时名称长度1~27字符),
+                        description: LUN描述 (可选, 0~255个字符),
+                        count: 该规格LUN数量 (必选, 1~500),
+                        capacity: 该规格LUN容量GB (必选, 1~262144),
+                        suffix_length: LUN命名后缀规则 (可选, 0~4; 名称长度+后缀长度<=255),
+                        start_suffix: 该规格LUN起始后缀编号 (可选, 0~9999),
+                        start_lun_id: 该规格起始LUN ID (可选, 0~65535)
+                     }, ...],
+                lun_specs_pass_through: lunSpecsPassThrough列表 (可选, 与volume_specs互斥, 数组最大成员个数: 24; 直通模式时必传)。参数格式如下：[{
+                        name: LUN名称 (必选, 1~247个字符, 支持字母数字-._和中文字符; 最终名称由LUN名称+后缀编码+硬盘位置组成),
+                        description: LUN描述 (可选, 0~255个字符),
+                        disk_location: 创建LUN的硬盘位置 (必选, 1~255个字符),
+                        count: 每个硬盘创建的LUN数量 (必选, 1~8),
+                        suffix_length: 后缀编码位数 (可选, 1~4, 默认4; count>1时有效),
+                        start_suffix: 后缀起始编码 (可选, 0~9999, 默认0; count>1时有效)
+                     }, ...],
+                pool_raw_id: 存储池在存储设备上的id (可选, 1~64个字符; 设备模式不为直通模式时必传),
+                availability_zone: 可用分区id (可选, 0~64个字符),
+                owner_controller: 归属控制器 (可选, 0~64个字符),
+                initial_distribute_policy: 容量初始分配策略 (可选, 仅V3/V5, 全闪存不支持)。可选值：0 (自动), 1 (高性能层), 2 (性能层), 3 (容量层)。默认0,
+                prefetch_policy: 预取策略 (可选)。可选值：0 (不预取), 1 (固定预取), 2 (可变预取), 3 (智能预取)。默认3,
+                prefetch_value: 预取策略值 (可选, 0~1024; 固定预取0~1024KB, 可变预取0~1024倍),
+                tuning: CustomizeVolumeTuning对象 (可选)。属性格式如下：{
+                        smartqos: SmartQos对象 (可选)。属性格式如下：{
+                                name: Smart QoS名称 (可选, 1~255个字符)
+                        },
+                        alloctype: LUN分配类型 (可选)。可选值：thin, thick,
+                        workload_type_id: 应用类型id (可选)
+                }
+             }
+        host_lun_id_infos: HostLunIdInfo列表 (可选, 数组最大成员个数: 1000; 仅Dorado V6/V7和OceanStor V6/V7设备支持)。参数格式如下：[{
+                host_lun_id: LUN指定的主机LUN ID (必选, 0~4095),
+                lun_id: 加入LUN组的LUN ID (必选, 1~64个字符)
+             }, ...]
+        host_lun_id_verify: 是否进行双活主机LUN ID一致性校验 (可选, 默认false)。可选值：true (不校验), false (校验)
+        task_remarks: 异步任务备注信息 (可选, 最多1024个字符)
 
     Returns:
         响应数据
     """
     url = f"/rest/blockservice/v1/lun-groups/{group_id}/add-luns"
 
-    # 将 lun_ids 转换为 API 要求的格式：[{"lun_id": "xxx"}, ...]
-    lun_id_objects = [{"lun_id": lun_id} for lun_id in lun_ids]
+    body_params = {}
 
-    body_params = {
-        'existing_lun_ids': lun_id_objects
-    }
+    if existing_lun_ids is not None:
+        body_params['existing_lun_ids'] = existing_lun_ids
+    if customize_volumes is not None:
+        body_params['customize_volumes'] = customize_volumes
+    if host_lun_id_infos is not None:
+        body_params['host_lun_id_infos'] = host_lun_id_infos
+    if host_lun_id_verify is not False:
+        body_params['host_lun_id_verify'] = host_lun_id_verify
+    if task_remarks is not None:
+        body_params['task_remarks'] = task_remarks
 
     response = client.post(url, json=body_params)
     return response
@@ -2814,7 +2861,7 @@ ACTIONS = {
     'lun_group_add_luns': {
         'func': lun_group_add_luns,
         'description': '向 LUN 组添加 LUN',
-        'params': ['storage_id', 'group_id', 'lun_ids'],
+        'params': ['group_id', 'existing_lun_ids', 'customize_volumes', 'host_lun_id_infos', 'host_lun_id_verify', 'task_remarks'],
         'subtopic': 'lun_group'
     },
     'lun_group_remove_luns': {
