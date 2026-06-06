@@ -873,19 +873,19 @@ def initiator_list(client: DMEAPIClient, page_size: int = None, page_no: int = N
 
     Args:
         client: DME API 客户端
-        page_size: 分页查询的个数（可选，1~1000，默认 100）
-        page_no: 分页查询的页码（可选，默认 1）
-        raw_id: 启动器 WWPN/IQN/NQN（可选，支持模糊匹配）
-        alias: 启动器别名（可选，支持模糊匹配）
-        status: 启动器状态（可选，unknown/online/offline）
-        associated_host_name: 关联主机名称（可选，支持模糊匹配）
-        associated_host_id: 关联主机 ID（可选）
-        multipath_type: 多路径类型（可选，default/third_party）
-        protocol: 启动器类型（可选，fc/iscsi/nvme_over_roce/sas/nvme_over_fabric/unknown）
-        support_provisioning: 是否支持发放（可选）
-        vstore_raw_id: 租户 ID（可选）
-        vstore_name: 租户名称（可选）
-        storage_id: 存储设备 ID（可选）
+        page_size: 分页查询的个数 (可选, 1~1000, 默认100)
+        page_no: 分页查询的页码 (可选, 最小值1, 默认1)
+        raw_id: 启动器WWPN/IQN/NQN (可选, 0~256个字符, 支持模糊匹配)
+        alias: 启动器别名 (可选, 0~256个字符, 支持模糊匹配)
+        status: 启动器状态 (可选)。可选值：unknown (未知), online (在线), offline (离线)
+        associated_host_name: 启动器关联主机名称 (可选, 0~256个字符, 支持模糊匹配)
+        associated_host_id: 启动器关联主机ID (可选, 0~64个字符; 空字段查询未添加到主机的启动器)
+        multipath_type: 第三方多路径策略 (可选, 仅针对非Dorado V6产品)。可选值：default (默认), third_party (第三方多路径)
+        protocol: 启动器类型 (可选)。可选值：fc, iscsi, nvme_over_roce, sas, nvme_over_fabric, unknown
+        support_provisioning: 是否支持发放 (可选)。可选值：true, false
+        vstore_raw_id: 租户ID (可选)
+        vstore_name: 租户名称 (可选)
+        storage_id: 存储设备ID (可选, 0~64个字符)
 
     Returns:
         启动器列表
