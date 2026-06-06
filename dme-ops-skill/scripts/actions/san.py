@@ -2453,7 +2453,9 @@ def storage_host_unmap_luns(client: DMEAPIClient, volume_ids: list, host_id: str
 # ============================================================================
 
 def physical_host_group_list(client: DMEAPIClient, limit: int = None, start: int = None,
-         name: str = None, project_id: str = None) -> dict:
+         sort_dir: str = None, sort_key: str = None, name: str = None,
+         project_id: str = None, az_ids: list = None,
+         managed_status: list = None) -> dict:
     """
     批量查询物理主机组
 
@@ -2461,10 +2463,14 @@ def physical_host_group_list(client: DMEAPIClient, limit: int = None, start: int
 
     Args:
         client: DME API 客户端
-        limit: 分页查询的个数（可选，1~1000）
-        start: 分页查询的起始位置（可选）
-        name: 物理主机组名称（可选，支持模糊匹配）
-        project_id: 业务群组 ID（可选）
+        limit: 分页查询的个数 (可选, 1~1000)
+        start: 分页查询的起始位置 (可选, 0~10000000)
+        sort_dir: 排序方向 (可选, sort_key不填时不生效)。可选值：desc (降序), asc (升序)
+        sort_key: 排序关键字 (可选, 1~255个字符)。可选值：host_count (主机组主机个数)
+        name: 物理主机组名称 (可选, 1~256个字符, 支持模糊匹配)
+        project_id: 所属业务群组ID (可选, 1~64个字符)
+        az_ids: 所属可用分区ID列表 (可选, 数组最大成员个数: 1000; 单个ID长度1~64个字符)
+        managed_status: 纳管状态列表 (可选, 数组最大成员个数: 1000)。可选值：UNKNOWN, NORMAL, TAKE_OVERING, TAKE_ERROR, TAKE_OVER_ALARM
 
     Returns:
         响应数据，包含物理主机组列表和总数
@@ -2477,10 +2483,18 @@ def physical_host_group_list(client: DMEAPIClient, limit: int = None, start: int
         payload['limit'] = limit
     if start is not None:
         payload['start'] = start
+    if sort_dir is not None:
+        payload['sort_dir'] = sort_dir
+    if sort_key is not None:
+        payload['sort_key'] = sort_key
     if name is not None:
         payload['name'] = name
     if project_id is not None:
         payload['project_id'] = project_id
+    if az_ids is not None:
+        payload['az_ids'] = az_ids
+    if managed_status is not None:
+        payload['managed_status'] = managed_status
 
     response = client.post(url, json=payload)
     return response
@@ -3117,7 +3131,7 @@ ACTIONS = {
     'physical_host_group_list': {
         'func': physical_host_group_list,
         'description': '批量查询物理主机组',
-        'params': ['limit', 'start', 'name', 'project_id'],
+        'params': ['limit', 'start', 'sort_dir', 'sort_key', 'name', 'project_id', 'az_ids', 'managed_status'],
         'subtopic': 'physical_host_group'
     },
     'physical_host_group_show': {
