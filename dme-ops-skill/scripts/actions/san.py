@@ -2480,6 +2480,30 @@ def physical_host_unmap_luns(client: DMEAPIClient, volume_ids: list, host_id: st
     return response
 
 
+def storage_host_unmap_luns(client: DMEAPIClient, volume_ids: list, host_id: str,
+              task_remarks: str = None) -> dict:
+    """
+    解除存储主机映射
+
+    解除 LUN 与存储主机的映射关系。
+
+    Args:
+        client: DME API 客户端
+        volume_ids: LUN ID 列表 (必选, 数组最大成员个数: 1000)
+        host_id: 主机 ID (必选, 1~64个字符)
+        task_remarks: 异步任务备注信息 (可选, 最多1024个字符)
+
+    Returns:
+        响应数据，包含 task_id
+    """
+    return physical_host_unmap_luns(
+        client=client,
+        volume_ids=volume_ids,
+        host_id=host_id,
+        host_type="storage_host",
+        task_remarks=task_remarks
+    )
+
 
 # ============================================================================
 # 物理主机组 (physical_host_group) 子主题函数
@@ -2942,6 +2966,12 @@ ACTIONS = {
         'func': storage_host_show_luns,
         'description': '查询存储主机映射的 LUN 信息列表',
         'params': ['storage_host_id', 'name', 'page_size', 'page_no', 'sort_key', 'sort_dir'],
+        'subtopic': 'storage_host'
+    },
+    'storage_host_unmap_luns': {
+        'func': storage_host_unmap_luns,
+        'description': '解除存储主机映射',
+        'params': ['volume_ids', 'host_id', 'task_remarks'],
         'subtopic': 'storage_host'
     },
     # 存储主机组子主题动作（san storage_host_group xxx）
