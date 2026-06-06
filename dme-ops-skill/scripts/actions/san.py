@@ -1737,17 +1737,16 @@ def storage_host_group_show_luns(client: DMEAPIClient, storage_host_group_id: st
 # 端口组 (port_group) 子主题函数
 # ============================================================================
 
-def port_group_list(client: DMEAPIClient, storage_id: str, name: str = None,
-                    page_no: int = 1, page_size: int = 100) -> dict:
+def port_group_list(client: DMEAPIClient, storage_id: str = None,
+                    page_no: int = 1, page_size: int = 20) -> dict:
     """
     批量查询端口组
 
     Args:
         client: DME API 客户端
-        storage_id: 存储设备 ID（必选）
-        name: 端口组名称（支持模糊查询）
-        page_no: 分页查询的起始页码，默认 1
-        page_size: 每页数量，1~1000，默认 100
+        storage_id: 存储设备ID (可选, 1~64个字符, 支持过滤)
+        page_no: 分页查询的页码 (可选, 1~10000, 默认1)
+        page_size: 分页查询的每页大小 (可选, 1~1000, 默认20)
 
     Returns:
         响应数据，包含端口组列表
@@ -1761,8 +1760,6 @@ def port_group_list(client: DMEAPIClient, storage_id: str, name: str = None,
 
     if storage_id is not None:
         payload['storage_id'] = storage_id
-    if name is not None:
-        payload['name'] = name
 
     response = client.post(url, json=payload)
     return response
@@ -3091,7 +3088,7 @@ ACTIONS = {
     'port_group_list': {
         'func': port_group_list,
         'description': '批量查询端口组',
-        'params': ['storage_id', 'name', 'page_no', 'page_size'],
+        'params': ['storage_id', 'page_no', 'page_size'],
         'subtopic': 'port_group'
     },
     'port_group_create': {
