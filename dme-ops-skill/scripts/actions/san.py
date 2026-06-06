@@ -420,19 +420,38 @@ def lun_connection(client: DMEAPIClient, volume_ids: list) -> dict:
     return response
 
 
-def lun_group_list(client: DMEAPIClient, storage_id: str, name: str = None,
-                    page_no: int = 1, page_size: int = 100) -> dict:
+def lun_group_list(client: DMEAPIClient, page_size: int = 20, page_no: int = 1,
+                    sort_dir: str = None, sort_key: str = None,
+                    name: str = None, vstore_raw_id: str = None,
+                    vstore_name: str = None, storage_id: str = None,
+                    storage_name: str = None, raw_id: str = None,
+                    attached: bool = None,
+                    protection_group_raw_id: str = None,
+                    avaiable_mapping_for_host_id: str = None,
+                    avaiable_mapping_for_host_group_id: str = None,
+                    support_provisioning: bool = None) -> dict:
     """
     批量查询 LUN 组
 
-    查询 LUN 组列表。
+    查询 LUN 组列表，支持分页和多种过滤条件。
 
     Args:
         client: DME API 客户端
-        storage_id: 存储设备 ID
-        name: LUN 组名称（支持模糊查询）
-        page_no: 分页查询的起始页码，默认 1
-        page_size: 每页数量，1~1000，默认 100
+        page_size: 分页查询的个数 (可选, 0~1000, 默认20)
+        page_no: 分页查询的起始页码 (可选, 1~10000000, 默认1)
+        sort_dir: 排序方向 (可选)。可选值：asc (升序), desc (降序)
+        sort_key: 排序字段 (可选)。可选值：lun_count (LUN数量), total_capcity (总容量), capacity_usage (已用容量), name, raw_id (设备侧ID)
+        name: LUN组名称 (可选, 1~256个字符, 支持模糊查询)
+        vstore_raw_id: 存储设备上分配的租户ID (可选, 1~64个字符)
+        vstore_name: 租户名称 (可选, 1~256个字符, 支持模糊查询)
+        storage_id: 存储设备ID (可选, 1~64个字符)
+        storage_name: 存储名称 (可选, 1~256个字符, 支持模糊查询)
+        raw_id: LUN组在存储设备上的ID (可选, 1~256个字符)
+        attached: 映射状态 (可选)。可选值：true (已映射), false (未映射)
+        protection_group_raw_id: 保护组在存储设备上的ID (可选, 0~64个字符; 非空则查询保护组下的LUN组, 空串则查询未加入保护组的LUN组)
+        avaiable_mapping_for_host_id: 可映射的主机ID (可选, 1~64个字符; 与avaiable_mapping_for_host_group_id互斥)
+        avaiable_mapping_for_host_group_id: 可映射的主机组ID (可选, 1~64个字符; 与avaiable_mapping_for_host_id互斥)
+        support_provisioning: 是否支持发放 (可选)。可选值：true (支持), false (不支持)
 
     Returns:
         响应数据，包含 LUN 组列表
@@ -440,13 +459,36 @@ def lun_group_list(client: DMEAPIClient, storage_id: str, name: str = None,
     url = "/rest/blockservice/v1/lun-groups/query"
 
     body_params = {
-        'storage_id': storage_id,
         'page_no': page_no,
         'page_size': page_size
     }
 
+    if sort_dir is not None:
+        body_params['sort_dir'] = sort_dir
+    if sort_key is not None:
+        body_params['sort_key'] = sort_key
     if name is not None:
         body_params['name'] = name
+    if vstore_raw_id is not None:
+        body_params['vstore_raw_id'] = vstore_raw_id
+    if vstore_name is not None:
+        body_params['vstore_name'] = vstore_name
+    if storage_id is not None:
+        body_params['storage_id'] = storage_id
+    if storage_name is not None:
+        body_params['storage_name'] = storage_name
+    if raw_id is not None:
+        body_params['raw_id'] = raw_id
+    if attached is not None:
+        body_params['attached'] = attached
+    if protection_group_raw_id is not None:
+        body_params['protection_group_raw_id'] = protection_group_raw_id
+    if avaiable_mapping_for_host_id is not None:
+        body_params['avaiable_mapping_for_host_id'] = avaiable_mapping_for_host_id
+    if avaiable_mapping_for_host_group_id is not None:
+        body_params['avaiable_mapping_for_host_group_id'] = avaiable_mapping_for_host_group_id
+    if support_provisioning is not None:
+        body_params['support_provisioning'] = support_provisioning
 
     response = client.post(url, json=body_params)
     return response
@@ -2745,7 +2787,7 @@ ACTIONS = {
     'lun_group_list': {
         'func': lun_group_list,
         'description': '批量查询 LUN 组',
-        'params': ['storage_id', 'name', 'page_no', 'page_size'],
+        'params': ['page_size', 'page_no', 'sort_dir', 'sort_key', 'name', 'vstore_raw_id', 'vstore_name', 'storage_id', 'storage_name', 'raw_id', 'attached', 'protection_group_raw_id', 'avaiable_mapping_for_host_id', 'avaiable_mapping_for_host_group_id', 'support_provisioning'],
         'subtopic': 'lun_group'
     },
     'lun_group_show': {
