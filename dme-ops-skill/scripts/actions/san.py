@@ -916,26 +916,26 @@ def mapping_view_list(
 
     Args:
         client: DME API 客户端
-        page_size: 分页查询的个数，0~1000，默认 100
-        page_no: 分页查询的起始位置，1~10000000，默认 1
-        name: 映射视图名称，支持模糊搜索
-        raw_id: 映射视图在存储设备上的 ID
-        storage_id: 存储设备的唯一标识
-        lun_id: LUN 的唯一标识，和 lun_name 参数不支持同时下发
-        lun_name: LUN 名称，支持模糊搜索，和 lun_id 参数不支持同时下发
-        lun_group_id: LUN 组的唯一标识，和 lun_group_raw_id、lun_group_name 参数不支持同时下发
-        lun_group_raw_id: 设备侧分配的 LUN 组 ID，和 lun_group_id、lun_group_name 参数不支持同时下发
-        lun_group_name: LUN 组名称，支持模糊查询，和 lun_group_id、lun_group_raw_id 参数不支持同时下发
-        storage_host_id: 存储主机的唯一标识，和 storage_host_name 参数不支持同时下发
-        storage_host_name: 存储主机名称，支持模糊搜索，仅 OceanStor Dorado v6 和 OceanProtect X 系列设备支持
-        storage_host_group_id: 存储主机组的唯一标识，和 storage_host_group_name、storage_host_group_raw_id 参数不支持同时下发
-        storage_host_group_name: 存储主机组名称，支持模糊搜索，和 storage_host_group_id、storage_host_group_raw_id 参数不支持同时下发
-        storage_host_group_raw_id: 设备侧分配的存储主机组 ID，和 storage_host_group_id、storage_host_group_name 参数不支持同时下发
-        port_group_id: 端口组的唯一标识，和 port_group_raw_id、port_group_name 参数不支持同时下发
-        port_group_raw_id: 设备侧分配的端口组 ID，和 port_group_id、port_group_name 参数不支持同时下发
-        port_group_name: 端口组名称，支持模糊搜索，和 port_group_id、port_group_raw_id 参数不支持同时下发
-        sort_key: 排序字段（raw_id、storage_host_group_raw_id、lun_group_raw_id、port_group_raw_id）
-        sort_dir: 排序方向（asc 升序，desc 降序）
+        page_size: 分页查询的个数 (可选, 0~1000, 默认100)
+        page_no: 分页查询的起始位置 (可选, 1~10000000, 默认1)
+        name: 映射视图名称 (可选, 0~256个字符, 支持模糊搜索)
+        raw_id: 映射视图在存储设备上的ID (可选, 1~256个字符)
+        storage_id: 存储设备的唯一标识 (可选, 0~64个字符)
+        lun_id: LUN的唯一标识 (可选, 0~64个字符; 与lun_name参数不支持同时下发)
+        lun_name: LUN名称 (可选, 1~256个字符, 支持模糊搜索; 与lun_id参数不支持同时下发)
+        lun_group_id: LUN组的唯一标识 (可选, 0~64个字符; 与lun_group_raw_id/lun_group_name不支持同时下发)
+        lun_group_raw_id: 设备侧分配的LUN组ID (可选, 1~64个字符; 与lun_group_id/lun_group_name不支持同时下发)
+        lun_group_name: LUN组名称 (可选, 1~256个字符, 支持模糊查询; 与lun_group_id/lun_group_raw_id不支持同时下发)
+        storage_host_id: 存储主机的唯一标识 (可选, 0~64个字符; 与storage_host_name不支持同时下发)
+        storage_host_name: 存储主机名称 (可选, 0~256个字符, 支持模糊搜索; 仅OceanStor Dorado v6和OceanProtect X支持; 与storage_host_id不支持同时下发)
+        storage_host_group_id: 存储主机组的唯一标识 (可选, 0~64个字符; 与storage_host_group_name/storage_host_group_raw_id不支持同时下发)
+        storage_host_group_name: 存储主机组名称 (可选, 0~256个字符, 支持模糊搜索; 与storage_host_group_id/storage_host_group_raw_id不支持同时下发)
+        storage_host_group_raw_id: 设备侧分配的存储主机组ID (可选, 1~64个字符; 与storage_host_group_id/storage_host_group_name不支持同时下发)
+        port_group_id: 端口组的唯一标识 (可选, 0~64个字符; 与port_group_raw_id/port_group_name不支持同时下发)
+        port_group_raw_id: 设备侧分配的端口组ID (可选, 1~64个字符; 与port_group_id/port_group_name不支持同时下发)
+        port_group_name: 端口组名称 (可选, 0~256个字符, 支持模糊搜索; 与port_group_id/port_group_raw_id不支持同时下发)
+        sort_key: 排序字段 (可选)。可选值：raw_id, storage_host_group_raw_id, lun_group_raw_id, port_group_raw_id
+        sort_dir: 排序方向 (可选)。可选值：asc (升序), desc (降序)
 
     Returns:
         响应数据，包含映射视图列表
