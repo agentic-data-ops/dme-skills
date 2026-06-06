@@ -807,24 +807,24 @@ def mapping_view_create(
     Args:
         client: DME API 客户端
         storage_id: 存储设备 ID (必选, 1~64个字符)
-        name: 映射视图在设备上的名字 (可选, 1~31个字符; 设备类型为OceanStor V3/V5时有效)
+        name: 映射视图名称 (可选, 1~31个字符; 设备类型为OceanStor V3/V5时有效)
         port_group_id: 端口组 ID (可选, 1~64个字符)
-        start_host_lun_id: 主机LUN id (可选, 0~2147483647)
-        host: MappingHostInfo对象 (可选, 与vbs/host_group互斥)。属性格式如下：{
+        start_host_lun_id: 主机LUN SCSI ID起始值 (可选, 0~2147483647)
+        host: 存储主机 (可选, 与vbs/host_group互斥)。属性格式如下：{
                 todo_host_name: todo任务中的主机名称 (可选, 1~255个字符, 支持字母数字._-和中文字符),
                 id: 主机ID (可选, 1~64个字符)
              }
         vbs: MappingVbsInfo对象 (可选, 与host/host_group互斥; 仅OceanStor Pacific和FusionStorage支持)。属性格式如下：{
                 id: VBS ID (可选, 1~64个字符)
              }
-        host_group: MappingHostGroupInfo对象 (可选, 与host/vbs互斥)。属性格式如下：{
+        host_group: 存储主机组 (可选, 与host/vbs互斥)。属性格式如下：{
                 todo_host_group_name: todo任务中的主机组名称 (可选, 1~255个字符, 支持字母数字._-和中文字符),
                 id: 主机组ID (可选, 1~64个字符)
              }
-        lun_group: MappingLUNGroupInfo对象 (可选, 与luns互斥)。属性格式如下：{
+        lun_group: 待映射的LUN组 (可选, 与luns互斥)。属性格式如下：{
                 id: LUN组ID (可选, 1~64个字符)
              }
-        luns: MappingLUNInfo对象 (可选, 与lun_group互斥)。属性格式如下：{
+        luns: 待映射的LUN信息 (可选, 与lun_group互斥)。属性格式如下：{
                 ids: 待映射的LUN列表 (可选, 数组最大成员个数: 1000),
                 lungroup_name: LUN组名称 (可选, 1~255个字符; lun映射时需创建指定名称lun组时下发)
              }
