@@ -1385,15 +1385,14 @@ def storage_host_show_paths(client: DMEAPIClient, page_no: int = None, page_size
 
     Args:
         client: DME API 客户端
-        page_no: 分页查询的页码（可选，1~2147483647，默认 1）
-        page_size: 分页查询的每页大小（可选，1~1000，默认 20）
-        storage_id: 所属存储设备 ID（可选，1~64 字符）
-        storage_host_ids: 所属存储主机的 ID 列表（可选，最多 20 个，1~64 字符）
-        storage_host_raw_ids: 所属存储主机在设备上的 ID 列表（可选，最多 20 个，1~64 字符）
-                              与 storage_host_ids 二者只能设置其中一个
-        health_status: 健康状态（可选，normal/fault/no_redundant_link/offline）
-        running_status: 链路状态（可选，link_up/link_down/online/disabled/connecting）
-        initiator_type: 启动器类型（可选，iSCSI/FC/NVMe_over_RoCE/IB/vHBA）
+        page_no: 分页查询的页码 (可选, 1~2147483647, 默认1)
+        page_size: 分页查询的每页大小 (可选, 1~1000, 默认20)
+        storage_id: 所属存储设备ID (可选, 1~64个字符)
+        storage_host_ids: 所属存储主机的ID列表 (可选, 与storage_host_raw_ids二选一, 数组最大成员个数: 20; 单个ID长度1~64个字符)
+        storage_host_raw_ids: 所属存储主机在设备上的ID列表 (可选, 与storage_host_ids二选一, 数组最大成员个数: 20; 单个ID长度1~64个字符)
+        health_status: 健康状态 (可选)。可选值：normal (正常), fault (故障), no_redundant_link (无冗余路径), offline (离线)
+        running_status: 链路状态 (可选)。可选值：link_up (已连接), link_down (未连接), online (在线), disabled (已禁用), connecting (正在连接)
+        initiator_type: 启动器类型 (可选)。可选值：iSCSI, FC, NVMe_over_RoCE, IB, vHBA
 
     Returns:
         路径信息列表
