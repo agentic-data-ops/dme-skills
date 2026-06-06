@@ -129,22 +129,20 @@ def lun_create(client: DMEAPIClient, storage_id: str, lun_specs: list = None,
 
     Args:
         client: DME API 客户端
-        storage_id: 存储设备 ID（必填，1~64 个字符）
-        lun_specs: 常规模式待创建 LUN 基本参数（必填，当存储设备模式不为直通模式时），单次最多创建 10 组
-                        每项包含：name（LUN 名称，1~255 字符）, capacity（容量，单位 GB，1~65535）, count（个数，1~10）
-                        可选：description、tier_id（服务等级 ID）、pool_raw_id（存储池 ID）、vstore_id（租户 ID）
-        lun_specs_pass_through: 直通模式存储设备待创建 LUN 基本参数（必填，当存储设备模式为直通模式时），单次最多创建 24 组
-        pool_id: 存储池 ID（当存储设备模式不为直通模式时必传）
-        vstore_id: 租户 ID（可选，0~64 个字符）
-        owner_controller: 归属控制器 ID（可选，1~64 个字符）
-        initial_distribute_policy: 容量初始分配策略（可选，仅支持华为 V3/V5 设备）
-                                  可选值：automatic（自动），highest_performance（高性能层），performance（性能层），capacity（容量层）
-        prefetch_policy: 预取策略（可选）
-                        可选值：no_prefetch（不预取），constant_prefetch（固定预取），variable_prefetch（可变预取），intelligent_prefetch（智能预取）
-        prefetch_value: 预取策略值（可选，0~1024），固定预取单位为 KB，可变预取为倍数
-        tuning: 调优属性（可选），包含 smart_tier、deduplication_enabled、compression_enabled、alloction_type、smart_qos、workload_type_raw_id
-        mapping: 映射信息（可选），存在即表示为主机或主机组创建 LUN
-        task_remarks: 异步任务备注信息（可选，最多 1024 个字符）
+        storage_id: 存储设备 ID（必填），1~64 个字符，通过存储设备查询接口获取
+        lun_specs: 待创建 LUN 基本参数（条件必传），List<LunSpecs> 类型，数组最大成员个数 1000，单次最多可创建 10 组；与 lun_specs_pass_through 互斥；当存储设备模式不为直通模式时必传
+        lun_specs_pass_through: 直通模式存储设备待创建 LUN 基本参数（条件必传），List<lunSpecsPassThrough> 类型，数组最大成员个数 24，单次最多可创建 24 组；与 lun_specs 互斥；当存储设备模式为直通模式时必传
+        pool_id: 存储池 ID（条件必传），1~64 个字符；当存储设备模式不为直通模式时必传；通过查询指定资源类型的所有实例接口获取，存储池的资源类型名称为 SYS_StoragePool
+        vstore_id: 租户 ID（可选），1~64 个字符；当设备为 OceanStor V300R006C00、OceanStor V500R007C00、OceanStor Dorado 6.1.3、OceanStor 6.1.3 及其以上版本时有效
+        owner_controller: 归属控制器（可选），1~64 个字符，通过查询指定存储上的控制器获取
+        initial_distribute_policy: 容量初始分配策略（可选），仅支持华为 V3/V5 设备，Dorado 系列不支持；
+                                  可选值：automatic（自动）、highest_performance（高性能层）、performance（性能层）、capacity（容量层）；默认 automatic
+        prefetch_policy: 预取策略（可选），影响磁盘读取；
+                        可选值：no_prefetch（不预取）、constant_prefetch（固定预取）、variable_prefetch（可变预取）、intelligent_prefetch（智能预取）；默认 intelligent_prefetch
+        prefetch_value: 预取策略值（可选），0~1024；下发了 prefetch_policy 且其值为固定或可变预取时需要下发；固定预取取值范围 0~1024KB，可变预取取值范围 0~1024 倍
+        tuning: 调优属性（可选），CustomizeLunTuning 对象，包含 smart_tier、deduplication_enabled、compression_enabled、alloction_type、smart_qos、workload_type_raw_id
+        mapping: 映射信息（可选），LunMapping 对象，存在即表示为主机或主机组创建 LUN
+        task_remarks: 异步任务备注信息（可选），最多 1024 个字符
 
     Returns:
         响应数据，包含 task_id（异步任务）
