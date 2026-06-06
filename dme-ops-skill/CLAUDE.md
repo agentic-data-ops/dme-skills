@@ -67,6 +67,67 @@ export DME_API_PASSWORD="your-password"
 - **Error Handling**: Use the response from `DMEAPIClient` which returns JSON data from the API. Raise `ValueError` for missing required parameters before making API calls.
 - **Documentation**: Use `SKILL.md` for high-level guidance on using this project as a tool for AI agents.
 
+## 函数参数帮助文档格式约定
+
+对于具有内部结构的复杂参数（列表/字典），在 docstring 中使用以下格式描述。
+
+### 模板
+
+```
+param_key: <param_description> (<param_restrictions>)。可选值：<param_option_enum> (<param_option_description>), ...。参数格式如下：[{
+                attr_key1: <attr_description> (<attr_restrictions>)。可选值：<enum> (<desc>), ...。属性格式如下：{
+                    sub_key1: <sub_description> (<sub_restrictions>)。可选值：<enum> (<desc>), ...。
+                    sub_key2: ...
+                },
+                attr_key2: ...
+             }, ...]
+```
+
+### 规则
+
+1. **无引号** — attribute_key 和 description 不使用双引号，纯文本格式
+2. **约束** — 使用英文括号 `()` 包裹，如 `(1~255个字符)`
+3. **枚举值** — `可选值：enum1 (desc1), enum2 (desc2)`（英文括号）
+4. **嵌套对象** — 使用 `属性格式如下：{ ... }` 递归表达
+5. **外层包裹** — 列表用 `[{ ... }, ...]`，字典用 `{ ... }`
+6. **句号结尾** — 每个参数描述以中文句号 `。` 结尾
+7. **关键词约定** — 必须使用 `参数格式如下：[{` 或 `参数格式如下：{` 作为格式块入口标记，CLI 解析器依赖此关键词跳过内部 `key: desc` 行，避免误解析为函数参数
+8. **嵌套关键词** — 内部嵌套对象必须使用 `属性格式如下：{` 作为入口标记
+9. **大括号平衡** — `{` 和 `}` 必须匹配，解析器通过计数自动退出格式块
+
+### 示例
+
+```
+volumes: 待创建 LUN 基本参数列表 (List<ServiceVolumeBasicParams>, 数组最大成员个数: 1000)。参数格式如下：[{
+        name: LUN名称 (1~255个字符, 支持字母数字._-和中文字符),
+        capacity: 容量GB (1~262144),
+        count: 创建数量 (1~500),
+        description: 描述 (0~255个字符),
+        start_suffix: 起始后缀编号 (0~9999),
+        suffix_length: 后缀长度规则 (1~4, 名称长度+后缀长度<=255)
+     }, ...]
+
+scheduler_hints: 调度策略 (可选, SchedulerHints 对象)。参数格式如下：{
+        affinity: 是否开启亲和性。可选值：true (开启), false (不开启)。默认不开启,
+        affinity_volume: 待亲和的 LUN ID (可选, 0~64个字符)
+     }
+
+tuning: 调优属性 (可选), CustomizeLunTuning 对象。参数格式如下：{
+        smart_tier: 数据迁移策略。可选值：no_migration (不迁移), automatic_migration (自动迁移), migration_to_higher (向高性能层迁移), migration_to_lower (向低性能层迁移)。默认no_migration,
+        deduplication_enabled: 重复数据删除 (仅Thin LUN支持)。可选值：true (开启), false (关闭),
+        compression_enabled: 数据压缩 (仅Thin LUN支持)。可选值：true (开启), false (关闭),
+        alloction_type: LUN分配类型。可选值：thin, thick,
+        smart_qos: Smart QoS对象。属性格式如下：{
+                max_bandwidth: 最大带宽 (1~999999999Mbit/s; 与min_bandwidth/min_iops互斥),
+                max_iops: 最大IOPS (1~999999999; 与min_bandwidth/min_iops互斥),
+                min_bandwidth: 最小带宽 (1~999999999Mbit/s; 与max_bandwidth/max_iops互斥),
+                min_iops: 最小IOPS (1~999999999; 与max_bandwidth/max_iops互斥),
+                latency: 时延 (1~999999999ms; Dorado V6系列单位为us, 可选值为500/1500; 与max_bandwidth/max_iops互斥)
+        },
+        workload_type_raw_id: 应用类型ID (0~4294967295; 通过查询指定存储设备上应用类型接口获取)
+     }
+```
+
 ## Todo Tasks
 
 When user ask to finish todo tasks, sequentially execute the unfinished todo tasks step by step. When each task finished, update the todo task checkbox, and execute git commit and push.
