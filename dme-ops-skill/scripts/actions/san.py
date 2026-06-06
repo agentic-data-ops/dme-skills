@@ -1103,78 +1103,7 @@ def mapping_view_query(
 
 
 
-def unmapping_host(
-    client: DMEAPIClient,
-    volume_ids: list,
-    host_id: str,
-    host_type: str = "host",
-    task_remarks: str = None
-) -> dict:
-    """
-    解除主机映射
 
-    LUN 解除主机映射。
-
-    Args:
-        client: DME API 客户端
-        volume_ids: LUN ID 列表
-        host_id: 主机 ID
-        host_type: 映射类型（storage_host-存储主机，host-主机），默认 host
-        task_remarks: 异步任务备注信息
-
-    Returns:
-        响应数据，包含 task_id
-    """
-    url = "/rest/blockservice/v1/volumes/host-unmapping"
-
-    body_params = {
-        'volume_ids': volume_ids,
-        'host_id': host_id,
-        'host_type': host_type
-    }
-
-    if task_remarks is not None:
-        body_params['task_remarks'] = task_remarks
-
-    response = client.post(url, json=body_params)
-    return response
-
-
-def unmapping_host_group(
-    client: DMEAPIClient,
-    volume_ids: list,
-    hostgroup_id: str,
-    host_group_type: str = "host_group",
-    task_remarks: str = None
-) -> dict:
-    """
-    解除主机组映射
-
-    解除 LUN 与主机组的映射关系。
-
-    Args:
-        client: DME API 客户端
-        volume_ids: LUN ID 列表
-        hostgroup_id: 主机组 ID
-        host_group_type: 映射类型（storage_host_group-存储主机组，host_group-主机组），默认 host_group
-        task_remarks: 异步任务备注信息
-
-    Returns:
-        响应数据，包含 task_id
-    """
-    url = "/rest/blockservice/v1/volumes/hostgroup-unmapping"
-
-    body_params = {
-        'volume_ids': volume_ids,
-        'hostgroup_id': hostgroup_id,
-        'host_group_type': host_group_type
-    }
-
-    if task_remarks is not None:
-        body_params['task_remarks'] = task_remarks
-
-    response = client.post(url, json=body_params)
-    return response
 
 
 def map_host(
