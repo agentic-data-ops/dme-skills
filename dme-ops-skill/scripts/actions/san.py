@@ -2736,7 +2736,7 @@ def physical_host_group_remove_hosts(client: DMEAPIClient, hostgroup_id: str,
 
 
 def physical_host_group_map_luns(client: DMEAPIClient, volume_ids: list, hostgroup_id: str,
-            mapping_policy: str = None, task_remarks: str = None) -> dict:
+            mapping_policy: list = None, task_remarks: str = None) -> dict:
     """
     LUN 映射给物理主机组
 
@@ -2744,10 +2744,24 @@ def physical_host_group_map_luns(client: DMEAPIClient, volume_ids: list, hostgro
 
     Args:
         client: DME API 客户端
-        volume_ids: LUN ID 列表
-        hostgroup_id: 主机组 ID
-        mapping_policy: 映射策略（exclusive-独占，shared-共享），默认 exclusive
-        task_remarks: 异步任务备注信息
+        volume_ids: LUN ID 列表 (必选, 数组最大成员个数: 1000)
+        hostgroup_id: 物理主机组 ID (必选, 0~64个字符)
+        mapping_policy: MappingPolicy列表 (可选)。参数格式如下：[{
+                storage_id: 存储设备ID (可选, 0~64个字符),
+                start_host_lun_id: 起始主机LUN ID (可选, 0~4095),
+                auto_zoning: 自动划zone (可选)。可选值：true (划zone), false (不划zone),
+                zone_policy_id: zone策略ID (可选, 0~64个字符; auto_zoning为true时生效),
+                target_fcports: 端口wwn列表 (可选, 与target_fcportgroups互斥, 数组最大成员个数: 1000; auto_zoning为true时生效),
+                target_fcportgroups: 端口组ID列表 (可选, 与target_fcports互斥, 数组最大成员个数: 1000; auto_zoning为true时生效),
+                mapping_view: MappingRequest对象 (可选)。属性格式如下：{
+                        mapping_view_id: 映射视图在设备上的ID (可选, 最多31个字符),
+                        mapping_view_name: 映射视图在设备上的名字 (可选, 最多31个字符),
+                        lun_group_id: LUN组在设备上的ID (可选, 最多31个字符),
+                        lun_group_name: LUN组在设备上的名称 (可选, 最多255个字符),
+                        port_group_id: 端口组在设备上的ID (可选, 最多31个字符)
+                }
+             }, ...]
+        task_remarks: 异步任务备注信息 (可选, 最多1024个字符)
 
     Returns:
         响应数据，包含 task_id
