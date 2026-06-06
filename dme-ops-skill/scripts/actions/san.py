@@ -1081,9 +1081,9 @@ def mapping_view_query(
 
     Args:
         client: DME API 客户端
-        type: 查询类别（host-物理主机，host_group-主机组）
-        request_id: 物理主机/主机组 ID
-        storage_id: 存储设备 ID
+        type: 查询类别 (必选)。可选值：host (物理主机), host_group (主机组)
+        request_id: 物理主机/主机组 ID (必选, 1~64个字符)
+        storage_id: 存储设备 ID (必选, 1~64个字符)
 
     Returns:
         响应数据，包含映射视图列表
