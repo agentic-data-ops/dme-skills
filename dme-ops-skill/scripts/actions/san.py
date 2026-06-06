@@ -825,7 +825,7 @@ def mapping_view_create(
                 id: LUN组ID (可选, 1~64个字符)
              }
         luns: 待映射的LUN信息 (可选, 与lun_group互斥)。属性格式如下：{
-                ids: 待映射的LUN列表 (可选, 数组最大成员个数: 1000),
+                ids: 待映射的LUN ID列表 (可选, 数组最大成员个数: 1000),
                 lungroup_name: LUN组名称 (可选, 1~255个字符; lun映射时需创建指定名称lun组时下发)
              }
         task_remarks: 异步任务备注信息 (可选, 最多1024个字符)
