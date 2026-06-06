@@ -2546,11 +2546,11 @@ def physical_host_group_modify(client: DMEAPIClient, hostgroup_id: str,
 
     Args:
         client: DME API 客户端
-        hostgroup_id: 物理主机组 ID（必选）
-        name: 主机组名称（可选，1~255 字符）
-        description: 描述信息（可选，0~63 字符）
-        azs: 可用分区 ID 列表（可选，最多 40 个）
-        project_id: 业务群组 ID（可选）
+        hostgroup_id: 物理主机组 ID (必选)
+        name: 物理主机组名称 (可选, 1~255个字符, 支持字母数字._-和中文字符; 不填或空串表示不修改)
+        description: 物理主机组描述信息 (可选, 0~63个字符)
+        azs: 可用分区ID列表 (可选, 数组最大成员个数: 40; 空值或空列表表示解除az关联)
+        project_id: 业务群组ID (可选, 0~64个字符; 不填表示不做修改; 空字符串表示解除关联; 非空且与原值不一致表示关联至新project)
 
     Returns:
         修改结果
