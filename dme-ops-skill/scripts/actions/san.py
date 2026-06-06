@@ -2449,7 +2449,7 @@ def physical_host_map_luns(client: DMEAPIClient, volume_ids: list, host_id: str,
 
 
 def physical_host_unmap_luns(client: DMEAPIClient, volume_ids: list, host_id: str,
-              host_type: str = "host", task_remarks: str = None) -> dict:
+              task_remarks: str = None) -> dict:
     """
     解除主机映射
 
@@ -2459,7 +2459,6 @@ def physical_host_unmap_luns(client: DMEAPIClient, volume_ids: list, host_id: st
         client: DME API 客户端
         volume_ids: LUN ID 列表 (必选, 数组最大成员个数: 1000)
         host_id: 主机 ID (必选, 1~64个字符)
-        host_type: 映射类型 (可选, 默认host)。可选值：storage_host (存储主机), host (主机)
         task_remarks: 异步任务备注信息 (可选, 最多1024个字符)
 
     Returns:
@@ -2470,7 +2469,7 @@ def physical_host_unmap_luns(client: DMEAPIClient, volume_ids: list, host_id: st
     payload = {
         'volume_ids': volume_ids,
         'host_id': host_id,
-        'host_type': host_type
+        'host_type': "host"
     }
 
     if task_remarks is not None:
@@ -2496,13 +2495,19 @@ def storage_host_unmap_luns(client: DMEAPIClient, volume_ids: list, host_id: str
     Returns:
         响应数据，包含 task_id
     """
-    return physical_host_unmap_luns(
-        client=client,
-        volume_ids=volume_ids,
-        host_id=host_id,
-        host_type="storage_host",
-        task_remarks=task_remarks
-    )
+    url = "/rest/blockservice/v1/volumes/host-unmapping"
+
+    payload = {
+        'volume_ids': volume_ids,
+        'host_id': host_id,
+        'host_type': "storage_host"
+    }
+
+    if task_remarks is not None:
+        payload['task_remarks'] = task_remarks
+
+    response = client.post(url, json=payload)
+    return response
 
 
 # ============================================================================
@@ -3125,7 +3130,7 @@ ACTIONS = {
     'physical_host_unmap_luns': {
         'func': physical_host_unmap_luns,
         'description': '解除主机映射',
-        'params': ['volume_ids', 'host_id', 'host_type', 'task_remarks'],
+        'params': ['volume_ids', 'host_id', 'task_remarks'],
         'subtopic': 'physical_host'
     },
     # 物理主机组子主题动作（san physical_host_group xxx）
