@@ -814,7 +814,7 @@ def mapping_view_create(
                 todo_host_name: todo任务中的主机名称 (可选, 1~255个字符, 支持字母数字._-和中文字符),
                 id: 主机ID (可选, 1~64个字符)
              }
-        vbs: MappingVbsInfo对象 (可选, 与host/host_group互斥; 仅OceanStor Pacific和FusionStorage支持)。属性格式如下：{
+        vbs: VBS客户端 (可选, 与host/host_group互斥; 仅OceanStor Pacific和FusionStorage支持)。属性格式如下：{
                 id: VBS ID (可选, 1~64个字符)
              }
         host_group: 存储主机组 (可选, 与host/vbs互斥)。属性格式如下：{
