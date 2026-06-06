@@ -2508,10 +2508,10 @@ def physical_host_unmap_luns(client: DMEAPIClient, volume_ids: list, host_id: st
 
     Args:
         client: DME API 客户端
-        volume_ids: LUN ID 列表
-        host_id: 主机 ID
-        host_type: 映射类型（storage_host-存储主机，host-主机），默认 host
-        task_remarks: 异步任务备注信息
+        volume_ids: LUN ID 列表 (必选, 数组最大成员个数: 1000)
+        host_id: 主机 ID (必选, 1~64个字符)
+        host_type: 映射类型 (可选, 默认host)。可选值：storage_host (存储主机), host (主机)
+        task_remarks: 异步任务备注信息 (可选, 最多1024个字符)
 
     Returns:
         响应数据，包含 task_id
