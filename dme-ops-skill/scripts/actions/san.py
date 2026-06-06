@@ -612,16 +612,17 @@ def lun_group_create(client: DMEAPIClient, storage_id: str, name: str,
     return response
 
 
-def lun_group_delete(client: DMEAPIClient, storage_id: str, group_id: str) -> dict:
+def lun_group_delete(client: DMEAPIClient, lun_group_ids: list,
+                     task_remarks: str = None) -> dict:
     """
-    删除 LUN 组
+    批量删除 LUN 组
 
-    删除指定的 LUN 组。
+    批量删除 LUN 组。
 
     Args:
         client: DME API 客户端
-        storage_id: 存储设备 ID
-        group_id: LUN 组 ID
+        lun_group_ids: LUN组ID列表 (必选, 数组最大成员个数: 500)
+        task_remarks: 异步任务备注信息 (可选, 最多1024个字符)
 
     Returns:
         响应数据
@@ -629,9 +630,11 @@ def lun_group_delete(client: DMEAPIClient, storage_id: str, group_id: str) -> di
     url = "/rest/blockservice/v1/lun-groups/delete"
 
     body_params = {
-        'storage_id': storage_id,
-        'lun_group_ids': [group_id]
+        'lun_group_ids': lun_group_ids
     }
+
+    if task_remarks is not None:
+        body_params['task_remarks'] = task_remarks
 
     response = client.post(url, json=body_params)
     return response
@@ -2804,8 +2807,8 @@ ACTIONS = {
     },
     'lun_group_delete': {
         'func': lun_group_delete,
-        'description': '删除 LUN 组',
-        'params': ['storage_id', 'group_id'],
+        'description': '批量删除 LUN 组',
+        'params': ['lun_group_ids', 'task_remarks'],
         'subtopic': 'lun_group'
     },
     'lun_group_add_luns': {
