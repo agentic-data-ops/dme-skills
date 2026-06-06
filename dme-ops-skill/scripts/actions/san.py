@@ -2004,12 +2004,12 @@ def physical_host_modify(client: DMEAPIClient, host_id: str,
 
     Args:
         client: DME API 客户端
-        host_id: 物理主机 ID（必选）
-        ip: IP 地址（可选，IPv4 或 IPv6）
-        host_name: 主机名称（可选，1~255 字符）
-        os_type: 操作系统类型（可选）
-        azs: 可用分区 ID 列表（可选，最多 40 个）
-        project_id: 业务群组 ID（可选）
+        host_id: 物理主机 ID (必选)
+        ip: 物理主机IP地址 (可选, 最多127个字符, 支持IPv4和IPv6; 不填表示不变)
+        host_name: 物理主机名称 (可选, 1~255个字符, 支持字母数字._-; 为空表示保持不变)
+        os_type: 主机类型 (可选)。可选值：LINUX, WINDOWS, WINDOWSSERVER2012, SOLARIS, HPUX, AIX, XENSERVER, LINUX_VIS, MACOS, VMWAREESX, ORACLE, OPENVMS, ORACLE_VM_SERVER_FOR_X86, ORACLE_VM_SERVER_FOR_SPARC
+        azs: 可用分区ID列表 (可选, 数组最大成员个数: 40; 空值或空列表表示解除az关联)
+        project_id: 业务群组ID (可选, 0~64个字符; 不填表示不做修改; 空字符串表示解除project关联; 非空且与原值不一致表示关联至新project)
 
     Returns:
         修改结果
