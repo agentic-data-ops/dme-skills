@@ -338,7 +338,10 @@ def lun_expand(client: DMEAPIClient, volumes: list, task_remarks: str = None) ->
 
     Args:
         client: DME API 客户端
-        volumes: 需要扩容的 LUN 信息列表，每项包含 volume_id 和 added_capacity（最多 1000 个）
+        volumes: 需要扩容的 LUN 信息列表 (数组最大成员个数: 1000)。参数格式如下：[{
+                volume_id: LUN唯一标识 (必选, 1~64个字符),
+                added_capacity: 扩容容量GB (必选, 1~262144)
+             }, ...]
         task_remarks: 异步任务备注信息（可选，最多 1024 个字符）
 
     Returns:
