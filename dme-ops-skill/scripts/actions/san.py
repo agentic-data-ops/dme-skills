@@ -1126,9 +1126,8 @@ def physical_host_group_show_mapping_views(client: DMEAPIClient, host_group_id: 
 # 存储主机 (storage_host) 子主题函数
 # ============================================================================
 
-def storage_host_create(client: DMEAPIClient, storage_id: str, name: str, os_type: str,
-                ip: str = None, description: str = None, initiators: list = None,
-                multipath: dict = None, task_remarks: str = None,
+def storage_host_create(client: DMEAPIClient, storage_id: str,
+                host_info: dict, task_remarks: str = None,
                 vstore_id: str = None) -> dict:
     """
     创建存储主机
@@ -1137,17 +1136,26 @@ def storage_host_create(client: DMEAPIClient, storage_id: str, name: str, os_typ
 
     Args:
         client: DME API 客户端
-        storage_id: 存储设备 ID（必选，1~64 字符）
-        name: 主机名称（必选，1~255 字符，只能包含字母、数字、_、-、.和中文字符）
-        os_type: 操作系统类型（必选，LINUX/WINDOWS/SUSE 等）
-        ip: 主机 IP（可选，最多 127 字符）
-        description: 主机描述（可选，最多 63 字符）
-        initiators: 启动器列表（可选，最多 1000 个）
-                    每个启动器包含：protocol(fc/iscsi/nvme_over_roce), raw_id, alias
-        multipath: 多路径配置（可选）
-                   包含：multipath_type(default/third_party), path_type, failover_mode, special_mode_type
-        task_remarks: 任务备注（可选，最多 1024 字符）
-        vstore_id: 租户 ID（可选，1~64 字符）
+        storage_id: 存储设备ID (必选, 1~64个字符)
+        host_info: CreateStorageHostInfo对象 (必选)。属性格式如下：{
+                name: 主机名称 (必选, 1~255个字符, 支持字母数字._-和中文字符),
+                os_type: 主机类型 (必选)。可选值：LINUX, WINDOWS, WINDOWSSERVER2012, SOLARIS, HPUX, AIX, XENSERVER, LINUX_VIS, MACOS, VMWAREESX, ORACLE, OPENVMS, ORACLE_VM_SERVER_FOR_X86, ORACLE_VM_SERVER_FOR_SPARC,
+                ip: 主机ip地址 (可选, 最多127个字符),
+                description: 主机描述 (可选, 最多63个字符),
+                initiators: StorageInitiatorParam列表 (可选, 数组最大成员个数: 1000)。参数格式如下：[{
+                        protocol: 启动器类型 (必选)。可选值：fc, iscsi, nvme_over_roce,
+                        raw_id: 主机启动器wwpn或iqn或nqn (必选, 1~223个字符),
+                        alias: 启动器别名 (可选, 最多31个字符)
+                     }, ...],
+                multipath: MultiPathForCreateRequestParam对象 (可选)。属性格式如下：{
+                        multipath_type: 第三方多路径策略 (必选)。可选值：default (默认), third_party (第三方多路径),
+                        path_type: 启动器路径类型 (可选, 开启第三方多路径时有效)。可选值：optimal_path (优选路径), non_optimal_path (非优选路径),
+                        failover_mode: 启动器切换模式 (可选, 开启第三方多路径时有效)。可选值：early_version_alua, common_alua, alua_not_used, special_alua,
+                        special_mode_type: 特殊模式类型 (可选, 切换模式为特殊模式时有效)。可选值：mode_zero, mode_one, mode_two, mode_three
+                }
+             }
+        task_remarks: 异步任务备注信息 (可选, 最多1024个字符)
+        vstore_id: 租户ID (可选, 1~64个字符; 设备为OceanStor V300R006C30/V500R007C20/Dorado 6.1.3及以上时有效)
 
     Returns:
         任务 ID
@@ -1156,20 +1164,9 @@ def storage_host_create(client: DMEAPIClient, storage_id: str, name: str, os_typ
 
     payload = {
         'storage_id': storage_id,
-        'host_info': {
-            'name': name,
-            'os_type': os_type
-        }
+        'host_info': host_info
     }
 
-    if ip is not None:
-        payload['host_info']['ip'] = ip
-    if description is not None:
-        payload['host_info']['description'] = description
-    if initiators is not None:
-        payload['host_info']['initiators'] = initiators
-    if multipath is not None:
-        payload['host_info']['multipath'] = multipath
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
     if vstore_id is not None:
@@ -2887,7 +2884,7 @@ ACTIONS = {
     'storage_host_create': {
         'func': storage_host_create,
         'description': '创建存储主机',
-        'params': ['storage_id', 'name', 'os_type', 'ip', 'description', 'initiators', 'multipath', 'task_remarks', 'vstore_id'],
+        'params': ['storage_id', 'host_info', 'task_remarks', 'vstore_id'],
         'subtopic': 'storage_host'
     },
     'storage_host_batch_query': {
