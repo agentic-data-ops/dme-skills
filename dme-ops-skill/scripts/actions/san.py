@@ -172,7 +172,19 @@ def lun_create(client: DMEAPIClient, storage_id: str, lun_specs: list = None,
                         }
                         workload_type_raw_id: 应用类型 ID（可选），0~4294967295；通过查询指定存储设备上应用类型接口获取
         }
-        mapping: 映射信息（可选），LunMapping 对象，存在即表示为主机或主机组创建 LUN
+        mapping: 映射信息（可选），LunMapping 对象，存在即表示为主机或主机组创建 LUN。格式：{
+                        host_id: 主机 ID（可选），1~64 个字符，通过主机查询接口获取；与 hostgroup_id 二选其一，不可同时存在
+                        hostgroup_id: 主机组 ID（可选），1~64 个字符，通过主机组查询接口获取；与 host_id 二选其一，不可同时存在
+                        host_type: 映射主机类型（可选），可选值：storage_host（存储主机）、host（主机），默认 host
+                        start_host_lun_id: 起始主机 LUN ID（可选），1~4096
+                        mapping_view: 映射视图请求信息（可选），LunMappingRequest 对象。格式：{
+                                mapping_view_raw_id: 映射视图在存储设备上的 ID（可选），1~31 个字符
+                                mapping_view_name: 映射视图在存储设备上的名称（可选），1~31 个字符
+                                lun_group_raw_id: LUN 组在存储设备上的 ID（可选），1~31 个字符
+                                lun_group_name: LUN 组在存储设备上的名称（可选），1~255 个字符
+                                port_group_raw_id: 端口组在存储设备上的 ID（可选），1~31 个字符；主机或主机组不存在映射关系时可指定，存在映射关系时不可指定
+                        }
+        }
         task_remarks: 异步任务备注信息（可选），最多 1024 个字符
 
     Returns:
