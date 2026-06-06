@@ -1769,7 +1769,7 @@ def port_group_list(client: DMEAPIClient, storage_id: str, name: str = None,
 
 
 def port_group_create(client: DMEAPIClient, storage_id: str, name: str,
-                      description: str = None) -> dict:
+                      description: str = None, port_ids: list = None) -> dict:
     """
     创建端口组
 
@@ -1777,9 +1777,10 @@ def port_group_create(client: DMEAPIClient, storage_id: str, name: str,
 
     Args:
         client: DME API 客户端
-        storage_id: 存储设备 ID（必选）
-        name: 端口组名称（必选）
-        description: 端口组描述（可选）
+        storage_id: 存储设备ID (必选, 1~64个字符)
+        name: 端口组名称 (必选, 1~255个字符, 支持字母数字._-和中文字符)
+        description: 端口组描述 (可选, 0~63个字符)
+        port_ids: 关联到端口组的端口ID列表 (可选, 数组最大成员个数: 10; 只支持关联ROCE端口和逻辑端口, 只能关联其中一种)
 
     Returns:
         响应数据，包含新创建的端口组 ID
@@ -1793,6 +1794,8 @@ def port_group_create(client: DMEAPIClient, storage_id: str, name: str,
 
     if description is not None:
         body_params['description'] = description
+    if port_ids is not None:
+        body_params['port_ids'] = port_ids
 
     response = client.post(url, json=body_params)
     return response
@@ -3094,7 +3097,7 @@ ACTIONS = {
     'port_group_create': {
         'func': port_group_create,
         'description': '创建端口组',
-        'params': ['storage_id', 'name', 'description'],
+        'params': ['storage_id', 'name', 'description', 'port_ids'],
         'subtopic': 'port_group'
     },
     'port_group_show_ports': {
