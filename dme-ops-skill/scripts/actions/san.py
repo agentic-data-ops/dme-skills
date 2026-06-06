@@ -1444,12 +1444,12 @@ def storage_host_group_create(client: DMEAPIClient, storage_id: str, name: str,
                 os_type: 主机类型 (必选)。可选值：LINUX, WINDOWS, WINDOWSSERVER2012, SOLARIS, HPUX, AIX, XENSERVER, LINUX_VIS, MACOS, VMWAREESX, ORACLE, OPENVMS, ORACLE_VM_SERVER_FOR_X86, ORACLE_VM_SERVER_FOR_SPARC,
                 ip: 主机ip地址 (可选, 最多127个字符),
                 description: 主机描述 (可选, 最多63个字符),
-                initiators: StorageInitiatorParam列表 (可选, 数组最大成员个数: 1000)。参数格式如下：[{
+                initiators: 启动器列表 (可选, 数组最大成员个数: 1000)。参数格式如下：[{
                         protocol: 启动器类型 (必选)。可选值：fc, iscsi, nvme_over_roce,
                         raw_id: 主机启动器wwpn或iqn或nqn (必选, 1~223个字符),
                         alias: 启动器别名 (可选, 最多31个字符)
                      }, ...],
-                multipath: MultiPathForCreateRequestParam对象 (可选)。属性格式如下：{
+                multipath: 多路径配置 (可选)。属性格式如下：{
                         multipath_type: 第三方多路径策略 (必选)。可选值：default (默认), third_party (第三方多路径),
                         path_type: 启动器路径类型 (可选, 开启第三方多路径时有效)。可选值：optimal_path (优选路径), non_optimal_path (非优选路径),
                         failover_mode: 启动器切换模式 (可选, 开启第三方多路径时有效)。可选值：early_version_alua, common_alua, alua_not_used, special_alua,
@@ -1565,12 +1565,12 @@ def storage_host_group_add_hosts(client: DMEAPIClient, storage_host_group_id: st
                 os_type: 主机类型 (必选)。可选值：LINUX, WINDOWS, WINDOWSSERVER2012, SOLARIS, HPUX, AIX, XENSERVER, LINUX_VIS, MACOS, VMWAREESX, ORACLE, OPENVMS, ORACLE_VM_SERVER_FOR_X86, ORACLE_VM_SERVER_FOR_SPARC,
                 ip: 主机ip地址 (可选, 最多127个字符),
                 description: 主机描述 (可选, 最多63个字符),
-                initiators: StorageInitiatorParam列表 (可选, 数组最大成员个数: 1000)。参数格式如下：[{
+                initiators: 启动器列表 (可选, 数组最大成员个数: 1000)。参数格式如下：[{
                         protocol: 启动器类型 (必选)。可选值：fc, iscsi, nvme_over_roce,
                         raw_id: 主机启动器wwpn或iqn或nqn (必选, 1~223个字符),
                         alias: 启动器别名 (可选, 最多31个字符)
                      }, ...],
-                multipath: MultiPathForCreateRequestParam对象 (可选)。属性格式如下：{
+                multipath: 多路径配置 (可选)。属性格式如下：{
                         multipath_type: 第三方多路径策略 (必选)。可选值：default (默认), third_party (第三方多路径),
                         path_type: 启动器路径类型 (可选, 开启第三方多路径时有效)。可选值：optimal_path (优选路径), non_optimal_path (非优选路径),
                         failover_mode: 启动器切换模式 (可选, 开启第三方多路径时有效)。可选值：early_version_alua, common_alua, alua_not_used, special_alua,
