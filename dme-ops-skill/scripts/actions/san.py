@@ -1798,23 +1798,32 @@ def port_group_create(client: DMEAPIClient, storage_id: str, name: str,
     return response
 
 
-def port_group_show_ports(client: DMEAPIClient, storage_id: str, port_group_id: str) -> dict:
+def port_group_show_ports(client: DMEAPIClient, port_group_id: str,
+                          type: str = None, page_no: int = 1,
+                          page_size: int = 20) -> dict:
     """
     批量查询指定端口组的端口
 
     Args:
         client: DME API 客户端
-        storage_id: 存储设备 ID
-        port_group_id: 端口组 ID
+        port_group_id: 端口组 ID (必选)
+        type: 端口类型 (可选)。可选值：fc (FC端口), fcoe (FCoE端口), eth (以太网口), roce (RoCE端口)
+        page_no: 分页查询的页码 (可选, 1~10000, 默认1)
+        page_size: 分页查询的每页大小 (可选, 1~1000, 默认20)
 
     Returns:
         响应数据，包含端口列表
     """
     url = f"/rest/storagemgmt/v1/port-groups/{port_group_id}/ports/query"
 
-    payload = {
-        'storage_id': storage_id
-    }
+    payload = {}
+
+    if type is not None:
+        payload['type'] = type
+    if page_no is not None:
+        payload['page_no'] = page_no
+    if page_size is not None:
+        payload['page_size'] = page_size
 
     response = client.post(url, json=payload)
     return response
@@ -3100,7 +3109,7 @@ ACTIONS = {
     'port_group_show_ports': {
         'func': port_group_show_ports,
         'description': '批量查询指定端口组的端口',
-        'params': ['storage_id', 'port_group_id'],
+        'params': ['port_group_id', 'type', 'page_no', 'page_size'],
         'subtopic': 'port_group'
     },
     'port_group_show_relations': {
