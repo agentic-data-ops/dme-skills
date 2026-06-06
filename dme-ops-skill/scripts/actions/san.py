@@ -790,18 +790,14 @@ from dme_api_client import DMEAPIClient
 
 def mapping_view_create(
     client: DMEAPIClient,
-    storage_id: str,
+    storage_id: str, name: str = None,
     port_group_id: str = None,
-    name: str = None,
     start_host_lun_id: int = None,
-    host_id: str = None,
-    host_name: str = None,
-    host_group_id: str = None,
-    host_group_name: str = None,
-    lun_group_id: str = None,
-    lun_ids: list = None,
-    lungroup_name: str = None,
-    vbs_id: str = None
+    host: dict = None, vbs: dict = None,
+    host_group: dict = None,
+    lun_group: dict = None,
+    luns: dict = None,
+    task_remarks: str = None
 ) -> dict:
     """
     创建映射视图
@@ -810,18 +806,29 @@ def mapping_view_create(
 
     Args:
         client: DME API 客户端
-        storage_id: 存储设备 ID
-        port_group_id: 端口组 ID（可选）
-        name: 映射视图名称（可选，设备类型为 OceanStor V3/V5时有效）
-        start_host_lun_id: 主机 LUN ID（可选）
-        host_id: 主机 ID（可选，与 host_name 二选一）
-        host_name: 待创建主机名称（可选，与 host_id 二选一）
-        host_group_id: 主机组 ID（可选，与 host_group_name 二选一）
-        host_group_name: 待创建主机组名称（可选，与 host_group_id 二选一）
-        lun_group_id: LUN 组 ID（可选）
-        lun_ids: LUN ID 列表（可选，与 lun_group_id 互斥）
-        lungroup_name: LUN 组名称（可选，lun 映射时需创建指定名称 lun 组时下发）
-        vbs_id: VBS ID（可选，仅 OceanStor Pacific 和 OceanStor FusionStorage 系列存储支持）
+        storage_id: 存储设备 ID (必选, 1~64个字符)
+        name: 映射视图在设备上的名字 (可选, 1~31个字符; 设备类型为OceanStor V3/V5时有效)
+        port_group_id: 端口组 ID (可选, 1~64个字符)
+        start_host_lun_id: 主机LUN id (可选, 0~2147483647)
+        host: MappingHostInfo对象 (可选, 与vbs/host_group互斥)。属性格式如下：{
+                todo_host_name: todo任务中的主机名称 (可选, 1~255个字符, 支持字母数字._-和中文字符),
+                id: 主机ID (可选, 1~64个字符)
+             }
+        vbs: MappingVbsInfo对象 (可选, 与host/host_group互斥; 仅OceanStor Pacific和FusionStorage支持)。属性格式如下：{
+                id: VBS ID (可选, 1~64个字符)
+             }
+        host_group: MappingHostGroupInfo对象 (可选, 与host/vbs互斥)。属性格式如下：{
+                todo_host_group_name: todo任务中的主机组名称 (可选, 1~255个字符, 支持字母数字._-和中文字符),
+                id: 主机组ID (可选, 1~64个字符)
+             }
+        lun_group: MappingLUNGroupInfo对象 (可选, 与luns互斥)。属性格式如下：{
+                id: LUN组ID (可选, 1~64个字符)
+             }
+        luns: MappingLUNInfo对象 (可选, 与lun_group互斥)。属性格式如下：{
+                ids: 待映射的LUN列表 (可选, 数组最大成员个数: 1000),
+                lungroup_name: LUN组名称 (可选, 1~255个字符; lun映射时需创建指定名称lun组时下发)
+             }
+        task_remarks: 异步任务备注信息 (可选, 最多1024个字符)
 
     Returns:
         响应数据，包含 task_id
@@ -834,45 +841,22 @@ def mapping_view_create(
 
     if name is not None:
         body_params['name'] = name
-
     if port_group_id is not None:
         body_params['port_group_id'] = port_group_id
-
     if start_host_lun_id is not None:
         body_params['start_host_lun_id'] = start_host_lun_id
-
-    # 主机映射（与 vbs、host_group 互斥）
-    if host_id is not None or host_name is not None:
-        host_info = {}
-        if host_id is not None:
-            host_info['id'] = host_id
-        if host_name is not None:
-            host_info['todo_host_name'] = host_name
-        body_params['host'] = host_info
-
-    # 主机组映射（与 host、vbs 互斥）
-    if host_group_id is not None or host_group_name is not None:
-        host_group_info = {}
-        if host_group_id is not None:
-            host_group_info['id'] = host_group_id
-        if host_group_name is not None:
-            host_group_info['todo_host_group_name'] = host_group_name
-        body_params['host_group'] = host_group_info
-
-    # VBS 映射（与 host、host_group 互斥，仅 Pacific/FusionStorage 支持）
-    if vbs_id is not None:
-        body_params['vbs'] = {'id': vbs_id}
-
-    # LUN 组映射（与 luns 互斥）
-    if lun_group_id is not None:
-        body_params['lun_group'] = {'id': lun_group_id}
-
-    # LUN 列表映射（与 lun_group 互斥）
-    if lun_ids is not None:
-        luns_info = {'ids': lun_ids}
-        if lungroup_name is not None:
-            luns_info['lungroup_name'] = lungroup_name
-        body_params['luns'] = luns_info
+    if host is not None:
+        body_params['host'] = host
+    if vbs is not None:
+        body_params['vbs'] = vbs
+    if host_group is not None:
+        body_params['host_group'] = host_group
+    if lun_group is not None:
+        body_params['lun_group'] = lun_group
+    if luns is not None:
+        body_params['luns'] = luns
+    if task_remarks is not None:
+        body_params['task_remarks'] = task_remarks
 
     response = client.post(url, json=body_params)
     return response
@@ -2779,9 +2763,9 @@ ACTIONS = {
     'mapping_view_create': {
         'func': mapping_view_create,
         'description': '创建映射视图',
-        'params': ['storage_id', 'port_group_id', 'name', 'start_host_lun_id',
-                   'host_id', 'host_name', 'host_group_id', 'host_group_name',
-                   'lun_group_id', 'lun_ids', 'lungroup_name', 'vbs_id'],
+        'params': ['storage_id', 'name', 'port_group_id', 'start_host_lun_id',
+                   'host', 'vbs', 'host_group', 'lun_group', 'luns',
+                   'task_remarks'],
         'subtopic': 'mapping_view'
     },
     'mapping_view_delete': {
