@@ -1435,14 +1435,29 @@ def storage_host_group_create(client: DMEAPIClient, storage_id: str, name: str,
 
     Args:
         client: DME API 客户端
-        storage_id: 存储设备 ID（必选，1~64 字符）
-        name: 主机组名称（必选，1~255 字符）
-        description: 主机组描述（可选，0~63 字符）
-        exist_host_ids: 现有主机 ID 列表（可选，最多 1000 个）
-        create_storage_host_params: 创建主机参数（可选）
-                                    用于在主机组创建时同时创建主机
-        task_remarks: 任务备注（可选，最多 1024 字符）
-        vstore_id: 租户 ID（可选，1~64 字符）
+        storage_id: 存储设备ID (必选, 1~64个字符)
+        name: 主机组名称 (必选, 1~255个字符, 支持字母数字._-和中文字符; V3/V5设备最长31字节, V6设备最长255字节)
+        description: 描述信息 (可选, 0~63个字符)
+        exist_host_ids: 待添加至主机组的主机ID列表 (可选, 与create_storage_host_params互斥, 数组最大成员个数: 1000)
+        create_storage_host_params: CreateStorageHostInfo列表 (可选, 与exist_host_ids互斥, 数组最大成员个数: 1000)。参数格式如下：[{
+                name: 主机名称 (必选, 1~255个字符, 支持字母数字._-和中文字符),
+                os_type: 主机类型 (必选)。可选值：LINUX, WINDOWS, WINDOWSSERVER2012, SOLARIS, HPUX, AIX, XENSERVER, LINUX_VIS, MACOS, VMWAREESX, ORACLE, OPENVMS, ORACLE_VM_SERVER_FOR_X86, ORACLE_VM_SERVER_FOR_SPARC,
+                ip: 主机ip地址 (可选, 最多127个字符),
+                description: 主机描述 (可选, 最多63个字符),
+                initiators: StorageInitiatorParam列表 (可选, 数组最大成员个数: 1000)。参数格式如下：[{
+                        protocol: 启动器类型 (必选)。可选值：fc, iscsi, nvme_over_roce,
+                        raw_id: 主机启动器wwpn或iqn或nqn (必选, 1~223个字符),
+                        alias: 启动器别名 (可选, 最多31个字符)
+                     }, ...],
+                multipath: MultiPathForCreateRequestParam对象 (可选)。属性格式如下：{
+                        multipath_type: 第三方多路径策略 (必选)。可选值：default (默认), third_party (第三方多路径),
+                        path_type: 启动器路径类型 (可选, 开启第三方多路径时有效)。可选值：optimal_path (优选路径), non_optimal_path (非优选路径),
+                        failover_mode: 启动器切换模式 (可选, 开启第三方多路径时有效)。可选值：early_version_alua, common_alua, alua_not_used, special_alua,
+                        special_mode_type: 特殊模式类型 (可选, 切换模式为特殊模式时有效)。可选值：mode_zero, mode_one, mode_two, mode_three
+                }
+             }, ...]
+        task_remarks: 异步任务备注信息 (可选, 最多1024个字符)
+        vstore_id: 租户ID (可选, 1~64个字符; 设备为OceanStor V300R006C30/V500R007C20/Dorado 6.1.3及以上时有效)
 
     Returns:
         任务 ID
