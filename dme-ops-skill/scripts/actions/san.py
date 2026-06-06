@@ -1084,14 +1084,42 @@ def mapping_view_query(
     return response
 
 
+def physical_host_show_mapping_views(client: DMEAPIClient, request_id: str,
+                                      storage_id: str) -> dict:
+    """
+    查询物理主机关联的映射关系
+
+    Args:
+        client: DME API 客户端
+        request_id: 物理主机 ID (必选, 1~64个字符)
+        storage_id: 存储设备 ID (必选, 1~64个字符)
+
+    Returns:
+        响应数据，包含映射视图列表
+    """
+    return mapping_view_query(
+        client=client, type="host",
+        request_id=request_id, storage_id=storage_id
+    )
 
 
+def physical_host_group_show_mapping_views(client: DMEAPIClient, request_id: str,
+                                            storage_id: str) -> dict:
+    """
+    查询物理主机组关联的映射关系
 
+    Args:
+        client: DME API 客户端
+        request_id: 物理主机组 ID (必选, 1~64个字符)
+        storage_id: 存储设备 ID (必选, 1~64个字符)
 
-
-
-
-
+    Returns:
+        响应数据，包含映射视图列表
+    """
+    return mapping_view_query(
+        client=client, type="host_group",
+        request_id=request_id, storage_id=storage_id
+    )
 
 
 # ============================================================================
@@ -2785,12 +2813,7 @@ ACTIONS = {
                    'port_group_name', 'sort_key', 'sort_dir'],
         'subtopic': 'mapping_view'
     },
-    'mapping_view_query': {
-        'func': mapping_view_query,
-        'description': '查询物理主机（组）关联的映射关系',
-        'params': ['type', 'request_id', 'storage_id'],
-        'subtopic': 'mapping_view'
-    },
+
     # 存储主机子主题动作（san storage_host xxx）
     'storage_host_create': {
         'func': storage_host_create,
@@ -3006,6 +3029,12 @@ ACTIONS = {
         'params': ['volume_ids', 'host_id', 'task_remarks'],
         'subtopic': 'physical_host'
     },
+    'physical_host_show_mapping_views': {
+        'func': physical_host_show_mapping_views,
+        'description': '查询物理主机关联的映射关系',
+        'params': ['request_id', 'storage_id'],
+        'subtopic': 'physical_host'
+    },
     # 物理主机组子主题动作（san physical_host_group xxx）
     'physical_host_group_list': {
         'func': physical_host_group_list,
@@ -3059,6 +3088,12 @@ ACTIONS = {
         'func': physical_host_group_unmap_luns,
         'description': '解除物理主机组映射',
         'params': ['volume_ids', 'hostgroup_id', 'task_remarks'],
+        'subtopic': 'physical_host_group'
+    },
+    'physical_host_group_show_mapping_views': {
+        'func': physical_host_group_show_mapping_views,
+        'description': '查询物理主机组关联的映射关系',
+        'params': ['request_id', 'storage_id'],
         'subtopic': 'physical_host_group'
     }
 }
