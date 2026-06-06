@@ -1084,14 +1084,14 @@ def mapping_view_query(
     return response
 
 
-def physical_host_show_mapping_views(client: DMEAPIClient, request_id: str,
+def physical_host_show_mapping_views(client: DMEAPIClient, host_id: str,
                                       storage_id: str) -> dict:
     """
     查询物理主机关联的映射关系
 
     Args:
         client: DME API 客户端
-        request_id: 物理主机 ID (必选, 1~64个字符)
+        host_id: 物理主机 ID (必选, 1~64个字符)
         storage_id: 存储设备 ID (必选, 1~64个字符)
 
     Returns:
@@ -1099,18 +1099,18 @@ def physical_host_show_mapping_views(client: DMEAPIClient, request_id: str,
     """
     return mapping_view_query(
         client=client, type="host",
-        request_id=request_id, storage_id=storage_id
+        request_id=host_id, storage_id=storage_id
     )
 
 
-def physical_host_group_show_mapping_views(client: DMEAPIClient, request_id: str,
+def physical_host_group_show_mapping_views(client: DMEAPIClient, host_group_id: str,
                                             storage_id: str) -> dict:
     """
     查询物理主机组关联的映射关系
 
     Args:
         client: DME API 客户端
-        request_id: 物理主机组 ID (必选, 1~64个字符)
+        host_group_id: 物理主机组 ID (必选, 1~64个字符)
         storage_id: 存储设备 ID (必选, 1~64个字符)
 
     Returns:
@@ -1118,7 +1118,7 @@ def physical_host_group_show_mapping_views(client: DMEAPIClient, request_id: str
     """
     return mapping_view_query(
         client=client, type="host_group",
-        request_id=request_id, storage_id=storage_id
+        request_id=host_group_id, storage_id=storage_id
     )
 
 
@@ -3032,7 +3032,7 @@ ACTIONS = {
     'physical_host_show_mapping_views': {
         'func': physical_host_show_mapping_views,
         'description': '查询物理主机关联的映射关系',
-        'params': ['request_id', 'storage_id'],
+        'params': ['host_id', 'storage_id'],
         'subtopic': 'physical_host'
     },
     # 物理主机组子主题动作（san physical_host_group xxx）
@@ -3093,7 +3093,7 @@ ACTIONS = {
     'physical_host_group_show_mapping_views': {
         'func': physical_host_group_show_mapping_views,
         'description': '查询物理主机组关联的映射关系',
-        'params': ['request_id', 'storage_id'],
+        'params': ['host_group_id', 'storage_id'],
         'subtopic': 'physical_host_group'
     }
 }
