@@ -715,15 +715,15 @@ def lun_group_add_luns(client: DMEAPIClient, group_id: str,
 
 
 def lun_group_remove_luns(client: DMEAPIClient, group_id: str,
-                           lun_ids: list, storage_id: str = None) -> dict:
+                           lun_ids: list, task_remarks: str = None) -> dict:
     """
     从 LUN 组移除 LUN
 
     Args:
         client: DME API 客户端
         group_id: LUN 组 ID
-        lun_ids: LUN ID 列表
-        storage_id: 存储设备 ID（可选，实际不需要）
+        lun_ids: LUN ID 列表 (必选, 数组最小成员个数: 1, 数组最大成员个数: 10000)
+        task_remarks: 异步任务备注信息 (可选, 最多1024个字符)
 
     Returns:
         响应数据
@@ -733,6 +733,9 @@ def lun_group_remove_luns(client: DMEAPIClient, group_id: str,
     body_params = {
         'lun_ids': lun_ids
     }
+
+    if task_remarks is not None:
+        body_params['task_remarks'] = task_remarks
 
     response = client.post(url, json=body_params)
     return response
@@ -2867,7 +2870,7 @@ ACTIONS = {
     'lun_group_remove_luns': {
         'func': lun_group_remove_luns,
         'description': '从 LUN 组移除 LUN',
-        'params': ['group_id', 'lun_ids', 'storage_id'],
+        'params': ['group_id', 'lun_ids', 'task_remarks'],
         'subtopic': 'lun_group'
     },
     'lun_group_show_luns': {
