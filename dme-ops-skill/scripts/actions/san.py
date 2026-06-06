@@ -2762,7 +2762,7 @@ def physical_host_group_map_luns(client: DMEAPIClient, volume_ids: list, hostgro
 
 
 def physical_host_group_unmap_luns(client: DMEAPIClient, volume_ids: list, hostgroup_id: str,
-              host_group_type: str = "host_group", task_remarks: str = None) -> dict:
+              task_remarks: str = None) -> dict:
     """
     解除主机组映射
 
@@ -2772,7 +2772,6 @@ def physical_host_group_unmap_luns(client: DMEAPIClient, volume_ids: list, hostg
         client: DME API 客户端
         volume_ids: LUN ID 列表 (必选, 数组最大成员个数: 1000)
         hostgroup_id: 主机组 ID (必选, 1~64个字符)
-        host_group_type: 映射类型 (可选, 默认host_group)。可选值：storage_host_group (存储主机组), host_group (主机组)
         task_remarks: 异步任务备注信息 (可选, 最多1024个字符)
 
     Returns:
@@ -2783,7 +2782,7 @@ def physical_host_group_unmap_luns(client: DMEAPIClient, volume_ids: list, hostg
     payload = {
         'volume_ids': volume_ids,
         'hostgroup_id': hostgroup_id,
-        'host_group_type': host_group_type
+        'host_group_type': "host_group"
     }
 
     if task_remarks is not None:
@@ -3185,7 +3184,7 @@ ACTIONS = {
     'physical_host_group_unmap_luns': {
         'func': physical_host_group_unmap_luns,
         'description': '解除物理主机组映射',
-        'params': ['volume_ids', 'hostgroup_id', 'host_group_type', 'task_remarks'],
+        'params': ['volume_ids', 'hostgroup_id', 'task_remarks'],
         'subtopic': 'physical_host_group'
     }
 }
