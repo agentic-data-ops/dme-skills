@@ -142,7 +142,14 @@ def lun_create(client: DMEAPIClient, storage_id: str, lun_specs: list = None,
                         remote_lun_raw_id: 外部 LUN 的 ID（可选），0~255 个字符；当 usage_type 为 edev 时生效
                         disguise_status: 是否开启 LUN 的伪装（可选），当 usage_type 为 edev 时生效；可选值：nodisguise（不伪装）、basic（基本伪装）、expansion（扩展伪装）、inheritance（继承伪装）
         },...]
-        lun_specs_pass_through: 直通模式存储设备待创建 LUN 基本参数（条件必传），List<lunSpecsPassThrough> 类型，数组最大成员个数 24，单次最多可创建 24 组；与 lun_specs 互斥；当存储设备模式为直通模式时必传
+        lun_specs_pass_through: 直通模式存储设备待创建 LUN 基本参数（条件必传），List<lunSpecsPassThrough> 类型，数组最大成员个数 24，单次最多可创建 24 组；与 lun_specs 互斥；当存储设备模式为直通模式时必传。格式：[{
+                        name: LUN 名称（必填），1~247 个字符；只能包含字母、数字、"-"、"."和中文字符；最终名称由 LUN 名称+后缀编码+"-"+硬盘位置组成；当 count 为 1 时没有后缀编码；中文占三个字符
+                        description: LUN 描述（可选），0~255 个字符，中文占三个字符
+                        disk_location: 创建 LUN 使用的硬盘位置（必填），1~255 个字符
+                        count: 每个硬盘创建的 LUN 数量（必填），1~8
+                        suffix_length: LUN 名称的后缀编码位数（可选），1~4，默认 4；当 count 大于 1 时有效
+                        start_suffix: LUN 名称的后缀起始编码（可选），0~9999，默认 0；当 count 大于 1 时有效
+        },...]
         pool_id: 存储池 ID（条件必传），1~64 个字符；当存储设备模式不为直通模式时必传；通过查询指定资源类型的所有实例接口获取，存储池的资源类型名称为 SYS_StoragePool
         vstore_id: 租户 ID（可选），1~64 个字符；当设备为 OceanStor V300R006C00、OceanStor V500R007C00、OceanStor Dorado 6.1.3、OceanStor 6.1.3 及其以上版本时有效
         owner_controller: 归属控制器（可选），1~64 个字符，通过查询指定存储上的控制器获取
