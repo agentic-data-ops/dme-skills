@@ -158,7 +158,20 @@ def lun_create(client: DMEAPIClient, storage_id: str, lun_specs: list = None,
         prefetch_policy: 预取策略（可选），影响磁盘读取；
                         可选值：no_prefetch（不预取）、constant_prefetch（固定预取）、variable_prefetch（可变预取）、intelligent_prefetch（智能预取）；默认 intelligent_prefetch
         prefetch_value: 预取策略值（可选），0~1024；下发了 prefetch_policy 且其值为固定或可变预取时需要下发；固定预取取值范围 0~1024KB，可变预取取值范围 0~1024 倍
-        tuning: 调优属性（可选），CustomizeLunTuning 对象，包含 smart_tier、deduplication_enabled、compression_enabled、alloction_type、smart_qos、workload_type_raw_id
+        tuning: 调优属性（可选），CustomizeLunTuning 对象。格式：{
+                        smart_tier: 数据迁移策略（可选），可选值：no_migration（不迁移）、automatic_migration（自动迁移）、migration_to_higher（向高性能层迁移）、migration_to_lower（向低性能层迁移），默认 no_migration
+                        deduplication_enabled: 重复数据删除（可选），true：开启；false：关闭；仅 Thin LUN 支持
+                        compression_enabled: 数据压缩（可选），true：开启；false：关闭；仅 Thin LUN 支持
+                        alloction_type: LUN 分配类型（可选），可选值：thin、thick
+                        smart_qos: Smart QoS 对象（可选）。格式：{
+                                max_bandwidth: 最大带宽（可选），1~999999999，单位 Mbit/s；与 min_bandwidth、min_iops 互斥
+                                max_iops: 最大 IOPS（可选），1~999999999；与 min_bandwidth、min_iops 互斥
+                                min_bandwidth: 最小带宽（可选），1~999999999，单位 Mbit/s；与 max_bandwidth、max_iops 互斥
+                                min_iops: 最小 IOPS（可选），1~999999999；与 max_bandwidth、max_iops 互斥
+                                latency: 时延（可选），1~999999999，单位 ms；与 max_bandwidth、max_iops 互斥；Dorado V6 系列单位为 us，可选值为 500 和 1500
+                        }
+                        workload_type_raw_id: 应用类型 ID（可选），0~4294967295；通过查询指定存储设备上应用类型接口获取
+        }
         mapping: 映射信息（可选），LunMapping 对象，存在即表示为主机或主机组创建 LUN
         task_remarks: 异步任务备注信息（可选），最多 1024 个字符
 
