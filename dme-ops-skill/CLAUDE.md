@@ -106,6 +106,17 @@ When user ask to finish todo tasks, sequentially execute the unfinished todo tas
 - [x] Delete migrated topics
 - [x] Remove redundant topology subtopics (topology_fcsan, topology_ipsan, topology_lun, topology_vm, topology_graph) and merge into main topology subtopic
 
+### Code Review & Fix Task
+
+- [x] san.py: 完成检查和修复
+- [ ] nas.py: 已完成检查和修复：创建/修改文件系统、命名空间、NFS共享、CIFS共享、DataTurbo共享
+- [ ] storage.py: 已完成检查和修复：启动器相关动作
+- [ ] self_service.py: 已完成检查和修复：服务化创建LUN
+
+**注意**
+- 保证动作代码实现与API文档定义完全一致
+- 保证命令行参数解释包含全部格式和约束说明
+
 ### Testing Tasks
 
 - [ ] 执行测试用例：test/todo.md
