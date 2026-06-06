@@ -32,9 +32,15 @@ def lun_list(client: DMEAPIClient, limit: int = 1000, offset: int = 0,
                  sort_dir: str = None, sort_key: str = None, name: str = None,
                  vstore_raw_id: str = None, vstore_name: str = None,
                  status: str = None, health_status: str = None,
-                 tier_id: str = None, volume_wwn: str = None,
+                 service_level_id: str = None, volume_wwn: str = None,
                  storage_id: str = None, pool_raw_id: str = None,
-                 host_id: str = None) -> dict:
+                 host_id: str = None, hostgroup_id: str = None,
+                 unmapped_host_id: str = None, unmapped_hostgroup_id: str = None,
+                 project_id: str = None, allocate_type: str = None,
+                 attached: bool = None, query_mode: str = None,
+                 protected: bool = None, pg_id: str = None,
+                 usage_type: str = None,
+                 support_provisioning: bool = None) -> dict:
     """
     批量查询 LUN
     
@@ -42,21 +48,31 @@ def lun_list(client: DMEAPIClient, limit: int = 1000, offset: int = 0,
     
     Args:
         client: DME API 客户端
-        limit: 分页查询的个数，默认 1000，范围：0~1000
-        offset: 分页查询的起始位置，默认 0，最小值：0
-        sort_dir: 排序方向，asc（升序）或 desc（降序）
-        sort_key: 排序字段，可选值：name, size, alloc_capacity, capacity_usage, protection_capacity
-        name: LUN 名称，支持模糊查询（1~256 个字符）
-        vstore_raw_id: 存储设备上分配的租户 ID（1~64 个字符）
-        vstore_name: 租户名称，支持模糊查询（1~256 个字符）
-        status: 状态（已废弃，建议使用 health_status）
-               可选值：creating, normal, mapping, unmapping, deleting, error, expanding, faulty, write_protected
-        health_status: 健康状态，可选值：normal（正常）, faulty（故障）, write_protected（写保护）
-        tier_id: 服务等级 ID（1~64 个字符）
-        volume_wwn: LUN WWN（1~128 个字符）
-        storage_id: 存储设备 ID（1~36 个字符，UUID 格式或 32 位十六进制）
-        pool_raw_id: 存储池在存储设备上的 ID（1~64 个字符），需要同时指定 storage_id
-        host_id: 主机 ID（1~64 个字符，UUID 格式或 32 位十六进制）
+        limit: 分页查询的个数 (可选, 0~1000, 默认1000)
+        offset: 分页查询的起始位置 (可选, 最小值0, 默认0)
+        sort_dir: 排序方向 (可选)。可选值：asc (升序), desc (降序)
+        sort_key: 排序字段 (可选)。可选值：name, size, alloc_capacity, capacity_usage, protection_capacity
+        name: LUN名称 (可选, 1~256个字符, 支持模糊查询)
+        vstore_raw_id: 存储设备上分配的租户ID (可选, 1~64个字符)
+        vstore_name: 租户名称 (可选, 1~256个字符, 支持模糊查询)
+        status: 状态 (可选, 已废弃, 建议使用health_status)。可选值：creating (创建中), normal (正常), mapping (映射中), unmapping (解除映射中), deleting (删除中), error (错误), expanding (扩容中), faulty (故障), write_protected (写保护)
+        health_status: 健康状态 (可选)。可选值：normal (正常), faulty (故障), write_protected (写保护)
+        service_level_id: 服务等级ID (可选, 1~64个字符)
+        volume_wwn: LUN WWN (可选, 1~128个字符)
+        storage_id: 存储设备ID (可选, 1~36个字符, UUID格式或32位十六进制)
+        pool_raw_id: 存储池在存储设备上的ID (可选, 1~64个字符; 需同时指定storage_id)
+        host_id: 主机ID (可选, 1~64个字符, UUID格式或32位十六进制)
+        hostgroup_id: 主机组ID (可选, 1~64个字符, UUID格式或32位十六进制)
+        unmapped_host_id: 未映射主机ID (可选, 1~64个字符)
+        unmapped_hostgroup_id: 未映射主机组ID (可选, 1~64个字符)
+        project_id: 业务群组ID (可选, 1~64个字符)
+        allocate_type: 分配类型 (可选)。可选值：thin, thick
+        attached: 映射状态 (可选)。可选值：true (已映射), false (未映射)
+        query_mode: LUN发放模式 (可选)。可选值：service (服务化LUN), non-service (非服务LUN), all (所有LUN)
+        protected: LUN保护状态 (可选)。可选值：true (已被保护), false (未被保护)
+        pg_id: 保护组ID (可选, 1~64个字符, UUID格式或32位十六进制)
+        usage_type: LUN使用类型 (可选)。可选值：traditional (传统LUN), edev (eDevLUN)
+        support_provisioning: 过滤查询可发放变更的LUN (可选)。可选值：true (仅查询可发放变更), false (查询全量)
     
     Returns:
         LUN 列表，包含：
@@ -84,8 +100,8 @@ def lun_list(client: DMEAPIClient, limit: int = 1000, offset: int = 0,
         query_params['status'] = status
     if health_status is not None:
         query_params['health_status'] = health_status
-    if tier_id is not None:
-        query_params['service_level_id'] = tier_id
+    if service_level_id is not None:
+        query_params['service_level_id'] = service_level_id
     if volume_wwn is not None:
         query_params['volume_wwn'] = volume_wwn
     if storage_id is not None:
@@ -94,6 +110,28 @@ def lun_list(client: DMEAPIClient, limit: int = 1000, offset: int = 0,
         query_params['pool_raw_id'] = pool_raw_id
     if host_id is not None:
         query_params['host_id'] = host_id
+    if hostgroup_id is not None:
+        query_params['hostgroup_id'] = hostgroup_id
+    if unmapped_host_id is not None:
+        query_params['unmapped_host_id'] = unmapped_host_id
+    if unmapped_hostgroup_id is not None:
+        query_params['unmapped_hostgroup_id'] = unmapped_hostgroup_id
+    if project_id is not None:
+        query_params['project_id'] = project_id
+    if allocate_type is not None:
+        query_params['allocate_type'] = allocate_type
+    if attached is not None:
+        query_params['attached'] = attached
+    if query_mode is not None:
+        query_params['query_mode'] = query_mode
+    if protected is not None:
+        query_params['protected'] = protected
+    if pg_id is not None:
+        query_params['pg_id'] = pg_id
+    if usage_type is not None:
+        query_params['usage_type'] = usage_type
+    if support_provisioning is not None:
+        query_params['support_provisioning'] = support_provisioning
     
     response = client.get(url, query_params=query_params)
     return response
@@ -2652,7 +2690,7 @@ ACTIONS = {
     'lun_list': {
         'func': lun_list,
         'description': '批量查询 LUN',
-        'params': ['limit', 'offset', 'sort_dir', 'sort_key', 'name', 'vstore_raw_id', 'vstore_name', 'status', 'health_status', 'tier_id', 'volume_wwn', 'storage_id', 'pool_raw_id', 'host_id'],
+        'params': ['limit', 'offset', 'sort_dir', 'sort_key', 'name', 'vstore_raw_id', 'vstore_name', 'status', 'health_status', 'service_level_id', 'volume_wwn', 'storage_id', 'pool_raw_id', 'host_id', 'hostgroup_id', 'unmapped_host_id', 'unmapped_hostgroup_id', 'project_id', 'allocate_type', 'attached', 'query_mode', 'protected', 'pg_id', 'usage_type', 'support_provisioning'],
         'subtopic': 'lun'
     },
     'lun_show': {
