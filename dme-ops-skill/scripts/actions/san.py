@@ -1914,7 +1914,7 @@ def physical_host_show(client: DMEAPIClient, host_id: str) -> dict:
 
 def physical_host_create(client: DMEAPIClient, access_mode: str, type: str,
                 host_name: str = None, ip: str = None, port: int = None,
-                host_username: str = None, host_password: str = None,
+                username: str = None, password: str = None,
                 description: str = None, initiator: list = None,
                 azs: list = None, project_id: str = None,
                 sync_to_storage: bool = False, multipath_type: str = None,
@@ -1927,23 +1927,26 @@ def physical_host_create(client: DMEAPIClient, access_mode: str, type: str,
 
     Args:
         client: DME API 客户端
-        access_mode: 接入方式（必选，ACCOUNT/NONE）
-        type: 主机类型（必选，UNKNOWN/LINUX/WINDOWS/SUSE/EULER 等）
-        host_name: 物理主机名称（NONE 模式必选，1~255 字符）
-        ip: 物理主机 IP（ACCOUNT 模式必选，支持 IPv4 和 IPv6）
-        port: SSH 端口（ACCOUNT 模式必选，1~65535）
-        host_username: 接入用户名（ACCOUNT 模式必选，1~255 字符）
-        host_password: 接入密码（ACCOUNT 模式必选，1~1024 字符）
-        description: 描述信息（可选，0~63 字符）
-        initiator: 启动器列表（NONE 模式必选）
-        azs: 可用分区 ID 列表（可选，最多 40 个）
-        project_id: 业务群组 ID（可选）
-        sync_to_storage: 自动同步到存储（可选，默认 false）
-        multipath_type: 多路径类型（可选，default/third_party）
-        path_type: 启动器路径类型（可选，optimal_path/non_optimal_path）
-        failover_mode: 启动器切换模式（可选，early_version_alua/common_alua 等）
-        special_mode_type: 特殊模式类型（可选，mode_zero/mode_one 等）
-        save_public_key: 自动保存公钥（可选，默认 false）
+        access_mode: 物理主机接入方式 (必选)。可选值：ACCOUNT (指定账号密码), NONE (手动录入)
+        type: 主机类型 (必选)。可选值：UNKNOWN, LINUX, WINDOWS, SUSE, EULER, REDHAT, CENTOS, WINDOWSSERVER2012, SOLARIS, LINUX_VIS, HPUX, AIX, XENSERVER, MACOS, VMWAREESX, ORACLE, OPENVMS, ORACLE_VM_SERVER_FOR_X86, ORACLE_VM_SERVER_FOR_SPARC。ACCOUNT模式仅支持LINUX
+        host_name: 物理主机名称 (NONE模式必填, 1~255个字符, 支持字母数字._-和中文字符)
+        ip: 物理主机IP地址 (ACCOUNT模式有效, 支持IPv4和IPv6, 最多127个字符)
+        port: 物理主机接入端口 (ACCOUNT模式必填, 1~65535)
+        username: 物理主机接入用户名 (ACCOUNT模式必填, 1~255个字符)
+        password: 物理主机接入密码 (ACCOUNT模式必填, 1~1024个字符)
+        description: 物理主机描述信息 (可选, 0~63个字符)
+        initiator: 物理主机启动器列表 (NONE模式必填)。参数格式如下：[{
+                protocol: 启动器类型 (必选)。可选值：FC, ISCSI, NVME_OVER_ROCE,
+                port_name: 主机启动器wwn或iqn (必选, 1~223个字符)
+             }, ...]
+        azs: 可用分区ID列表 (可选, 数组最大成员个数: 40)
+        project_id: 业务群组ID (可选, 1~64个字符)
+        sync_to_storage: 自动同步已接入主机信息到存储 (可选, 默认false)。可选值：true, false
+        multipath_type: 多路径类型 (可选)。可选值：default, third_party
+        path_type: 启动器路径类型 (可选, 开启第三方多路径时有效)。可选值：optimal_path (优选路径), non_optimal_path (非优选路径)
+        failover_mode: 启动器切换模式 (可选, 开启第三方多路径时有效)。可选值：early_version_alua, common_alua, alua_not_used, special_alua
+        special_mode_type: 特殊模式类型 (可选, 切换模式为特殊模式时有效)。可选值：mode_zero, mode_one, mode_two, mode_three
+        save_public_key: 是否自动保存物理主机公钥 (可选, 默认false)。可选值：true, false
 
     Returns:
         创建的物理主机信息
@@ -1961,11 +1964,10 @@ def physical_host_create(client: DMEAPIClient, access_mode: str, type: str,
         payload['ip'] = ip
     if port is not None:
         payload['port'] = port
-    # 将 host_username 和 host_password 转换为 API 参数名
-    if host_username is not None:
-        payload['username'] = host_username
-    if host_password is not None:
-        payload['password'] = host_password
+    if username is not None:
+        payload['username'] = username
+    if password is not None:
+        payload['password'] = password
     if description is not None:
         payload['description'] = description
     if initiator is not None:
@@ -2958,7 +2960,7 @@ ACTIONS = {
         'func': physical_host_create,
         'description': '接入物理主机',
         'params': ['access_mode', 'type', 'host_name', 'ip', 'port',
-                   'host_username', 'host_password', 'description', 'initiator',
+                   'username', 'password', 'description', 'initiator',
                    'azs', 'project_id', 'sync_to_storage', 'multipath_type',
                    'path_type', 'failover_mode', 'special_mode_type', 'save_public_key'],
         'subtopic': 'physical_host'
