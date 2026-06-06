@@ -1829,15 +1829,15 @@ def port_group_show_ports(client: DMEAPIClient, port_group_id: str,
     return response
 
 
-def port_group_show_relations(client: DMEAPIClient, storage_id: str,
-                             port_group_id: str = None) -> dict:
+def port_group_show_relations(client: DMEAPIClient, page_no: int = 1,
+                              page_size: int = 20) -> dict:
     """
     批量查询端口组与端口关联关系
 
     Args:
         client: DME API 客户端
-        storage_id: 存储设备 ID
-        port_group_id: 端口组 ID（可选，不传则查询所有）
+        page_no: 分页查询的页码 (可选, 1~10000, 默认1)
+        page_size: 分页查询的每页大小 (可选, 1~1000, 默认20)
 
     Returns:
         响应数据，包含关联关系列表
@@ -1845,11 +1845,9 @@ def port_group_show_relations(client: DMEAPIClient, storage_id: str,
     url = "/rest/storagemgmt/v1/port-groups/ports/relations/query"
 
     payload = {
-        'storage_id': storage_id
+        'page_no': page_no,
+        'page_size': page_size
     }
-
-    if port_group_id is not None:
-        payload['port_group_id'] = port_group_id
 
     response = client.post(url, json=payload)
     return response
@@ -3115,7 +3113,7 @@ ACTIONS = {
     'port_group_show_relations': {
         'func': port_group_show_relations,
         'description': '批量查询端口组与端口关联关系',
-        'params': ['storage_id', 'port_group_id'],
+        'params': ['page_no', 'page_size'],
         'subtopic': 'port_group'
     },
     # 物理主机子主题动作（san physical_host xxx）
