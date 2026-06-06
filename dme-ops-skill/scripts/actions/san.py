@@ -264,7 +264,18 @@ def lun_modify(client: DMEAPIClient, volume_id: str, name: str = None,
         prefetch_policy: 预取策略（可选，仅非服务化 LUN 支持修改）
                         可选值：0（不预取），1（固定预取），2（可变预取），3（智能预取）
         prefetch_value: 预取策略值（可选，仅非服务化 LUN 支持修改）
-        tuning: LUN 调优属性（可选，仅非服务化 LUN 支持修改）
+        tuning: LUN 调优属性 (可选, 仅非服务化LUN支持修改)。参数格式如下：{
+                smarttier: 数据迁移策略 (可选, 默认0)。可选值：0 (不迁移), 1 (自动迁移), 2 (向高性能层迁移), 3 (向低性能层迁移),
+                smartqos: SmartQos4Update对象 (可选)。属性格式如下：{
+                        maxbandwidth: 最大带宽 (可选, 0~2147483647; 支持所有设备; 用于V3/V5系列时与minbandwidth/miniops互斥),
+                        maxiops: 最大iops (可选, 0~2147483647; 支持所有设备; 用于V3/V5系列时与minbandwidth/miniops互斥),
+                        minbandwidth: 最小带宽 (可选, 0~2147483647; 支持Dorado V6/V3/V5; 用于V3/V5系列时与maxbandwidth/maxiops互斥),
+                        miniops: 最小iops (可选, 0~2147483647; 支持Dorado V6/V3/V5; 用于V3/V5系列时与maxbandwidth/maxiops互斥),
+                        control_policy: 控制策略 (可选)。可选值：0 (保护IO下限), 1 (控制IO上限),
+                        latency: 时延ms或us (可选, 0~2147483647; 需根据不同存储设备指定; 仅保护下限支持),
+                        enabled: 是否启用smartqos (可选)。可选值：true, false
+                }
+             }
         task_remarks: 异步任务备注信息（可选，最多 1024 个字符）
 
     Returns:
