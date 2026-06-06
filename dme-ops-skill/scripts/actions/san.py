@@ -2181,10 +2181,10 @@ def physical_host_show_initiators(client: DMEAPIClient, host_id: str,
 
     Args:
         client: DME API 客户端
-        host_id: 物理主机 ID（必选）
-        port_name: 启动器 WWN 或 IQN（可选）
-        protocol: 启动器类型（可选，FC/ISCSI/NVME_OVER_ROCE）
-        status: 启动器状态（可选，UNKNOWN/ONLINE/OFFLINE/UNBOUND）
+        host_id: 物理主机 ID (必选)
+        port_name: 物理主机启动器wwn或iqn (可选, 1~223个字符)
+        protocol: 启动器类型 (可选, 1~64个字符)。可选值：UNKNOWN, FC, ISCSI, NVME_OVER_ROCE, SAS, NVME_OVER_FABRIC
+        status: 启动器状态 (可选, 1~32个字符)。可选值：UNKNOWN, ONLINE, OFFLINE, UNBOUND
 
     Returns:
         启动器列表
