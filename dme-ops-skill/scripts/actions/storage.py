@@ -963,11 +963,15 @@ def initiator_modify(client: DMEAPIClient, initiator_id: str,
 
     Args:
         client: DME API 客户端
-        initiator_id: 启动器 ID（必选，1~64 字符）
-        vstore_id: 租户 ID（可选，1~64 字符）
-        alias: 启动器别名（可选，0~31 个字符，支持字母、数字、_、-、.和中文字符）
-        multi_path: 多路径配置信息（可选）
-                    包含：multi_path_type(default/third_party), path_type, failover_mode, special_mode_type
+        initiator_id: 启动器 ID (必选)
+        vstore_id: 租户ID (可选, 1~64个字符; 设备为OceanStor V300R006C30/V500R007C20/Dorado 6.1.3及以上时有效)
+        alias: 启动器别名 (可选, 0~31个字符, 支持字母数字._-和中文字符)
+        multi_path: ModifyMultiPathRequestParam对象 (可选; 设备为OceanStor V300R003C20/V500R007C20/Dorado V300R001C01及以上支持)。属性格式如下：{
+                multi_path_type: 启动器多路径类型 (可选)。可选值：default (默认), third_party (第三方多路径),
+                path_type: 启动器路径类型 (条件必传, 当multi_path_type为third_party时必传)。可选值：optimal_path (优选路径), non_optimal_path (非优选路径),
+                failover_mode: 启动器切换模式 (条件必传, 当multi_path_type为third_party时必传)。可选值：early_version_alua, common_alua, alua_not_used, special_alua,
+                special_mode_type: 特殊模式类型 (可选, 切换模式为特殊模式时有效)。可选值：0 (特殊模式0), 1 (特殊模式1), 2 (特殊模式2), 3 (特殊模式3)
+             }
 
     Returns:
         任务 ID
