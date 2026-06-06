@@ -2515,11 +2515,11 @@ def physical_host_group_create(client: DMEAPIClient, name: str, host_ids: list,
 
     Args:
         client: DME API 客户端
-        name: 物理主机组名称（必选，1~255 字符）
-        host_ids: 物理主机 ID 列表（必选，最多 100 个）
-        azs: 可用分区 ID 列表（可选，最多 40 个）
-        project_id: 业务群组 ID（可选）
-        description: 描述信息（可选，0~63 字符）
+        name: 物理主机组名称 (必选, 1~255个字符, 支持字母数字._-和中文字符)
+        host_ids: 物理主机ID列表 (必选, 数组最大成员个数: 100)
+        azs: 可用分区ID列表 (可选, 数组最大成员个数: 40)
+        project_id: 业务群组ID (可选, 1~64个字符)
+        description: 物理主机组描述信息 (可选, 0~63个字符)
 
     Returns:
         创建的物理主机组信息
