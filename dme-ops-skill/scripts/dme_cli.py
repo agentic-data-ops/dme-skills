@@ -157,13 +157,24 @@ class DMECLI:
         if in_params:
             current_param = None
             param_lines = []
+            in_format_block = 0  # 参数格式块嵌套深度，>0 时跳过内部属性解析
             
             for line in lines:
+                raw = line  # 保留原始缩进
                 stripped = line.strip()
                 
                 # 检查是否是 Returns 或后续部分
                 if stripped.startswith(('Returns:', 'Raises:', 'Note:', 'Example:')):
                     break
+                
+                # 在格式块内部：不解析新参数，追加到当前参数描述
+                if in_format_block > 0:
+                    if current_param:
+                        param_lines.append(stripped)
+                    in_format_block += stripped.count('{') - stripped.count('}')
+                    if in_format_block < 0:
+                        in_format_block = 0
+                    continue
                 
                 # 检查是否是参数定义行（如 "param_name: 描述"）
                 param_match = re.match(r'^(\w+)\s*:\s*(.+)$', stripped)
@@ -175,6 +186,12 @@ class DMECLI:
                     
                     current_param = param_match.group(1)
                     param_lines = [param_match.group(2)]
+                    
+                    # 如果该参数行同时进入参数格式/属性格式描述块，跟踪嵌套深度
+                    if '参数格式如下：' in stripped or '属性格式如下：{' in stripped:
+                        in_format_block = stripped.count('{') - stripped.count('}')
+                        if in_format_block < 0:
+                            in_format_block = 0
                 
                 elif current_param and stripped:
                     # 参数描述的 continuation（缩进的行）

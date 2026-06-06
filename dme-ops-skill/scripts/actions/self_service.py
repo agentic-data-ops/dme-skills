@@ -15,69 +15,56 @@ from dme_api_client import DMEAPIClient
 # ============ lun 子主题函数 ============
 
 
-def lun_create(client: DMEAPIClient, name: str, size: int, count: int,
-               tier_id: str, description: str = None,
-               start_suffix: int = None, suffix_length: int = None,
-               vstore_id: str = None, host_id: str = None,
-               hostgroup_id: str = None, affinity: bool = None,
-               affinity_volume: str = None) -> dict:
+def lun_create(client: DMEAPIClient, volumes: list,
+               service_level_id: str, task_remarks: str = None,
+               project_id: str = None, availability_zone: str = None,
+               scheduler_hints: dict = None, mapping: dict = None) -> dict:
     """
     服务化批量创建 LUN
 
     Args:
         client: DME API 客户端
-        name: LUN 名称（1~255 个字符，只能包含字母、数字、"."、"_"、"-"和中文字符）
-        size: LUN 容量（GB，1~262144）
-        count: 创建数量（1~500）
-        tier_id: 服务等级 ID（必填，0~64 个字符）
-        description: LUN 描述（可选，0~255 个字符）
-        start_suffix: 起始后缀编号（可选，0~9999）
-        suffix_length: 后缀长度（可选，1~4）
-        vstore_id: 租户 ID（可选，0~64 个字符）
-        host_id: 主机 ID（可选，与 hostgroup_id 二选一）
-        hostgroup_id: 主机组 ID（可选，与 host_id 二选一）
-        affinity: 是否开启亲和性（可选，true/false）
-        affinity_volume: 待亲和的 LUN ID（可选）
+        volumes: 待创建 LUN 基本参数列表 (List<ServiceVolumeBasicParams>, 数组最大成员个数: 1000)。参数格式如下：[{
+                name: LUN名称 (1~255个字符, 支持字母数字._-和中文字符),
+                capacity: 容量GB (1~262144),
+                count: 创建数量 (1~500),
+                description: 描述 (0~255个字符),
+                start_suffix: 起始后缀编号 (0~9999),
+                suffix_length: 后缀长度规则 (1~4, 名称长度+后缀长度<=255)
+             }, ...]
+        service_level_id: 服务等级 ID（必填，0~64 个字符）
+        task_remarks: 异步任务备注信息（可选，最多 1024 个字符）
+        project_id: 业务群组 ID（可选，0~64 个字符）
+        availability_zone: 可用分区 ID（可选，0~64 个字符）
+        scheduler_hints: 调度策略 (可选, SchedulerHints 对象)。参数格式如下：{
+                affinity: 是否开启亲和性。可选值：true (开启), false (不开启)。默认不开启,
+                affinity_volume: 待亲和的 LUN ID (可选, 0~64个字符)
+             }
+        mapping: 映射信息 (可选, ServiceVolumeMapping 对象, 存在即表示为主机或主机组创建 LUN)。参数格式如下：{
+                host_id: 主机ID (可选, 0~64个字符, 与hostgroup_id二选其一),
+                hostgroup_id: 主机组ID (可选, 0~64个字符, 与host_id二选其一)
+             }
 
     Returns:
         响应数据，包含 task_id（异步任务）
     """
     url = "/rest/blockservice/v1/volumes"
 
-    volume_params = {
-        'name': name,
-        'capacity': size,
-        'count': count
-    }
-
-    if description is not None:
-        volume_params['description'] = description
-    if start_suffix is not None:
-        volume_params['start_suffix'] = start_suffix
-    if suffix_length is not None:
-        volume_params['suffix_length'] = suffix_length
-
     payload = {
-        'volumes': [volume_params],
-        'service_level_id': tier_id
+        'volumes': volumes,
+        'service_level_id': service_level_id
     }
 
-    if vstore_id is not None:
-        payload['project_id'] = vstore_id
-    if host_id is not None or hostgroup_id is not None:
-        mapping = {}
-        if host_id is not None:
-            mapping['host_id'] = host_id
-        if hostgroup_id is not None:
-            mapping['hostgroup_id'] = hostgroup_id
+    if task_remarks is not None:
+        payload['task_remarks'] = task_remarks
+    if project_id is not None:
+        payload['project_id'] = project_id
+    if availability_zone is not None:
+        payload['availability_zone'] = availability_zone
+    if scheduler_hints is not None:
+        payload['scheduler_hints'] = scheduler_hints
+    if mapping is not None:
         payload['mapping'] = mapping
-    if affinity is not None or affinity_volume is not None:
-        hints = {}
-        if affinity is not None:
-            hints['affinity'] = affinity
-        if affinity_volume is not None:
-            hints['affinity_volume'] = affinity_volume
-        payload['scheduler_hints'] = hints
 
     response = client.post(url, json=payload)
     return response
@@ -389,7 +376,7 @@ ACTIONS = {
     'lun_create': {
         'func': lun_create,
         'description': '服务化批量创建 LUN',
-        'params': ['name', 'size', 'count', 'tier_id', 'description', 'start_suffix', 'suffix_length', 'vstore_id', 'host_id', 'hostgroup_id'],
+        'params': ['volumes', 'service_level_id', 'task_remarks', 'project_id', 'availability_zone', 'scheduler_hints', 'mapping'],
         'subtopic': 'lun'
     },
     'lun_change_tier': {

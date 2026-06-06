@@ -130,26 +130,26 @@ def lun_create(client: DMEAPIClient, storage_id: str, lun_specs: list = None,
     Args:
         client: DME API 客户端
         storage_id: 存储设备 ID（必填），1~64 个字符，通过存储设备查询接口获取
-        lun_specs: 待创建 LUN 基本参数（条件必传），List<LunSpecs> 类型，数组最大成员个数 1000，单次最多可创建 10 组；与 lun_specs_pass_through 互斥；当存储设备模式不为直通模式时必传。格式：[{
-                        name: LUN 名称（必填），1~255 个字符，只能包含字母、数字、"."、"_"、"-"和中文字符；当 count 大于 1 时名称为 1~27 个字符
-                        count: 该规格 LUN 数量（必填），1~500，每次最多可创建 500 个 LUN
-                        capacity: 单个 LUN 容量（必填），1~262144，单位 GB，仅支持正整数
-                        suffix_length: LUN 命名后缀规则（可选），1~4；配置后系统自动在名称后按规则添加后缀；LUN 名称长度+后缀长度 <= 255 字符
-                        start_suffix: 起始后缀编号（可选），1~9999；该规格 LUN 数量加上起始后缀编号 <= 9999
-                        start_lun_id: 起始 LUN ID（可选），1~65535
-                        usage_type: LUN 的使用类型（可选），可选值：traditional（传统 LUN）、edev（eDevLUN）
-                        write_policy: 回写策略（可选），可选值：back（回写）、through（透写）
-                        remote_lun_raw_id: 外部 LUN 的 ID（可选），0~255 个字符；当 usage_type 为 edev 时生效
-                        disguise_status: 是否开启 LUN 的伪装（可选），当 usage_type 为 edev 时生效；可选值：nodisguise（不伪装）、basic（基本伪装）、expansion（扩展伪装）、inheritance（继承伪装）
-        },...]
-        lun_specs_pass_through: 直通模式存储设备待创建 LUN 基本参数（条件必传），List<lunSpecsPassThrough> 类型，数组最大成员个数 24，单次最多可创建 24 组；与 lun_specs 互斥；当存储设备模式为直通模式时必传。格式：[{
-                        name: LUN 名称（必填），1~247 个字符；只能包含字母、数字、"-"、"."和中文字符；最终名称由 LUN 名称+后缀编码+"-"+硬盘位置组成；当 count 为 1 时没有后缀编码；中文占三个字符
-                        description: LUN 描述（可选），0~255 个字符，中文占三个字符
-                        disk_location: 创建 LUN 使用的硬盘位置（必填），1~255 个字符
-                        count: 每个硬盘创建的 LUN 数量（必填），1~8
-                        suffix_length: LUN 名称的后缀编码位数（可选），1~4，默认 4；当 count 大于 1 时有效
-                        start_suffix: LUN 名称的后缀起始编码（可选），0~9999，默认 0；当 count 大于 1 时有效
-        },...]
+        lun_specs: 待创建 LUN 基本参数 (条件必传), List<LunSpecs> 类型, 数组最大成员个数 1000, 单次最多可创建 10 组; 与 lun_specs_pass_through 互斥; 当存储设备模式不为直通模式时必传。参数格式如下：[{
+                name: LUN名称 (1~255个字符, 支持字母数字._-和中文字符; 当count>1时名称为1~27个字符),
+                count: 该规格LUN数量 (1~500),
+                capacity: 单个LUN容量 (1~262144, 单位GB),
+                suffix_length: 命名后缀规则 (1~4; 名称长度+后缀长度<=255),
+                start_suffix: 起始后缀编号 (1~9999; 数量+起始后缀<=9999),
+                start_lun_id: 起始LUN ID (1~65535),
+                usage_type: LUN使用类型。可选值：traditional (传统LUN), edev (eDevLUN),
+                write_policy: 回写策略。可选值：back (回写), through (透写),
+                remote_lun_raw_id: 外部LUN ID (0~255个字符; 当usage_type为edev时生效),
+                disguise_status: LUN伪装 (当usage_type为edev时生效)。可选值：nodisguise (不伪装), basic (基本伪装), expansion (扩展伪装), inheritance (继承伪装)
+             }, ...]
+        lun_specs_pass_through: 直通模式存储设备待创建 LUN 基本参数 (条件必传), List<lunSpecsPassThrough> 类型, 数组最大成员个数 24, 单次最多可创建 24 组; 与 lun_specs 互斥; 当存储设备模式为直通模式时必传。参数格式如下：[{
+                name: LUN名称 (1~247个字符, 支持字母数字-._和中文字符; 最终名称由LUN名称+后缀编码+'-'+硬盘位置组成),
+                description: LUN描述 (0~255个字符),
+                disk_location: 创建LUN的硬盘位置 (1~255个字符),
+                count: 每个硬盘创建的LUN数量 (1~8),
+                suffix_length: 后缀编码位数 (1~4, 默认4; 当count大于1时有效),
+                start_suffix: 后缀起始编码 (0~9999, 默认0; 当count大于1时有效)
+             }, ...]
         pool_id: 存储池 ID（条件必传），1~64 个字符；当存储设备模式不为直通模式时必传；通过查询指定资源类型的所有实例接口获取，存储池的资源类型名称为 SYS_StoragePool
         vstore_id: 租户 ID（可选），1~64 个字符；当设备为 OceanStor V300R006C00、OceanStor V500R007C00、OceanStor Dorado 6.1.3、OceanStor 6.1.3 及其以上版本时有效
         owner_controller: 归属控制器（可选），1~64 个字符，通过查询指定存储上的控制器获取
@@ -158,33 +158,33 @@ def lun_create(client: DMEAPIClient, storage_id: str, lun_specs: list = None,
         prefetch_policy: 预取策略（可选），影响磁盘读取；
                         可选值：no_prefetch（不预取）、constant_prefetch（固定预取）、variable_prefetch（可变预取）、intelligent_prefetch（智能预取）；默认 intelligent_prefetch
         prefetch_value: 预取策略值（可选），0~1024；下发了 prefetch_policy 且其值为固定或可变预取时需要下发；固定预取取值范围 0~1024KB，可变预取取值范围 0~1024 倍
-        tuning: 调优属性（可选），CustomizeLunTuning 对象。格式：{
-                        smart_tier: 数据迁移策略（可选），可选值：no_migration（不迁移）、automatic_migration（自动迁移）、migration_to_higher（向高性能层迁移）、migration_to_lower（向低性能层迁移），默认 no_migration
-                        deduplication_enabled: 重复数据删除（可选），true：开启；false：关闭；仅 Thin LUN 支持
-                        compression_enabled: 数据压缩（可选），true：开启；false：关闭；仅 Thin LUN 支持
-                        alloction_type: LUN 分配类型（可选），可选值：thin、thick
-                        smart_qos: Smart QoS 对象（可选）。格式：{
-                                max_bandwidth: 最大带宽（可选），1~999999999，单位 Mbit/s；与 min_bandwidth、min_iops 互斥
-                                max_iops: 最大 IOPS（可选），1~999999999；与 min_bandwidth、min_iops 互斥
-                                min_bandwidth: 最小带宽（可选），1~999999999，单位 Mbit/s；与 max_bandwidth、max_iops 互斥
-                                min_iops: 最小 IOPS（可选），1~999999999；与 max_bandwidth、max_iops 互斥
-                                latency: 时延（可选），1~999999999，单位 ms；与 max_bandwidth、max_iops 互斥；Dorado V6 系列单位为 us，可选值为 500 和 1500
-                        }
-                        workload_type_raw_id: 应用类型 ID（可选），0~4294967295；通过查询指定存储设备上应用类型接口获取
-        }
-        mapping: 映射信息（可选），LunMapping 对象，存在即表示为主机或主机组创建 LUN。格式：{
-                        host_id: 主机 ID（可选），1~64 个字符，通过主机查询接口获取；与 hostgroup_id 二选其一，不可同时存在
-                        hostgroup_id: 主机组 ID（可选），1~64 个字符，通过主机组查询接口获取；与 host_id 二选其一，不可同时存在
-                        host_type: 映射主机类型（可选），可选值：storage_host（存储主机）、host（主机），默认 host
-                        start_host_lun_id: 起始主机 LUN ID（可选），1~4096
-                        mapping_view: 映射视图请求信息（可选），LunMappingRequest 对象。格式：{
-                                mapping_view_raw_id: 映射视图在存储设备上的 ID（可选），1~31 个字符
-                                mapping_view_name: 映射视图在存储设备上的名称（可选），1~31 个字符
-                                lun_group_raw_id: LUN 组在存储设备上的 ID（可选），1~31 个字符
-                                lun_group_name: LUN 组在存储设备上的名称（可选），1~255 个字符
-                                port_group_raw_id: 端口组在存储设备上的 ID（可选），1~31 个字符；主机或主机组不存在映射关系时可指定，存在映射关系时不可指定
-                        }
-        }
+        tuning: 调优属性 (可选), CustomizeLunTuning 对象。参数格式如下：{
+                smart_tier: 数据迁移策略。可选值：no_migration (不迁移), automatic_migration (自动迁移), migration_to_higher (向高性能层迁移), migration_to_lower (向低性能层迁移)。默认no_migration,
+                deduplication_enabled: 重复数据删除 (仅Thin LUN支持)。可选值：true (开启), false (关闭),
+                compression_enabled: 数据压缩 (仅Thin LUN支持)。可选值：true (开启), false (关闭),
+                alloction_type: LUN分配类型。可选值：thin, thick,
+                smart_qos: Smart QoS对象。属性格式如下：{
+                        max_bandwidth: 最大带宽 (1~999999999Mbit/s; 与min_bandwidth/min_iops互斥),
+                        max_iops: 最大IOPS (1~999999999; 与min_bandwidth/min_iops互斥),
+                        min_bandwidth: 最小带宽 (1~999999999Mbit/s; 与max_bandwidth/max_iops互斥),
+                        min_iops: 最小IOPS (1~999999999; 与max_bandwidth/max_iops互斥),
+                        latency: 时延 (1~999999999ms; Dorado V6系列单位为us, 可选值为500/1500; 与max_bandwidth/max_iops互斥)
+                },
+                workload_type_raw_id: 应用类型ID (0~4294967295; 通过查询指定存储设备上应用类型接口获取)
+             }
+        mapping: 映射信息 (可选), LunMapping 对象, 存在即表示为主机或主机组创建 LUN。参数格式如下：{
+                host_id: 主机ID (1~64个字符; 与hostgroup_id二选其一, 不可同时存在),
+                hostgroup_id: 主机组ID (1~64个字符; 与host_id二选其一, 不可同时存在),
+                host_type: 映射主机类型。可选值：storage_host (存储主机), host (主机)。默认host,
+                start_host_lun_id: 起始主机LUN ID (1~4096),
+                mapping_view: 映射视图请求信息 (LunMappingRequest对象)。属性格式如下：{
+                        mapping_view_raw_id: 映射视图在存储设备上的ID (1~31个字符),
+                        mapping_view_name: 映射视图在存储设备上的名称 (1~31个字符),
+                        lun_group_raw_id: LUN组在存储设备上的ID (1~31个字符),
+                        lun_group_name: LUN组在存储设备上的名称 (1~255个字符),
+                        port_group_raw_id: 端口组在存储设备上的ID (1~31个字符; 主机或主机组不存在映射关系时可指定, 存在映射关系时不可指定)
+                },
+             }
         task_remarks: 异步任务备注信息（可选），最多 1024 个字符
 
     Returns:
@@ -303,7 +303,10 @@ def lun_modify_name(client: DMEAPIClient, volumes: list) -> dict:
 
     Args:
         client: DME API 客户端
-        volumes: 待修改的 LUN 信息列表，每项包含 volume_id 和 name（最多 100 个）
+        volumes: 待修改的 LUN 信息列表 (数组最大成员个数: 1000)。参数格式如下：[{
+                volume_id: LUN唯一标识 (1~64个字符),
+                name: LUN新名称 (1~255个字符, 支持字母数字._-和中文字符)
+             }, ...]
 
     Returns:
         响应数据，包含 task_id（异步任务）
