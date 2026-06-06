@@ -1439,7 +1439,7 @@ def storage_host_group_create(client: DMEAPIClient, storage_id: str, name: str,
         name: 主机组名称 (必选, 1~255个字符, 支持字母数字._-和中文字符; V3/V5设备最长31字节, V6设备最长255字节)
         description: 描述信息 (可选, 0~63个字符)
         exist_host_ids: 待添加至主机组的主机ID列表 (可选, 与create_storage_host_params互斥, 数组最大成员个数: 1000)
-        create_storage_host_params: CreateStorageHostInfo列表 (可选, 与exist_host_ids互斥, 数组最大成员个数: 1000)。参数格式如下：[{
+        create_storage_host_params: 创建新的存储主机列表 (可选, 与exist_host_ids互斥, 数组最大成员个数: 1000)。参数格式如下：[{
                 name: 主机名称 (必选, 1~255个字符, 支持字母数字._-和中文字符),
                 os_type: 主机类型 (必选)。可选值：LINUX, WINDOWS, WINDOWSSERVER2012, SOLARIS, HPUX, AIX, XENSERVER, LINUX_VIS, MACOS, VMWAREESX, ORACLE, OPENVMS, ORACLE_VM_SERVER_FOR_X86, ORACLE_VM_SERVER_FOR_SPARC,
                 ip: 主机ip地址 (可选, 最多127个字符),
@@ -1560,7 +1560,7 @@ def storage_host_group_add_hosts(client: DMEAPIClient, storage_host_group_id: st
         client: DME API 客户端
         storage_host_group_id: 存储主机组 ID (必选)
         storage_host_id_ids: 存储主机ID列表 (可选, 与create_storage_host_params互斥, 数组最大成员个数: 1000)
-        create_storage_host_params: CreateStorageHostInfo列表 (可选, 与storage_host_id_ids互斥, 数组最大成员个数: 1000)。参数格式如下：[{
+        create_storage_host_params: 创建新的存储主机列表 (可选, 与storage_host_id_ids互斥, 数组最大成员个数: 1000)。参数格式如下：[{
                 name: 主机名称 (必选, 1~255个字符, 支持字母数字._-和中文字符),
                 os_type: 主机类型 (必选)。可选值：LINUX, WINDOWS, WINDOWSSERVER2012, SOLARIS, HPUX, AIX, XENSERVER, LINUX_VIS, MACOS, VMWAREESX, ORACLE, OPENVMS, ORACLE_VM_SERVER_FOR_X86, ORACLE_VM_SERVER_FOR_SPARC,
                 ip: 主机ip地址 (可选, 最多127个字符),
