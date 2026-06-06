@@ -2033,6 +2033,70 @@ def physical_host_modify(client: DMEAPIClient, host_id: str,
     return response
 
 
+def physical_host_modify_access_info(client: DMEAPIClient, host_id: str,
+                ip: str = None, port: int = None, username: str = None,
+                password: str = None, project_id: str = None,
+                azs: list = None, sync_to_storage: bool = False,
+                description: str = None, multipath_type: str = None,
+                path_type: str = None, failover_mode: str = None,
+                special_mode_type: str = None) -> dict:
+    """
+    修改物理主机接入信息
+
+    修改物理主机接入信息（如从 NONE 手动录入改为 ACCOUNT 账号密码接入）。
+
+    Args:
+        client: DME API 客户端
+        host_id: 物理主机ID (必选, 1~64个字符)
+        ip: 物理主机接入IP地址 (可选, 最多127个字符, 支持IPv4和IPv6; NONE转ACCOUNT场景必填)
+        port: 物理主机接入端口 (可选, 1~65535; NONE转ACCOUNT场景必填)
+        username: 物理主机接入用户名 (可选, 1~255个字符; NONE转ACCOUNT场景必填)
+        password: 物理主机接入用户密码 (可选, 1~1024个字符; NONE转ACCOUNT场景必填)
+        project_id: 业务群组ID (可选, 0~64个字符; 不填表示不做修改; 空字符串表示解除关联; 非空且与原值不一致表示关联至新project)
+        azs: 可用分区ID列表 (可选, 数组最大成员个数: 40; 空值或空列表表示解除az关联)
+        sync_to_storage: 是否同步修改存储主机信息 (可选, 默认false)。可选值：true (同步修改), false (不同步)
+        description: 物理主机描述信息 (可选, 0~63个字符)
+        multipath_type: 多路径类型 (可选)。可选值：default, third_party
+        path_type: 启动器路径类型 (可选, 开启第三方多路径时有效)。可选值：optimal_path (优选路径), non_optimal_path (非优选路径)
+        failover_mode: 启动器切换模式 (可选, 开启第三方多路径时有效)。可选值：early_version_alua, common_alua, alua_not_used, special_alua
+        special_mode_type: 特殊模式类型 (可选, 切换模式为特殊模式时有效)。可选值：mode_zero, mode_one, mode_two, mode_three
+
+    Returns:
+        修改结果
+    """
+    url = f"/rest/hostmgmt/v1/hosts/{host_id}/accessinfo"
+
+    payload = {}
+
+    if ip is not None:
+        payload['ip'] = ip
+    if port is not None:
+        payload['port'] = port
+    if username is not None:
+        payload['username'] = username
+    if password is not None:
+        payload['password'] = password
+    if project_id is not None:
+        payload['project_id'] = project_id
+    if azs is not None:
+        payload['azs'] = azs
+    if sync_to_storage is not None:
+        payload['sync_to_storage'] = sync_to_storage
+    if description is not None:
+        payload['description'] = description
+    if multipath_type is not None:
+        payload['multipath_type'] = multipath_type
+    if path_type is not None:
+        payload['path_type'] = path_type
+    if failover_mode is not None:
+        payload['failover_mode'] = failover_mode
+    if special_mode_type is not None:
+        payload['special_mode_type'] = special_mode_type
+
+    response = client.put(url, json=payload)
+    return response
+
+
 def physical_host_delete(client: DMEAPIClient, host_id: str,
                 sync_to_storage: bool = False) -> dict:
     """
@@ -2969,6 +3033,12 @@ ACTIONS = {
         'func': physical_host_modify,
         'description': '修改物理主机基本信息',
         'params': ['host_id', 'ip', 'host_name', 'os_type', 'azs', 'project_id'],
+        'subtopic': 'physical_host'
+    },
+    'physical_host_modify_access_info': {
+        'func': physical_host_modify_access_info,
+        'description': '修改物理主机接入信息',
+        'params': ['host_id', 'ip', 'port', 'username', 'password', 'project_id', 'azs', 'sync_to_storage', 'description', 'multipath_type', 'path_type', 'failover_mode', 'special_mode_type'],
         'subtopic': 'physical_host'
     },
     'physical_host_delete': {
