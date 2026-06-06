@@ -2500,6 +2500,60 @@ def physical_host_group_list(client: DMEAPIClient, limit: int = None, start: int
     return response
 
 
+def physical_host_group_show_hosts(client: DMEAPIClient, hostgroup_id: str,
+                name: str = None, ip: str = None,
+                display_status: list = None, managed_status: list = None,
+                os_type: list = None, sort_key: str = None,
+                sort_dir: str = None, page_size: int = 1024,
+                page_no: int = 1) -> dict:
+    """
+    查询物理主机组中的物理主机
+
+    查询指定物理主机组的物理主机列表。
+
+    Args:
+        client: DME API 客户端
+        hostgroup_id: 物理主机组ID (必选, 1~64个字符)
+        name: 物理主机名称 (可选, 1~256个字符, 支持模糊匹配)
+        ip: 物理主机IP (可选, 1~256个字符, 支持模糊匹配)
+        display_status: 展示状态列表 (可选, 数组最大成员个数: 1000)。可选值：OFFLINE (断开), NOT_RESPONDING (未响应), GRAY (未知), NORMAL (正常), RED (存在问题), YELLOW (可能存在问题), REBOOTING (重启中), INITIAL (初始化), BOOTING (重启), SHUTDOWNING (下电中)
+        managed_status: 纳管状态列表 (可选, 数组最大成员个数: 1000)。可选值：UNKNOWN, NORMAL, TAKE_OVERING, TAKE_ERROR, TAKE_OVER_ALARM
+        os_type: 操作系统类型列表 (可选, 数组最大成员个数: 1000)。可选值：UNKNOWN, LINUX, WINDOWS, SUSE, EULER, REDHAT, CENTOS, WINDOWSSERVER2012, SOLARIS, HPUX, AIX, XENSERVER, MACOS, VMWAREESX, ORACLE, OPENVMS
+        sort_key: 排序关键字 (可选)。可选值：ip, name
+        sort_dir: 排序方向 (可选, sort_key不填时不生效)。可选值：desc (降序), asc (升序)
+        page_size: 分页查询的个数 (可选, 1~1024, 默认1024)
+        page_no: 分页查询的页码 (可选, 1~10000000, 默认1)
+
+    Returns:
+        物理主机列表
+    """
+    url = f"/rest/hostmgmt/v1/hostgroups/{hostgroup_id}/hosts/list"
+
+    payload = {}
+
+    if name is not None:
+        payload['name'] = name
+    if ip is not None:
+        payload['ip'] = ip
+    if display_status is not None:
+        payload['display_status'] = display_status
+    if managed_status is not None:
+        payload['managed_status'] = managed_status
+    if os_type is not None:
+        payload['os_type'] = os_type
+    if sort_key is not None:
+        payload['sort_key'] = sort_key
+    if sort_dir is not None:
+        payload['sort_dir'] = sort_dir
+    if page_size is not None:
+        payload['page_size'] = page_size
+    if page_no is not None:
+        payload['page_no'] = page_no
+
+    response = client.post(url, json=payload)
+    return response
+
+
 def physical_host_group_show(client: DMEAPIClient, hostgroup_id: str) -> dict:
     """
     查询指定物理主机组
@@ -3132,6 +3186,12 @@ ACTIONS = {
         'func': physical_host_group_list,
         'description': '批量查询物理主机组',
         'params': ['limit', 'start', 'sort_dir', 'sort_key', 'name', 'project_id', 'az_ids', 'managed_status'],
+        'subtopic': 'physical_host_group'
+    },
+    'physical_host_group_show_hosts': {
+        'func': physical_host_group_show_hosts,
+        'description': '查询物理主机组中的物理主机',
+        'params': ['hostgroup_id', 'name', 'ip', 'display_status', 'managed_status', 'os_type', 'sort_key', 'sort_dir', 'page_size', 'page_no'],
         'subtopic': 'physical_host_group'
     },
     'physical_host_group_show': {
