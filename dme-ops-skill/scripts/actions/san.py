@@ -435,7 +435,10 @@ def lun_group_show(client: DMEAPIClient, group_id: str, storage_id: str = None) 
 
 
 def lun_group_create(client: DMEAPIClient, storage_id: str, name: str,
-                     description: str = None) -> dict:
+                     description: str = None, existing_lun_ids: list = None,
+                     customize_volumes: dict = None, task_remarks: str = None,
+                     vstore_id: str = None, zoning_info: dict = None,
+                     mapping_view: dict = None) -> dict:
     """
     创建 LUN 组
 
@@ -443,9 +446,62 @@ def lun_group_create(client: DMEAPIClient, storage_id: str, name: str,
 
     Args:
         client: DME API 客户端
-        storage_id: 存储设备 ID
-        name: LUN 组名称（必选）
-        description: LUN 组描述（可选）
+        storage_id: 存储设备 ID (必选, 1~64个字符)
+        name: LUN 组名称 (必选, 1~255个字符, 支持字母数字._-和中文字符)
+        description: LUN 组描述 (可选, 0~255个字符)
+        existing_lun_ids: LUN ID 列表 (可选, 与customize_volumes互斥, 数组最大成员个数: 1000)
+        customize_volumes: CustomizeVolumesParam对象 (可选, 与existing_lun_ids互斥)。参数格式如下：{
+                volume_specs: VolumeSpecsParam列表 (可选, 与lun_specs_pass_through互斥, 数组最大成员个数: 1000)。参数格式如下：[{
+                        name: LUN名称 (必选, 1~255个字符, 支持字母数字._-和中文字符; count>1时名称长度1~27字符),
+                        description: LUN描述 (可选, 0~255个字符),
+                        count: 该规格LUN数量 (必选, 1~500),
+                        capacity: 该规格LUN容量GB (必选, 1~262144),
+                        suffix_length: LUN命名后缀规则 (可选, 0~4; 名称长度+后缀长度<=255),
+                        start_suffix: 该规格LUN起始后缀编号 (可选, 0~9999),
+                        start_lun_id: 该规格起始LUN ID (可选, 0~65535)
+                     }, ...],
+                lun_specs_pass_through: lunSpecsPassThrough列表 (可选, 与volume_specs互斥, 数组最大成员个数: 24; 当存储设备模式为直通模式时必传)。参数格式如下：[{
+                        name: LUN名称 (必选, 1~247个字符, 支持字母数字-._和中文字符; 最终名称由LUN名称+后缀编码+硬盘位置组成),
+                        description: LUN描述 (可选, 0~255个字符),
+                        disk_location: 创建LUN的硬盘位置 (必选, 1~255个字符),
+                        count: 每个硬盘创建的LUN数量 (必选, 1~8),
+                        suffix_length: 后缀编码位数 (可选, 1~4, 默认4; count>1时有效),
+                        start_suffix: 后缀起始编码 (可选, 0~9999, 默认0; count>1时有效)
+                     }, ...],
+                pool_raw_id: 存储池在存储设备上的id (可选, 1~64个字符; 设备模式不为直通模式时必传),
+                availability_zone: 可用分区id (可选, 0~64个字符),
+                owner_controller: 归属控制器 (可选, 0~64个字符),
+                initial_distribute_policy: 容量初始分配策略 (可选, 仅V3/V5设备, 全闪存不支持)。可选值：0 (自动), 1 (高性能层), 2 (性能层), 3 (容量层)。默认0,
+                prefetch_policy: 预取策略 (可选)。可选值：0 (不预取), 1 (固定预取), 2 (可变预取), 3 (智能预取)。默认3,
+                prefetch_value: 预取策略值 (可选, 0~1024; 固定预取0~1024KB, 可变预取0~1024倍),
+                tuning: CustomizeVolumeTuning对象 (可选)。属性格式如下：{
+                        smartqos: SmartQos对象 (可选)。属性格式如下：{
+                                name: Smart QoS名称 (可选, 1~255个字符)
+                        },
+                        alloctype: LUN分配类型 (可选)。可选值：thin, thick,
+                        workload_type_id: 应用类型id (可选, 从存储设备上获取)
+                }
+             }
+        task_remarks: 异步任务备注信息 (可选, 最多1024个字符)
+        vstore_id: 租户ID (可选, 1~64个字符; 当设备为OceanStor V300R006C30/V500R007C20/Dorado 6.1.3/6.1.3及以上版本时有效)
+        zoning_info: ZoningParam对象 (可选)。参数格式如下：{
+                zone_policy_id: zone策略id (可选, 0~64个字符; 指定则自动划zone),
+                target_fcports: 端口wwn列表 (可选, 与target_fcportgroups二选其一, 数组最大成员个数: 1000; 当mapping_view中port_group_id为空时生效),
+                target_fcportgroups: 端口组id列表 (可选, 与target_fcports二选其一, 数组最大成员个数: 1000; 当mapping_view中port_group_id为空时生效)
+             }
+        mapping_view: MappingViewRequestParam对象 (可选)。参数格式如下：{
+                mapping_view_name: 映射视图在设备上的名字 (可选, 最多31个字符),
+                mapping_host_info: MappingHostInfo对象 (可选, 与mapping_host_group_info二选其一)。属性格式如下：{
+                        todo_host_name: todo任务中的主机名称 (可选, 1~255个字符, 支持字母数字._-和中文字符),
+                        id: 主机ID (可选, 1~64个字符)
+                },
+                mapping_host_group_info: MappingHostGroupInfo对象 (可选, 与mapping_host_info二选其一)。属性格式如下：{
+                        todo_host_group_name: todo任务中的主机组名称 (可选, 1~255个字符, 支持字母数字._-和中文字符),
+                        id: 主机组ID (可选, 1~64个字符)
+                },
+                port_group_id: 端口组在设备上的ID (可选, 1~31个字符),
+                start_host_lun_id: 起始HostLunID (可选, 0~2147483647)
+             }
 
     Returns:
         响应数据，包含新创建的 LUN 组 ID
@@ -459,6 +515,18 @@ def lun_group_create(client: DMEAPIClient, storage_id: str, name: str,
 
     if description is not None:
         body_params['description'] = description
+    if existing_lun_ids is not None:
+        body_params['existing_lun_ids'] = existing_lun_ids
+    if customize_volumes is not None:
+        body_params['customize_volumes'] = customize_volumes
+    if task_remarks is not None:
+        body_params['task_remarks'] = task_remarks
+    if vstore_id is not None:
+        body_params['vstore_id'] = vstore_id
+    if zoning_info is not None:
+        body_params['zoning_info'] = zoning_info
+    if mapping_view is not None:
+        body_params['mapping_view'] = mapping_view
 
     response = client.post(url, json=body_params)
     return response
@@ -2651,7 +2719,7 @@ ACTIONS = {
     'lun_group_create': {
         'func': lun_group_create,
         'description': '创建 LUN 组',
-        'params': ['storage_id', 'name', 'description'],
+        'params': ['storage_id', 'name', 'description', 'existing_lun_ids', 'customize_volumes', 'task_remarks', 'vstore_id', 'zoning_info', 'mapping_view'],
         'subtopic': 'lun_group'
     },
     'lun_group_delete': {
