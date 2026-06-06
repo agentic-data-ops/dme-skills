@@ -2127,8 +2127,11 @@ def physical_host_add_initiators(client: DMEAPIClient, host_id: str,
 
     Args:
         client: DME API 客户端
-        host_id: 物理主机 ID（必选）
-        initiators: 启动器列表（必选，最多 100 个）
+        host_id: 物理主机 ID (必选)
+        initiators: 启动器列表 (必选, 数组最大成员个数: 100)。参数格式如下：[{
+                protocol: 启动器类型 (必选)。可选值：FC (WWPN格式, 16字符十六进制), ISCSI, NVME_OVER_ROCE,
+                port_name: 主机启动器wwn或iqn (必选, 1~223个字符)
+             }, ...]
 
     Returns:
         添加结果
