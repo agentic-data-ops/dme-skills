@@ -1215,25 +1215,25 @@ def storage_host_list(client: DMEAPIClient, page_size: int = None, page_no: int 
 
     Args:
         client: DME API 客户端
-        page_size: 分页查询的个数（可选，1~1000，默认 20）
-        page_no: 分页查询的页码（可选，默认 1）
-        sort_key: 排序关键字（可选，ip/name/initiator_count/lun_count 等）
-        sort_dir: 排序方式（可选，desc/asc）
-        name: 主机名称（可选，支持模糊匹配）
-        raw_id: 主机在设备侧的 ID（可选）
-        host_group_id: 归属主机组 ID（可选）
-        avaliable_add_to_host_group_id: 待添加主机组 id（可选）
-        host_group_name: 归属主机组名称（可选）
-        ip: 主机 IP（可选）
-        health_status: 健康状态（可选，normal/no_redundant_link/offline 等）
-        os_type: 操作系统类型（可选）
-        storage_id: 存储设备 ID（可选）
-        avaiable_mapping_for_lun_group_id: 可映射的 LUN 组 ID（可选）
-        avaiable_mapping_for_lun_id: 可映射的 LUN ID（可选）
-        support_provisioning: 是否支持发放（可选）
-        manufacturer: 存储设备厂商（可选）
-        vstore_raw_id: 租户 ID（可选）
-        vstore_name: 租户名称（可选）
+        page_size: 分页查询的个数 (可选, 1~1000, 默认20)
+        page_no: 分页查询的起始位置 (可选, 最小值1, 默认1)
+        sort_key: 排序关键字 (可选, sort_key不填时sort_dir不生效)。可选值：ip, name, initiator_count, lun_count, lun_group_count, capacity, allocated_capacity, raw_id
+        sort_dir: 排序方向 (可选)。可选值：desc (降序), asc (升序)
+        name: 主机名称 (可选, 1~256个字符, 支持模糊匹配)
+        raw_id: 主机在设备侧的ID (可选, 0~256个字符)
+        host_group_id: 归属主机组ID (可选, 最多64个字符)
+        avaliable_add_to_host_group_id: 待添加主机组ID (可选, 与host_group_id互斥, 最多64个字符)
+        host_group_name: 归属主机组名称 (可选, 最多256个字符, 支持模糊匹配; 空串查询未归属主机组的主机)
+        ip: 主机IP (可选, 最多256个字符, 支持模糊匹配; 空串查询未配置IP的主机)
+        health_status: 健康状态 (可选)。可选值：normal (正常), no_redundant_link (无冗余路径), offline (离线), fault (故障), degraded (已降级)
+        os_type: 存储主机类型 (可选)。可选值：LINUX, WINDOWS, WINDOWSSERVER2012, SOLARIS, HPUX, AIX, XENSERVER, LINUX_VIS, MACOS, VMWAREESX, ORACLE, OPENVMS, ORACLE_VM_SERVER_FOR_X86, ORACLE_VM_SERVER_FOR_SPARC, UNKNOWN
+        storage_id: 存储设备ID (可选, 1~64个字符)
+        avaiable_mapping_for_lun_group_id: 可映射的LUN组ID (可选, 1~64个字符; 与avaiable_mapping_for_lun_id互斥)
+        avaiable_mapping_for_lun_id: 可映射的LUN ID (可选, 1~64个字符; 与avaiable_mapping_for_lun_group_id互斥)
+        support_provisioning: 是否支持发放 (可选)。可选值：true, false
+        manufacturer: 存储设备厂商 (可选, 1~64个字符)。可选值：huawei, dell_emc, fujitsu, hitachi, hpe, ibm, netapp, pure, third_part
+        vstore_raw_id: 租户ID (可选)
+        vstore_name: 租户名称 (可选)
 
     Returns:
         响应数据，包含存储主机列表和总数
