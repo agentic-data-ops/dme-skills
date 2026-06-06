@@ -118,36 +118,40 @@ When user ask to finish todo tasks, sequentially execute the unfinished todo tas
 
 ### Current Project Status
 
-**Active Topics**: 17
-**Total Actions**: 307
+**Active Topics**: 15
+**Total Actions**: 356
 
 **Topic Structure**:
 1. aiops (27 actions) - AIOps intelligent operations
 2. backup (3 actions) - Data backup management
-3. cmdb (6 actions) - Configuration management database
-4. fc_switch (19 actions) - FC fiber switch management
-5. gfs (14 actions) - Global file system
-6. ip_switch (6 actions) - IP switch management
-7. kubernetes (6 actions) - Kubernetes management
-8. nas (42 actions) - Network attached storage
-9. resource (22 actions) - Resource management
-10. san (60 actions) - Storage area network
+3. fc_switch (19 actions) - FC fiber switch management
+4. gfs (14 actions) - Global file system
+5. ip_switch (6 actions) - IP switch management
+6. kubernetes (6 actions) - Kubernetes management
+7. nas (42 actions) - Network attached storage
+8. protection (3 actions) - Protection management
+9. san (68 actions) - Storage area network
+10. self_service (8 actions) - Tenant self service
 11. server (2 actions) - Server management
 12. storage (23 actions) - Storage device management
 13. system (8 actions) - System management
-14. task (18 actions) - Task management
-15. user (45 actions) - User management
-16. virtualization (14 actions) - Virtualization services
-17. workflow (7 actions) - Workflow management
+14. virtualization (14 actions) - Virtualization services
+15. workflow (7 actions) - Workflow management
 
 **Documentation**:
 - CLAUDE.md - Development guide and task tracking
 - SKILL.md - Skill definition for AI agents
+- param-doc-format.md - Parameter documentation format conventions (project memory)
 - test/todo.md - Executable test checklist with 345 test cases
 
 **Recent Changes**:
-- Migrated health topic to aiops subtopic
-- aiops now has 7 subtopics including health
-- aiops actions increased from 24 to 27
-- All Python references updated from python3 to python
-- Removed health.py, consolidated into aiops.py
+- **Parameter format refactoring**: Unified structured parameter docstring format across all action modules (san.py, nas.py, self_service.py, storage.py)
+  - Plain text keys without quotes
+  - English parentheses `()` for constraints
+  - `可选值：enum (desc)` format for enumerations
+  - `参数格式如下：[{` / `属性格式如下：{` for nested structures
+  - Updated CLI parser (`dme_cli.py`) with format block skip mechanism to prevent internal attributes from being parsed as phantom parameters
+- **san.py expansion**: san topic grew from 60 to 68 actions
+  - Added: `storage_host_unmap_luns`, `storage_host_group_unmap_luns`, `physical_host_show_mapping_views`, `physical_host_group_show_mapping_views`, `physical_host_group_show_hosts`, `physical_host_modify_access_info`
+  - Rewrote: `lun_group_create`, `lun_group_add_luns`, `lun_group_list`, `lun_list`, `mapping_view_create`, `physical_host_create`, `port_group_create/list/show_ports/show_relations`
+  - Removed unused: `lun_mapping`, `unmapping_host/group`, `map_host/group`
