@@ -1799,8 +1799,11 @@ def fs_batch_modify(client: DMEAPIClient, filesystems: list, task_remarks: str =
 
     Args:
         client: DME API 客户端
-        filesystems: 待修改的文件系统信息列表，每个元素包含 file_system_id 和 name
-        task_remarks: 异步任务备注信息（可选）
+        filesystems: 待修改的文件系统信息列表（必填），List<UpdateFileSystemInfo> 类型，数组最大成员个数 1000。格式：[{
+                        file_system_id: 文件系统的唯一标识（必填），1~64 个字符
+                        name: 文件系统名称（必填），1~255 个字符；OceanStor Dorado V6、OceanStor、OceanProtect 系列只能包含字母、数字、"-"、"."和各国语言字符；OceanStor V3/V5 系列只能包含字母、数字和中文字符
+        },...]
+        task_remarks: 异步任务备注信息（可选），0~1024 个字符
 
     Returns:
         响应数据，包含 task_id
