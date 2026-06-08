@@ -1615,7 +1615,19 @@ def quota_delete(client: DMEAPIClient, quota_ids: list,
 
 def fs_list(client: DMEAPIClient, page_no: int = 1, page_size: int = 100,
                      sort_dir: str = None, sort_key: str = None, name: str = None,
-                     fs_raw_id: str = None, storage_id: str = None) -> dict:
+                     is_associated_qos: bool = None, qos_id: str = None,
+                     storage_name: str = None, manufacturer: str = None,
+                     storage_pool_name: str = None, storage_pool_id: str = None,
+                     tier_name: str = None, tier_id: str = None,
+                     vstore_name: str = None, vstore_raw_id: str = None,
+                     project_name: str = None, project_id: str = None,
+                     storage_id: str = None, fs_raw_id: str = None,
+                     health_status: str = None, running_status: str = None,
+                     alloc_type: str = None, type: str = None,
+                     protection: str = None, dc_id: str = None,
+                     dc_name: str = None, zone_id: str = None,
+                     product_name: str = None, description: str = None,
+                     tag_filters: list = None) -> dict:
     """
     批量查询文件系统
 
@@ -1623,16 +1635,48 @@ def fs_list(client: DMEAPIClient, page_no: int = 1, page_size: int = 100,
 
     Args:
         client: DME API 客户端
-        page_no: 分页查询页码，1~10000000，默认 1
-        page_size: 每页显示的数量，1~1000，默认 100
-        sort_dir: 排序方向，asc（升序）或 desc（降序）
-        sort_key: 排序参数，可选值：capacity, available_capacity, capacity_usage_ratio,
+        page_no: 分页查询页码（可选），1~10000000
+        page_size: 每页显示的数量（可选），1~1000，默认 100
+        sort_dir: 指定排序方向（可选），可选值：asc（升序）、desc（降序）
+        sort_key: 排序参数（可选），可选值：capacity, available_capacity, capacity_usage_ratio,
                   nfs_count, cifs_count, dpc_count, dtree_count, name, allocate_pool_quota,
                   fs_raw_id, create_time, total_capacity_in_byte, available_capacity_in_byte,
                   alloc_capacity_in_byte, protection_capacity_in_byte, max_file_count, used_file_count
-        name: 文件系统名称（支持模糊查询）
-        fs_raw_id: 文件系统在存储设备上的 ID
-        storage_id: 存储设备 ID
+        name: 文件系统名称（可选），1~256 个字符，与 fs_raw_id 互斥，支持模糊匹配
+        is_associated_qos: 文件系统是否已关联 QoS（可选），true：是；false：否
+        qos_id: QoS 策略 ID（可选），1~256 个字符
+        storage_name: 文件系统所属设备名称（可选），1~256 个字符，与 storage_id 互斥，支持模糊匹配
+        manufacturer: 存储设备厂商（可选），1~64 个字符；可选值：huawei（Huawei）、dell_emc（DELL EMC）、
+                     fujitsu（FUJITSU）、hitachi（Hitachi）、hpe（HPE）、ibm（IBM）、netapp（NetApp）、
+                     pure（PURE）、panji（Panji）、third_part（非华为存储设备）
+        storage_pool_name: 文件系统所属存储池名称（可选），1~256 个字符，与 storage_pool_id 互斥，支持模糊匹配
+        storage_pool_id: 存储池 ID（可选），1~255 个字符，与 storage_pool_name 互斥
+        tier_name: 文件系统所属服务等级名称（可选），1~256 个字符，与 tier_id 互斥，支持模糊匹配
+        tier_id: 服务等级 ID（可选），1~256 个字符，与 tier_name 互斥，精确匹配
+        vstore_name: 文件系统所属 vStore 名称（可选），1~256 个字符，与 vstore_raw_id 互斥，支持模糊匹配
+        vstore_raw_id: 文件系统所属租户在存储设备上的 ID（可选），1~64 个字符，与 vstore_name 互斥
+        project_name: 文件系统所属业务群组名称（可选），1~256 个字符，与 project_id 互斥，支持模糊匹配
+        project_id: 业务群组 ID（可选），1~256 个字符，与 project_name 互斥，精确匹配
+        storage_id: 归属存储设备 ID（可选），1~256 个字符，与 storage_name 互斥，精确匹配
+        fs_raw_id: 文件系统在设备上的 ID（可选），1~256 个字符，与 name 互斥
+        health_status: 健康状态（可选），可选值：normal（正常）、faulty（故障）、unknown（未知）
+        running_status: 运行状态（可选），可选值：online（在线）、offline（离线）、invalid（失效）、
+                       initializing（初始化中）、unknown（未知）
+        alloc_type: 文件系统分配类型（可选），可选值：thin（按需分配）、thick（固定分配）
+        type: 文件系统类型（可选），可选值：normal（普通文件系统）、worm（worm文件系统）、
+              migration（migration文件系统）、container（容器应用文件系统）、hash（哈希文件系统）、
+              smart_mobility_internal（SmartMobility内部文件系统）
+        protection: 保护状态（可选），可选值：protected（已保护）、not_protected（未保护）
+        dc_id: 数据中心 ID（可选），1~128 个字符，正则 ^[_A-Fa-f0-9\-]+$
+        dc_name: 数据中心名称（可选），1~256 个字符
+        zone_id: 所属 zone 的 ID（可选），1~256 个字符；仅 OceanStor A800 系列文件系统支持搜索，传入集群ID代表查询全局文件系统
+        product_name: 文件系统所属设备产品名称（可选），1~256 个字符，支持模糊搜索
+        description: 文件系统描述信息（可选），1~255 个字符
+        tag_filters: 标签过滤列表（可选），List<TagFilters> 类型，数组最大成员个数 11。格式：[{
+                        tag_ids: 标签 ID 列表（可选），数组最大成员个数 10，多个标签之间为或关系
+                        tag_type_id: 标签类型 ID（可选），正则 ^[a-fA-F0-9]{32}$
+                        operator: 过滤条件（必填），可选值：contain（包含）、not_contain（不包含）
+        },...]
 
     Returns:
         文件系统列表
@@ -1650,10 +1694,56 @@ def fs_list(client: DMEAPIClient, page_no: int = 1, page_size: int = 100,
         payload['sort_key'] = sort_key
     if name is not None:
         payload['name'] = name
-    if fs_raw_id is not None:
-        payload['fs_raw_id'] = fs_raw_id
+    if is_associated_qos is not None:
+        payload['is_associated_qos'] = is_associated_qos
+    if qos_id is not None:
+        payload['qos_id'] = qos_id
+    if storage_name is not None:
+        payload['storage_name'] = storage_name
+    if manufacturer is not None:
+        payload['manufacturer'] = manufacturer
+    if storage_pool_name is not None:
+        payload['storage_pool_name'] = storage_pool_name
+    if storage_pool_id is not None:
+        payload['storage_pool_id'] = storage_pool_id
+    if tier_name is not None:
+        payload['tier_name'] = tier_name
+    if tier_id is not None:
+        payload['tier_id'] = tier_id
+    if vstore_name is not None:
+        payload['vstore_name'] = vstore_name
+    if vstore_raw_id is not None:
+        payload['vstore_raw_id'] = vstore_raw_id
+    if project_name is not None:
+        payload['project_name'] = project_name
+    if project_id is not None:
+        payload['project_id'] = project_id
     if storage_id is not None:
         payload['storage_id'] = storage_id
+    if fs_raw_id is not None:
+        payload['fs_raw_id'] = fs_raw_id
+    if health_status is not None:
+        payload['health_status'] = health_status
+    if running_status is not None:
+        payload['running_status'] = running_status
+    if alloc_type is not None:
+        payload['alloc_type'] = alloc_type
+    if type is not None:
+        payload['type'] = type
+    if protection is not None:
+        payload['protection'] = protection
+    if dc_id is not None:
+        payload['dc_id'] = dc_id
+    if dc_name is not None:
+        payload['dc_name'] = dc_name
+    if zone_id is not None:
+        payload['zone_id'] = zone_id
+    if product_name is not None:
+        payload['product_name'] = product_name
+    if description is not None:
+        payload['description'] = description
+    if tag_filters is not None:
+        payload['tag_filters'] = tag_filters
 
     response = client.post(url, json=payload)
     return response
