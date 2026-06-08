@@ -1023,10 +1023,7 @@ def cifs_share_delete(client: DMEAPIClient, cifs_share_ids: list, task_remarks: 
 
 
 def cifs_share_show_permissions(client: DMEAPIClient, cifs_share_id: str,
-                          type: str = None,
-                          user_or_user_group_name: str = None,
-                          domain_type: str = None, permissions: list = None,
-                          user_or_user_group_raw_id: str = None,
+                          type: str = None, user_filter: dict = None,
                           ip_addresses_or_segments: str = None,
                           ip_or_segments_raw_id: str = None,
                           rule_type: str = None,
@@ -1045,13 +1042,14 @@ def cifs_share_show_permissions(client: DMEAPIClient, cifs_share_id: str,
         type: 权限类型（可选），可选值：user（用户/用户组）、ip（IP 地址/IP 地址段）、file（文件扩展名过滤规则）；
               不指定时返回所有类型的权限
 
-        # type=user 时的参数
-        user_or_user_group_name: 用户/用户组名称（可选，type=user 时有效），1~256 个字符，用于过滤用户/用户组列表
-        domain_type: 域类型（可选，type=user 时有效），可选值：ad_domain（AD域用户/组）、ldap_domain（LDAP域用户/组）、local（本地用户/组）、nis_domain（NIS域用户/组）
-        permissions: 权限过滤列表（可选，type=user 时有效），List<Permission> 类型，数组最大成员个数 4。格式：[{
-                        permission: 权限（可选），可选值：read（读）、full_control（完全控制）、forbidden（禁止）、read_and_write（读写）、read_and_write_not_del_rename（读写，不能删除、重命名），默认 read
-        },...]
-        user_or_user_group_raw_id: 用户/用户组在存储设备上的 ID（可选，type=user 时有效），1~256 个字符
+        user_filter: 用户权限过滤参数（可选，dict 类型，type=user 时有效）。格式：{
+                        user_or_user_group_name: 用户/用户组名称（可选），1~256 个字符，用于过滤用户/用户组列表
+                        domain_type: 域类型（可选），可选值：ad_domain（AD域用户/组）、ldap_domain（LDAP域用户/组）、local（本地用户/组）、nis_domain（NIS域用户/组）
+                        permissions: 权限过滤列表（可选），List<Permission> 类型，数组最大成员个数 4。格式：[{
+                                permission: 权限（可选），可选值：read（读）、full_control（完全控制）、forbidden（禁止）、read_and_write（读写）、read_and_write_not_del_rename（读写，不能删除、重命名），默认 read
+                        },...]
+                        user_or_user_group_raw_id: 用户/用户组在存储设备上的 ID（可选），1~256 个字符
+        }
 
         # type=ip 时的参数
         ip_addresses_or_segments: IP 地址/IP 地址段（可选，type=ip 时有效），1~256 个字符
@@ -1077,14 +1075,10 @@ def cifs_share_show_permissions(client: DMEAPIClient, cifs_share_id: str,
     if type is None or type == 'user':
         url = f"/rest/fileservice/v1/cifs-shares/{cifs_share_id}/auth-users/query"
         payload = {}
-        if user_or_user_group_name is not None:
-            payload['user_or_user_group_name'] = user_or_user_group_name
-        if domain_type is not None:
-            payload['domain_type'] = domain_type
-        if permissions is not None:
-            payload['permissions'] = permissions
-        if user_or_user_group_raw_id is not None:
-            payload['user_or_user_group_raw_id'] = user_or_user_group_raw_id
+        if user_filter is not None:
+            for key, value in user_filter.items():
+                if value is not None:
+                    payload[key] = value
         if sort_key is not None:
             payload['sort_key'] = sort_key
         if sort_dir is not None:
@@ -2890,7 +2884,7 @@ ACTIONS = {
     'cifs_share_show_permissions': {
         'func': cifs_share_show_permissions,
         'description': '查询单个 CIFS 共享的权限列表（用户/IP/文件过滤）',
-        'params': ['cifs_share_id', 'type', 'user_or_user_group_name', 'domain_type', 'permissions', 'user_or_user_group_raw_id', 'ip_addresses_or_segments', 'ip_or_segments_raw_id', 'rule_type', 'file_name_extension', 'file_extension_name_raw_id', 'sort_key', 'sort_dir', 'page_no', 'page_size'],
+        'params': ['cifs_share_id', 'type', 'user_filter', 'ip_addresses_or_segments', 'ip_or_segments_raw_id', 'rule_type', 'file_name_extension', 'file_extension_name_raw_id', 'sort_key', 'sort_dir', 'page_no', 'page_size'],
         'subtopic': 'cifs_share'
     },
     # dataturbo_share 子主题动作
