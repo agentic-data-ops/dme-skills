@@ -128,6 +128,17 @@ tuning: 调优属性 (可选), CustomizeLunTuning 对象。参数格式如下：
      }
 ```
 
+### ⚠️ 常见错误（务必避免）
+
+```diff
+- BAD: 格式：{  或  格式：[{    ← 内部字段会泄露为顶层 CLI 参数（如 --name、--type）
++ GOOD: 参数格式如下：{  或  参数格式如下：[{   ← 解析器自动跳过内部字段
+```
+
+**错误后果**：使用 `格式：{` 时，`parse_docstring` 会把内部的 `key: desc` 行解析为顶层参数，
+在 `--help` 中出现 `--name`、`--type`、`--mode`、`--tag_ids` 等不应出现的参数名。
+修复方法：将 `格式：{` 替换为 `参数格式如下：{`，将 `格式：[{` 替换为 `参数格式如下：[{`。
+
 ## Todo Tasks
 
 When user ask to finish todo tasks, sequentially execute the unfinished todo tasks step by step. When each task finished, update the todo task checkbox, and execute git commit and push.
