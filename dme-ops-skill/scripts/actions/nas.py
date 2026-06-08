@@ -1402,20 +1402,20 @@ def quota_list(client: DMEAPIClient, page_no: int = 1, page_size: int = 20,
 
     Args:
         client: DME API 客户端
-        page_no: 分页查询页码，默认 1
-        page_size: 每页数据条数，默认 20，范围 1~1000
-        ids: 配额的 ID 列表
-        raw_ids: 配额在存储设备上的 ID 列表
-        quota_type: 配额类型，directory_quota（目录配额），user_quota（用户配额），user_group_quota（用户组配额）
-        parent_type: 配额所属父对象类型，filesystem（文件系统或者命名空间），qtree（Quota Tree 或者 Dtree）
-        parent_raw_id: 配额所属父对象在存储设备上的 ID
-        owner_name: 配额关联的用户或者用户组名称，支持模糊查询
-        vstore_id: 配额所属租户的 ID
-        vstore_raw_id: 配额所属租户存储设备上的 ID
-        storage_id: 配额所属存储设备的 ID
-        sort_key: 查询的排序字段，id，space_hard_used_rate（空间使用率），file_hard_used_rate（文件使用率），默认 id
-        sort_dir: 排序方向，asc（升序）或 desc（降序），默认 asc
-        zone_id: Zone id，仅 OceanStor A800 存储支持
+        page_no: 分页查询页码（可选），最小值 1，默认 1
+        page_size: 每页数据条数（可选），1~1000，默认 20
+        ids: 配额的 ID 列表（可选），List<string> 类型，数组最大成员个数 100
+        raw_ids: 配额在存储设备上的 ID 列表（可选），List<string> 类型，0~1024 个字符，数组最大成员个数 100
+        quota_type: 配额类型（可选），可选值：directory_quota（目录配额）、user_quota（用户配额）、user_group_quota（用户组配额）
+        parent_type: 配额所属父对象类型（可选），0~32 个字符；可选值：filesystem（文件系统或者命名空间，OceanStor Pacific 设备称为命名空间，其余设备称为文件系统）、qtree（Quota Tree 或者 Dtree，OceanStor V3/V5 设备称为 Quota Tree，其余设备称为 Dtree）
+        parent_raw_id: 配额所属父对象在存储设备上的 ID（可选），0~256 个字符，支持精确匹配；当 parent_type 为 filesystem 时是文件系统或命名空间在存储设备上的 ID，当 parent_type 为 qtree 时是 Quota Tree 或 Dtree 在存储设备上的 ID
+        owner_name: 配额关联的用户或者用户组名称（可选），0~256 个字符，支持模糊查询
+        vstore_id: 配额所属租户的 ID（可选），0~64 个字符
+        vstore_raw_id: 配额所属租户存储设备上的 ID（可选），0~256 个字符，支持精确匹配
+        storage_id: 配额所属存储设备的 ID（可选），0~64 个字符
+        sort_key: 查询的排序字段（可选），可选值：id、space_hard_used_rate（空间使用率）、file_hard_used_rate（文件使用率），默认 id
+        sort_dir: 排序方向（可选），可选值：asc（升序）、desc（降序），默认 asc
+        zone_id: Zone id（可选），0~64 个字符，仅 OceanStor A800 存储支持
 
     Returns:
         配额列表
