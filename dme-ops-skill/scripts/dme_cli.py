@@ -512,7 +512,8 @@ def print_action_help(cli: DMECLI, topic: str, action_key: str, subtopic: str = 
         for param_name, param_desc in params.items():
             if param_name != 'client':
                 print(f"\n  --{param_name}")
-                print(f"      {param_desc}")
+                for line in param_desc.split('\n'):
+                    print(f"      {line}")
     else:
         print("  无参数")
 
