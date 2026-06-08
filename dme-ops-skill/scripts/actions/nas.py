@@ -127,26 +127,26 @@ def dtree_list(client: DMEAPIClient, id_in_storage: str = None, name: str = None
 
     Args:
         client: DME API 客户端
-        id_in_storage: Dtree 在存储侧的 ID
-        name: Dtree 名称，支持模糊搜索
-        device_name: dtree 所属存储设备名称，支持模糊搜索
-        storage_id: dtree 所属存储设备 ID，支持过滤
-        zone_id: dtree 所属 zone 的 ID
-        manufacturer: dtree 所属存储设备厂商，huawei third_part
-        tier_name: 服务等级名称，支持模糊搜索
-        fs_name: dtree 所属文件系统名称，支持模糊搜索
-        fs_id: dtree 所属文件系统 ID，与 namespace_id 互斥
-        namespace_name: dtree 所属命名空间名称
-        namespace_id: dtree 所属命名空间 ID，与 fs_id 互斥
-        quota_switch: 配额是否启用，true/false
-        security_mode: 安全模式，mixed/native/ntfs/unix
-        nas_locking_policy: NAS 锁策略，mandatory/advisory/unknown
-        sort_key: 排序字段，nfs_count/cifs_count/dataturbo_count/name
-        sort_dir: 排序方向，asc/desc
-        page_no: 分页查询页码，默认 1
-        page_size: 每页显示的数量，默认 20，1~1000
-        dc_id: 数据中心 ID
-        dc_name: 数据中心名称
+        id_in_storage: Dtree 在存储侧的 ID（可选），1~256 个字符
+        name: Dtree 名称（可选），1~256 个字符，支持模糊搜索
+        device_name: dtree 所属存储设备名称（可选），1~256 个字符，支持模糊搜索
+        storage_id: dtree 所属存储设备 ID（可选），1~64 个字符，支持过滤
+        zone_id: dtree 所属 zone 的 ID（可选），36 个字符；仅 OceanStor A800/A600 系列存储支持
+        manufacturer: dtree 所属存储设备厂商（可选），可选值：huawei（华为）、third_part（第三方）
+        tier_name: 服务等级名称（可选，预留字段），1~256 个字符，支持模糊搜索
+        fs_name: dtree 所属文件系统名称（可选），1~256 个字符，支持模糊搜索
+        fs_id: dtree 所属文件系统 ID（可选），1~64 个字符，与 namespace_id 互斥
+        namespace_name: dtree 所属命名空间名称（可选），1~64 个字符
+        namespace_id: dtree 所属命名空间 ID（可选），1~64 个字符，与 fs_id 互斥
+        quota_switch: 配额是否启用（可选），true：开启；false：关闭
+        security_mode: 安全模式（可选），1~32 个字符；可选值：mixed（mixed 安全模式）、native（native 安全模式）、ntfs（ntfs 安全模式）、unix（unix 安全模式）
+        nas_locking_policy: NAS 锁策略（可选），可选值：mandatory（强制锁）、advisory（建议锁）、unknown（未启用 Native 安全模式）
+        sort_key: 排序字段（可选），可选值：nfs_count、cifs_count、dataturbo_count、name
+        sort_dir: 排序方向（可选），可选值：asc（升序）、desc（降序），默认 asc
+        page_no: 分页查询页码（可选），最小值 1，默认 1
+        page_size: 每页显示的数量（可选），1~1000，默认 20
+        dc_id: 数据中心 ID（可选），1~128 个字符，正则 ^[_A-Fa-f0-9\\-]+$
+        dc_name: 数据中心名称（可选），1~256 个字符
 
     Returns:
         Dtree 列表
