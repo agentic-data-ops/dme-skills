@@ -703,33 +703,35 @@ def cifs_share_list(client: DMEAPIClient, raw_id: str = None, name: str = None,
 
     Args:
         client: DME API 客户端
-        raw_id: CIFS 共享在存储设备上的 ID
-        name: CIFS 共享名称，支持模糊查询
-        share_path: CIFS 共享路径，支持模糊查询
-        exact_share_path: 精确搜索 CIFS 共享路径
-        fs_id: CIFS 共享所属文件系统的 ID
-        fs_name: CIFS 共享所属文件系统名称，支持模糊查询
-        dtree_id: CIFS 共享所属 Dtree 的 ID
-        dtree_name: CIFS 共享所属 Dtree 名称，支持模糊查询
-        storage_id: CIFS 共享所属存储设备的 ID
-        storage_name: CIFS 共享所属存储设备名称，支持模糊查询
-        vstore_raw_id: CIFS 共享所属 vStore 在存储设备上分配的 ID
-        vstore_name: CIFS 共享所属 vStore 名称，支持模糊查询
-        manufacturer: 所属存储设备厂商，huawei 或 third_party
-        op_lock_enabled: CIFS 共享是否开启 Oplock
-        notify_enabled: CIFS 共享是否开启 Notify
-        offline_file_modes: CIFS 共享的离线缓存模式列表
-        file_extension_filter_enabled: CIFS 共享是否开启文件扩展名过滤
-        abe_enabled: CIFS 共享是否开启 ABE
-        page_no: 分页页码，默认 1
-        page_size: 每页数据条数，默认 10
-        sort_key: 按照指定字段排序，name 或 raw_id
-        sort_dir: 排序方向，asc 或 desc
-        namespace_id: 命名空间 ID（仅 OceanStor Pacific 系列支持）
-        namespace_name: 命名空间名称（仅 OceanStor Pacific 系列支持）
-        support_provisioning: 是否支持业务发放
-        dc_id: 数据中心 ID
-        dc_name: 数据中心名称
+        raw_id: CIFS 共享在存储设备上的 ID（可选），1~256 个字符
+        name: CIFS 共享名称（可选），1~256 个字符，支持模糊查询
+        share_path: CIFS 共享路径（可选），1~512 个字符，支持模糊查询
+        exact_share_path: 精确搜索 CIFS 共享路径（可选），1~1024 个字符；当 share_path 和 exact_share_path 都有值时，优先选择 exact_share_path
+        fs_id: CIFS 共享所属文件系统的 ID（可选），1~64 个字符
+        fs_name: CIFS 共享所属文件系统名称（可选），1~256 个字符，支持模糊查询
+        dtree_id: CIFS 共享所属 Dtree 的 ID（可选），1~64 个字符
+        dtree_name: CIFS 共享所属 Dtree 名称（可选），1~256 个字符，支持模糊查询
+        storage_id: CIFS 共享所属存储设备的 ID（可选），1~64 个字符
+        storage_name: CIFS 共享所属存储设备名称（可选），1~256 个字符，支持模糊查询
+        vstore_raw_id: CIFS 共享所属 vStore 在存储设备上分配的 ID（可选），1~256 个字符
+        vstore_name: CIFS 共享所属 vStore 名称（可选），1~256 个字符，支持模糊查询
+        manufacturer: 所属存储设备厂商（可选），可选值：huawei（华为）、third_party（第三方）
+        op_lock_enabled: CIFS 共享是否开启 Oplock（可选），true：是；false：否
+        notify_enabled: CIFS 共享是否开启 Notify（可选），true：是；false：否
+        offline_file_modes: CIFS 共享的离线缓存模式列表（可选），List<OfflineFileMode> 类型，数组最大成员个数 4。格式：[{
+                        mode: 离线缓存模式（可选），可选值：none（关闭）、manual（手动）、documents（文档）、programs（程序），默认 manual
+        },...]
+        file_extension_filter_enabled: CIFS 共享是否开启文件扩展名过滤（可选），true：是；false：否
+        abe_enabled: CIFS 共享是否开启 ABE（可选），true：是；false：否
+        page_no: 分页页码（可选），1~10000000，默认 1
+        page_size: 每页数据条数（可选），1~1000，默认 10
+        sort_key: 排序字段（可选），可选值：name、raw_id；指定 raw_id 排序时仅支持 ID 为数字的对象
+        sort_dir: 排序方向（可选），可选值：asc（升序）、desc（降序），默认 asc
+        namespace_id: 命名空间 ID（可选），1~64 个字符，仅 OceanStor Pacific 系列存储设备支持
+        namespace_name: 命名空间名称（可选），1~256 个字符，支持模糊查询，仅 OceanStor Pacific 系列存储设备支持
+        support_provisioning: 是否支持业务发放（可选），true：是；false：否；下发此字段可过滤不支持业务发放设备的资源，当前不支持业务发放的设备有 OceanStor Pacific 系列
+        dc_id: 数据中心 ID（可选），1~128 个字符，正则 ^[_A-Fa-f0-9\\-]+$
+        dc_name: 数据中心名称（可选），1~256 个字符
 
     Returns:
         CIFS 共享列表
