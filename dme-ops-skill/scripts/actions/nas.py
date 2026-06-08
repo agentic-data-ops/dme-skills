@@ -2267,7 +2267,7 @@ def filesystem_modify(client: DMEAPIClient, file_system_id: str, name: str = Non
 # namespace (命名空间) 子主题相关动作
 # ============================================================================
 
-def namespace_list(client: DMEAPIClient, page_no: int = None, page_size: int = None,
+def namespace_list(client: DMEAPIClient, page_no: int = 1, page_size: int = 100,
          sort_dir: str = None, sort_key: str = None, name: str = None,
          vstore_name: str = None, vstore_raw_id: str = None, vstore_id: str = None,
          raw_id: str = None, pool_name: str = None, storage_id: str = None,
@@ -2280,22 +2280,22 @@ def namespace_list(client: DMEAPIClient, page_no: int = None, page_size: int = N
     
     Args:
         client: DME API 客户端
-        page_no: 分页查询页码，最大 10000000
-        page_size: 每页显示的数量，默认 100，范围 1~1000
-        sort_dir: 排序方向，asc（升序）或 desc（降序）
-        sort_key: 排序字段，可选值：name, space_used_rate, file_used_rate
-        name: 命名空间名称，支持模糊查询（1~256 个字符）
-        vstore_name: 命名空间所属租户名称，支持模糊查询（1~256 个字符）
-        vstore_raw_id: 命名空间所属 vStore 在存储设备上分配的 ID（1~128 个字符）
-        vstore_id: 命名空间所属 vStore 的 ID（1~128 个字符）
-        raw_id: 命名空间在存储设备上的 ID（1~256 个字符）
-        pool_name: 存储池名称，支持模糊查询（1~256 个字符）
-        storage_id: 归属存储设备 ID（1~255 个字符）
-        enable_encrypt: 是否开启加密
-        support_provisioning: 是否支持业务发放，过滤不支持业务发放设备的资源
-        gfs_id: 全局命名空间 ID（1~64 个字符）
-        gfs_name: 全局命名空间名称（1~256 个字符）
-        has_gfs: 是否包含所属全局命名空间的命名空间
+        page_no: 分页查询页码（可选），1~10000000
+        page_size: 每页显示的数量（可选），1~1000，默认 100
+        sort_dir: 指定排序方向（可选），可选值：asc（升序）、desc（降序）
+        sort_key: 排序参数（可选），可选值：namespace_used_rate、file_used_rate
+        name: 命名空间名称（可选），1~256 个字符，支持模糊查询
+        vstore_name: 命名空间所属租户名称（可选），1~256 个字符，支持模糊查询
+        vstore_raw_id: 命名空间所属 vStore 在存储设备上分配的 ID（可选），1~128 个字符
+        vstore_id: 命名空间所属 vStore 的 ID（可选），1~128 个字符
+        raw_id: 命名空间在存储设备上的 ID（可选），1~256 个字符
+        pool_name: 存储池名称（可选），1~256 个字符，支持模糊查询
+        storage_id: 归属存储设备 ID（可选），1~255 个字符
+        enable_encrypt: 是否开启加密（可选），true：是；false：否
+        support_provisioning: 是否支持业务发放（可选），true：是；false：否；下发此字段可过滤不支持业务发放设备的资源，当前不支持业务发放的设备有 DataTurbo 系列
+        gfs_id: 全局命名空间 ID（可选），1~64 个字符
+        gfs_name: 全局命名空间名称（可选），1~256 个字符
+        has_gfs: 是否包含所属全局命名空间的命名空间（可选），true：是；false：否；has_gfs 为 false 时不支持下发 gfs_id
     
     Returns:
         响应数据，包含：
