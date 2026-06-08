@@ -1042,13 +1042,13 @@ def cifs_share_show_permissions(client: DMEAPIClient, cifs_share_id: str,
         type: 权限类型（可选），可选值：user（用户/用户组）、ip（IP 地址/IP 地址段）、file（文件扩展名过滤规则）；
               不指定时返回所有类型的权限
 
-        user_filter: 用户权限过滤参数（可选，dict 类型，type=user 时有效）。格式：{
-                        user_or_user_group_name: 用户/用户组名称（可选），1~256 个字符，用于过滤用户/用户组列表
-                        domain_type: 域类型（可选），可选值：ad_domain（AD域用户/组）、ldap_domain（LDAP域用户/组）、local（本地用户/组）、nis_domain（NIS域用户/组）
-                        permissions: 权限过滤列表（可选），List<Permission> 类型，数组最大成员个数 4。格式：[{
-                                permission: 权限（可选），可选值：read（读）、full_control（完全控制）、forbidden（禁止）、read_and_write（读写）、read_and_write_not_del_rename（读写，不能删除、重命名），默认 read
-                        },...]
-                        user_or_user_group_raw_id: 用户/用户组在存储设备上的 ID（可选），1~256 个字符
+        user_filter: 用户权限过滤参数（可选，dict 类型，type=user 时有效）。参数格式如下：{
+                user_or_user_group_name: 用户/用户组名称（可选），1~256 个字符，用于过滤用户/用户组列表,
+                domain_type: 域类型（可选）。可选值：ad_domain（AD域用户/组）、ldap_domain（LDAP域用户/组）、local（本地用户/组）、nis_domain（NIS域用户/组）,
+                permissions: 权限过滤列表（可选），List<Permission> 类型，数组最大成员个数 4。参数格式如下：[{
+                        permission: 权限（可选）。可选值：read（读）、full_control（完全控制）、forbidden（禁止）、read_and_write（读写）、read_and_write_not_del_rename（读写，不能删除、重命名）。默认 read
+                },...],
+                user_or_user_group_raw_id: 用户/用户组在存储设备上的 ID（可选），1~256 个字符
         }
 
         # type=ip 时的参数
