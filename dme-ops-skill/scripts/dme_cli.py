@@ -175,7 +175,7 @@ class DMECLI:
                         in_format_block = 0
                     # 显示缩进：进入嵌套块时用当前深度，离开时用新深度
                     display_depth = in_format_block if stripped.count('}') > stripped.count('{') else old_depth
-                    indent = '    ' * (display_depth - 1)
+                    indent = '    ' * display_depth
                     if current_param:
                         param_lines.append(indent + stripped)
                     continue
