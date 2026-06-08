@@ -182,7 +182,7 @@ class DMECLI:
                 if param_match:
                     # 保存前一个参数
                     if current_param and param_lines:
-                        result['params'][current_param] = ' '.join(param_lines)
+                        result['params'][current_param] = '\n'.join(param_lines)
                     
                     current_param = param_match.group(1)
                     param_lines = [param_match.group(2)]
@@ -199,7 +199,7 @@ class DMECLI:
             
             # 保存最后一个参数
             if current_param and param_lines:
-                result['params'][current_param] = ' '.join(param_lines)
+                result['params'][current_param] = '\n'.join(param_lines)
 
         return result
 
