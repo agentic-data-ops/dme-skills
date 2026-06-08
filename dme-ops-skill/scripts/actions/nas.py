@@ -718,7 +718,7 @@ def cifs_share_list(client: DMEAPIClient, raw_id: str = None, name: str = None,
         manufacturer: 所属存储设备厂商（可选），可选值：huawei（华为）、third_party（第三方）
         op_lock_enabled: CIFS 共享是否开启 Oplock（可选），true：是；false：否
         notify_enabled: CIFS 共享是否开启 Notify（可选），true：是；false：否
-        offline_file_modes: CIFS 共享的离线缓存模式列表（可选），List<OfflineFileMode> 类型，数组最大成员个数 4。格式：[{
+        offline_file_modes: CIFS 共享的离线缓存模式列表（可选），List<OfflineFileMode> 类型，数组最大成员个数 4。参数格式如下：[{
                         mode: 离线缓存模式（可选），可选值：none（关闭）、manual（手动）、documents（文档）、programs（程序），默认 manual
         },...]
         file_extension_filter_enabled: CIFS 共享是否开启文件扩展名过滤（可选），true：是；false：否
@@ -1502,7 +1502,7 @@ def quota_create(client: DMEAPIClient, parent_id: str, parent_type: str,
         parent_id: 父资源 ID（必填），1~64 个字符
         parent_type: 父资源类型（必填），可选值：filesystem（文件系统）、dtree（dtree，存储集群不支持）、namespace（命名空间）
         quota_type: 配额类型（必填），可选值：directory_quota（目录配额）、user_quota（用户配额）、user_group_quota（用户组配额）
-        quota_owner: 配额用户（条件必传），QuotaOwner 对象。格式：{
+        quota_owner: 配额用户（条件必传），QuotaOwner 对象。参数格式如下：{
                         name: 用户（组）名称（必填），1~64 个字符，* 表示所有用户（组）
                         type: 用户（组）类型（必填），当 quota_type 为 user_quota 时可选值：unix_local_user（unix 本地用户）、domain_user（域用户）、windows_user（windows 用户）；当 quota_type 为 user_group_quota 时可选值：unix_local_user_group（unix 本地用户组）、domain_user_group（域用户组）、windows_user_group（windows 用户组）
                         domain_type: 域用户类型（条件必传），当 type 为 domain_user 或 domain_user_group 时必传；可选值：local（本地）、ad_domain（AD 域）、ldap_domain（LDAP 域）、nis_domain（NIS 域）；OceanStor Pacific、OceanStor Dorado V6、OceanProtect 支持该字段
@@ -1682,7 +1682,7 @@ def filesystem_list(client: DMEAPIClient, page_no: int = 1, page_size: int = 100
         zone_id: 所属 zone 的 ID（可选），1~256 个字符；仅 OceanStor A800 系列文件系统支持搜索，传入集群ID代表查询全局文件系统
         product_name: 文件系统所属设备产品名称（可选），1~256 个字符，支持模糊搜索
         description: 文件系统描述信息（可选），1~255 个字符
-        tag_filters: 标签过滤列表（可选），List<TagFilters> 类型，数组最大成员个数 11。格式：[{
+        tag_filters: 标签过滤列表（可选），List<TagFilters> 类型，数组最大成员个数 11。参数格式如下：[{
                         tag_ids: 标签 ID 列表（可选），数组最大成员个数 10，多个标签之间为或关系
                         tag_type_id: 标签类型 ID（可选），正则 ^[a-fA-F0-9]{32}$
                         operator: 过滤条件（必填），可选值：contain（包含）、not_contain（不包含）
@@ -1809,7 +1809,7 @@ def filesystem_batch_modify(client: DMEAPIClient, filesystems: list, task_remark
 
     Args:
         client: DME API 客户端
-        filesystems: 待修改的文件系统信息列表（必填），List<UpdateFileSystemInfo> 类型，数组最大成员个数 1000。格式：[{
+        filesystems: 待修改的文件系统信息列表（必填），List<UpdateFileSystemInfo> 类型，数组最大成员个数 1000。参数格式如下：[{
                         file_system_id: 文件系统的唯一标识（必填），1~64 个字符
                         name: 文件系统名称（必填），1~255 个字符；OceanStor Dorado V6、OceanStor、OceanProtect 系列只能包含字母、数字、"-"、"."和各国语言字符；OceanStor V3/V5 系列只能包含字母、数字和中文字符
         },...]
