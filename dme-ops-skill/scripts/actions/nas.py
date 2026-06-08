@@ -1158,24 +1158,24 @@ def dataturbo_share_list(client: DMEAPIClient, page_no: int = 1, page_size: int 
 
     Args:
         client: DME API 客户端
-        page_no: 分页页码，默认 1，范围 1~10000000
-        page_size: 每页数据条数，默认 10，范围 1~1000
-        raw_id: DataTurbo 共享在设备上 ID，精确查询
-        share_path: 共享路径，支持模糊搜索
-        fs_id: DataTurbo 共享所属文件系统 ID，精确查询
-        fs_name: DataTurbo 共享所属文件系统名称，支持模糊搜索
-        dtree_id: DataTurbo 共享所属 Dtree 的 ID，精确查询
-        dtree_name: DataTurbo 共享所属 Dtree 名称，支持模糊查询
-        vstore_id: DataTurbo 共享所属租户 ID，精确查询
-        vstore_raw_id: DataTurbo 共享所属租户 RAW ID，精确查询
-        vstore_name: DataTurbo 共享所属租户名称，支持模糊搜索
-        storage_id: DataTurbo 共享所属存储设备 ID，精确查询
-        storage_name: DataTurbo 共享所属存储设备名称，支持模糊搜索
-        zone_id: DataTurbo 共享所属 zone ID，精确查询
-        zone_name: DataTurbo 共享所属 zone 名称，支持模糊搜索
-        scope: 资源所属范围，local_scale（本地）或 global_scale（全局）
-        sort_key: 排序字段，取值范围：raw_id
-        sort_dir: 排序方向，asc（升序）或 desc（降序），默认 asc
+        page_no: 分页页码（可选），1~10000000，默认 1
+        page_size: 每页数据条数（可选），1~1000，默认 10
+        raw_id: DataTurbo 共享在设备上 ID（可选），1~1024 个字符，精确查询
+        share_path: 共享路径（可选），1~1024 个字符，支持模糊搜索
+        fs_id: DataTurbo 共享所属文件系统 ID（可选），1~64 个字符，精确查询
+        fs_name: DataTurbo 共享所属文件系统名称（可选），1~256 个字符，支持模糊搜索
+        dtree_id: DataTurbo 共享所属 Dtree 的 ID（可选），32 个字符，正则 ^[A-F0-9]{32}$，精确查询
+        dtree_name: DataTurbo 共享所属 Dtree 名称（可选），1~256 个字符，支持模糊查询
+        vstore_id: DataTurbo 共享所属租户 ID（可选），1~64 个字符，精确查询
+        vstore_raw_id: DataTurbo 共享所属租户 RAW ID（可选），1~64 个字符，精确查询
+        vstore_name: DataTurbo 共享所属租户名称（可选），1~256 个字符，支持模糊搜索
+        storage_id: DataTurbo 共享所属存储设备 ID（可选），1~64 个字符，精确查询
+        storage_name: DataTurbo 共享所属存储设备名称（可选），1~256 个字符，支持模糊搜索
+        zone_id: DataTurbo 共享所属 zone ID（可选），1~64 个字符，精确查询
+        zone_name: DataTurbo 共享所属 zone 名称（可选），1~256 个字符，支持模糊搜索
+        scope: 资源所属范围（可选），可选值：local_scale（本地）、global_scale（全局）
+        sort_key: 排序字段（可选），可选值：raw_id（在设备上 ID）
+        sort_dir: 排序方向（可选），可选值：asc（升序）、desc（降序），默认 asc
 
     Returns:
         DataTurbo 共享列表
