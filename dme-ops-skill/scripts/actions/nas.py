@@ -1620,7 +1620,7 @@ def quota_delete(client: DMEAPIClient, quota_ids: list,
 # filesystem (文件系统) 子主题相关动作
 # ============================================================================
 
-def fs_list(client: DMEAPIClient, page_no: int = 1, page_size: int = 100,
+def filesystem_list(client: DMEAPIClient, page_no: int = 1, page_size: int = 100,
                      sort_dir: str = None, sort_key: str = None, name: str = None,
                      is_associated_qos: bool = None, qos_id: str = None,
                      storage_name: str = None, manufacturer: str = None,
@@ -1756,7 +1756,7 @@ def fs_list(client: DMEAPIClient, page_no: int = 1, page_size: int = 100,
     return response
 
 
-def fs_show(client: DMEAPIClient, filesystem_id: str) -> dict:
+def filesystem_show(client: DMEAPIClient, filesystem_id: str) -> dict:
     """
     查询指定文件系统详情
 
@@ -1773,7 +1773,7 @@ def fs_show(client: DMEAPIClient, filesystem_id: str) -> dict:
     return response
 
 
-def fs_delete(client: DMEAPIClient, filesystem_ids: list, task_remarks: str = None) -> dict:
+def filesystem_delete(client: DMEAPIClient, filesystem_ids: list, task_remarks: str = None) -> dict:
     """
     批量删除文件系统
 
@@ -1798,7 +1798,7 @@ def fs_delete(client: DMEAPIClient, filesystem_ids: list, task_remarks: str = No
     return response
 
 
-def fs_batch_modify(client: DMEAPIClient, filesystems: list, task_remarks: str = None) -> dict:
+def filesystem_batch_modify(client: DMEAPIClient, filesystems: list, task_remarks: str = None) -> dict:
     """
     批量修改文件系统
 
@@ -1828,7 +1828,7 @@ def fs_batch_modify(client: DMEAPIClient, filesystems: list, task_remarks: str =
     return response
 
 
-def fs_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
+def filesystem_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
                                  filesystem_specs: list, vstore_id: str = None,
                                  zone_id: str = None, task_remarks: str = None,
                                  gfs_group_id: str = None, automatic_update_time: bool = None,
@@ -2042,7 +2042,7 @@ def fs_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
     return response
 
 
-def fs_query_available(client: DMEAPIClient, feature_type: str,
+def filesystem_query_available(client: DMEAPIClient, feature_type: str,
                                 local_storage_id: str, remote_storage_id: str = None,
                                 name: str = None, page_no: int = 1,
                                 page_size: int = 20, sort_key: str = None,
@@ -2090,7 +2090,7 @@ def fs_query_available(client: DMEAPIClient, feature_type: str,
     return response
 
 
-def fs_modify(client: DMEAPIClient, file_system_id: str, name: str = None,
+def filesystem_modify(client: DMEAPIClient, file_system_id: str, name: str = None,
            description: str = None, capacity: int = None,
            capacity_threshold: int = None, initial_distribute_policy: str = None,
            automatic_update_time: bool = None, atime_update_mode: str = None,
@@ -2951,43 +2951,43 @@ ACTIONS = {
     },
     # filesystem 子主题动作
     'filesystem_list': {
-        'func': fs_list,
+        'func': filesystem_list,
         'description': '批量查询文件系统',
         'params': ['page_no', 'page_size', 'sort_dir', 'sort_key', 'name', 'fs_raw_id', 'storage_id'],
         'subtopic': 'filesystem'
     },
     'filesystem_show': {
-        'func': fs_show,
+        'func': filesystem_show,
         'description': '查询指定文件系统详情',
         'params': ['filesystem_id'],
         'subtopic': 'filesystem'
     },
     'filesystem_delete': {
-        'func': fs_delete,
+        'func': filesystem_delete,
         'description': '批量删除文件系统',
         'params': ['filesystem_ids', 'task_remarks'],
         'subtopic': 'filesystem'
     },
     'filesystem_batch_modify': {
-        'func': fs_batch_modify,
+        'func': filesystem_batch_modify,
         'description': '批量修改文件系统（支持批量修改名称）',
         'params': ['filesystems', 'task_remarks'],
         'subtopic': 'filesystem'
     },
     'filesystem_create': {
-        'func': fs_create,
+        'func': filesystem_create,
         'description': '自定义创建文件系统',
         'params': ['storage_id', 'pool_raw_id', 'filesystem_specs', 'vstore_id', 'zone_id', 'task_remarks', 'gfs_group_id', 'automatic_update_time', 'atime_update_mode', 'schedule_name', 'quota_switch', 'vaai_switch', 'initial_distribute_policy', 'capacity_threshold'],
         'subtopic': 'filesystem'
     },
     'filesystem_query_available': {
-        'func': fs_query_available,
+        'func': filesystem_query_available,
         'description': '查询可用的文件系统（支持远程复制）',
         'params': ['feature_type', 'local_storage_id', 'remote_storage_id', 'name', 'page_no', 'page_size', 'sort_key', 'sort_dir'],
         'subtopic': 'filesystem'
     },
     'filesystem_modify': {
-        'func': fs_modify,
+        'func': filesystem_modify,
         'description': '修改指定文件系统（完整参数）',
         'params': ['file_system_id', 'name', 'description', 'capacity', 'capacity_threshold', 'initial_distribute_policy', 'automatic_update_time', 'atime_update_mode', 'quota_switch', 'vaai_switch', 'owning_controller', 'task_remarks'],
         'subtopic': 'filesystem'
