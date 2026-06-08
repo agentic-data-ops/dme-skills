@@ -1024,8 +1024,7 @@ def cifs_share_delete(client: DMEAPIClient, cifs_share_ids: list, task_remarks: 
 
 def cifs_share_show_permissions(client: DMEAPIClient, cifs_share_id: str,
                           type: str = None, user_filter: dict = None,
-                          ip_addresses_or_segments: str = None,
-                          ip_or_segments_raw_id: str = None,
+                          ip_filter: dict = None,
                           rule_type: str = None,
                           file_name_extension: str = None,
                           file_extension_name_raw_id: str = None,
@@ -1051,9 +1050,10 @@ def cifs_share_show_permissions(client: DMEAPIClient, cifs_share_id: str,
                 user_or_user_group_raw_id: 用户/用户组在存储设备上的 ID（可选），1~256 个字符
         }
 
-        # type=ip 时的参数
-        ip_addresses_or_segments: IP 地址/IP 地址段（可选，type=ip 时有效），1~256 个字符
-        ip_or_segments_raw_id: IP 地址/IP 地址段在存储设备上的 ID（可选，type=ip 时有效），1~256 个字符
+        ip_filter: IP 权限过滤参数（可选，dict 类型，type=ip 时有效）。参数格式如下：{
+                ip_addresses_or_segments: IP 地址/IP 地址段（可选），1~256 个字符,
+                ip_or_segments_raw_id: IP 地址/IP 地址段在存储设备上的 ID（可选），1~256 个字符
+        }
 
         # type=file 时的参数
         rule_type: 文件扩展名类型过滤（可选，type=file 时有效），可选值：reject（只拒绝）、permit（只允许）
@@ -1094,10 +1094,10 @@ def cifs_share_show_permissions(client: DMEAPIClient, cifs_share_id: str,
     if type is None or type == 'ip':
         url = f"/rest/fileservice/v1/cifs-shares/{cifs_share_id}/ip-access-rules/query"
         payload = {}
-        if ip_addresses_or_segments is not None:
-            payload['ip_addresses_or_segments'] = ip_addresses_or_segments
-        if ip_or_segments_raw_id is not None:
-            payload['ip_or_segments_raw_id'] = ip_or_segments_raw_id
+        if ip_filter is not None:
+            for key, value in ip_filter.items():
+                if value is not None:
+                    payload[key] = value
         if sort_key is not None:
             payload['sort_key'] = sort_key
         if sort_dir is not None:
@@ -2884,7 +2884,7 @@ ACTIONS = {
     'cifs_share_show_permissions': {
         'func': cifs_share_show_permissions,
         'description': '查询单个 CIFS 共享的权限列表（用户/IP/文件过滤）',
-        'params': ['cifs_share_id', 'type', 'user_filter', 'ip_addresses_or_segments', 'ip_or_segments_raw_id', 'rule_type', 'file_name_extension', 'file_extension_name_raw_id', 'sort_key', 'sort_dir', 'page_no', 'page_size'],
+        'params': ['cifs_share_id', 'type', 'user_filter', 'ip_filter', 'rule_type', 'file_name_extension', 'file_extension_name_raw_id', 'sort_key', 'sort_dir', 'page_no', 'page_size'],
         'subtopic': 'cifs_share'
     },
     # dataturbo_share 子主题动作
