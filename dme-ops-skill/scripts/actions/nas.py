@@ -683,7 +683,7 @@ def nfs_share_delete(client: DMEAPIClient, nfs_share_ids: list,
 # CIFS 共享子主题相关动作
 # ============================================================================
 
-def cifs_list(client: DMEAPIClient, raw_id: str = None, name: str = None,
+def cifs_share_list(client: DMEAPIClient, raw_id: str = None, name: str = None,
               share_path: str = None, exact_share_path: str = None,
               fs_id: str = None, fs_name: str = None, dtree_id: str = None,
               dtree_name: str = None, storage_id: str = None,
@@ -797,7 +797,7 @@ def cifs_list(client: DMEAPIClient, raw_id: str = None, name: str = None,
     return response
 
 
-def cifs_show(client: DMEAPIClient, cifs_share_id: str) -> dict:
+def cifs_share_show(client: DMEAPIClient, cifs_share_id: str) -> dict:
     """
     查询指定 CIFS 共享详情
 
@@ -814,7 +814,7 @@ def cifs_show(client: DMEAPIClient, cifs_share_id: str) -> dict:
     return response
 
 
-def cifs_create(client: DMEAPIClient, create_cifs_param: dict, fs_id: str = None,
+def cifs_share_create(client: DMEAPIClient, create_cifs_param: dict, fs_id: str = None,
                 namespace_id: str = None, task_remarks: str = None) -> dict:
     """
     创建单个 CIFS 共享
@@ -882,7 +882,7 @@ def cifs_create(client: DMEAPIClient, create_cifs_param: dict, fs_id: str = None
     return response
 
 
-def cifs_modify(client: DMEAPIClient, cifs_share_id: str, description: str = None,
+def cifs_share_modify(client: DMEAPIClient, cifs_share_id: str, description: str = None,
                 op_lock_enabled: bool = None, notify_enabled: bool = None,
                 ca_enabled: bool = None, offline_file_mode: str = None,
                 ip_control_enabled: bool = None, abe_enabled: bool = None,
@@ -995,7 +995,7 @@ def cifs_modify(client: DMEAPIClient, cifs_share_id: str, description: str = Non
     return response
 
 
-def cifs_delete(client: DMEAPIClient, cifs_share_ids: list, task_remarks: str = None) -> dict:
+def cifs_share_delete(client: DMEAPIClient, cifs_share_ids: list, task_remarks: str = None) -> dict:
     """
     批量删除 CIFS 共享
 
@@ -1020,7 +1020,7 @@ def cifs_delete(client: DMEAPIClient, cifs_share_ids: list, task_remarks: str = 
     return response
 
 
-def cifs_show_permissions(client: DMEAPIClient, cifs_share_id: str,
+def cifs_share_show_permissions(client: DMEAPIClient, cifs_share_id: str,
                           type: str = None,
                           user_or_user_group_name: str = None,
                           domain_type: str = None, permissions: list = None,
@@ -2846,37 +2846,37 @@ ACTIONS = {
     },
     # CIFS 共享子主题动作
     'cifs_share_list': {
-        'func': cifs_list,
+        'func': cifs_share_list,
         'description': '批量查询 CIFS 共享',
         'params': ['raw_id', 'name', 'share_path', 'exact_share_path', 'fs_id', 'fs_name', 'dtree_id', 'dtree_name', 'storage_id', 'storage_name', 'vstore_raw_id', 'vstore_name', 'manufacturer', 'op_lock_enabled', 'notify_enabled', 'offline_file_modes', 'file_extension_filter_enabled', 'abe_enabled', 'page_no', 'page_size', 'sort_key', 'sort_dir', 'namespace_id', 'namespace_name', 'support_provisioning', 'dc_id', 'dc_name'],
         'subtopic': 'cifs_share'
     },
     'cifs_share_show': {
-        'func': cifs_show,
+        'func': cifs_share_show,
         'description': '查询指定 CIFS 共享详情',
         'params': ['cifs_share_id'],
         'subtopic': 'cifs_share'
     },
     'cifs_share_create': {
-        'func': cifs_create,
+        'func': cifs_share_create,
         'description': '创建单个 CIFS 共享',
         'params': ['create_cifs_param', 'fs_id', 'namespace_id', 'task_remarks'],
         'subtopic': 'cifs_share'
     },
     'cifs_share_modify': {
-        'func': cifs_modify,
+        'func': cifs_share_modify,
         'description': '修改指定 CIFS 共享',
         'params': ['cifs_share_id', 'description', 'op_lock_enabled', 'notify_enabled', 'ca_enabled', 'offline_file_mode', 'ip_control_enabled', 'abe_enabled', 'audititem_list', 'apply_default_acl', 'file_extension_filter_enabled', 'show_previous_versions_enabled', 'show_snapshot_enabled', 'user_and_user_group_info', 'ip_and_segments', 'file_name_ex_filters', 'task_remarks', 'smb3_encryption_enable', 'unencrypted_access', 'enable_lease'],
         'subtopic': 'cifs_share'
     },
     'cifs_share_delete': {
-        'func': cifs_delete,
+        'func': cifs_share_delete,
         'description': '批量删除 CIFS 共享',
         'params': ['cifs_share_ids', 'task_remarks'],
         'subtopic': 'cifs_share'
     },
     'cifs_share_show_permissions': {
-        'func': cifs_show_permissions,
+        'func': cifs_share_show_permissions,
         'description': '查询单个 CIFS 共享的权限列表（用户/IP/文件过滤）',
         'params': ['cifs_share_id', 'type', 'user_or_user_group_name', 'domain_type', 'permissions', 'user_or_user_group_raw_id', 'ip_addresses_or_segments', 'ip_or_segments_raw_id', 'rule_type', 'file_name_extension', 'file_extension_name_raw_id', 'sort_key', 'sort_dir', 'page_no', 'page_size'],
         'subtopic': 'cifs_share'
