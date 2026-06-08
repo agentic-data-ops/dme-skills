@@ -1357,11 +1357,11 @@ def dataturbo_share_show_permissions(client: DMEAPIClient, dataturbo_share_id: s
     Args:
         client: DME API 客户端
         dataturbo_share_id: DataTurbo 共享 ID
-        page_no: 分页页码，默认 1
-        page_size: 每页数据条数，默认 10
-        user_id: DataTurbo 管理员 ID（精确查询）
-        user_name: DataTurbo 管理员名称（支持模糊搜索）
-        permission: DataTurbo 管理员权限，可选值：read_and_write（读写）
+        page_no: 分页页码（可选），1~10000000，默认 1
+        page_size: 每页数据条数（可选），1~1000，默认 10
+        user_id: DataTurbo 管理员 ID（可选），1~64 个字符，精确查询
+        user_name: DataTurbo 管理员名称（可选），1~256 个字符，支持模糊搜索
+        permission: DataTurbo 管理员权限（可选），可选值：read_and_write（读写）
 
     Returns:
         DataTurbo 共享管理员权限列表
