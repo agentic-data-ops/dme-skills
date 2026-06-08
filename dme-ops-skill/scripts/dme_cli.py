@@ -169,11 +169,15 @@ class DMECLI:
                 
                 # 在格式块内部：不解析新参数，追加到当前参数描述
                 if in_format_block > 0:
-                    if current_param:
-                        param_lines.append(stripped)
+                    old_depth = in_format_block
                     in_format_block += stripped.count('{') - stripped.count('}')
                     if in_format_block < 0:
                         in_format_block = 0
+                    # 显示缩进：进入嵌套块时用当前深度，离开时用新深度
+                    display_depth = in_format_block if stripped.count('}') > stripped.count('{') else old_depth
+                    indent = '    ' * (display_depth - 1)
+                    if current_param:
+                        param_lines.append(indent + stripped)
                     continue
                 
                 # 检查是否是参数定义行（如 "param_name: 描述"）
