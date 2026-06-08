@@ -2723,6 +2723,59 @@ def namespace_delete(client: DMEAPIClient, namespace_ids: list, task_remarks: st
     response = client.post(url, json=payload)
     return response
 
+
+def nfs_share_show_clients(client: DMEAPIClient, page_no: int = 1, page_size: int = 20,
+                           nfs_share_id: str = None, storage_id: str = None,
+                           vstore_id_in_storage: str = None, name: str = None,
+                           client_id_in_storage: str = None, sort_key: str = None,
+                           sort_dir: str = None) -> dict:
+    """
+    查询 NFS 共享下的客户端访问列表
+
+    指定设备或 NFS ID，查询 NFS 共享下的客户端访问列表。
+
+    Args:
+        client: DME API 客户端
+        page_no: 分页查询的起始页码（可选），最小值 1，默认 1
+        page_size: 单页显示的数量（可选），1~1000，默认 20
+        nfs_share_id: NFS 共享 ID（可选），1~64 个字符
+        storage_id: 存储设备 ID（可选），1~64 个字符；如果指定 nfs_share_id，则此参数无效
+        vstore_id_in_storage: vStore ID（可选），1~256 个字符；vStore 场景下必须下发
+        name: 客户端 IP 或主机名或网络组名（可选），1~256 个字符；指定 nfs_share_id 条件下支持模糊搜索
+        client_id_in_storage: NFS 共享客户端 ID（可选），1~256 个字符
+        sort_key: 排序字段（可选），可选值：raw_id、name
+        sort_dir: 排序方向（可选），可选值：asc（升序）、desc（降序），默认 asc
+
+    Returns:
+        客户端访问列表
+    """
+    url = "/rest/fileservice/v2/nfs-auth-clients/query"
+
+    payload = {}
+
+    if page_no is not None:
+        payload['page_no'] = page_no
+    if page_size is not None:
+        payload['page_size'] = page_size
+    if nfs_share_id is not None:
+        payload['nfs_share_id'] = nfs_share_id
+    if storage_id is not None:
+        payload['storage_id'] = storage_id
+    if vstore_id_in_storage is not None:
+        payload['vstore_id_in_storage'] = vstore_id_in_storage
+    if name is not None:
+        payload['name'] = name
+    if client_id_in_storage is not None:
+        payload['client_id_in_storage'] = client_id_in_storage
+    if sort_key is not None:
+        payload['sort_key'] = sort_key
+    if sort_dir is not None:
+        payload['sort_dir'] = sort_dir
+
+    response = client.post(url, json=payload)
+    return response
+
+
 ACTIONS = {
     'dtree_list': {
         'func': dtree_list,
@@ -2783,6 +2836,12 @@ ACTIONS = {
         'func': nfs_share_delete,
         'description': '批量删除 NFS 共享',
         'params': ['nfs_share_ids', 'task_remarks'],
+        'subtopic': 'nfs_share'
+    },
+    'nfs_share_show_clients': {
+        'func': nfs_share_show_clients,
+        'description': '查询 NFS 共享下的客户端访问列表',
+        'params': ['page_no', 'page_size', 'nfs_share_id', 'storage_id', 'vstore_id_in_storage', 'name', 'client_id_in_storage', 'sort_key', 'sort_dir'],
         'subtopic': 'nfs_share'
     },
     # CIFS 共享子主题动作
