@@ -15,33 +15,33 @@ from dme_api_client import DMEAPIClient
 # ============================================================================
 
 
-def dpc_list(client: DMEAPIClient, ids: list = None, hostname: str = None, ip: str = None,
-             mgmt_status: list = None, status: list = None, sn: str = None,
-             storage_id: str = None, dpc_om_id: str = None, dpc_type: list = None,
-             client_version: str = None, page_no: int = 1, page_size: int = 20) -> dict:
+def dpc_list(client: DMEAPIClient, page_no: int = 1, page_size: int = 10,
+             storage_id: str = None, process_id: str = None, name: str = None,
+             manage_ip: str = None, version: str = None, status: str = None,
+             switch_status: str = None, upgrade_flag: str = None,
+             sort_key: str = None, sort_dir: str = None) -> dict:
     """
-    批量查询并行客户端列表
+    批量查询 DPC 客户端列表
 
-    批量查询并行客户端列表，包含 OceanStor A800 的 Dataturbo 客户端和 OceanStor Pacific/A310 的 DPC 信息。
+    批量查询 DPC 客户端列表。
 
     Args:
         client: DME API 客户端
-        ids: 并行客户端 ID 列表（精确查询）
-        hostname: 计算节点的主机名称（模糊查询）
-        ip: 并行客户端所在计算节点的管理 IP（模糊查询）
-        mgmt_status: 管理状态列表，可选值：normal（正常）, abnormal（异常）, unready（未就绪）,
-                    subhealth（亚健康）, pre_registered（预注册）, unknown（未知）
-        status: 业务状态列表，可选值：normal（正常）, abnormal（异常）, subhealth（亚健康）, unknown（未知）
-        sn: 并行客户端所在计算节点的硬件 SN（模糊查询）
-        storage_id: 存储设备 ID（精确查询）
-        dpc_om_id: 并行客户端 O&M ID（精确查询）
-        dpc_type: DPC 类型列表，可选值：DPC, DataTurbo
-        client_version: 并行客户端版本号（精确查询）
-        page_no: 分页页码，默认 1
-        page_size: 每页数据条数，默认 20
+        page_no: 分页页码（可选），1~10000000，默认 1
+        page_size: 每页数据条数（可选），1~1000，默认 10
+        storage_id: 存储 ID（可选），1~64 个字符
+        process_id: DPC 客户端进程 ID（可选），1~64 个字符
+        name: DPC 客户端名称（可选），1~256 个字符，支持模糊搜索
+        manage_ip: DPC 客户端节点管理 IP（可选），1~256 个字符，支持模糊搜索
+        version: DPC 客户端版本（可选），1~256 个字符，支持模糊搜索
+        status: DPC 客户端状态（可选），可选值：normal（正常）、abnormal（异常）、disabled（未启用）
+        switch_status: 节点 FSA 开关状态（可选），可选值：on（开启）、off（关闭）
+        upgrade_flag: 升级标记（可选），可选值：required（需要升级）、not_required（无需升级）
+        sort_key: 排序字段（可选），可选值：manage_ip（节点管理 IP）、dpc_mem（DPC 客户端节点内存）
+        sort_dir: 排序方向（可选），可选值：asc（升序）、desc（降序），默认 asc
 
     Returns:
-        并行客户端列表
+        DPC 客户端列表
     """
     url = "/rest/dpc-mgmt/v1/dpcs/query"
 
@@ -50,26 +50,26 @@ def dpc_list(client: DMEAPIClient, ids: list = None, hostname: str = None, ip: s
         'page_size': page_size
     }
 
-    if ids is not None:
-        payload['ids'] = ids
-    if hostname is not None:
-        payload['hostname'] = hostname
-    if ip is not None:
-        payload['ip'] = ip
-    if mgmt_status is not None:
-        payload['mgmt_status'] = mgmt_status
-    if status is not None:
-        payload['status'] = status
-    if sn is not None:
-        payload['sn'] = sn
     if storage_id is not None:
         payload['storage_id'] = storage_id
-    if dpc_om_id is not None:
-        payload['dpc_om_id'] = dpc_om_id
-    if dpc_type is not None:
-        payload['dpc_type'] = dpc_type
-    if client_version is not None:
-        payload['client_version'] = client_version
+    if process_id is not None:
+        payload['process_id'] = process_id
+    if name is not None:
+        payload['name'] = name
+    if manage_ip is not None:
+        payload['manage_ip'] = manage_ip
+    if version is not None:
+        payload['version'] = version
+    if status is not None:
+        payload['status'] = status
+    if switch_status is not None:
+        payload['switch_status'] = switch_status
+    if upgrade_flag is not None:
+        payload['upgrade_flag'] = upgrade_flag
+    if sort_key is not None:
+        payload['sort_key'] = sort_key
+    if sort_dir is not None:
+        payload['sort_dir'] = sort_dir
 
     response = client.post(url, json=payload)
     return response
@@ -3045,8 +3045,8 @@ ACTIONS = {
     # dpc 子主题动作
     'dpc_list': {
         'func': dpc_list,
-        'description': '批量查询并行客户端列表',
-        'params': ['ids', 'hostname', 'ip', 'mgmt_status', 'status', 'sn', 'storage_id', 'dpc_om_id', 'dpc_type', 'client_version', 'page_no', 'page_size'],
+        'description': '批量查询 DPC 客户端列表',
+        'params': ['page_no', 'page_size', 'storage_id', 'process_id', 'name', 'manage_ip', 'version', 'status', 'switch_status', 'upgrade_flag', 'sort_key', 'sort_dir'],
         'subtopic': 'dpc'
     },
     'dpc_show': {
