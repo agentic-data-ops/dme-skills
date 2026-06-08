@@ -1025,9 +1025,7 @@ def cifs_share_delete(client: DMEAPIClient, cifs_share_ids: list, task_remarks: 
 def cifs_share_show_permissions(client: DMEAPIClient, cifs_share_id: str,
                           type: str = None, user_filter: dict = None,
                           ip_filter: dict = None,
-                          rule_type: str = None,
-                          file_name_extension: str = None,
-                          file_extension_name_raw_id: str = None,
+                          file_filter: dict = None,
                           sort_key: str = None, sort_dir: str = None,
                           page_no: int = 1, page_size: int = 10) -> dict:
     """
@@ -1055,10 +1053,11 @@ def cifs_share_show_permissions(client: DMEAPIClient, cifs_share_id: str,
                 ip_or_segments_raw_id: IP 地址/IP 地址段在存储设备上的 ID（可选），1~256 个字符
         }
 
-        # type=file 时的参数
-        rule_type: 文件扩展名类型过滤（可选，type=file 时有效），可选值：reject（只拒绝）、permit（只允许）
-        file_name_extension: 文件扩展名名称过滤（可选，type=file 时有效），1~256 个字符
-        file_extension_name_raw_id: 文件扩展名过滤规则在存储上的 ID（可选，type=file 时有效），1~256 个字符
+        file_filter: 文件扩展名过滤参数（可选，dict 类型，type=file 时有效）。参数格式如下：{
+                rule_type: 文件扩展名类型过滤（可选）。可选值：reject（只拒绝）、permit（只允许）,
+                file_name_extension: 文件扩展名名称过滤（可选），1~256 个字符,
+                file_extension_name_raw_id: 文件扩展名过滤规则在存储上的 ID（可选），1~256 个字符
+        }
 
         # 通用分页排序参数
         sort_key: 排序字段（可选），可选值：raw_id、name
@@ -1113,12 +1112,10 @@ def cifs_share_show_permissions(client: DMEAPIClient, cifs_share_id: str,
     if type is None or type == 'file':
         url = f"/rest/fileservice/v1/cifs-shares/{cifs_share_id}/file-filter-rules/query"
         payload = {}
-        if rule_type is not None:
-            payload['rule_type'] = rule_type
-        if file_name_extension is not None:
-            payload['file_name_extension'] = file_name_extension
-        if file_extension_name_raw_id is not None:
-            payload['file_extension_name_raw_id'] = file_extension_name_raw_id
+        if file_filter is not None:
+            for key, value in file_filter.items():
+                if value is not None:
+                    payload[key] = value
         if sort_key is not None:
             payload['sort_key'] = sort_key
         if sort_dir is not None:
@@ -2884,7 +2881,7 @@ ACTIONS = {
     'cifs_share_show_permissions': {
         'func': cifs_share_show_permissions,
         'description': '查询单个 CIFS 共享的权限列表（用户/IP/文件过滤）',
-        'params': ['cifs_share_id', 'type', 'user_filter', 'ip_filter', 'rule_type', 'file_name_extension', 'file_extension_name_raw_id', 'sort_key', 'sort_dir', 'page_no', 'page_size'],
+        'params': ['cifs_share_id', 'type', 'user_filter', 'ip_filter', 'file_filter', 'sort_key', 'sort_dir', 'page_no', 'page_size'],
         'subtopic': 'cifs_share'
     },
     # dataturbo_share 子主题动作
