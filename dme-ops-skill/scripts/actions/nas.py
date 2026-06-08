@@ -1042,21 +1042,31 @@ def cifs_share_show_permissions(client: DMEAPIClient, cifs_share_id: str,
     Args:
         client: DME API 客户端
         cifs_share_id: CIFS 共享 ID
-        type: 权限类型，可选值：user（用户/用户组）,ip（IP 地址/IP 地址段）,file（文件扩展名过滤规则）。
-             不指定时返回所有类型的权限
-        user_or_user_group_name: 用户/用户组名称（用于过滤）
-        domain_type: 域类型，可选值：ad_domain, ldap_domain, local, nis_domain
-        permissions: 权限过滤列表，每个元素包含 permission 字段
-        user_or_user_group_raw_id: 用户/用户组在存储设备上的 ID
-        ip_addresses_or_segments: IP 地址/IP 地址段（用于过滤）
-        ip_or_segments_raw_id: IP 地址/IP 地址段在存储设备上的 ID
-        rule_type: 规则类型，可选值：reject（只拒绝）, permit（只允许）
-        file_name_extension: 文件扩展名（用于过滤）
-        file_extension_name_raw_id: 文件扩展名过滤规则在存储上的 ID
-        sort_key: 排序字段，可选值：raw_id, name
-        sort_dir: 排序方向，可选值：asc, desc（默认 asc）
-        page_no: 分页页码，默认 1
-        page_size: 每页数据条数，默认 10
+        type: 权限类型（可选），可选值：user（用户/用户组）、ip（IP 地址/IP 地址段）、file（文件扩展名过滤规则）；
+              不指定时返回所有类型的权限
+
+        # type=user 时的参数
+        user_or_user_group_name: 用户/用户组名称（可选，type=user 时有效），1~256 个字符，用于过滤用户/用户组列表
+        domain_type: 域类型（可选，type=user 时有效），可选值：ad_domain（AD域用户/组）、ldap_domain（LDAP域用户/组）、local（本地用户/组）、nis_domain（NIS域用户/组）
+        permissions: 权限过滤列表（可选，type=user 时有效），List<Permission> 类型，数组最大成员个数 4。格式：[{
+                        permission: 权限（可选），可选值：read（读）、full_control（完全控制）、forbidden（禁止）、read_and_write（读写）、read_and_write_not_del_rename（读写，不能删除、重命名），默认 read
+        },...]
+        user_or_user_group_raw_id: 用户/用户组在存储设备上的 ID（可选，type=user 时有效），1~256 个字符
+
+        # type=ip 时的参数
+        ip_addresses_or_segments: IP 地址/IP 地址段（可选，type=ip 时有效），1~256 个字符
+        ip_or_segments_raw_id: IP 地址/IP 地址段在存储设备上的 ID（可选，type=ip 时有效），1~256 个字符
+
+        # type=file 时的参数
+        rule_type: 文件扩展名类型过滤（可选，type=file 时有效），可选值：reject（只拒绝）、permit（只允许）
+        file_name_extension: 文件扩展名名称过滤（可选，type=file 时有效），1~256 个字符
+        file_extension_name_raw_id: 文件扩展名过滤规则在存储上的 ID（可选，type=file 时有效），1~256 个字符
+
+        # 通用分页排序参数
+        sort_key: 排序字段（可选），可选值：raw_id、name
+        sort_dir: 排序方向（可选），可选值：asc（升序）、desc（降序），默认 asc
+        page_no: 分页页码（可选），1~10000000，默认 1
+        page_size: 每页数据条数（可选），1~1000，默认 10
 
     Returns:
         权限列表
