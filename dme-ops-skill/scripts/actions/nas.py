@@ -234,7 +234,7 @@ def dtree_create(client: DMEAPIClient, storage_id: str, create_dtrees_param: lis
         storage_id: dtree 所属存储设备 ID，1~64个字符
         create_dtrees_param: Dtree 名称和数量信息列表 (条件必传)。参数格式如下：[{
                 dtree_name: Dtree名称 (1~255个字符, 正则: ^[^,//:]+$, 支持字母数字空格和部分特殊字符; 若单次请求创建多个Dtree, 名称从0000起累加区分),
-                count: 单次创建Dtree数量 (int, 单组上限500个, 各组上限总和为500个)
+                count: 单次创建Dtree数量 (int, 单组上限500个, 各组上限总和为500个),
              }, ...]
         fs_id: dtree 所属文件系统 ID，与 namespace_id 互斥，集中式存储时必填
         namespace_id: dtree 所属命名空间 ID，与 fs_id 互斥，分布式存储时必填
@@ -250,7 +250,7 @@ def dtree_create(client: DMEAPIClient, storage_id: str, create_dtrees_param: lis
                 charset: 字符集编码 (必选, 固定值UTF_8),
                 dpc_share_auth: DataTurbo管理员列表 (可选)。参数格式如下：[{
                         dpc_user_id: DataTurbo管理员ID (必选, 0~64个字符),
-                        permission: DataTurbo管理员权限 (必选, 固定值read_and_write)
+                        permission: DataTurbo管理员权限 (必选, 固定值read_and_write),
                      }, ...]
              }
         create_worm_param: WORM配置 (可选)。参数格式如下：{
@@ -264,7 +264,7 @@ def dtree_create(client: DMEAPIClient, storage_id: str, create_dtrees_param: lis
                 auto_lock_enabled: 自动锁定开关 (可选, 默认false; 开启后若指定时间内文件未修改则自动锁定),
                 auto_lock_time: 自动锁定时间 (可选, 1~64800; 单位为day时1~45, hour时1~1080, minute时1~64800),
                 auto_lock_unit: 自动锁定时间单位 (可选)。可选值：day, minute, hour,
-                legal_hold_modify: legal hold文件修改权限 (可选, 默认false)
+                legal_hold_modify: legal hold文件修改权限 (可选, 默认false),
              }
         unix_permissions: Dtree 目录权限，正则 [0-7]{3}，如 755。
         task_remarks: 异步任务备注信息，0~1024个字符
@@ -521,7 +521,7 @@ def nfs_share_create(client: DMEAPIClient, create_nfs_share_param: dict,
                 share_path: 共享路径 (必选),
                 character_encoding: 字符编码 (可选),
                 audit_items: 支持审计的事件列表 (可选)。参数格式如下：[{
-                        audititem: 审计事件类型。可选值：none (无操作), all (所有操作), open (打开), create (创建), read (读), write (写), close (关闭), delete (删除), rename (重命名), get_security (获取安全属性), set_security (设置安全属性), get_attr (获取属性), set_attr (设置属性)
+                        audititem: 审计事件类型。可选值：none (无操作), all (所有操作), open (打开), create (创建), read (读), write (写), close (关闭), delete (删除), rename (重命名), get_security (获取安全属性), set_security (设置安全属性), get_attr (获取属性), set_attr (设置属性),
                      }, ...],
                 show_snapshot_enable: 是否开启显示Snapshot (可选)。可选值：true, false,
                 nfs_share_client_addition: NFS共享客户端权限列表 (可选)。参数格式如下：[{
@@ -535,16 +535,16 @@ def nfs_share_create(client: DMEAPIClient, create_nfs_share_param: dict,
                         root_permission_constraint: root权限限制 (必选)。可选值：root_squash, no_root_squash,
                         source_port_verification: 源端口校验限制 (可选)。可选值：secure (安全), insecure (不安全),
                         anonymous_user_id: 匿名用户ID (可选),
-                        access_protocol: 访问协议 (可选)。可选值：nfsv3_and_nfsv4 (NFSv3和NFSv4), nfsv3 (仅NFSv3), nfsv4 (仅NFSv4)
+                        access_protocol: 访问协议 (可选)。可选值：nfsv3_and_nfsv4 (NFSv3和NFSv4), nfsv3 (仅NFSv3), nfsv4 (仅NFSv4),
                      }, ...],
                 file_name_extension_filters: 文件扩展名过滤规则列表 (可选)。参数格式如下：[{
                         file_name_ex_id_in_storage: 规则在存储上的ID (可选, 1~64字符, 变更已添加规则时必填),
                         file_name_extension: 文件扩展名 (必选, 1~127字符, 支持通配符?和*, *只能位于最后一个字符),
                         rule_type: 规则允许/拒绝 (可选, 默认reject)。可选值：reject, permit,
-                        fileoperations: 操作类型列表 (可选)。可选值：close, create, create_dir, delete, delete_dir, getattr, link, lookup, open, read, write, rename, rename_dir, setattr, symlink
+                        fileoperations: 操作类型列表 (可选)。可选值：close, create, create_dir, delete, delete_dir, getattr, link, lookup, open, read, write, rename, rename_dir, setattr, symlink,
                      }, ...],
                 fs_id: 文件系统的id (与namespace_id互斥),
-                namespace_id: 命名空间的id (与fs_id互斥)
+                namespace_id: 命名空间的id (与fs_id互斥),
              }
         task_remarks: 异步任务备注信息
 
@@ -581,7 +581,7 @@ def nfs_share_modify(client: DMEAPIClient, nfs_share_id: str,
         description: 描述信息
         character_encoding: 字符编码，可选值：utf-8, zh, gbk 等
         audit_items: 审计事件列表 (可选)。参数格式如下：[{
-                audititem: 审计事件类型。可选值：none (无操作), all (所有操作), open (打开), create (创建), read (读), write (写), close (关闭), delete (删除), rename (重命名), get_security (获取安全属性), set_security (设置安全属性), get_attr (获取属性), set_attr (设置属性)
+                audititem: 审计事件类型。可选值：none (无操作), all (所有操作), open (打开), create (创建), read (读), write (写), close (关闭), delete (删除), rename (重命名), get_security (获取安全属性), set_security (设置安全属性), get_attr (获取属性), set_attr (设置属性),
              }, ...]
         show_snapshot_enable: 是否显示快照
         nfs_share_client_addition: 需要新增的 NFS 共享客户端列表 (可选)。参数格式如下：[{
@@ -594,7 +594,7 @@ def nfs_share_modify(client: DMEAPIClient, nfs_share_id: str,
                 permission_constraint: 权限限制 (必选)。可选值：all_squash, no_all_squash,
                 root_permission_constraint: root权限限制 (必选)。可选值：root_squash, no_root_squash,
                 source_port_verification: 源端口校验限制 (可选)。可选值：secure (安全), insecure (不安全),
-                anonymous_user_id: 匿名用户ID (可选, 0~4294967294)
+                anonymous_user_id: 匿名用户ID (可选, 0~4294967294),
              }, ...]
         nfs_share_client_modification: 需要修改的 NFS 共享客户端列表 (可选)。参数格式如下：[{
                 nfs_share_client_id_in_storage: 客户端在存储上的ID (必选, 1~32字符),
@@ -606,11 +606,11 @@ def nfs_share_modify(client: DMEAPIClient, nfs_share_id: str,
                 permission_constraint: 权限限制 (必选)。可选值：all_squash, no_all_squash,
                 root_permission_constraint: root权限限制 (必选)。可选值：root_squash, no_root_squash,
                 source_port_verification: 源端口校验限制 (可选)。可选值：secure (安全), insecure (不安全),
-                anonymous_user_id: 匿名用户ID (可选, 0~4294967294)
+                anonymous_user_id: 匿名用户ID (可选, 0~4294967294),
              }, ...]
         nfs_share_client_deletion: 需要删除的 NFS 共享客户端列表 (可选)。参数格式如下：[{
                 nfs_share_client_id_in_storage: 客户端在存储上的ID (必选, 1~32字符),
-                name: 客户端IP或主机名或网络组名 (可选, 1~32000字符)
+                name: 客户端IP或主机名或网络组名 (可选, 1~32000字符),
              }, ...]
         file_name_ex_filters: 扩展名过滤规则列表 (可选)。参数格式如下：[{
                 update_type: 变更类型 (可选, 默认add)。可选值：add (新增), delete (删除), modify (修改),
@@ -618,7 +618,7 @@ def nfs_share_modify(client: DMEAPIClient, nfs_share_id: str,
                         file_name_ex_id_in_storage: 规则在存储上的ID (可选, 1~64字符, 修改时必填),
                         file_name_extension: 文件扩展名 (必选, 1~127字符, 支持通配符?和*, *只能位于最后),
                         rule_type: 规则允许/拒绝 (可选, 默认reject)。可选值：reject (拒绝), permit (允许),
-                        fileoperations: 操作类型列表 (可选)。可选值：close, create, create_dir, delete, delete_dir, getattr, link, lookup, open, read, write, rename, rename_dir, setattr, symlink
+                        fileoperations: 操作类型列表 (可选)。可选值：close, create, create_dir, delete, delete_dir, getattr, link, lookup, open, read, write, rename, rename_dir, setattr, symlink,
                 }
              }, ...]
         task_remarks: 异步任务备注信息
@@ -719,7 +719,7 @@ def cifs_share_list(client: DMEAPIClient, raw_id: str = None, name: str = None,
         op_lock_enabled: CIFS 共享是否开启 Oplock（可选），true：是；false：否
         notify_enabled: CIFS 共享是否开启 Notify（可选），true：是；false：否
         offline_file_modes: CIFS 共享的离线缓存模式列表（可选），List<OfflineFileMode> 类型，数组最大成员个数 4。参数格式如下：[{
-                        mode: 离线缓存模式（可选），可选值：none（关闭）、manual（手动）、documents（文档）、programs（程序），默认 manual
+                        mode: 离线缓存模式（可选），可选值：none（关闭）、manual（手动）、documents（文档）、programs（程序），默认 manual,
         },...]
         file_extension_filter_enabled: CIFS 共享是否开启文件扩展名过滤（可选），true：是；false：否
         abe_enabled: CIFS 共享是否开启 ABE（可选），true：是；false：否
@@ -834,7 +834,7 @@ def cifs_share_create(client: DMEAPIClient, create_cifs_param: dict, fs_id: str 
                 ip_control_enabled: IP访问控制特性开关 (可选),
                 abe_enabled: ABE功能开关 (可选),
                 audititem_list: 支持审计的事件列表 (可选)。参数格式如下：[{
-                        audititem: 审计事件类型 (默认none)。可选值：none, all, open, create, read, write, close, delete, rename, get_security, set_security, get_attr, set_attr, get_xattr, set_xattr
+                        audititem: 审计事件类型 (默认none)。可选值：none, all, open, create, read, write, close, delete, rename, get_security, set_security, get_attr, set_attr, get_xattr, set_xattr,
                      }, ...],
                 apply_default_acl: 是否添加默认ACL (可选),
                 file_extension_filter_enabled: 是否开启文件扩展名过滤特性 (可选),
@@ -844,21 +844,21 @@ def cifs_share_create(client: DMEAPIClient, create_cifs_param: dict, fs_id: str 
                         user_or_user_group_id_in_storage: 用户或用户组在存储上的id (可选, 1~64字符, 变更时必填),
                         user_or_user_group_name: 用户名或用户组名 (可选, 1~255字符; 用户组名称加前缀@),
                         domain_type: 域类型 (可选, 默认local)。可选值：ad_domain, ldap_domain, local, nis_domain,
-                        permission: 权限 (可选, 默认read)。可选值：read, full_control, forbidden, read_and_write, read_and_write_not_del_rename
+                        permission: 权限 (可选, 默认read)。可选值：read, full_control, forbidden, read_and_write, read_and_write_not_del_rename,
                      }, ...],
                 ip_addresses_and_segments: IP地址和IP地址段列表 (可选)。参数格式如下：[{
                         ip_or_segments_id_in_storage: IP地址(段)在存储上的ID (可选, 1~64字符, 变更时必填),
-                        ip_addresses_or_segments: IP地址(段) (可选, 1~128字符, 最多32条)
+                        ip_addresses_or_segments: IP地址(段) (可选, 1~128字符, 最多32条),
                      }, ...],
                 file_name_extension_filters: 文件扩展名过滤规则列表 (可选)。参数格式如下：[{
                         file_name_ex_id_in_storage: 规则在存储上的ID (可选, 1~64字符, 变更已添加规则时必填),
                         file_name_extension: 文件扩展名 (必选, 1~127字符, 支持通配符?和*),
                         rule_type: 规则类型 (可选, 默认reject)。可选值：reject, permit,
-                        fileoperations: 操作类型列表 (可选)
+                        fileoperations: 操作类型列表 (可选),
                      }, ...],
                 smb3_encryption_enable: 是否开启SMB3加密功能 (可选),
                 unencrypted_access: 是否允许未加密客户端访问 (可选),
-                enable_lease: 是否开启租约锁定开关 (可选)
+                enable_lease: 是否开启租约锁定开关 (可选),
              }
         fs_id: 文件系统的 ID，与 namespace_id 互斥
         namespace_id: 命名空间的 ID，与 fs_id 互斥
@@ -911,7 +911,7 @@ def cifs_share_modify(client: DMEAPIClient, cifs_share_id: str, description: str
         ip_control_enabled: IP 访问控制特性开关
         abe_enabled: ABE 功能开关
         audititem_list: 支持审计的事件列表 (可选)。参数格式如下：[{
-                audititem: 审计事件类型 (默认none)。可选值：none, all, open, create, read, write, close, delete, rename, get_security, set_security, get_attr, set_attr, get_xattr, set_xattr
+                audititem: 审计事件类型 (默认none)。可选值：none, all, open, create, read, write, close, delete, rename, get_security, set_security, get_attr, set_attr, get_xattr, set_xattr,
              }, ...]
         apply_default_acl: 是否添加默认 ACL
         file_extension_filter_enabled: 是否开启文件扩展名过滤特性
@@ -923,14 +923,14 @@ def cifs_share_modify(client: DMEAPIClient, cifs_share_id: str, description: str
                         user_or_user_group_id_in_storage: 用户或用户组在存储上的id (可选, 1~64字符, 变更时必填),
                         user_or_user_group_name: 用户名或用户组名 (可选, 1~255字符; 用户组名称加前缀@),
                         domain_type: 域类型 (可选, 默认local)。可选值：ad_domain, ldap_domain, local, nis_domain,
-                        permission: 权限 (可选, 默认read)。可选值：read, full_control, forbidden, read_and_write, read_and_write_not_del_rename
+                        permission: 权限 (可选, 默认read)。可选值：read, full_control, forbidden, read_and_write, read_and_write_not_del_rename,
                 }
              }, ...]
         ip_and_segments: IP地址和IP地址段列表 (可选)。参数格式如下：[{
                 update_type: 变更类型 (可选, 默认add)。可选值：add (新增), delete (删除), modify (修改),
                 param: IP地址和IP地址段信息对象 (可选)。属性格式如下：{
                         ip_or_segments_id_in_storage: IP地址(段)在存储上的ID (可选, 1~64字符, 变更时必填),
-                        ip_addresses_or_segments: IP地址(段) (可选, 1~128字符, 最多32条)
+                        ip_addresses_or_segments: IP地址(段) (可选, 1~128字符, 最多32条),
                 }
              }, ...]
         file_name_ex_filters: 扩展名过滤规则列表 (可选)。参数格式如下：[{
@@ -939,7 +939,7 @@ def cifs_share_modify(client: DMEAPIClient, cifs_share_id: str, description: str
                         file_name_ex_id_in_storage: 规则在存储上的ID (可选, 1~64字符, 变更已添加规则时必填),
                         file_name_extension: 文件扩展名 (必选, 1~127字符, 支持通配符?和*, *只能位于最后一个字符),
                         rule_type: 规则类型 (可选, 默认reject)。可选值：reject (拒绝), permit (允许),
-                        fileoperations: 操作类型列表 (可选, 最多100个)
+                        fileoperations: 操作类型列表 (可选, 最多100个),
                 }
              }, ...]
         task_remarks: 异步任务备注信息，0~1024 个字符
@@ -1043,20 +1043,20 @@ def cifs_share_show_permissions(client: DMEAPIClient, cifs_share_id: str,
                 user_or_user_group_name: 用户/用户组名称（可选），1~256 个字符，用于过滤用户/用户组列表,
                 domain_type: 域类型（可选）。可选值：ad_domain（AD域用户/组）、ldap_domain（LDAP域用户/组）、local（本地用户/组）、nis_domain（NIS域用户/组）,
                 permissions: 权限过滤列表（可选），List<Permission> 类型，数组最大成员个数 4。参数格式如下：[{
-                        permission: 权限（可选）。可选值：read（读）、full_control（完全控制）、forbidden（禁止）、read_and_write（读写）、read_and_write_not_del_rename（读写，不能删除、重命名）。默认 read
+                        permission: 权限（可选）。可选值：read（读）、full_control（完全控制）、forbidden（禁止）、read_and_write（读写）、read_and_write_not_del_rename（读写，不能删除、重命名）。默认 read,
                 },...],
-                user_or_user_group_raw_id: 用户/用户组在存储设备上的 ID（可选），1~256 个字符
+                user_or_user_group_raw_id: 用户/用户组在存储设备上的 ID（可选），1~256 个字符,
         }
 
         ip_filter: IP 权限过滤参数（可选，dict 类型，type=ip 时有效）。参数格式如下：{
                 ip_addresses_or_segments: IP 地址/IP 地址段（可选），1~256 个字符,
-                ip_or_segments_raw_id: IP 地址/IP 地址段在存储设备上的 ID（可选），1~256 个字符
+                ip_or_segments_raw_id: IP 地址/IP 地址段在存储设备上的 ID（可选），1~256 个字符,
         }
 
         file_filter: 文件扩展名过滤参数（可选，dict 类型，type=file 时有效）。参数格式如下：{
                 rule_type: 文件扩展名类型过滤（可选）。可选值：reject（只拒绝）、permit（只允许）,
                 file_name_extension: 文件扩展名名称过滤（可选），1~256 个字符,
-                file_extension_name_raw_id: 文件扩展名过滤规则在存储上的 ID（可选），1~256 个字符
+                file_extension_name_raw_id: 文件扩展名过滤规则在存储上的 ID（可选），1~256 个字符,
         }
 
         # 通用分页排序参数
@@ -1255,7 +1255,7 @@ def dataturbo_share_create(client: DMEAPIClient, charset: str, fs_id: str = None
         description: DataTurbo 共享描述
         dataturbo_share_auth: DataTurbo 管理员列表 (可选)。参数格式如下：[{
                 dpc_user_id: DataTurbo管理员ID (必选, 1~64个字符),
-                permission: DataTurbo管理员权限 (必选, 固定值read_and_write)
+                permission: DataTurbo管理员权限 (必选, 固定值read_and_write),
              }, ...]
         task_remarks: 异步任务备注信息
 
@@ -1296,7 +1296,7 @@ def dataturbo_share_modify(client: DMEAPIClient, dataturbo_share_id: str, descri
         description: DataTurbo 共享描述
         dataturbo_share_auth_addition: 要增加的 DataTurbo 管理员列表 (可选)。参数格式如下：[{
                 dpc_user_id: DataTurbo管理员ID (必选, 0~64个字符),
-                permission: DataTurbo管理员权限 (必选, 固定值read_and_write)
+                permission: DataTurbo管理员权限 (必选, 固定值read_and_write),
              }, ...]
         dataturbo_share_auth_deletion: 要删除的 DataTurbo 管理员 ID 列表
         task_remarks: 异步任务备注信息
@@ -1503,9 +1503,9 @@ def quota_create(client: DMEAPIClient, parent_id: str, parent_type: str,
         parent_type: 父资源类型（必填），可选值：filesystem（文件系统）、dtree（dtree，存储集群不支持）、namespace（命名空间）
         quota_type: 配额类型（必填），可选值：directory_quota（目录配额）、user_quota（用户配额）、user_group_quota（用户组配额）
         quota_owner: 配额用户（条件必传），QuotaOwner 对象。参数格式如下：{
-                        name: 用户（组）名称（必填），1~64 个字符，* 表示所有用户（组）
-                        type: 用户（组）类型（必填），当 quota_type 为 user_quota 时可选值：unix_local_user（unix 本地用户）、domain_user（域用户）、windows_user（windows 用户）；当 quota_type 为 user_group_quota 时可选值：unix_local_user_group（unix 本地用户组）、domain_user_group（域用户组）、windows_user_group（windows 用户组）
-                        domain_type: 域用户类型（条件必传），当 type 为 domain_user 或 domain_user_group 时必传；可选值：local（本地）、ad_domain（AD 域）、ldap_domain（LDAP 域）、nis_domain（NIS 域）；OceanStor Pacific、OceanStor Dorado V6、OceanProtect 支持该字段
+                        name: 用户（组）名称（必填），1~64 个字符，* 表示所有用户（组）,
+                        type: 用户（组）类型（必填），当 quota_type 为 user_quota 时可选值：unix_local_user（unix 本地用户）、domain_user（域用户）、windows_user（windows 用户）；当 quota_type 为 user_group_quota 时可选值：unix_local_user_group（unix 本地用户组）、domain_user_group（域用户组）、windows_user_group（windows 用户组）,
+                        domain_type: 域用户类型（条件必传），当 type 为 domain_user 或 domain_user_group 时必传；可选值：local（本地）、ad_domain（AD 域）、ldap_domain（LDAP 域）、nis_domain（NIS 域）；OceanStor Pacific、OceanStor Dorado V6、OceanProtect 支持该字段,
         }
         dir_quota_target: 目录配额作用目标（可选），可选值：dtree（模板目录配额，作用于当前文件系统下的所有 Dtree）、filesystem（根目录配额，作用于当前文件系统）；当父资源类型为 filesystem 且配额类型为 directory_quota 时有效
         task_remarks: 异步任务备注信息
@@ -1683,9 +1683,9 @@ def filesystem_list(client: DMEAPIClient, page_no: int = 1, page_size: int = 100
         product_name: 文件系统所属设备产品名称（可选），1~256 个字符，支持模糊搜索
         description: 文件系统描述信息（可选），1~255 个字符
         tag_filters: 标签过滤列表（可选），List<TagFilters> 类型，数组最大成员个数 11。参数格式如下：[{
-                        tag_ids: 标签 ID 列表（可选），数组最大成员个数 10，多个标签之间为或关系
-                        tag_type_id: 标签类型 ID（可选），正则 ^[a-fA-F0-9]{32}$
-                        operator: 过滤条件（必填），可选值：contain（包含）、not_contain（不包含）
+                        tag_ids: 标签 ID 列表（可选），数组最大成员个数 10，多个标签之间为或关系,
+                        tag_type_id: 标签类型 ID（可选），正则 ^[a-fA-F0-9]{32}$,
+                        operator: 过滤条件（必填），可选值：contain（包含）、not_contain（不包含）,
         },...]
 
     Returns:
@@ -1810,8 +1810,8 @@ def filesystem_batch_modify(client: DMEAPIClient, filesystems: list, task_remark
     Args:
         client: DME API 客户端
         filesystems: 待修改的文件系统信息列表（必填），List<UpdateFileSystemInfo> 类型，数组最大成员个数 1000。参数格式如下：[{
-                        file_system_id: 文件系统的唯一标识（必填），1~64 个字符
-                        name: 文件系统名称（必填），1~255 个字符；OceanStor Dorado V6、OceanStor、OceanProtect 系列只能包含字母、数字、"-"、"."和各国语言字符；OceanStor V3/V5 系列只能包含字母、数字和中文字符
+                        file_system_id: 文件系统的唯一标识（必填），1~64 个字符,
+                        name: 文件系统名称（必填），1~255 个字符；OceanStor Dorado V6、OceanStor、OceanProtect 系列只能包含字母、数字、"-"、"."和各国语言字符；OceanStor V3/V5 系列只能包含字母、数字和中文字符,
         },...]
         task_remarks: 异步任务备注信息（可选），0~1024 个字符
 
@@ -1870,7 +1870,7 @@ def filesystem_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
                 count: 数量 (必选, 1~500),
                 start_suffix: 起始后缀编号 (可选, 0~9999),
                 capacity: 容量GB (必选, 1~262144),
-                description: 描述 (可选, 0~255字符)
+                description: 描述 (可选, 0~255字符),
              }, ...]
         vstore_id: 租户 ID（可选）
         zone_id: 所属 zone 的 ID（可选）
@@ -1924,7 +1924,7 @@ def filesystem_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
                         iotype: 策略类型 (可选)。可选值：2 (总上限), 3 (读写上限),
                         vstore_id: 所属租户id (可选),
                         vstore_name: 所属租户名称 (可选),
-                        global_flag: 是否全局 (可选)
+                        global_flag: 是否全局 (可选),
                 }
              }
         create_cifs_share_param: 自动创建CIFS共享参数（可选）。格式参见动作帮助：nas cifs_share create
@@ -1944,7 +1944,7 @@ def filesystem_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
                 auto_shrink_threshold_percent: 自动缩容触发门限% (可选, 1~98, 默认50),
                 max_auto_size: 自动扩容上限GB (可选, 1~33554432, 默认33554432),
                 min_auto_size: 自动缩容下限GB (可选, 1~33554432, 默认33554432),
-                auto_size_increment: 自动扩缩容单次变化量MB (可选, 64~102400, 默认1024)
+                auto_size_increment: 自动扩缩容单次变化量MB (可选, 64~102400, 默认1024),
              }
         worm: 文件系统Worm参数 (可选)。参数格式如下：{
                 type: WORM保护模式 (可选)。可选值：none_mode (无默认策略), enterprise_mode (企业遵从), compliance_mode (法规遵从), advance_mode (高安遵从), audit_log (审计日志), non_worm (非WORM),
@@ -1959,7 +1959,7 @@ def filesystem_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
                 auto_lock_time_unit: 自动锁定时间单位 (可选, 默认hour)。可选值：minute, hour, day, month, year,
                 auto_del: 自动删除模式 (可选, 默认关闭)。可选值：true, false,
                 is_worm_audit_log_fs: WORM审计日志文件系统 (可选, 默认关闭)。可选值：true, false,
-                worm_append_unit: WORM追加态文件保护粒度 (可选, 仅advance_mode支持)。可选值：256KB, 512KB, 1M
+                worm_append_unit: WORM追加态文件保护粒度 (可选, 仅advance_mode支持)。可选值：256KB, 512KB, 1M,
              }
         snapshot_reserved_space_percentage: 快照预留空间百分比（可选），0~90
         periodic_snapshots_limit: 定时快照数量限制（可选），1~2048
@@ -2167,11 +2167,11 @@ def filesystem_modify(client: DMEAPIClient, file_system_id: str, name: str = Non
                         vstore_name: 所属租户名称 (可选, 1~64字符; A800下未使用),
                         global_flag: 是否全局 (可选; 当前版本只支持全局; A800下未使用),
                         qos_policy_id: QoS策略ID (可选, 0~64字符; 与除enabled外的其他参数互斥),
-                        enabled: 是否启用QoSPolicy (可选, 默认false)
+                        enabled: 是否启用QoSPolicy (可选, 默认false),
                 },
                 deduplication_enabled: 重复数据删除 (可选, 默认关闭),
                 compression_enabled: 数据压缩 (可选, 默认关闭),
-                allocation_type: 文件系统分配类型 (可选, 默认thin)。可选值：thin (精简), thick (厚)
+                allocation_type: 文件系统分配类型 (可选, 默认thin)。可选值：thin (精简), thick (厚),
              }
         capacity_autonegotiation: 容量自适应参数 (可选)。参数格式如下：{
                 capacity_self_adjusting_mode: 容量自动调整模式 (可选, 默认关闭)。可选值：grow_off (关闭), grow (自动扩容), grow_shrink (自动扩缩容),
@@ -2181,7 +2181,7 @@ def filesystem_modify(client: DMEAPIClient, file_system_id: str, name: str = Non
                 auto_shrink_threshold_percent: 自动缩容触发门限% (可选, 1~98, 默认50),
                 max_auto_size: 自动扩容上限GB (可选, 1~33554432, 默认33554432; 必须大于等于缩容下限和文件系统容量),
                 min_auto_size: 自动缩容下限GB (可选, 1~33554432, 默认33554432),
-                auto_size_increment: 自动扩缩容单次变化量MB (可选, 64~102400, 默认1024)
+                auto_size_increment: 自动扩缩容单次变化量MB (可选, 64~102400, 默认1024),
              }
         worm: 文件系统Worm参数 (可选)。参数格式如下：{
                 type: WORM保护遵从模式 (可选)。可选值：none_mode, enterprise_mode, compliance_mode, advance_mode, audit_log, non_worm,
@@ -2196,7 +2196,7 @@ def filesystem_modify(client: DMEAPIClient, file_system_id: str, name: str = Non
                 auto_lock_time_unit: 自动锁定时间单位 (可选, 默认hour)。可选值：minute, hour, day, month, year,
                 auto_del: 自动删除模式 (可选, 默认关闭; advance_mode不支持)。可选值：true, false,
                 is_worm_audit_log_fs: WORM审计日志文件系统 (可选, 默认关闭; 一个租户只能有一个),
-                worm_append_unit: WORM追加态文件保护粒度 (可选, 仅advance_mode支持)。可选值：256KB, 512KB, 1M
+                worm_append_unit: WORM追加态文件保护粒度 (可选, 仅advance_mode支持)。可选值：256KB, 512KB, 1M,
              }
         task_remarks: 异步任务备注信息，0~1024个字符（可选）
         audit_log_rules: 审计日志规则集合（可选），如：set_security、get_security、set_attr、get_attr等，最多100条
@@ -2409,7 +2409,7 @@ def namespace_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
                 name: 名称 (必填, 1~255字符, 支持数字字母下划线.-),
                 count: 数量 (必填, 1~500),
                 start_suffix: 起始后缀编号 (可选, 0~9999; 起始后缀+数量<=9999),
-                isInGfs: 是否在全局命名空间中 (可选)。可选值：true, false
+                isInGfs: 是否在全局命名空间中 (可选)。可选值：true, false,
              }, ...]
         enable_update_atime: 是否更新 Atime
         trash_visible: 回收站目录是否可见，默认不可见
@@ -2439,7 +2439,7 @@ def namespace_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
                 auto_lock_enabled: WORM是否自动锁定 (可选, 默认false)。可选值：true, false,
                 auto_lock_time: 自动锁定时间 (可选, 1~64800, 默认2; 单位day时1~45, hour时1~1080, minute时1~64800),
                 auto_lock_unit: 自动锁定时间单位 (可选, 默认hour)。可选值：day, minute, hour,
-                legal_hold_modify: 诉讼保留文件修改保留期开关 (可选, 默认false)。可选值：true, false
+                legal_hold_modify: 诉讼保留文件修改保留期开关 (可选, 默认false)。可选值：true, false,
              }
         qos_policy: QoS 策略配置。参数格式如下：{
                 qos_scale: 上限控制维度 (必选)。可选值：namespace, client, account, user, innertask,
@@ -2450,7 +2450,7 @@ def namespace_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
                 max_iops: IOPS上限 (可选, 0~1073741824000; 批量创建命名空间时为必选),
                 max_mbps: 带宽上限Mbps (可选, 0~1073741824; 当qos_mode为manual时必选),
                 max_band_width: 最大带宽Mbps (可选, 1~1073741824; 当qos_mode为by_usage或by_package时必选),
-                basic_band_width: 基础带宽Mbps (可选, 1~1073741824; 当qos_mode为by_usage或by_package时必选)
+                basic_band_width: 基础带宽Mbps (可选, 1~1073741824; 当qos_mode为by_usage或by_package时必选),
                 bps_density: 带宽密度Mbps (可选, 1~1024000; 当qos_mode为by_usage或by_package时必选),
                 max_conn_cluster: 最大连接数 (可选),
                 max_lock_cluster: 最大锁数量 (可选),
@@ -2458,16 +2458,16 @@ def namespace_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
                 read_ops: 读OPS限制 (可选, 0~1073741824000; 仅当qos_mode为manual且qos_scale不为account时可选),
                 write_ops: 写OPS限制 (可选, 0~1073741824000; 仅当qos_mode为manual且qos_scale不为account时可选),
                 read_mbps: 读带宽限制Mbps (可选, 0~1073741824; 仅当qos_mode为manual且qos_scale不为account时可选),
-                write_mbps: 写带宽限制Mbps (可选, 0~1073741824; 仅当qos_mode为manual且qos_scale不为account时可选)
+                write_mbps: 写带宽限制Mbps (可选, 0~1073741824; 仅当qos_mode为manual且qos_scale不为account时可选),
              }
         public_network_qos_policy: 公网 QoS 策略配置。参数格式如下：{
-                        name: QoS 策略名称（可选），1~63 个字符，正则 ^[a-zA-Z0-9][a-zA-Z0-9_-]*，只能以数字或字母开头
-                        qos_mode: QoS 模式（条件必选），可选值：by_usage（按已使用量）、by_package（按固定容量）、manual（按上限）；批量创建命名空间时为必选，修改时为非必选
-                        package_size: 包容量（可选），0~94371840（GB），当 qos_mode 为 by_package 时必选
-                        max_iops: IOPS 上限（条件必选），0~1073741824000，批量创建命名空间时为必选，修改时为非必选
-                        max_mbps: 带宽上限（可选），0~1073741824（Mbps），当 qos_mode 为 manual 时必选
-                        max_band_width: 最大带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选
-                        basic_band_width: 基础带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选
+                        name: QoS 策略名称（可选），1~63 个字符，正则 ^[a-zA-Z0-9][a-zA-Z0-9_-]*，只能以数字或字母开头,
+                        qos_mode: QoS 模式（条件必选），可选值：by_usage（按已使用量）、by_package（按固定容量）、manual（按上限）；批量创建命名空间时为必选，修改时为非必选,
+                        package_size: 包容量（可选），0~94371840（GB），当 qos_mode 为 by_package 时必选,
+                        max_iops: IOPS 上限（条件必选），0~1073741824000，批量创建命名空间时为必选，修改时为非必选,
+                        max_mbps: 带宽上限（可选），0~1073741824（Mbps），当 qos_mode 为 manual 时必选,
+                        max_band_width: 最大带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选,
+                        basic_band_width: 基础带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选,
                 bps_density: 带宽密度Mbps (可选, 1~1024000; 当qos_mode为by_usage或by_package时必选),
                 max_conn_cluster: 最大连接数 (可选),
                 max_lock_cluster: 最大锁数量 (可选),
@@ -2475,16 +2475,16 @@ def namespace_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
                 read_ops: 读OPS限制 (可选, 0~1073741824000; 仅当qos_mode为manual且qos_scale不为account时可选),
                 write_ops: 写OPS限制 (可选, 0~1073741824000; 仅当qos_mode为manual且qos_scale不为account时可选),
                 read_mbps: 读带宽限制Mbps (可选, 0~1073741824; 仅当qos_mode为manual且qos_scale不为account时可选),
-                write_mbps: 写带宽限制Mbps (可选, 0~1073741824; 仅当qos_mode为manual且qos_scale不为account时可选)
+                write_mbps: 写带宽限制Mbps (可选, 0~1073741824; 仅当qos_mode为manual且qos_scale不为account时可选),
              }
         private_network_qos_policy: 私网 QoS 策略配置。参数格式如下：{
-                        name: QoS 策略名称（可选），1~63 个字符，正则 ^[a-zA-Z0-9][a-zA-Z0-9_-]*，只能以数字或字母开头
-                        qos_mode: QoS 模式（条件必选），可选值：by_usage（按已使用量）、by_package（按固定容量）、manual（按上限）；批量创建命名空间时为必选，修改时为非必选
-                        package_size: 包容量（可选），0~94371840（GB），当 qos_mode 为 by_package 时必选
-                        max_iops: IOPS 上限（条件必选），0~1073741824000，批量创建命名空间时为必选，修改时为非必选
-                        max_mbps: 带宽上限（可选），0~1073741824（Mbps），当 qos_mode 为 manual 时必选
-                        max_band_width: 最大带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选
-                        basic_band_width: 基础带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选
+                        name: QoS 策略名称（可选），1~63 个字符，正则 ^[a-zA-Z0-9][a-zA-Z0-9_-]*，只能以数字或字母开头,
+                        qos_mode: QoS 模式（条件必选），可选值：by_usage（按已使用量）、by_package（按固定容量）、manual（按上限）；批量创建命名空间时为必选，修改时为非必选,
+                        package_size: 包容量（可选），0~94371840（GB），当 qos_mode 为 by_package 时必选,
+                        max_iops: IOPS 上限（条件必选），0~1073741824000，批量创建命名空间时为必选，修改时为非必选,
+                        max_mbps: 带宽上限（可选），0~1073741824（Mbps），当 qos_mode 为 manual 时必选,
+                        max_band_width: 最大带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选,
+                        basic_band_width: 基础带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选,
                 bps_density: 带宽密度Mbps (可选, 1~1024000; 当qos_mode为by_usage或by_package时必选),
                 max_conn_cluster: 最大连接数 (可选),
                 max_lock_cluster: 最大锁数量 (可选),
@@ -2492,11 +2492,11 @@ def namespace_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
                 read_ops: 读OPS限制 (可选, 0~1073741824000; 仅当qos_mode为manual且qos_scale不为account时可选),
                 write_ops: 写OPS限制 (可选, 0~1073741824000; 仅当qos_mode为manual且qos_scale不为account时可选),
                 read_mbps: 读带宽限制Mbps (可选, 0~1073741824; 仅当qos_mode为manual且qos_scale不为account时可选),
-                write_mbps: 写带宽限制Mbps (可选, 0~1073741824; 仅当qos_mode为manual且qos_scale不为account时可选)
+                write_mbps: 写带宽限制Mbps (可选, 0~1073741824; 仅当qos_mode为manual且qos_scale不为account时可选),
              }
         create_s3_param: 创建 S3 协议参数 (可选)。参数格式如下：{
                 bucket_permission: 策略类型 (必选)。可选值：private (私有), public_read_only (公共读), public_write_only (公共写), public_read_write (公共读写),
-                version_status: 对象多版本状态 (可选, 0~2)。可选值：0 (关闭), 1 (打开), 2 (暂停)
+                version_status: 对象多版本状态 (可选, 0~2)。可选值：0 (关闭), 1 (打开), 2 (暂停),
              }
         application_type: 应用类型，可选值：PACS（医疗影像场景）, GENERAL（通用场景）
         task_remarks: 异步任务备注信息
@@ -2613,17 +2613,17 @@ def namespace_modify(client: DMEAPIClient, namespace_id: str,
                 read_ops: 读OPS限制 (可选, 0~1073741824000; 仅当qos_mode为manual且qos_scale不为account时可选),
                 write_ops: 写OPS限制 (可选, 0~1073741824000; 仅当qos_mode为manual且qos_scale不为account时可选),
                 read_mbps: 读带宽限制Mbps (可选, 0~1073741824; 仅当qos_mode为manual且qos_scale不为account时可选),
-                write_mbps: 写带宽限制Mbps (可选, 0~1073741824; 仅当qos_mode为manual且qos_scale不为account时可选)
+                write_mbps: 写带宽限制Mbps (可选, 0~1073741824; 仅当qos_mode为manual且qos_scale不为account时可选),
              }
         public_network_qos_policy: 公网 QoS 策略配置。参数格式如下：{
-                        qos_switch: QoS 开关（必填），可选值：on、off
-                        name: QoS 策略名称（可选），1~63 个字符，正则 ^[a-zA-Z0-9][a-zA-Z0-9_-]*，只能以数字或字母开头
-                        qos_mode: QoS 模式（条件必选），可选值：by_usage（按已使用量）、by_package（按固定容量）、manual（按上限）；批量创建命名空间时为必选，修改时为非必选
-                        package_size: 包容量（可选），0~94371840（GB），当 qos_mode 为 by_package 时必选
-                        max_iops: IOPS 上限（条件必选），0~1073741824000，批量创建命名空间时为必选，修改时为非必选
-                        max_mbps: 带宽上限（可选），0~1073741824（Mbps），当 qos_mode 为 manual 时必选
-                        max_band_width: 最大带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选
-                        basic_band_width: 基础带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选
+                        qos_switch: QoS 开关（必填），可选值：on、off,
+                        name: QoS 策略名称（可选），1~63 个字符，正则 ^[a-zA-Z0-9][a-zA-Z0-9_-]*，只能以数字或字母开头,
+                        qos_mode: QoS 模式（条件必选），可选值：by_usage（按已使用量）、by_package（按固定容量）、manual（按上限）；批量创建命名空间时为必选，修改时为非必选,
+                        package_size: 包容量（可选），0~94371840（GB），当 qos_mode 为 by_package 时必选,
+                        max_iops: IOPS 上限（条件必选），0~1073741824000，批量创建命名空间时为必选，修改时为非必选,
+                        max_mbps: 带宽上限（可选），0~1073741824（Mbps），当 qos_mode 为 manual 时必选,
+                        max_band_width: 最大带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选,
+                        basic_band_width: 基础带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选,
                 bps_density: 带宽密度Mbps (可选, 1~1024000; 当qos_mode为by_usage或by_package时必选),
                 max_conn_cluster: 最大连接数 (可选),
                 max_lock_cluster: 最大锁数量 (可选),
@@ -2631,17 +2631,17 @@ def namespace_modify(client: DMEAPIClient, namespace_id: str,
                 read_ops: 读OPS限制 (可选, 0~1073741824000; 仅当qos_mode为manual且qos_scale不为account时可选),
                 write_ops: 写OPS限制 (可选, 0~1073741824000; 仅当qos_mode为manual且qos_scale不为account时可选),
                 read_mbps: 读带宽限制Mbps (可选, 0~1073741824; 仅当qos_mode为manual且qos_scale不为account时可选),
-                write_mbps: 写带宽限制Mbps (可选, 0~1073741824; 仅当qos_mode为manual且qos_scale不为account时可选)
+                write_mbps: 写带宽限制Mbps (可选, 0~1073741824; 仅当qos_mode为manual且qos_scale不为account时可选),
              }
         private_network_qos_policy: 私网 QoS 策略配置。参数格式如下：{
-                        qos_switch: QoS 开关（必填），可选值：on、off
-                        name: QoS 策略名称（可选），1~63 个字符，正则 ^[a-zA-Z0-9][a-zA-Z0-9_-]*，只能以数字或字母开头
-                        qos_mode: QoS 模式（条件必选），可选值：by_usage（按已使用量）、by_package（按固定容量）、manual（按上限）；批量创建命名空间时为必选，修改时为非必选
-                        package_size: 包容量（可选），0~94371840（GB），当 qos_mode 为 by_package 时必选
-                        max_iops: IOPS 上限（条件必选），0~1073741824000，批量创建命名空间时为必选，修改时为非必选
-                        max_mbps: 带宽上限（可选），0~1073741824（Mbps），当 qos_mode 为 manual 时必选
-                        max_band_width: 最大带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选
-                        basic_band_width: 基础带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选
+                        qos_switch: QoS 开关（必填），可选值：on、off,
+                        name: QoS 策略名称（可选），1~63 个字符，正则 ^[a-zA-Z0-9][a-zA-Z0-9_-]*，只能以数字或字母开头,
+                        qos_mode: QoS 模式（条件必选），可选值：by_usage（按已使用量）、by_package（按固定容量）、manual（按上限）；批量创建命名空间时为必选，修改时为非必选,
+                        package_size: 包容量（可选），0~94371840（GB），当 qos_mode 为 by_package 时必选,
+                        max_iops: IOPS 上限（条件必选），0~1073741824000，批量创建命名空间时为必选，修改时为非必选,
+                        max_mbps: 带宽上限（可选），0~1073741824（Mbps），当 qos_mode 为 manual 时必选,
+                        max_band_width: 最大带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选,
+                        basic_band_width: 基础带宽（可选），1~1073741824（Mbps），当 qos_mode 为 by_usage 或 by_package 时必选,
                 bps_density: 带宽密度Mbps (可选, 1~1024000; 当qos_mode为by_usage或by_package时必选),
                 max_conn_cluster: 最大连接数 (可选),
                 max_lock_cluster: 最大锁数量 (可选),
@@ -2649,7 +2649,7 @@ def namespace_modify(client: DMEAPIClient, namespace_id: str,
                 read_ops: 读OPS限制 (可选, 0~1073741824000; 仅当qos_mode为manual且qos_scale不为account时可选),
                 write_ops: 写OPS限制 (可选, 0~1073741824000; 仅当qos_mode为manual且qos_scale不为account时可选),
                 read_mbps: 读带宽限制Mbps (可选, 0~1073741824; 仅当qos_mode为manual且qos_scale不为account时可选),
-                write_mbps: 写带宽限制Mbps (可选, 0~1073741824; 仅当qos_mode为manual且qos_scale不为account时可选)
+                write_mbps: 写带宽限制Mbps (可选, 0~1073741824; 仅当qos_mode为manual且qos_scale不为account时可选),
              }
         application_type: 应用类型，可选值：PACS（医疗影像场景）, GENERAL（通用场景）
         task_remarks: 异步任务备注信息

@@ -178,7 +178,7 @@ def lun_create(client: DMEAPIClient, storage_id: str, lun_specs: list = None,
                 usage_type: LUN使用类型。可选值：traditional (传统LUN), edev (eDevLUN),
                 write_policy: 回写策略。可选值：back (回写), through (透写),
                 remote_lun_raw_id: 外部LUN ID (0~255个字符; 当usage_type为edev时生效),
-                disguise_status: LUN伪装 (当usage_type为edev时生效)。可选值：nodisguise (不伪装), basic (基本伪装), expansion (扩展伪装), inheritance (继承伪装)
+                disguise_status: LUN伪装 (当usage_type为edev时生效)。可选值：nodisguise (不伪装), basic (基本伪装), expansion (扩展伪装), inheritance (继承伪装),
              }, ...]
         lun_specs_pass_through: 直通模式存储设备待创建 LUN 基本参数 (条件必传), List<lunSpecsPassThrough> 类型, 数组最大成员个数 24, 单次最多可创建 24 组; 与 lun_specs 互斥; 当存储设备模式为直通模式时必传。参数格式如下：[{
                 name: LUN名称 (1~247个字符, 支持字母数字-._和中文字符; 最终名称由LUN名称+后缀编码+'-'+硬盘位置组成),
@@ -186,7 +186,7 @@ def lun_create(client: DMEAPIClient, storage_id: str, lun_specs: list = None,
                 disk_location: 创建LUN的硬盘位置 (1~255个字符),
                 count: 每个硬盘创建的LUN数量 (1~8),
                 suffix_length: 后缀编码位数 (1~4, 默认4; 当count大于1时有效),
-                start_suffix: 后缀起始编码 (0~9999, 默认0; 当count大于1时有效)
+                start_suffix: 后缀起始编码 (0~9999, 默认0; 当count大于1时有效),
              }, ...]
         pool_id: 存储池 ID（条件必传），1~64 个字符；当存储设备模式不为直通模式时必传；通过查询指定资源类型的所有实例接口获取，存储池的资源类型名称为 SYS_StoragePool
         vstore_id: 租户 ID（可选），1~64 个字符；当设备为 OceanStor V300R006C00、OceanStor V500R007C00、OceanStor Dorado 6.1.3、OceanStor 6.1.3 及其以上版本时有效
@@ -206,9 +206,9 @@ def lun_create(client: DMEAPIClient, storage_id: str, lun_specs: list = None,
                         max_iops: 最大IOPS (1~999999999; 与min_bandwidth/min_iops互斥),
                         min_bandwidth: 最小带宽 (1~999999999Mbit/s; 与max_bandwidth/max_iops互斥),
                         min_iops: 最小IOPS (1~999999999; 与max_bandwidth/max_iops互斥),
-                        latency: 时延 (1~999999999ms; Dorado V6系列单位为us, 可选值为500/1500; 与max_bandwidth/max_iops互斥)
+                        latency: 时延 (1~999999999ms; Dorado V6系列单位为us, 可选值为500/1500; 与max_bandwidth/max_iops互斥),
                 },
-                workload_type_raw_id: 应用类型ID (0~4294967295; 通过查询指定存储设备上应用类型接口获取)
+                workload_type_raw_id: 应用类型ID (0~4294967295; 通过查询指定存储设备上应用类型接口获取),
              }
         mapping: 映射信息 (可选), LunMapping 对象, 存在即表示为主机或主机组创建 LUN。参数格式如下：{
                 host_id: 主机ID (1~64个字符; 与hostgroup_id二选其一, 不可同时存在),
@@ -220,7 +220,7 @@ def lun_create(client: DMEAPIClient, storage_id: str, lun_specs: list = None,
                         mapping_view_name: 映射视图在存储设备上的名称 (1~31个字符),
                         lun_group_raw_id: LUN组在存储设备上的ID (1~31个字符),
                         lun_group_name: LUN组在存储设备上的名称 (1~255个字符),
-                        port_group_raw_id: 端口组在存储设备上的ID (1~31个字符; 主机或主机组不存在映射关系时可指定, 存在映射关系时不可指定)
+                        port_group_raw_id: 端口组在存储设备上的ID (1~31个字符; 主机或主机组不存在映射关系时可指定, 存在映射关系时不可指定),
                 },
              }
         task_remarks: 异步任务备注信息（可选），最多 1024 个字符
@@ -311,7 +311,7 @@ def lun_modify(client: DMEAPIClient, volume_id: str, name: str = None,
                         miniops: 最小iops (可选, 0~2147483647; 支持Dorado V6/V3/V5; 用于V3/V5系列时与maxbandwidth/maxiops互斥),
                         control_policy: 控制策略 (可选)。可选值：0 (保护IO下限), 1 (控制IO上限),
                         latency: 时延ms或us (可选, 0~2147483647; 需根据不同存储设备指定; 仅保护下限支持),
-                        enabled: 是否启用smartqos (可选)。可选值：true, false
+                        enabled: 是否启用smartqos (可选)。可选值：true, false,
                 }
              }
         task_remarks: 异步任务备注信息（可选，最多 1024 个字符）
@@ -354,7 +354,7 @@ def lun_modify_name(client: DMEAPIClient, volumes: list) -> dict:
         client: DME API 客户端
         volumes: 待修改的 LUN 信息列表 (数组最大成员个数: 1000)。参数格式如下：[{
                 volume_id: LUN唯一标识 (1~64个字符),
-                name: LUN新名称 (1~255个字符, 支持字母数字._-和中文字符)
+                name: LUN新名称 (1~255个字符, 支持字母数字._-和中文字符),
              }, ...]
 
     Returns:
@@ -378,7 +378,7 @@ def lun_expand(client: DMEAPIClient, volumes: list, task_remarks: str = None) ->
         client: DME API 客户端
         volumes: 需要扩容的 LUN 信息列表 (数组最大成员个数: 1000)。参数格式如下：[{
                 volume_id: LUN唯一标识 (必选, 1~64个字符),
-                added_capacity: 扩容容量GB (必选, 1~262144)
+                added_capacity: 扩容容量GB (必选, 1~262144),
              }, ...]
         task_remarks: 异步任务备注信息（可选，最多 1024 个字符）
 
@@ -538,7 +538,7 @@ def lun_group_create(client: DMEAPIClient, storage_id: str, name: str,
                         capacity: 该规格LUN容量GB (必选, 1~262144),
                         suffix_length: LUN命名后缀规则 (可选, 0~4; 名称长度+后缀长度<=255),
                         start_suffix: 该规格LUN起始后缀编号 (可选, 0~9999),
-                        start_lun_id: 该规格起始LUN ID (可选, 0~65535)
+                        start_lun_id: 该规格起始LUN ID (可选, 0~65535),
                      }, ...],
                 lun_specs_pass_through: lunSpecsPassThrough列表 (可选, 与volume_specs互斥, 数组最大成员个数: 24; 当存储设备模式为直通模式时必传)。参数格式如下：[{
                         name: LUN名称 (必选, 1~247个字符, 支持字母数字-._和中文字符; 最终名称由LUN名称+后缀编码+硬盘位置组成),
@@ -546,7 +546,7 @@ def lun_group_create(client: DMEAPIClient, storage_id: str, name: str,
                         disk_location: 创建LUN的硬盘位置 (必选, 1~255个字符),
                         count: 每个硬盘创建的LUN数量 (必选, 1~8),
                         suffix_length: 后缀编码位数 (可选, 1~4, 默认4; count>1时有效),
-                        start_suffix: 后缀起始编码 (可选, 0~9999, 默认0; count>1时有效)
+                        start_suffix: 后缀起始编码 (可选, 0~9999, 默认0; count>1时有效),
                      }, ...],
                 pool_raw_id: 存储池在存储设备上的id (可选, 1~64个字符; 设备模式不为直通模式时必传),
                 availability_zone: 可用分区id (可选, 0~64个字符),
@@ -556,10 +556,10 @@ def lun_group_create(client: DMEAPIClient, storage_id: str, name: str,
                 prefetch_value: 预取策略值 (可选, 0~1024; 固定预取0~1024KB, 可变预取0~1024倍),
                 tuning: CustomizeVolumeTuning对象 (可选)。属性格式如下：{
                         smartqos: SmartQos对象 (可选)。属性格式如下：{
-                                name: Smart QoS名称 (可选, 1~255个字符)
+                                name: Smart QoS名称 (可选, 1~255个字符),
                         },
                         alloctype: LUN分配类型 (可选)。可选值：thin, thick,
-                        workload_type_id: 应用类型id (可选, 从存储设备上获取)
+                        workload_type_id: 应用类型id (可选, 从存储设备上获取),
                 }
              }
         task_remarks: 异步任务备注信息 (可选, 最多1024个字符)
@@ -567,20 +567,20 @@ def lun_group_create(client: DMEAPIClient, storage_id: str, name: str,
         zoning_info: ZoningParam对象 (可选)。参数格式如下：{
                 zone_policy_id: zone策略id (可选, 0~64个字符; 指定则自动划zone),
                 target_fcports: 端口wwn列表 (可选, 与target_fcportgroups二选其一, 数组最大成员个数: 1000; 当mapping_view中port_group_id为空时生效),
-                target_fcportgroups: 端口组id列表 (可选, 与target_fcports二选其一, 数组最大成员个数: 1000; 当mapping_view中port_group_id为空时生效)
+                target_fcportgroups: 端口组id列表 (可选, 与target_fcports二选其一, 数组最大成员个数: 1000; 当mapping_view中port_group_id为空时生效),
              }
         mapping_view: MappingViewRequestParam对象 (可选)。参数格式如下：{
                 mapping_view_name: 映射视图在设备上的名字 (可选, 最多31个字符),
                 mapping_host_info: MappingHostInfo对象 (可选, 与mapping_host_group_info二选其一)。属性格式如下：{
                         todo_host_name: todo任务中的主机名称 (可选, 1~255个字符, 支持字母数字._-和中文字符),
-                        id: 主机ID (可选, 1~64个字符)
+                        id: 主机ID (可选, 1~64个字符),
                 },
                 mapping_host_group_info: MappingHostGroupInfo对象 (可选, 与mapping_host_info二选其一)。属性格式如下：{
                         todo_host_group_name: todo任务中的主机组名称 (可选, 1~255个字符, 支持字母数字._-和中文字符),
-                        id: 主机组ID (可选, 1~64个字符)
+                        id: 主机组ID (可选, 1~64个字符),
                 },
                 port_group_id: 端口组在设备上的ID (可选, 1~31个字符),
-                start_host_lun_id: 起始HostLunID (可选, 0~2147483647)
+                start_host_lun_id: 起始HostLunID (可选, 0~2147483647),
              }
 
     Returns:
@@ -651,7 +651,7 @@ def lun_group_add_luns(client: DMEAPIClient, group_id: str,
         client: DME API 客户端
         group_id: LUN 组 ID
         existing_lun_ids: 已有LUN集合 (可选, 与customize_volumes互斥, 数组最大成员个数: 1000)。参数格式如下：[{
-                lun_id: 已有LUN ID (必选, 1~64个字符)
+                lun_id: 已有LUN ID (必选, 1~64个字符),
              }, ...]
         customize_volumes: CustomizeVolumesParam对象 (可选, 与existing_lun_ids互斥)。参数格式如下：{
                 volume_specs: VolumeSpecsParam列表 (可选, 与lun_specs_pass_through互斥, 数组最大成员个数: 1000)。参数格式如下：[{
@@ -661,7 +661,7 @@ def lun_group_add_luns(client: DMEAPIClient, group_id: str,
                         capacity: 该规格LUN容量GB (必选, 1~262144),
                         suffix_length: LUN命名后缀规则 (可选, 0~4; 名称长度+后缀长度<=255),
                         start_suffix: 该规格LUN起始后缀编号 (可选, 0~9999),
-                        start_lun_id: 该规格起始LUN ID (可选, 0~65535)
+                        start_lun_id: 该规格起始LUN ID (可选, 0~65535),
                      }, ...],
                 lun_specs_pass_through: lunSpecsPassThrough列表 (可选, 与volume_specs互斥, 数组最大成员个数: 24; 直通模式时必传)。参数格式如下：[{
                         name: LUN名称 (必选, 1~247个字符, 支持字母数字-._和中文字符; 最终名称由LUN名称+后缀编码+硬盘位置组成),
@@ -669,7 +669,7 @@ def lun_group_add_luns(client: DMEAPIClient, group_id: str,
                         disk_location: 创建LUN的硬盘位置 (必选, 1~255个字符),
                         count: 每个硬盘创建的LUN数量 (必选, 1~8),
                         suffix_length: 后缀编码位数 (可选, 1~4, 默认4; count>1时有效),
-                        start_suffix: 后缀起始编码 (可选, 0~9999, 默认0; count>1时有效)
+                        start_suffix: 后缀起始编码 (可选, 0~9999, 默认0; count>1时有效),
                      }, ...],
                 pool_raw_id: 存储池在存储设备上的id (可选, 1~64个字符; 设备模式不为直通模式时必传),
                 availability_zone: 可用分区id (可选, 0~64个字符),
@@ -679,15 +679,15 @@ def lun_group_add_luns(client: DMEAPIClient, group_id: str,
                 prefetch_value: 预取策略值 (可选, 0~1024; 固定预取0~1024KB, 可变预取0~1024倍),
                 tuning: CustomizeVolumeTuning对象 (可选)。属性格式如下：{
                         smartqos: SmartQos对象 (可选)。属性格式如下：{
-                                name: Smart QoS名称 (可选, 1~255个字符)
+                                name: Smart QoS名称 (可选, 1~255个字符),
                         },
                         alloctype: LUN分配类型 (可选)。可选值：thin, thick,
-                        workload_type_id: 应用类型id (可选)
+                        workload_type_id: 应用类型id (可选),
                 }
              }
         host_lun_id_infos: HostLunIdInfo列表 (可选, 数组最大成员个数: 1000; 仅Dorado V6/V7和OceanStor V6/V7设备支持)。参数格式如下：[{
                 host_lun_id: LUN指定的主机LUN ID (必选, 0~4095),
-                lun_id: 加入LUN组的LUN ID (必选, 1~64个字符)
+                lun_id: 加入LUN组的LUN ID (必选, 1~64个字符),
              }, ...]
         host_lun_id_verify: 是否进行双活主机LUN ID一致性校验 (可选, 默认false)。可选值：true (不校验), false (校验)
         task_remarks: 异步任务备注信息 (可选, 最多1024个字符)
@@ -812,21 +812,21 @@ def mapping_view_create(
         start_host_lun_id: 主机LUN SCSI ID起始值 (可选, 0~2147483647)
         host: 存储主机 (可选, 与vbs/host_group互斥)。属性格式如下：{
                 todo_host_name: todo任务中的主机名称 (可选, 1~255个字符, 支持字母数字._-和中文字符),
-                id: 主机ID (可选, 1~64个字符)
+                id: 主机ID (可选, 1~64个字符),
              }
         vbs: VBS客户端 (可选, 与host/host_group互斥; 仅OceanStor Pacific和FusionStorage支持)。属性格式如下：{
-                id: VBS ID (可选, 1~64个字符)
+                id: VBS ID (可选, 1~64个字符),
              }
         host_group: 存储主机组 (可选, 与host/vbs互斥)。属性格式如下：{
                 todo_host_group_name: todo任务中的主机组名称 (可选, 1~255个字符, 支持字母数字._-和中文字符),
-                id: 主机组ID (可选, 1~64个字符)
+                id: 主机组ID (可选, 1~64个字符),
              }
         lun_group: 待映射的LUN组 (可选, 与luns互斥)。属性格式如下：{
-                id: LUN组ID (可选, 1~64个字符)
+                id: LUN组ID (可选, 1~64个字符),
              }
         luns: 待映射的LUN信息 (可选, 与lun_group互斥)。属性格式如下：{
                 ids: 待映射的LUN ID列表 (可选, 数组最大成员个数: 1000),
-                lungroup_name: LUN组名称 (可选, 1~255个字符; lun映射时需创建指定名称lun组时下发)
+                lungroup_name: LUN组名称 (可选, 1~255个字符; lun映射时需创建指定名称lun组时下发),
              }
         task_remarks: 异步任务备注信息 (可选, 最多1024个字符)
 
@@ -1145,13 +1145,13 @@ def storage_host_create(client: DMEAPIClient, storage_id: str,
                 initiators: StorageInitiatorParam列表 (可选, 数组最大成员个数: 1000)。参数格式如下：[{
                         protocol: 启动器类型 (必选)。可选值：fc, iscsi, nvme_over_roce,
                         raw_id: 主机启动器wwpn或iqn或nqn (必选, 1~223个字符),
-                        alias: 启动器别名 (可选, 最多31个字符)
+                        alias: 启动器别名 (可选, 最多31个字符),
                      }, ...],
                 multipath: MultiPathForCreateRequestParam对象 (可选)。属性格式如下：{
                         multipath_type: 第三方多路径策略 (必选)。可选值：default (默认), third_party (第三方多路径),
                         path_type: 启动器路径类型 (可选, 开启第三方多路径时有效)。可选值：optimal_path (优选路径), non_optimal_path (非优选路径),
                         failover_mode: 启动器切换模式 (可选, 开启第三方多路径时有效)。可选值：early_version_alua, common_alua, alua_not_used, special_alua,
-                        special_mode_type: 特殊模式类型 (可选, 切换模式为特殊模式时有效)。可选值：mode_zero, mode_one, mode_two, mode_three
+                        special_mode_type: 特殊模式类型 (可选, 切换模式为特殊模式时有效)。可选值：mode_zero, mode_one, mode_two, mode_three,
                 }
              }
         task_remarks: 异步任务备注信息 (可选, 最多1024个字符)
@@ -1306,14 +1306,14 @@ def storage_host_modify(client: DMEAPIClient, storage_host_id: str,
         add_initiators: StorageInitiatorParam列表 (可选, 数组最大成员个数: 1000)。参数格式如下：[{
                 protocol: 启动器类型 (必选)。可选值：fc, iscsi, nvme_over_roce,
                 raw_id: 主机启动器wwpn或iqn或nqn (必选, 1~223个字符),
-                alias: 启动器别名 (可选, 最多31个字符)
+                alias: 启动器别名 (可选, 最多31个字符),
              }, ...]
         remove_initiators: 移除的启动器id列表 (可选, 数组最大成员个数: 1000)
         multipath: MultiPathForCreateRequestParam对象 (可选)。属性格式如下：{
                 multipath_type: 第三方多路径策略 (必选)。可选值：default (默认), third_party (第三方多路径),
                 path_type: 启动器路径类型 (可选, 开启第三方多路径时有效)。可选值：optimal_path (优选路径), non_optimal_path (非优选路径),
                 failover_mode: 启动器切换模式 (可选, 开启第三方多路径时有效)。可选值：early_version_alua, common_alua, alua_not_used, special_alua,
-                special_mode_type: 特殊模式类型 (可选, 切换模式为特殊模式时有效)。可选值：mode_zero, mode_one, mode_two, mode_three
+                special_mode_type: 特殊模式类型 (可选, 切换模式为特殊模式时有效)。可选值：mode_zero, mode_one, mode_two, mode_three,
              }
         access_mode: 主机访问模式 (可选, 仅Dorado V6及以后产品)。可选值：balanced (均衡模式), asymmetric (非对称模式)
         hyper_metro_path_optimized: 双活优选路径 (可选, 仅Dorado V6及以后产品)。可选值：true, false
@@ -1447,13 +1447,13 @@ def storage_host_group_create(client: DMEAPIClient, storage_id: str, name: str,
                 initiators: 启动器列表 (可选, 数组最大成员个数: 1000)。参数格式如下：[{
                         protocol: 启动器类型 (必选)。可选值：fc, iscsi, nvme_over_roce,
                         raw_id: 主机启动器wwpn或iqn或nqn (必选, 1~223个字符),
-                        alias: 启动器别名 (可选, 最多31个字符)
+                        alias: 启动器别名 (可选, 最多31个字符),
                      }, ...],
                 multipath: 多路径配置 (可选)。属性格式如下：{
                         multipath_type: 第三方多路径策略 (必选)。可选值：default (默认), third_party (第三方多路径),
                         path_type: 启动器路径类型 (可选, 开启第三方多路径时有效)。可选值：optimal_path (优选路径), non_optimal_path (非优选路径),
                         failover_mode: 启动器切换模式 (可选, 开启第三方多路径时有效)。可选值：early_version_alua, common_alua, alua_not_used, special_alua,
-                        special_mode_type: 特殊模式类型 (可选, 切换模式为特殊模式时有效)。可选值：mode_zero, mode_one, mode_two, mode_three
+                        special_mode_type: 特殊模式类型 (可选, 切换模式为特殊模式时有效)。可选值：mode_zero, mode_one, mode_two, mode_three,
                 }
              }, ...]
         task_remarks: 异步任务备注信息 (可选, 最多1024个字符)
@@ -1568,13 +1568,13 @@ def storage_host_group_add_hosts(client: DMEAPIClient, storage_host_group_id: st
                 initiators: 启动器列表 (可选, 数组最大成员个数: 1000)。参数格式如下：[{
                         protocol: 启动器类型 (必选)。可选值：fc, iscsi, nvme_over_roce,
                         raw_id: 主机启动器wwpn或iqn或nqn (必选, 1~223个字符),
-                        alias: 启动器别名 (可选, 最多31个字符)
+                        alias: 启动器别名 (可选, 最多31个字符),
                      }, ...],
                 multipath: 多路径配置 (可选)。属性格式如下：{
                         multipath_type: 第三方多路径策略 (必选)。可选值：default (默认), third_party (第三方多路径),
                         path_type: 启动器路径类型 (可选, 开启第三方多路径时有效)。可选值：optimal_path (优选路径), non_optimal_path (非优选路径),
                         failover_mode: 启动器切换模式 (可选, 开启第三方多路径时有效)。可选值：early_version_alua, common_alua, alua_not_used, special_alua,
-                        special_mode_type: 特殊模式类型 (可选, 切换模式为特殊模式时有效)。可选值：mode_zero, mode_one, mode_two, mode_three
+                        special_mode_type: 特殊模式类型 (可选, 切换模式为特殊模式时有效)。可选值：mode_zero, mode_one, mode_two, mode_three,
                 }
              }, ...]
         task_remarks: 异步任务备注信息 (可选, 最多1024个字符)
@@ -1977,7 +1977,7 @@ def physical_host_create(client: DMEAPIClient, access_mode: str, type: str,
         description: 物理主机描述信息 (可选, 0~63个字符)
         initiator: 物理主机启动器列表 (NONE模式必填)。参数格式如下：[{
                 protocol: 启动器类型 (必选)。可选值：FC, ISCSI, NVME_OVER_ROCE,
-                port_name: 主机启动器wwn或iqn (必选, 1~223个字符)
+                port_name: 主机启动器wwn或iqn (必选, 1~223个字符),
              }, ...]
         azs: 可用分区ID列表 (可选, 数组最大成员个数: 40)
         project_id: 业务群组ID (可选, 1~64个字符)
@@ -2170,7 +2170,7 @@ def physical_host_add_initiators(client: DMEAPIClient, host_id: str,
         host_id: 物理主机 ID (必选)
         initiators: 启动器列表 (必选, 数组最大成员个数: 100)。参数格式如下：[{
                 protocol: 启动器类型 (必选)。可选值：FC (WWPN格式, 16字符十六进制), ISCSI, NVME_OVER_ROCE,
-                port_name: 主机启动器wwn或iqn (必选, 1~223个字符)
+                port_name: 主机启动器wwn或iqn (必选, 1~223个字符),
              }, ...]
 
     Returns:
@@ -2398,7 +2398,7 @@ def physical_host_map_luns(client: DMEAPIClient, volume_ids: list, host_id: str,
                         mapping_view_name: 映射视图在设备上的名字 (可选, 最多31个字符),
                         lun_group_id: LUN组在设备上的ID (可选, 最多31个字符),
                         lun_group_name: LUN组在设备上的名称 (可选, 最多255个字符),
-                        port_group_id: 端口组在设备上的ID (可选, 最多31个字符)
+                        port_group_id: 端口组在设备上的ID (可选, 最多31个字符),
                 }
              }, ...]
         task_remarks: 异步任务备注信息 (可选, 最多1024个字符)
@@ -2779,7 +2779,7 @@ def physical_host_group_map_luns(client: DMEAPIClient, volume_ids: list, hostgro
                         mapping_view_name: 映射视图在设备上的名字 (可选, 最多31个字符),
                         lun_group_id: LUN组在设备上的ID (可选, 最多31个字符),
                         lun_group_name: LUN组在设备上的名称 (可选, 最多255个字符),
-                        port_group_id: 端口组在设备上的ID (可选, 最多31个字符)
+                        port_group_id: 端口组在设备上的ID (可选, 最多31个字符),
                 }
              }, ...]
         task_remarks: 异步任务备注信息 (可选, 最多1024个字符)

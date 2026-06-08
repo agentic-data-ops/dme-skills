@@ -30,7 +30,7 @@ def lun_create(client: DMEAPIClient, volumes: list,
                 count: 创建数量 (1~500),
                 description: 描述 (0~255个字符),
                 start_suffix: 起始后缀编号 (0~9999),
-                suffix_length: 后缀长度规则 (1~4, 名称长度+后缀长度<=255)
+                suffix_length: 后缀长度规则 (1~4, 名称长度+后缀长度<=255),
              }, ...]
         service_level_id: 服务等级 ID（必填，0~64 个字符）
         task_remarks: 异步任务备注信息（可选，最多 1024 个字符）
@@ -38,11 +38,11 @@ def lun_create(client: DMEAPIClient, volumes: list,
         availability_zone: 可用分区 ID（可选，0~64 个字符）
         scheduler_hints: 调度策略 (可选, SchedulerHints 对象)。参数格式如下：{
                 affinity: 是否开启亲和性。可选值：true (开启), false (不开启)。默认不开启,
-                affinity_volume: 待亲和的 LUN ID (可选, 0~64个字符)
+                affinity_volume: 待亲和的 LUN ID (可选, 0~64个字符),
              }
         mapping: 映射信息 (可选, ServiceVolumeMapping 对象, 存在即表示为主机或主机组创建 LUN)。参数格式如下：{
                 host_id: 主机ID (可选, 0~64个字符, 与hostgroup_id二选其一),
-                hostgroup_id: 主机组ID (可选, 0~64个字符, 与host_id二选其一)
+                hostgroup_id: 主机组ID (可选, 0~64个字符, 与host_id二选其一),
              }
 
     Returns:
