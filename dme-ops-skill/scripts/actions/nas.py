@@ -382,16 +382,17 @@ def dtree_modify(client: DMEAPIClient, dtree_id: str, name: str = None,
 
 def nfs_share_list(client: DMEAPIClient, id_in_storage: str = None, name: str = None,
                    share_path: str = None, exact_share_path: str = None,
-                   device_name: str = None, storage_id: str = None,
-                   tier_name: str = None, owning_dtree_name: str = None,
-                   fs_name: str = None, fs_id: str = None,
-                   owning_dtree_id: str = None, vstore_name: str = None,
-                   page_no: int = 1, page_size: int = 20, sort_key: str = None,
+                   device_name: str = None, manufacturer: str = None,
+                   storage_id: str = None, tier_name: str = None,
+                   owning_dtree_name: str = None, fs_name: str = None,
+                   fs_id: str = None, owning_dtree_id: str = None,
+                   vstore_name: str = None, page_no: int = 1,
+                   page_size: int = 20, sort_key: str = None,
                    sort_dir: str = None, support_provisioning: bool = None,
                    namespace_id: str = None, namespace_name: str = None,
                    dc_id: str = None, dc_name: str = None,
                    zone_id: str = None, zone_name: str = None,
-                   zone_ip: str = None) -> dict:
+                   zone_ip: str = None, scope: str = None) -> dict:
     """
     查询 NFS 共享列表
 
@@ -399,30 +400,32 @@ def nfs_share_list(client: DMEAPIClient, id_in_storage: str = None, name: str = 
 
     Args:
         client: DME API 客户端
-        id_in_storage: NFS 在存储侧的 ID
-        name: 共享名称，支持模糊搜索
-        share_path: 共享路径，支持模糊搜索
-        exact_share_path: 精确搜索 NFS 共享路径
-        device_name: 所属存储设备名称，支持模糊搜索
-        storage_id: 所属存储设备 ID，支持过滤
-        tier_name: 服务等级名称，支持模糊搜索
-        owning_dtree_name: 所属 Dtree 名称，支持模糊搜索
-        fs_name: 文件系统名称，支持模糊搜索
-        fs_id: 文件系统 ID
-        owning_dtree_id: 所属 Dtree Id，支持过滤
-        vstore_name: NFS 共享所属 vStore 名称，支持模糊查询
-        page_no: 分页查询页码，默认 1
-        page_size: 每页显示的数量，默认 20
-        sort_key: 按照指定字段排序，可选值：name, id_in_storage
-        sort_dir: 指定排序方向，asc 或 desc，默认 asc
-        support_provisioning: 是否支持业务发放
-        namespace_id: 命名空间 ID（仅 OceanStor Pacific 系列支持）
-        namespace_name: 命名空间名称（仅 OceanStor Pacific 系列支持）
-        dc_id: 数据中心 ID
-        dc_name: 数据中心名称
-        zone_id: NFS 共享所属 zone ID
-        zone_name: NFS 共享所属 zone 名称，支持模糊搜索
-        zone_ip: NFS 共享所属 zone 管理 IP
+        id_in_storage: NFS 在存储侧的 ID（可选），1~256 个字符
+        name: 共享名称（可选），1~256 个字符，支持模糊搜索
+        share_path: 共享路径（可选），1~256 个字符，支持模糊搜索
+        exact_share_path: 精确搜索 NFS 共享路径（可选），1~1024 个字符；当 share_path 和 exact_share_path 都有值时优先选择 exact_share_path
+        device_name: 所属存储设备名称（可选），1~256 个字符，支持模糊搜索
+        manufacturer: 所属存储设备厂商（可选），可选值：huawei（华为）、third_part（第三方）
+        storage_id: 所属存储设备 ID（可选），1~64 个字符，支持过滤
+        tier_name: 服务等级名称（可选），1~256 个字符，支持模糊搜索
+        owning_dtree_name: 所属 Dtree 名称（可选），1~256 个字符，支持模糊搜索
+        fs_name: 文件系统名称（可选），1~256 个字符，支持模糊搜索
+        fs_id: 文件系统 ID（可选），1~64 个字符
+        owning_dtree_id: 所属 Dtree Id（可选），1~256 个字符，支持过滤
+        vstore_name: NFS 共享所属 vStore 名称（可选），1~256 个字符，支持模糊查询
+        page_no: 分页查询页码（可选），最小值 1，默认 1
+        page_size: 每页显示的数量（可选），1~1000，默认 20
+        sort_key: 排序字段（可选），可选值：name、id_in_storage；指定 id_in_storage 排序时仅支持 ID 为数字的对象
+        sort_dir: 排序方向（可选），可选值：asc（升序）、desc（降序），默认 asc
+        support_provisioning: 是否支持业务发放（可选），true：是；false：否；下发此字段可过滤不支持业务发放设备的资源，当前不支持业务发放的设备有 OceanStor Pacific 系列
+        namespace_id: 命名空间 ID（可选），1~64 个字符，仅 OceanStor Pacific 系列存储设备支持
+        namespace_name: 命名空间名称（可选），1~256 个字符，支持模糊查询，仅 OceanStor Pacific 系列存储设备支持
+        dc_id: 数据中心 ID（可选），1~128 个字符，正则 ^[_A-Fa-f0-9\-]+$
+        dc_name: 数据中心名称（可选），1~256 个字符
+        zone_id: NFS 共享所属 zone ID（可选），1~64 个字符
+        zone_name: NFS 共享所属 zone 名称（可选），1~256 个字符，支持模糊搜索
+        zone_ip: NFS 共享所属 zone 管理 IP（可选），0~255 个字符
+        scope: 资源所属范围（可选），可选值：local_scale（本地）、global_scale（全局）
 
     Returns:
         NFS 共享列表
@@ -441,6 +444,8 @@ def nfs_share_list(client: DMEAPIClient, id_in_storage: str = None, name: str = 
         payload['exact_share_path'] = exact_share_path
     if device_name is not None:
         payload['device_name'] = device_name
+    if manufacturer is not None:
+        payload['manufacturer'] = manufacturer
     if storage_id is not None:
         payload['storage_id'] = storage_id
     if tier_name is not None:
@@ -479,6 +484,8 @@ def nfs_share_list(client: DMEAPIClient, id_in_storage: str = None, name: str = 
         payload['zone_name'] = zone_name
     if zone_ip is not None:
         payload['zone_ip'] = zone_ip
+    if scope is not None:
+        payload['scope'] = scope
 
     response = client.post(url, json=payload)
     return response
