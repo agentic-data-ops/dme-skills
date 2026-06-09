@@ -2778,7 +2778,714 @@ def nfs_share_show_clients(client: DMEAPIClient, page_no: int = 1, page_size: in
     return response
 
 
+def account_dataturbo_admin_list(client: DMEAPIClient, storage_id: str = None, vstore_id: str = None,
+                   vstore_name: str = None, zone_id: str = None, name: str = None,
+                   online_status: str = None, lock_status: str = None,
+                   account_state: str = None, sort_key: str = None,
+                   sort_dir: str = None, page_no: int = 1,
+                   page_size: int = 20) -> dict:
+    """
+    批量查询 DataTurbo 管理员
+
+    仅 OceanStor A800 系列存储支持。
+
+    Args:
+        client: DME API 客户端
+        storage_id: 设备 ID (1~64个字符, 可选)
+        vstore_id: 租户的 ID (1~64个字符, 可选)
+        vstore_name: 租户的名称，支持模糊查询 (1~256个字符, 可选)
+        zone_id: 所属 zone 的 ID (1~64个字符, 可选)。当资源所属范围为全局时，Zone ID 为所属设备的 Id；当资源所属范围为本地时，Zone ID 为所属 Zone 的 ID。仅 OceanStor A800 系列存储支持
+        name: DataTurbo 管理员名，支持模糊查询 (1~256个字符, 可选)
+        online_status: DataTurbo 管理员在线状态 (可选)。可选值：offline (离线), online (在线)
+        lock_status: DataTurbo 管理员锁定状态 (可选)。可选值：unlocked (未锁定), locked (锁定)
+        account_state: DataTurbo 管理员密码状态 (可选)。可选值：normal (正常), expired (密码过期), initial (用户密码处于初始化状态，需要修改), expiring_soon (密码即将到期), change_required (下一次登录必须修改密码), never (密码永不过期)
+        sort_key: 按照指定字段排序 (可选)。可选值：create_time
+        sort_dir: 指定排序方向 (可选)。可选值：asc (升序), desc (降序)
+        page_no: 分页查询的起始页码 (int32, 最小值: 1, 默认值: 1, 可选)
+        page_size: 单页显示的数量 (int32, 最小值: 1, 最大值: 1000, 默认值: 20, 可选)
+
+    Returns:
+        DataTurbo 管理员列表，包含 total 和 administrators
+    """
+    url = "/rest/fileservice/v1/dpc-administrators/query"
+
+    payload = {
+        'page_no': page_no,
+        'page_size': page_size
+    }
+
+    if storage_id is not None:
+        payload['storage_id'] = storage_id
+    if vstore_id is not None:
+        payload['vstore_id'] = vstore_id
+    if vstore_name is not None:
+        payload['vstore_name'] = vstore_name
+    if zone_id is not None:
+        payload['zone_id'] = zone_id
+    if name is not None:
+        payload['name'] = name
+    if online_status is not None:
+        payload['online_status'] = online_status
+    if lock_status is not None:
+        payload['lock_status'] = lock_status
+    if account_state is not None:
+        payload['account_state'] = account_state
+    if sort_key is not None:
+        payload['sort_key'] = sort_key
+    if sort_dir is not None:
+        payload['sort_dir'] = sort_dir
+
+    response = client.post(url, json=payload)
+    return response
+
+
+def account_unix_user_modify(client: DMEAPIClient, id: str, raw_id: int = None,
+                              description: str = None, primary_group_name: str = None,
+                              primary_group_raw_id: int = None,
+                              status_enable: bool = None) -> dict:
+    """
+    修改 UNIX 用户
+
+    Args:
+        client: DME API 客户端
+        id: UNIX 用户 ID (1~32个字符, 必填)
+        raw_id: UNIX 用户在存储设备上的 ID (int64, 0~4294967294, 可选)
+        description: UNIX 用户描述 (0~255个字符, 可选)
+        primary_group_name: 用户主组名称 (1~64个字符, 可选。与 primary_group_raw_id 都下发仅 primary_group_raw_id 生效)
+        primary_group_raw_id: 用户主组 ID (int64, 0~4294967294, 可选。与 primary_group_name 都下发仅 primary_group_raw_id 生效)
+        status_enable: 用户状态 (boolean, 可选)。可选值：true (启用), false (锁定)。仅 OceanStor Pacific 和 OceanStor A310 系列存储支持
+
+    Returns:
+        修改结果
+    """
+    url = f"/rest/fileservice/v1/unix-users/{id}"
+
+    payload = {}
+
+    if raw_id is not None:
+        payload['raw_id'] = raw_id
+    if description is not None:
+        payload['description'] = description
+    if primary_group_name is not None:
+        payload['primary_group_name'] = primary_group_name
+    if primary_group_raw_id is not None:
+        payload['primary_group_raw_id'] = primary_group_raw_id
+    if status_enable is not None:
+        payload['status_enable'] = status_enable
+
+    response = client.put(url, json=payload)
+    return response
+
+
+def account_unix_user_group_create(client: DMEAPIClient, storage_id: str, name: str,
+                                    vstore_raw_id: str, raw_id: int = None,
+                                    description: str = None,
+                                    zone_id: str = None) -> dict:
+    """
+    创建 UNIX 用户组
+
+    Args:
+        client: DME API 客户端
+        storage_id: 创建 UNIX 用户组所属存储设备 ID (1~64个字符, 必填)
+        name: UNIX 用户组名称 (1~64个字符, 必填)
+        raw_id: UNIX 用户组 ID (int64, 0~4294967294, 可选。OceanStor Pacific 和 OceanStor A310 存储必填)
+        description: UNIX 用户组描述 (0~255个字符, 可选)
+        vstore_raw_id: 用户所属租户在存储设备上的 ID (1~32个字符, 必填)
+        zone_id: 所属 Zone ID (1~64个字符, 可选。仅 OceanStor A800 存储支持)
+
+    Returns:
+        创建结果
+    """
+    url = "/rest/fileservice/v1/unix-user-groups"
+
+    payload = {
+        'storage_id': storage_id,
+        'name': name,
+        'vstore_raw_id': vstore_raw_id,
+    }
+
+    if raw_id is not None:
+        payload['raw_id'] = raw_id
+    if description is not None:
+        payload['description'] = description
+    if zone_id is not None:
+        payload['zone_id'] = zone_id
+
+    response = client.post(url, json=payload)
+    return response
+
+
+def account_unix_user_batch_delete(client: DMEAPIClient, ids: list) -> dict:
+    """
+    删除 UNIX 用户
+
+    Args:
+        client: DME API 客户端
+        ids: UNIX 用户 ID 列表 (List<string>, 数组最小成员个数: 1, 数组最大成员个数: 100, 必填)
+
+    Returns:
+        操作结果
+    """
+    url = "/rest/fileservice/v1/unix-users/delete"
+
+    payload = {
+        'ids': ids,
+    }
+
+    response = client.post(url, json=payload)
+    return response
+
+
+def account_unix_user_group_list(client: DMEAPIClient, storage_id: str = None,
+                                   storage_name: str = None,
+                                   vstore_raw_id: str = None,
+                                   vstore_name: str = None, name: str = None,
+                                   raw_id: str = None, zone_id: str = None,
+                                   sort_key: str = None, sort_dir: str = None,
+                                   page_no: int = 1,
+                                   page_size: int = 100) -> dict:
+    """
+    查询 UNIX 认证用户组列表
+
+    Args:
+        client: DME API 客户端
+        page_no: 分页查询的起始位置 (int32, 1~2147483647, 默认值: 1, 可选)
+        page_size: 每页显示的数量 (int32, 10~100, 默认值: 100, 可选)
+        storage_name: 设备名称，支持模糊匹配过滤 (1~256个字符, 可选)
+        vstore_raw_id: 所属租户在存储设备上的 ID (1~64个字符, 可选)
+        vstore_name: 所属租户名称，支持模糊搜索过滤 (1~256个字符, 可选)
+        name: 用户组名称，支持模糊搜索过滤 (1~256个字符, 可选)
+        raw_id: 用户组在存储设备上的 ID (1~256个字符, 可选)
+        zone_id: Zone ID (1~64个字符, 可选)。仅 OceanStor A800 存储下的认证用户组支持通过该字段过滤
+        sort_key: 按照指定字段排序 (可选)。可选值：name (用户组名), raw_id (用户组在存储设备上的 ID), create_time (创建时间)。默认值：create_time
+        storage_id: 存储设备 ID (1~36个字符, 可选)
+        sort_dir: 指定排序方向 (可选)。可选值：asc (升序), desc (降序)。默认值：desc
+
+    Returns:
+        UNIX 认证用户组列表
+    """
+    url = "/rest/fileservice/v1/unix-user-groups/query"
+
+    payload = {
+        'page_no': page_no,
+        'page_size': page_size,
+    }
+
+    if storage_name is not None:
+        payload['storage_name'] = storage_name
+    if vstore_raw_id is not None:
+        payload['vstore_raw_id'] = vstore_raw_id
+    if vstore_name is not None:
+        payload['vstore_name'] = vstore_name
+    if name is not None:
+        payload['name'] = name
+    if raw_id is not None:
+        payload['raw_id'] = raw_id
+    if zone_id is not None:
+        payload['zone_id'] = zone_id
+    if sort_key is not None:
+        payload['sort_key'] = sort_key
+    if storage_id is not None:
+        payload['storage_id'] = storage_id
+    if sort_dir is not None:
+        payload['sort_dir'] = sort_dir
+
+    response = client.post(url, json=payload)
+    return response
+
+
+def account_unix_user_group_show(client: DMEAPIClient, id: str) -> dict:
+    """
+    查询 UNIX 用户组详情
+
+    Args:
+        client: DME API 客户端
+        id: 用户组 ID (1~32个字符, 必填)
+
+    Returns:
+        UNIX 用户组详情
+    """
+    url = f"/rest/fileservice/v1/unix-user-groups/{id}"
+
+    response = client.get(url)
+    return response
+
+
+def account_unix_user_group_modify(client: DMEAPIClient, id: str,
+                                    raw_id: int = None,
+                                    description: str = None) -> dict:
+    """
+    修改 UNIX 用户组
+
+    Args:
+        client: DME API 客户端
+        id: UNIX 用户组 ID (1~32个字符, 必填)
+        raw_id: UNIX 用户组在存储设备上的 ID (int64, 0~4294967294, 可选)
+        description: UNIX 用户组描述 (0~255个字符, 可选)
+
+    Returns:
+        修改结果
+    """
+    url = f"/rest/fileservice/v1/unix-user-groups/{id}"
+
+    payload = {}
+
+    if raw_id is not None:
+        payload['raw_id'] = raw_id
+    if description is not None:
+        payload['description'] = description
+
+    response = client.put(url, json=payload)
+    return response
+
+
+def account_unix_user_group_batch_delete(client: DMEAPIClient, ids: list) -> dict:
+    """
+    删除 UNIX 用户组
+
+    Args:
+        client: DME API 客户端
+        ids: UNIX 用户组的 ID 列表 (List<string>, 数组最小成员个数: 1, 数组最大成员个数: 100, 必填)
+
+    Returns:
+        操作结果
+    """
+    url = "/rest/fileservice/v1/unix-user-groups/delete"
+
+    payload = {
+        'ids': ids,
+    }
+
+    response = client.post(url, json=payload)
+    return response
+
+
+def account_unix_user_remove_group(client: DMEAPIClient, user_id: str,
+                                    secondary_group_name_list: list) -> dict:
+    """
+    移除 UNIX 用户附属组
+
+    Args:
+        client: DME API 客户端
+        user_id: UNIX 用户 ID (1~32个字符, 必填)
+        secondary_group_name_list: 附属组名称列表 (List<string>, 数组最小成员个数: 1, 数组最大成员个数: 100, 必填)
+
+    Returns:
+        操作结果
+    """
+    url = f"/rest/fileservice/v1/unix-users/{user_id}/remove-secondary-group"
+
+    payload = {
+        'secondary_group_name_list': secondary_group_name_list,
+    }
+
+    response = client.post(url, json=payload)
+    return response
+
+
+def account_unix_user_show(client: DMEAPIClient, id: str) -> dict:
+    """
+    查询 UNIX 认证用户详情
+
+    Args:
+        client: DME API 客户端
+        id: 用户 ID (1~32个字符, 必填)
+
+    Returns:
+        UNIX 认证用户详情
+    """
+    url = f"/rest/fileservice/v1/unix-users/{id}"
+
+    response = client.get(url)
+    return response
+
+
+def account_unix_user_list(client: DMEAPIClient, storage_id: str = None,
+                             storage_name: str = None, vstore_raw_id: str = None,
+                             vstore_name: str = None, name: str = None,
+                             primary_group_name: str = None, raw_id: str = None,
+                             zone_id: str = None, user_status: str = None,
+                             sort_key: str = None, sort_dir: str = None,
+                             page_no: int = 1, page_size: int = 100) -> dict:
+    """
+    查询 UNIX 认证用户列表
+
+    Args:
+        client: DME API 客户端
+        page_no: 分页查询的起始位置 (int32, 1~2147483647, 默认值: 1, 可选)
+        page_size: 每页显示的数量 (int32, 10~100, 默认值: 100, 可选)
+        storage_name: 设备名称，支持模糊搜索过滤 (1~256个字符, 可选)
+        vstore_raw_id: 所属租户在存储设备上的 ID (1~64个字符, 可选)
+        vstore_name: 所属租户名称，支持模糊搜索过滤 (1~256个字符, 可选)
+        name: 用户名称，支持模糊搜索过滤 (1~256个字符, 可选)
+        primary_group_name: 主组名称，支持模糊搜索过滤 (1~256个字符, 可选)
+        raw_id: 用户在存储设备上的 ID (1~255个字符, 可选)
+        zone_id: Zone ID (1~64个字符, 可选)。仅 OceanStor A800 存储下的认证用户支持通过该字段过滤
+        user_status: 用户状态 (可选)。可选值：enable (启用), disable (禁用)
+        sort_key: 按照指定字段排序 (可选)。可选值：name (用户名), raw_id (用户在存储设备上的 ID), primary_group_name (主组名), create_time (创建时间)。默认值：create_time
+        storage_id: 存储设备 ID (1~36个字符, 可选)
+        sort_dir: 指定排序方向 (可选)。可选值：asc (升序), desc (降序)。默认值：desc
+
+    Returns:
+        UNIX 认证用户列表
+    """
+    url = "/rest/fileservice/v1/unix-users/query"
+
+    payload = {
+        'page_no': page_no,
+        'page_size': page_size,
+    }
+
+    if storage_name is not None:
+        payload['storage_name'] = storage_name
+    if vstore_raw_id is not None:
+        payload['vstore_raw_id'] = vstore_raw_id
+    if vstore_name is not None:
+        payload['vstore_name'] = vstore_name
+    if name is not None:
+        payload['name'] = name
+    if primary_group_name is not None:
+        payload['primary_group_name'] = primary_group_name
+    if raw_id is not None:
+        payload['raw_id'] = raw_id
+    if zone_id is not None:
+        payload['zone_id'] = zone_id
+    if user_status is not None:
+        payload['user_status'] = user_status
+    if sort_key is not None:
+        payload['sort_key'] = sort_key
+    if storage_id is not None:
+        payload['storage_id'] = storage_id
+    if sort_dir is not None:
+        payload['sort_dir'] = sort_dir
+
+    response = client.post(url, json=payload)
+    return response
+
+
+def account_unix_user_add_group(client: DMEAPIClient, user_id: str,
+                                 secondary_group_name_list: list) -> dict:
+    """
+    添加 UNIX 用户附属组
+
+    Args:
+        client: DME API 客户端
+        user_id: UNIX 用户 ID (1~32个字符, 必填)
+        secondary_group_name_list: 附属组名称列表 (List<string>, 数组最小成员个数: 1, 数组最大成员个数: 100, 必填)
+
+    Returns:
+        操作结果
+    """
+    url = f"/rest/fileservice/v1/unix-users/{user_id}/add-secondary-group"
+
+    payload = {
+        'secondary_group_name_list': secondary_group_name_list,
+    }
+
+    response = client.post(url, json=payload)
+    return response
+
+
+def account_unix_user_create(client: DMEAPIClient, storage_id: str, name: str, vstore_raw_id: str,
+                              raw_id: int = None, description: str = None,
+                              primary_group_raw_id: int = None,
+                              primary_group_name: str = None, zone_id: str = None,
+                              status: bool = None,
+                              secondary_group_name_list: list = None) -> dict:
+    """
+    创建 UNIX 用户
+
+    Args:
+        client: DME API 客户端
+        storage_id: 创建 UNIX 用户所属存储设备 ID (1~64个字符, 必填)
+        name: UNIX 用户名称 (1~64个字符, 必填)
+        raw_id: UNIX 用户 ID (int64, 0~4294967294, 可选。OceanStor Pacific 和 OceanStor A310 存储必填)
+        description: UNIX 用户描述 (0~255个字符, 可选)
+        primary_group_raw_id: 用户主组 ID (int64, 0~4294967294, 可选。与 primary_group_name 至少下发一个，若都下发仅 primary_group_name 生效)
+        primary_group_name: 用户所归属的主组名称 (1~64个字符, 可选。与 primary_group_raw_id 至少下发一个，若都下发仅 primary_group_name 生效)
+        vstore_raw_id: 用户所属租户在存储设备上的 ID (1~32个字符, 必填)
+        zone_id: 所属 Zone ID (1~64个字符, 可选。仅 OceanStor A800 存储支持)
+        status: 用户状态 (boolean, 可选。默认值：true)。可选值：true (启用), false (锁定)。仅 OceanStor Pacific 和 OceanStor A310 系列存储支持
+        secondary_group_name_list: 用户附属组名称列表 (List<string>, 数组最小成员个数: 0, 数组最大成员个数: 100, 可选)
+
+    Returns:
+        创建结果
+    """
+    url = "/rest/fileservice/v1/unix-users"
+
+    payload = {
+        'storage_id': storage_id,
+        'name': name,
+        'vstore_raw_id': vstore_raw_id,
+    }
+
+    if raw_id is not None:
+        payload['raw_id'] = raw_id
+    if description is not None:
+        payload['description'] = description
+    if primary_group_raw_id is not None:
+        payload['primary_group_raw_id'] = primary_group_raw_id
+    if primary_group_name is not None:
+        payload['primary_group_name'] = primary_group_name
+    if zone_id is not None:
+        payload['zone_id'] = zone_id
+    if status is not None:
+        payload['status'] = status
+    if secondary_group_name_list is not None:
+        payload['secondary_group_name_list'] = secondary_group_name_list
+
+    response = client.post(url, json=payload)
+    return response
+
+
+def kvcache_batch_create(client: DMEAPIClient, storage_id: str, zone_id: str,
+                          pool_raw_id: str, vstore_id: str, kv_cache_stores: list,
+                          data_cleanup_switch: str = None,
+                          max_survival_time: int = None) -> dict:
+    """
+    批量创建 KV Cache 库
+
+    Args:
+        client: DME API 客户端
+        storage_id: 存储设备 ID (长度为36个字符, 必填)
+        zone_id: 所属 Zone 的 ID (长度为36个字符, 必填)
+        pool_raw_id: 存储池在所属 Zone 上的 ID (1~64个字符, 必填)
+        vstore_id: 租户 ID (长度为32个字符, 必填)
+        data_cleanup_switch: 清理开关 (可选)。可选值：on (打开), off (关闭)。默认值：off
+        max_survival_time: KV Cache 最长存活时间 (int32, 1~3650, 可选。当 data_cleanup_switch 为 on 时必填)
+        kv_cache_stores: KV Cache 库列表 (List<CreateKVCacheStoreBaseInfo>, 数组最小成员个数: 1, 数组最大成员个数: 100, 必填)。参数格式如下：[{
+                name: KV Cache 库名称 (1~255个字符, 必填),
+                capacity: KV Cache 库容量 (int64, 20971520~70368744177664, 单位: 扇区数, 1扇区=512字节, 必填),
+                description: 描述信息 (1~255个字符, 可选),
+                count: 批量创建 KV Cache 库的数量 (int32, 1~100, 默认值: 1, 可选),
+                start_suffix: 起始后缀编号 (int32, 0~9999, 可选。起始后缀编号+KV Cache库数量<=9999),
+             }, ...]
+
+    Returns:
+        创建结果
+    """
+    url = "/rest/kvcachemgmt/v1/kv-cache-stores"
+
+    payload = {
+        'storage_id': storage_id,
+        'zone_id': zone_id,
+        'pool_raw_id': pool_raw_id,
+        'vstore_id': vstore_id,
+        'kv_cache_stores': kv_cache_stores,
+    }
+
+    if data_cleanup_switch is not None:
+        payload['data_cleanup_switch'] = data_cleanup_switch
+    if max_survival_time is not None:
+        payload['max_survival_time'] = max_survival_time
+
+    response = client.post(url, json=payload)
+    return response
+
+
+def kvcache_modify(client: DMEAPIClient, kv_cache_stores_id: str, name: str = None,
+                    description: str = None, data_cleanup_switch: str = None,
+                    max_survival_time: int = None) -> dict:
+    """
+    修改 KV Cache 库
+
+    Args:
+        client: DME API 客户端
+        kv_cache_stores_id: KV Cache 库 ID (1~64个字符, 必填)
+        name: KV Cache 库名称 (1~255个字符, 可选)
+        description: 描述信息 (0~255个字符, 可选)
+        data_cleanup_switch: 清理开关 (可选)。可选值：on (打开), off (关闭)。默认值：off
+        max_survival_time: KV Cache 最长存活时间 (int32, 1~3650, 可选。当 data_cleanup_switch 为 on 时必填)
+
+    Returns:
+        修改结果
+    """
+    url = f"/rest/kvcachemgmt/v1/kv-cache-stores/{kv_cache_stores_id}"
+
+    payload = {}
+
+    if name is not None:
+        payload['name'] = name
+    if description is not None:
+        payload['description'] = description
+    if data_cleanup_switch is not None:
+        payload['data_cleanup_switch'] = data_cleanup_switch
+    if max_survival_time is not None:
+        payload['max_survival_time'] = max_survival_time
+
+    response = client.put(url, json=payload)
+    return response
+
+
+def kvcache_batch_delete(client: DMEAPIClient, ids: list) -> dict:
+    """
+    批量删除 KV Cache 库
+
+    Args:
+        client: DME API 客户端
+        ids: KV Cache 库 ID 列表 (List<string>, 数组最小成员个数: 1, 数组最大成员个数: 100, 必填)
+
+    Returns:
+        操作结果
+    """
+    url = "/rest/kvcachemgmt/v1/kv-cache-stores/delete"
+
+    payload = {
+        'ids': ids,
+    }
+
+    response = client.post(url, json=payload)
+    return response
+
+
+def kvcache_list(client: DMEAPIClient, storage_id: str = None, id: str = None,
+                  raw_id: str = None, name: str = None, zone_id: str = None,
+                  pool_raw_id: str = None, vstore_id: str = None,
+                  vstore_name: str = None, fs_id: str = None,
+                  fs_name: str = None, data_cleanup_switch: str = None,
+                  page_no: int = 1, page_size: int = 20,
+                  sort_dir: str = None, sort_key: str = None) -> dict:
+    """
+    查询 KV Cache 库
+
+    Args:
+        client: DME API 客户端
+        storage_id: 存储设备 ID (长度为36个字符, 可选)
+        id: KV Cache 库 ID (长度为32个字符, 可选)
+        raw_id: KV Cache 库在 Zone 上的 ID (1~256个字符, 可选)
+        name: KV Cache 库名称 (1~256个字符, 可选)
+        zone_id: 所属 Zone 的 ID (长度为36个字符, 可选)
+        pool_raw_id: 存储池在所属 Zone 上的 ID (1~64个字符, 可选)
+        vstore_id: 租户 ID (长度为32个字符, 可选)
+        vstore_name: 租户名称 (1~256个字符, 可选)
+        fs_id: 文件系统 ID (长度为32个字符, 可选)
+        fs_name: 文件系统名称 (1~256个字符, 可选)
+        data_cleanup_switch: 清理开关 (可选)。可选值：on (打开), off (关闭)
+        page_no: 分页页码 (int32, 1~10000, 默认值: 1, 可选)
+        page_size: 每页数据条数 (int32, 1~100, 默认值: 20, 可选)
+        sort_dir: 指定排序方向 (可选)。可选值：asc (升序), desc (降序)。默认值：asc
+        sort_key: 排序参数 (可选)。可选值：capacity (总容量), used_capacity (已用容量), used_tokens (已使用的 token 数量), hit_ratio (命中率)
+
+    Returns:
+        KV Cache 库列表
+    """
+    url = "/rest/kvcachemgmt/v1/kv-cache-stores/query"
+
+    payload = {
+        'page_no': page_no,
+        'page_size': page_size,
+    }
+
+    if storage_id is not None:
+        payload['storage_id'] = storage_id
+    if id is not None:
+        payload['id'] = id
+    if raw_id is not None:
+        payload['raw_id'] = raw_id
+    if name is not None:
+        payload['name'] = name
+    if zone_id is not None:
+        payload['zone_id'] = zone_id
+    if pool_raw_id is not None:
+        payload['pool_raw_id'] = pool_raw_id
+    if vstore_id is not None:
+        payload['vstore_id'] = vstore_id
+    if vstore_name is not None:
+        payload['vstore_name'] = vstore_name
+    if fs_id is not None:
+        payload['fs_id'] = fs_id
+    if fs_name is not None:
+        payload['fs_name'] = fs_name
+    if data_cleanup_switch is not None:
+        payload['data_cleanup_switch'] = data_cleanup_switch
+    if sort_dir is not None:
+        payload['sort_dir'] = sort_dir
+    if sort_key is not None:
+        payload['sort_key'] = sort_key
+
+    response = client.post(url, json=payload)
+    return response
+
+
 ACTIONS = {
+    'account_dataturbo_admin_list': {
+        'func': account_dataturbo_admin_list,
+        'description': '批量查询 DataTurbo 管理员',
+        'params': ['storage_id', 'vstore_id', 'vstore_name', 'zone_id', 'name', 'online_status', 'lock_status', 'account_state', 'sort_key', 'sort_dir', 'page_no', 'page_size'],
+        'subtopic': 'account'
+    },
+    'account_unix_user_create': {
+        'func': account_unix_user_create,
+        'description': '创建 UNIX 用户',
+        'params': ['storage_id', 'name', 'vstore_raw_id', 'raw_id', 'description', 'primary_group_raw_id', 'primary_group_name', 'zone_id', 'status', 'secondary_group_name_list'],
+        'subtopic': 'account'
+    },
+    'account_unix_user_add_group': {
+        'func': account_unix_user_add_group,
+        'description': '添加 UNIX 用户附属组',
+        'params': ['user_id', 'secondary_group_name_list'],
+        'subtopic': 'account'
+    },
+    'account_unix_user_list': {
+        'func': account_unix_user_list,
+        'description': '查询 UNIX 认证用户列表',
+        'params': ['storage_id', 'storage_name', 'vstore_raw_id', 'vstore_name', 'name', 'primary_group_name', 'raw_id', 'zone_id', 'user_status', 'sort_key', 'sort_dir', 'page_no', 'page_size'],
+        'subtopic': 'account'
+    },
+    'account_unix_user_show': {
+        'func': account_unix_user_show,
+        'description': '查询 UNIX 认证用户详情',
+        'params': ['id'],
+        'subtopic': 'account'
+    },
+    'account_unix_user_remove_group': {
+        'func': account_unix_user_remove_group,
+        'description': '移除 UNIX 用户附属组',
+        'params': ['user_id', 'secondary_group_name_list'],
+        'subtopic': 'account'
+    },
+    'account_unix_user_modify': {
+        'func': account_unix_user_modify,
+        'description': '修改 UNIX 用户',
+        'params': ['id', 'raw_id', 'description', 'primary_group_name', 'primary_group_raw_id', 'status_enable'],
+        'subtopic': 'account'
+    },
+    'account_unix_user_batch_delete': {
+        'func': account_unix_user_batch_delete,
+        'description': '删除 UNIX 用户',
+        'params': ['ids'],
+        'subtopic': 'account'
+    },
+    'account_unix_user_group_create': {
+        'func': account_unix_user_group_create,
+        'description': '创建 UNIX 用户组',
+        'params': ['storage_id', 'name', 'vstore_raw_id', 'raw_id', 'description', 'zone_id'],
+        'subtopic': 'account'
+    },
+    'account_unix_user_group_list': {
+        'func': account_unix_user_group_list,
+        'description': '查询 UNIX 认证用户组列表',
+        'params': ['storage_id', 'storage_name', 'vstore_raw_id', 'vstore_name', 'name', 'raw_id', 'zone_id', 'sort_key', 'sort_dir', 'page_no', 'page_size'],
+        'subtopic': 'account'
+    },
+    'account_unix_user_group_show': {
+        'func': account_unix_user_group_show,
+        'description': '查询 UNIX 用户组详情',
+        'params': ['id'],
+        'subtopic': 'account'
+    },
+    'account_unix_user_group_modify': {
+        'func': account_unix_user_group_modify,
+        'description': '修改 UNIX 用户组',
+        'params': ['id', 'raw_id', 'description'],
+        'subtopic': 'account'
+    },
+    'account_unix_user_group_batch_delete': {
+        'func': account_unix_user_group_batch_delete,
+        'description': '删除 UNIX 用户组',
+        'params': ['ids'],
+        'subtopic': 'account'
+    },
     'dtree_list': {
         'func': dtree_list,
         'description': '查询 Dtree 列表',
@@ -3053,5 +3760,30 @@ ACTIONS = {
         'description': '查询并行客户端详情',
         'params': ['dpc_id'],
         'subtopic': 'dpc'
+    },
+    # kvcache 子主题动作
+    'kvcache_list': {
+        'func': kvcache_list,
+        'description': '查询 KV Cache 库',
+        'params': ['storage_id', 'id', 'raw_id', 'name', 'zone_id', 'pool_raw_id', 'vstore_id', 'vstore_name', 'fs_id', 'fs_name', 'data_cleanup_switch', 'page_no', 'page_size', 'sort_dir', 'sort_key'],
+        'subtopic': 'kvcache'
+    },
+    'kvcache_batch_create': {
+        'func': kvcache_batch_create,
+        'description': '批量创建 KV Cache 库',
+        'params': ['storage_id', 'zone_id', 'pool_raw_id', 'vstore_id', 'kv_cache_stores', 'data_cleanup_switch', 'max_survival_time'],
+        'subtopic': 'kvcache'
+    },
+    'kvcache_modify': {
+        'func': kvcache_modify,
+        'description': '修改 KV Cache 库',
+        'params': ['kv_cache_stores_id', 'name', 'description', 'data_cleanup_switch', 'max_survival_time'],
+        'subtopic': 'kvcache'
+    },
+    'kvcache_batch_delete': {
+        'func': kvcache_batch_delete,
+        'description': '批量删除 KV Cache 库',
+        'params': ['ids'],
+        'subtopic': 'kvcache'
     },
 }

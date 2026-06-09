@@ -994,7 +994,7 @@ def initiator_modify(client: DMEAPIClient, initiator_id: str,
 # ============ 认证用户 (account) 子主题函数 ============
 
 
-def show_local_users(client: DMEAPIClient, storage_id: str, vstore_raw_id: str = None,
+def account_show_local_users(client: DMEAPIClient, storage_id: str, vstore_raw_id: str = None,
                      name: str = None, page_no: int = 1, page_size: int = 20) -> dict:
     """
     查询指定存储设备本地认证用户的信息
@@ -1026,7 +1026,128 @@ def show_local_users(client: DMEAPIClient, storage_id: str, vstore_raw_id: str =
     return response
 
 
-def show_unix_users(client: DMEAPIClient, storage_id: str, vstore_raw_id: str = None,
+def account_create_local_user(client: DMEAPIClient, storage_id: str, name: str, password: str,
+                      primary_group_raw_id: str, description: str = None,
+                      group_names: list = None, vstore_id: str = None) -> dict:
+    """
+    创建本地认证用户
+
+    Args:
+        client: DME API 客户端
+        storage_id: 创建本地认证用户所属存储设备 ID (1~36个字符, 必填)
+        name: 本地认证用户名称 (1~255个字符, 必填)
+        description: 本地认证用户描述 (1~255个字符, 可选)
+        password: 本地认证用户密码 (1~255个字符, 必填)
+        primary_group_raw_id: 本地认证用户所归属的用户组在设备上 ID (1~64个字符, 必填)
+        group_names: 创建的本地认证用户所属的临时用户组名称列表 (List<string>, 数组最小成员个数: 0, 数组最大成员个数: 31, 可选)
+        vstore_id: 本地认证用户所属的租户 ID (1~64个字符, 可选。条件必传，当创建的本地认证用户属于租户时必传)
+
+    Returns:
+        创建结果
+    """
+    url = f"/rest/fileservice/v1/storages/{storage_id}/local-users"
+
+    payload = {
+        'name': name,
+        'password': password,
+        'primary_group_raw_id': primary_group_raw_id,
+    }
+
+    if description is not None:
+        payload['description'] = description
+    if group_names is not None:
+        payload['group_names'] = group_names
+    if vstore_id is not None:
+        payload['vstore_id'] = vstore_id
+
+    response = client.post(url, json=payload)
+    return response
+
+
+def account_create_unix_user(client: DMEAPIClient, storage_id: str, name: str,
+                      primary_group_raw_id: str, raw_id: int = None,
+                      description: str = None, password: str = None,
+                      status_enabled: bool = None, vstore_raw_id: str = None) -> dict:
+    """
+    创建指定存储设备 UNIX 认证用户
+
+    Args:
+        client: DME API 客户端
+        storage_id: 创建 UNIX 认证用户所属存储设备 ID (1~36个字符, 必填)
+        name: UNIX 认证用户名称 (1~255个字符, 必填)
+        raw_id: UNIX 认证用户在设备上 ID (int64, 0~4294967295, 可选)
+        description: UNIX 认证用户描述 (1~255个字符, 可选)
+        password: UNIX 认证用户密码 (1~255个字符, 可选)
+        status_enabled: UNIX 认证用户状态 (boolean, 可选)。可选值：true (启动), false (锁定)
+        primary_group_raw_id: 创建的 UNIX 认证用户所归属的用户组在设备上 ID (1~64个字符, 必填)
+        vstore_raw_id: UNIX 认证用户所属的租户在设备上 ID (1~64个字符, 可选。条件必传，当创建的 UNIX 认证用户属于租户时必传)
+
+    Returns:
+        创建结果
+    """
+    url = f"/rest/fileservice/v1/storages/{storage_id}/unix-users"
+
+    payload = {
+        'name': name,
+        'primary_group_raw_id': primary_group_raw_id,
+    }
+
+    if raw_id is not None:
+        payload['raw_id'] = raw_id
+    if description is not None:
+        payload['description'] = description
+    if password is not None:
+        payload['password'] = password
+    if status_enabled is not None:
+        payload['status_enabled'] = status_enabled
+    if vstore_raw_id is not None:
+        payload['vstore_raw_id'] = vstore_raw_id
+
+    response = client.post(url, json=payload)
+    return response
+
+
+def account_create_windows_user(client: DMEAPIClient, storage_id: str, name: str, password: str,
+                                 raw_id: int = None, description: str = None,
+                                 status_enabled: bool = None,
+                                 vstore_raw_id: str = None) -> dict:
+    """
+    创建指定存储设备 Windows 认证用户
+
+    Args:
+        client: DME API 客户端
+        storage_id: 创建 Windows 认证用户所属存储设备 ID (1~36个字符, 必填)
+        name: Windows 认证用户名称 (1~255个字符, 必填)
+        raw_id: Windows 认证用户在设备上 ID (int64, 1000~4294967295, 可选)
+        description: Windows 认证用户描述 (1~255个字符, 可选)
+        password: Windows 认证用户密码 (1~255个字符, 必填)
+        status_enabled: Windows 认证用户状态 (boolean, 可选)。可选值：true (启用), false (锁定)
+        vstore_raw_id: 创建的 Windows 认证用户所属的租户在设备上 ID (1~64个字符, 可选。条件必传，当 Windows 认证用户属于租户时必传)
+
+    Returns:
+        创建结果
+    """
+    url = f"/rest/fileservice/v1/storages/{storage_id}/windows-users"
+
+    payload = {
+        'name': name,
+        'password': password,
+    }
+
+    if raw_id is not None:
+        payload['raw_id'] = raw_id
+    if description is not None:
+        payload['description'] = description
+    if status_enabled is not None:
+        payload['status_enabled'] = status_enabled
+    if vstore_raw_id is not None:
+        payload['vstore_raw_id'] = vstore_raw_id
+
+    response = client.post(url, json=payload)
+    return response
+
+
+def account_show_unix_users(client: DMEAPIClient, storage_id: str, vstore_raw_id: str = None,
                     name: str = None, page_no: int = 1, page_size: int = 20) -> dict:
     """
     查询指定存储设备 UNIX 认证用户的信息
@@ -1058,7 +1179,7 @@ def show_unix_users(client: DMEAPIClient, storage_id: str, vstore_raw_id: str = 
     return response
 
 
-def show_windows_users(client: DMEAPIClient, storage_id: str, vstore_raw_id: str = None,
+def account_show_windows_users(client: DMEAPIClient, storage_id: str, vstore_raw_id: str = None,
                        name: str = None, page_no: int = 1, page_size: int = 20) -> dict:
     """
     查询指定存储设备 Windows 认证用户的信息
@@ -1090,7 +1211,7 @@ def show_windows_users(client: DMEAPIClient, storage_id: str, vstore_raw_id: str
     return response
 
 
-def show_local_user_groups(client: DMEAPIClient, storage_id: str, vstore_raw_id: str = None,
+def account_show_local_user_groups(client: DMEAPIClient, storage_id: str, vstore_raw_id: str = None,
                            name: str = None, page_no: int = 1, page_size: int = 20) -> dict:
     """
     查询指定存储设备本地认证用户组的信息
@@ -1122,7 +1243,7 @@ def show_local_user_groups(client: DMEAPIClient, storage_id: str, vstore_raw_id:
     return response
 
 
-def show_unix_user_groups(client: DMEAPIClient, storage_id: str, vstore_raw_id: str = None,
+def account_show_unix_user_groups(client: DMEAPIClient, storage_id: str, vstore_raw_id: str = None,
                           name: str = None, page_no: int = 1, page_size: int = 20) -> dict:
     """
     查询指定存储设备 UNIX 认证用户组的信息
@@ -1154,7 +1275,7 @@ def show_unix_user_groups(client: DMEAPIClient, storage_id: str, vstore_raw_id: 
     return response
 
 
-def show_windows_user_groups(client: DMEAPIClient, storage_id: str, vstore_raw_id: str = None,
+def account_show_windows_user_groups(client: DMEAPIClient, storage_id: str, vstore_raw_id: str = None,
                              name: str = None, page_no: int = 1, page_size: int = 20) -> dict:
     """
     查询指定存储设备 Windows 认证用户组的信息
@@ -1181,127 +1302,6 @@ def show_windows_user_groups(client: DMEAPIClient, storage_id: str, vstore_raw_i
         payload['vstore_raw_id'] = vstore_raw_id
     if name is not None:
         payload['name'] = name
-
-    response = client.post(url, json=payload)
-    return response
-
-
-def local_user_create(client: DMEAPIClient, storage_id: str, name: str, password: str,
-                      primary_group_raw_id: str, description: str = None,
-                      group_names: list = None, vstore_id: str = None) -> dict:
-    """
-    创建指定存储设备本地认证用户
-
-    Args:
-        client: DME API 客户端
-        storage_id: 存储设备 ID（必填，1~36 个字符）
-        name: 本地认证用户名称（必填，1~255 个字符）
-        password: 本地认证用户密码（必填，1~255 个字符）
-        primary_group_raw_id: 用户所属用户组在设备上 ID（必填，1~64 个字符）
-        description: 用户描述（可选，1~255 个字符）
-        group_names: 用户所属的临时用户组名称列表（可选，最多 31 个）
-        vstore_id: 用户所属的租户 ID（可选，当用户属于租户时必传）
-
-    Returns:
-        任务 ID
-    """
-    url = f"/rest/fileservice/v1/storages/{storage_id}/local-users"
-
-    payload = {
-        'name': name,
-        'password': password,
-        'primary_group_raw_id': primary_group_raw_id
-    }
-
-    if description is not None:
-        payload['description'] = description
-    if group_names is not None:
-        payload['group_names'] = group_names
-    if vstore_id is not None:
-        payload['vstore_id'] = vstore_id
-
-    response = client.post(url, json=payload)
-    return response
-
-
-def unix_user_create(client: DMEAPIClient, storage_id: str, name: str,
-                     primary_group_raw_id: str, raw_id: int = None,
-                     description: str = None, password: str = None,
-                     status_enabled: bool = None, vstore_raw_id: str = None) -> dict:
-    """
-    创建指定存储设备 UNIX 认证用户
-
-    Args:
-        client: DME API 客户端
-        storage_id: 存储设备 ID（必填，1~36 个字符）
-        name: UNIX 认证用户名称（必填，1~255 个字符）
-        primary_group_raw_id: 用户所属用户组在设备上 ID（必填，1~64 个字符）
-        raw_id: UNIX 认证用户在设备上 ID（可选，0~4294967295）
-        description: 用户描述（可选，1~255 个字符）
-        password: 用户密码（可选，1~255 个字符）
-        status_enabled: 用户状态，true 启用，false 锁定（可选）
-        vstore_raw_id: 用户所属的租户在设备上 ID（可选，当用户属于租户时必传）
-
-    Returns:
-        任务 ID
-    """
-    url = f"/rest/fileservice/v1/storages/{storage_id}/unix-users"
-
-    payload = {
-        'name': name,
-        'primary_group_raw_id': primary_group_raw_id
-    }
-
-    if raw_id is not None:
-        payload['raw_id'] = raw_id
-    if description is not None:
-        payload['description'] = description
-    if password is not None:
-        payload['password'] = password
-    if status_enabled is not None:
-        payload['status_enabled'] = status_enabled
-    if vstore_raw_id is not None:
-        payload['vstore_raw_id'] = vstore_raw_id
-
-    response = client.post(url, json=payload)
-    return response
-
-
-def windows_user_create(client: DMEAPIClient, storage_id: str, name: str,
-                        password: str, raw_id: int = None,
-                        description: str = None, status_enabled: bool = None,
-                        vstore_raw_id: str = None) -> dict:
-    """
-    创建指定存储设备 Windows 认证用户
-
-    Args:
-        client: DME API 客户端
-        storage_id: 存储设备 ID（必填，1~36 个字符）
-        name: Windows 认证用户名称（必填，1~255 个字符）
-        password: Windows 认证用户密码（必填，1~255 个字符）
-        raw_id: Windows 认证用户在设备上 ID（可选，1000~4294967295）
-        description: 用户描述（可选，1~255 个字符）
-        status_enabled: 用户状态，true 启用，false 锁定（可选）
-        vstore_raw_id: 用户所属的租户在设备上 ID（可选，当用户属于租户时必传）
-
-    Returns:
-        任务 ID
-    """
-    url = f"/rest/fileservice/v1/storages/{storage_id}/windows-users"
-
-    payload = {
-        'name': name,
-        'password': password
-    }
-
-    if raw_id is not None:
-        payload['raw_id'] = raw_id
-    if description is not None:
-        payload['description'] = description
-    if status_enabled is not None:
-        payload['status_enabled'] = status_enabled
-    if vstore_raw_id is not None:
-        payload['vstore_raw_id'] = vstore_raw_id
 
     response = client.post(url, json=payload)
     return response
@@ -1749,73 +1749,6 @@ def qos_unassociate(client: DMEAPIClient, qos_policy_id: str,
         'resource_ids': resource_ids,
         'resource_type': resource_type
     }
-
-    response = client.post(url, json=payload)
-    return response
-
-
-def show_dataturbo_admin_users(client: DMEAPIClient, storage_id: str = None, vstore_id: str = None,
-                   vstore_name: str = None, zone_id: str = None, name: str = None,
-                   online_status: str = None, lock_status: str = None,
-                   account_state: str = None, sort_key: str = None,
-                   sort_dir: str = None, page_no: int = 1,
-                   page_size: int = 20) -> dict:
-    """
-    批量查询 DataTurbo 管理员
-
-    仅 OceanStor A800 系列存储支持。
-
-    Args:
-        client: DME API 客户端
-        storage_id: 设备 ID（可选，1~64 个字符）
-        vstore_id: 租户的 ID（可选，1~64 个字符）
-        vstore_name: 租户的名称，支持模糊查询（可选，1~256 个字符）
-        zone_id: 所属 zone 的 ID（可选，1~64 个字符）
-                 当资源所属范围为全局时，Zone ID 为所属设备的 Id；
-                 当资源所属范围为本地时，Zone ID 为所属 Zone 的 ID。仅 OceanStor A800 系列存储支持。
-        name: DataTurbo 管理员名，支持模糊查询（可选，1~256 个字符）
-        online_status: DataTurbo 管理员在线状态（可选）
-                       取值范围：offline（离线），online（在线）
-        lock_status: DataTurbo 管理员锁定状态（可选）
-                     取值范围：unlocked（未锁定），locked（锁定）
-        account_state: DataTurbo 管理员密码状态（可选）
-                       取值范围：normal（正常），expired（密码过期），initial（用户密码处于初始化状态，需要修改），
-                       expiring_soon（密码即将到期），change_required（下一次登录必须修改密码），never（密码永不过期）
-        sort_key: 按照指定字段排序（可选），目前支持 create_time
-        sort_dir: 指定排序方向（可选），取值范围：asc（升序），desc（降序）
-        page_no: 分页查询的起始页码，默认 1（可选）
-        page_size: 单页显示的数量，默认 20，范围 1~1000（可选）
-
-    Returns:
-        DataTurbo 管理员列表，包含 total 和 administrators
-    """
-    url = "/rest/fileservice/v1/dpc-administrators/query"
-
-    payload = {
-        'page_no': page_no,
-        'page_size': page_size
-    }
-
-    if storage_id is not None:
-        payload['storage_id'] = storage_id
-    if vstore_id is not None:
-        payload['vstore_id'] = vstore_id
-    if vstore_name is not None:
-        payload['vstore_name'] = vstore_name
-    if zone_id is not None:
-        payload['zone_id'] = zone_id
-    if name is not None:
-        payload['name'] = name
-    if online_status is not None:
-        payload['online_status'] = online_status
-    if lock_status is not None:
-        payload['lock_status'] = lock_status
-    if account_state is not None:
-        payload['account_state'] = account_state
-    if sort_key is not None:
-        payload['sort_key'] = sort_key
-    if sort_dir is not None:
-        payload['sort_dir'] = sort_dir
 
     response = client.post(url, json=payload)
     return response
@@ -2656,45 +2589,57 @@ ACTIONS = {
     },
     # account 子主题动作（认证用户）
     'account_show_local_users': {
-        'func': show_local_users,
+        'func': account_show_local_users,
         'description': '查询指定存储设备本地认证用户的信息',
         'params': ['storage_id', 'vstore_raw_id', 'name', 'page_no', 'page_size'],
         'subtopic': 'account'
     },
+    'account_create_local_user': {
+        'func': account_create_local_user,
+        'description': '创建本地认证用户',
+        'params': ['storage_id', 'name', 'password', 'primary_group_raw_id', 'description', 'group_names', 'vstore_id'],
+        'subtopic': 'account'
+    },
+    'account_create_unix_user': {
+        'func': account_create_unix_user,
+        'description': '创建指定存储设备 UNIX 认证用户',
+        'params': ['storage_id', 'name', 'primary_group_raw_id', 'raw_id', 'description', 'password', 'status_enabled', 'vstore_raw_id'],
+        'subtopic': 'account'
+    },
+    'account_create_windows_user': {
+        'func': account_create_windows_user,
+        'description': '创建指定存储设备 Windows 认证用户',
+        'params': ['storage_id', 'name', 'password', 'raw_id', 'description', 'status_enabled', 'vstore_raw_id'],
+        'subtopic': 'account'
+    },
     'account_show_unix_users': {
-        'func': show_unix_users,
+        'func': account_show_unix_users,
         'description': '查询指定存储设备 UNIX 认证用户的信息',
         'params': ['storage_id', 'vstore_raw_id', 'name', 'page_no', 'page_size'],
         'subtopic': 'account'
     },
     'account_show_windows_users': {
-        'func': show_windows_users,
+        'func': account_show_windows_users,
         'description': '查询指定存储设备 Windows 认证用户的信息',
         'params': ['storage_id', 'vstore_raw_id', 'name', 'page_no', 'page_size'],
         'subtopic': 'account'
     },
     'account_show_local_user_groups': {
-        'func': show_local_user_groups,
+        'func': account_show_local_user_groups,
         'description': '查询指定存储设备本地认证用户组的信息',
         'params': ['storage_id', 'vstore_raw_id', 'name', 'page_no', 'page_size'],
         'subtopic': 'account'
     },
     'account_show_unix_user_groups': {
-        'func': show_unix_user_groups,
+        'func': account_show_unix_user_groups,
         'description': '查询指定存储设备 UNIX 认证用户组的信息',
         'params': ['storage_id', 'vstore_raw_id', 'name', 'page_no', 'page_size'],
         'subtopic': 'account'
     },
     'account_show_windows_user_groups': {
-        'func': show_windows_user_groups,
+        'func': account_show_windows_user_groups,
         'description': '查询指定存储设备 Windows 认证用户组的信息',
         'params': ['storage_id', 'vstore_raw_id', 'name', 'page_no', 'page_size'],
-        'subtopic': 'account'
-    },
-    'account_show_dataturbo_admin_users': {
-        'func': show_dataturbo_admin_users,
-        'description': '批量查询 DataTurbo 管理员',
-        'params': ['storage_id', 'vstore_id', 'vstore_name', 'zone_id', 'name', 'online_status', 'lock_status', 'account_state', 'sort_key', 'sort_dir', 'page_no', 'page_size'],
         'subtopic': 'account'
     },
     # qos 子主题动作

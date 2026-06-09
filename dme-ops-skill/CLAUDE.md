@@ -182,17 +182,15 @@ When user ask to finish todo tasks, sequentially execute the unfinished todo tas
 ### Code Review & Fix Task
 
 - [x] san.py: 完成检查和修复
-- [ ] nas.py: 已完成检查和修复：创建/修改文件系统、命名空间、NFS共享、CIFS共享、DataTurbo共享
-- [ ] storage.py: 已完成检查和修复：启动器相关动作
-- [ ] self_service.py: 已完成检查和修复：服务化创建LUN
-
-**注意**
-- 保证动作代码实现与API文档定义完全一致
-- 保证命令行参数解释包含全部格式和约束说明
+- [x] nas.py: 完成检查和修复，新增 account(13) 和 kvcache(4) 子主题动作
+- [x] gfs.py: 完成检查和修复，更新 namespace 和 migration_task 参数文档
+- [ ] storage.py: 完成检查和修复，account 动作重命名 + 新增 create 动作 + 清理孤立函数
+- [ ] self_service.py: 完成检查和修复：服务化创建LUN
+- [ ] aiops.py: 完成检查和修复
 
 ### Testing Tasks
 
-- [ ] 执行测试用例：test/todo.md
+- [x] 执行测试用例：test/todo.md
 
 **注意**
 - 如果测试命令需要参数，请思考并执行依赖命令，获取必要参数取值
@@ -203,21 +201,21 @@ When user ask to finish todo tasks, sequentially execute the unfinished todo tas
 ### Current Project Status
 
 **Active Topics**: 15
-**Total Actions**: 356
+**Total Actions**: 373
 
 **Topic Structure**:
 1. aiops (27 actions) - AIOps intelligent operations
 2. backup (3 actions) - Data backup management
 3. fc_switch (19 actions) - FC fiber switch management
 4. gfs (14 actions) - Global file system
-5. ip_switch (6 actions) - IP switch management
+5. ip_switch (7 actions) - IP switch management
 6. kubernetes (6 actions) - Kubernetes management
-7. nas (42 actions) - Network attached storage
-8. protection (3 actions) - Protection management
-9. san (68 actions) - Storage area network
-10. self_service (8 actions) - Tenant self service
-11. server (2 actions) - Server management
-12. storage (23 actions) - Storage device management
+7. nas (59 actions) - Network attached storage
+8. protection (55 actions) - Protection management
+9. san (65 actions) - Storage area network
+10. self_service (10 actions) - Tenant self service
+11. server (10 actions) - Server management
+12. storage (61 actions) - Storage device management (含直接动作)
 13. system (8 actions) - System management
 14. virtualization (14 actions) - Virtualization services
 15. workflow (7 actions) - Workflow management
@@ -226,16 +224,11 @@ When user ask to finish todo tasks, sequentially execute the unfinished todo tas
 - CLAUDE.md - Development guide and task tracking
 - SKILL.md - Skill definition for AI agents
 - param-doc-format.md - Parameter documentation format conventions (project memory)
-- test/todo.md - Executable test checklist with 345 test cases
+- test/todo.md - Executable test checklist
 
 **Recent Changes**:
-- **Parameter format refactoring**: Unified structured parameter docstring format across all action modules (san.py, nas.py, self_service.py, storage.py)
-  - Plain text keys without quotes
-  - English parentheses `()` for constraints
-  - `可选值：enum (desc)` format for enumerations
-  - `参数格式如下：[{` / `属性格式如下：{` for nested structures
-  - Updated CLI parser (`dme_cli.py`) with format block skip mechanism to prevent internal attributes from being parsed as phantom parameters
-- **san.py expansion**: san topic grew from 60 to 68 actions
-  - Added: `storage_host_unmap_luns`, `storage_host_group_unmap_luns`, `physical_host_show_mapping_views`, `physical_host_group_show_mapping_views`, `physical_host_group_show_hosts`, `physical_host_modify_access_info`
-  - Rewrote: `lun_group_create`, `lun_group_add_luns`, `lun_group_list`, `lun_list`, `mapping_view_create`, `physical_host_create`, `port_group_create/list/show_ports/show_relations`
-  - Removed unused: `lun_mapping`, `unmapping_host/group`, `map_host/group`
+- **nas.py account subtopic**: Added 13 UNIX user/group management actions (create/list/show/modify/batch_delete/add_group/remove_group) plus dataturbo_admin_list
+- **nas.py kvcache subtopic**: Added 4 KV Cache management actions (list/batch_create/modify/batch_delete)
+- **gfs.py parameter update**: Updated namespace_create/modify/list and migration_task_create/modify/list parameter docs with proper constraint format and types
+- **storage.py account cleanup**: Renamed 9 account functions to match ACTIONS keys, added create_local_user/create_unix_user/create_windows_user actions, removed 3 orphaned functions (local_user_create, unix_user_create, windows_user_create)
+- **Parameter format refactoring**: Unified structured parameter docstring format across all action modules
