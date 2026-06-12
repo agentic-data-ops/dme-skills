@@ -26,12 +26,14 @@ class BaseClient:
             "Accept": "application/json",
         },
         verify: bool = False,
+        timeout: int = 30,
         session_timeout: int = 900,
         enable_log=True,
     ):
         self.endpoint = endpoint
         self.headers = headers
         self.verify = verify
+        self.timeout = timeout
         self.session_timeout = session_timeout
         self.last_accessed = 0
         self.enable_log = enable_log
@@ -83,6 +85,7 @@ class BaseClient:
             params=query_params,
             json=body,
             verify=self.verify,
+            timeout=self.timeout,
         )
 
         code = resp.status_code
@@ -105,6 +108,7 @@ class StorageAPIClient(BaseClient):
         endpoint: str,
         passphrase: str,
         verify=False,
+        timeout: int = 30,
         session_timeout: int = 900,
         enable_log=True,
     ):
@@ -116,6 +120,7 @@ class StorageAPIClient(BaseClient):
             endpoint,
             headers,
             verify,
+            timeout=timeout,
             session_timeout=session_timeout,
             enable_log=enable_log,
         )
@@ -129,6 +134,7 @@ class StorageAPIClient(BaseClient):
             headers=self.headers,
             json=body,
             verify=self.verify,
+            timeout=self.timeout,
         )
         if response.status_code != 200:
             raise Exception(f"Login to storage failed: {self.host}:{self.port}")
@@ -177,6 +183,7 @@ class DMEAPIClient(BaseClient):
         password: str = os.getenv("DME_API_PASSWORD"),
         auth_token: str = os.getenv("DME_API_AUTH_TOKEN"),
         verify=False,
+        timeout: int = 30,
         session_timeout: int = 900,
         enable_log=True,
     ):
@@ -185,7 +192,7 @@ class DMEAPIClient(BaseClient):
             "Accept": "application/json",
             "X-Auth-Token": auth_token or "",
         }
-        super().__init__(endpoint, headers, verify, session_timeout, enable_log)
+        super().__init__(endpoint, headers, verify, timeout=timeout, session_timeout=session_timeout, enable_log=enable_log)
         self.base_url = self.endpoint
         self.username = username
         self.password = password
@@ -207,6 +214,7 @@ class DMEAPIClient(BaseClient):
             headers=self.headers,
             json=body,
             verify=self.verify,
+            timeout=self.timeout,
         )
         if response.status_code == 200:
             self.headers["X-Auth-Token"] = response.json()["accessSession"]
