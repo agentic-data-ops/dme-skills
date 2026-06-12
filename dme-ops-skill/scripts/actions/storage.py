@@ -8,7 +8,7 @@ import os
 # 添加父目录到路径，以便导入 dme_api_client
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from dme_api_client import DMEAPIClient
+from client.dme_api_client import DMEAPIClient
 
 # ============================================================================
 # VStore (租户) 子主题函数
@@ -44,7 +44,7 @@ def vstore_list(client: DMEAPIClient, storage_id: str, name: str = None, page_no
     if page_size is not None:
         payload['page_size'] = page_size
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -61,9 +61,9 @@ def vstore_show(client: DMEAPIClient, vstore_id: str) -> dict:
     Returns:
         租户详细信息
     """
-    url = f"/rest/fileservice/v1/vstores/{vstore_id}"
+    url = "/rest/fileservice/v1/vstores/{vstore_id}"
     
-    response = client.get(url)
+    response = client.get(url, params={"vstore_id": vstore_id})
     return response
 
 
@@ -114,7 +114,7 @@ def vstore_create(client: DMEAPIClient, name: str, storage_id: str, san_capacity
     if associate_pool_ids is not None:
         payload['associate_pool_ids'] = associate_pool_ids
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -140,7 +140,7 @@ def vstore_modify(client: DMEAPIClient, vstore_id: str, name: str = None,
     Returns:
         响应数据，包含 task_id
     """
-    url = f"/rest/fileservice/v1/vstores/{vstore_id}"
+    url = "/rest/fileservice/v1/vstores/{vstore_id}"
     
     payload = {}
     if name is not None:
@@ -156,7 +156,7 @@ def vstore_modify(client: DMEAPIClient, vstore_id: str, name: str = None,
     if nas_capacity_quota_alarm_threshold is not None:
         payload['nas_capacity_quota_alarm_threshold'] = nas_capacity_quota_alarm_threshold
     
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload)
     return response
 
 
@@ -180,7 +180,7 @@ def vstore_delete(client: DMEAPIClient, vstore_ids: list) -> dict:
         'ids': vstore_ids
     }
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -227,7 +227,7 @@ def list(client: DMEAPIClient, az: str = None, source: str = None,
     if ext_attrs is not None:
         query_params['ext_attrs'] = ext_attrs
     
-    response = client.get(url, query_params=query_params)
+    response = client.get(url, params=query_params)
     return response
 
 
@@ -244,9 +244,9 @@ def show(client: DMEAPIClient, storage_id: str) -> dict:
     Returns:
         存储设备详细信息，包含 id, name, ip, status, sn, vendor, model 等
     """
-    url = f"/rest/storagemgmt/v1/storages/{storage_id}/detail"
+    url = "/rest/storagemgmt/v1/storages/{storage_id}/detail"
     
-    response = client.get(url)
+    response = client.get(url, params={"storage_id": storage_id})
     return response
 
 
@@ -339,7 +339,7 @@ def add(client: DMEAPIClient, name: str = None, sn: str = None, ip: str = None,
     if tag_ids is not None:
         payload['tag_ids'] = tag_ids
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -360,7 +360,7 @@ def remove(client: DMEAPIClient, ids: list) -> dict:
         'ids': ids
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -381,7 +381,7 @@ def sync(client: DMEAPIClient, storage_id: str) -> dict:
         'id': storage_id
     }
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -402,7 +402,7 @@ def get_bbu_info(client: DMEAPIClient, storage_id: str = None) -> dict:
     if storage_id:
         payload['storage_id'] = storage_id
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -417,9 +417,9 @@ def get_token(client: DMEAPIClient, storage_id: str) -> dict:
     Returns:
         响应数据，包含 passphrase
     """
-    url = f"/rest/storagemgmt/v1/storages/{storage_id}/passphrase"
+    url = "/rest/storagemgmt/v1/storages/{storage_id}/passphrase"
     
-    response = client.get(url)
+    response = client.get(url, params={"storage_id": storage_id})
     return response
 
 
@@ -440,7 +440,7 @@ def get_fan_info(client: DMEAPIClient, storage_id: str) -> dict:
         'storage_id': storage_id
     }
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -455,9 +455,9 @@ def get_disk_info(client: DMEAPIClient, storage_id: str) -> dict:
     Returns:
         硬盘信息列表
     """
-    url = f"/rest/storagemgmt/v1/storages/{storage_id}/disks"
+    url = "/rest/storagemgmt/v1/storages/{storage_id}/disks"
     
-    response = client.get(url)
+    response = client.get(url, params={"storage_id": storage_id})
     return response
 
 
@@ -501,7 +501,7 @@ def pool_list(client: DMEAPIClient, storage_id: str = None, raw_id: str = None,
     if sort_key is not None:
         payload['sort_key'] = sort_key
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -559,7 +559,7 @@ def hyperscale_pool_list(client: DMEAPIClient, raw_id: str = None, name: str = N
     if sort_key is not None:
         payload['sort_key'] = sort_key
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -578,7 +578,7 @@ def get_nodes(client: DMEAPIClient, storage_id: str) -> dict:
 
     payload = {'storage_id': storage_id}
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -599,7 +599,7 @@ def get_power_list(client: DMEAPIClient, storage_id: str = None) -> dict:
     if storage_id:
         payload['storage_id'] = storage_id
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -632,7 +632,7 @@ def get_power(client: DMEAPIClient, storage_id: str, start_time: str = None,
         'end_time': end_time if end_time else current_time
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -676,7 +676,7 @@ def modify(client: DMEAPIClient, storage_id: str = None, name: str = None,
     if not storage_id:
         raise ValueError("参数 storage_id 是必填的")
 
-    url = f"/rest/storagemgmt/v2/storages/offline-storages/{storage_id}"
+    url = "/rest/storagemgmt/v2/storages/offline-storages/{storage_id}"
 
     payload = {}
     if name is not None:
@@ -713,7 +713,7 @@ def modify(client: DMEAPIClient, storage_id: str = None, name: str = None,
         import json
         payload['tag_ids'] = json.dumps(tag_ids) if isinstance(tag_ids, list) else tag_ids
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload)
     # 修改接口返回空响应，返回空字典表示成功
     return response if response else {}
 
@@ -737,7 +737,7 @@ def get_app_type(client: DMEAPIClient, storage_id: str,
         应用类型信息，包含 datas 列表，每个元素包含 id, name, block_size, 
         enable_compress, enable_dedup, create_type 等字段
     """
-    url = f"/rest/storagemgmt/v1/storages/{storage_id}/workloads"
+    url = "/rest/storagemgmt/v1/storages/{storage_id}/workloads"
     
     query_params = {}
     if create_type is not None:
@@ -747,7 +747,16 @@ def get_app_type(client: DMEAPIClient, storage_id: str,
     if pool_id is not None:
         query_params['pool_id'] = pool_id
     
-    response = client.get(url, query_params=query_params)
+    
+    query_params = {}
+    if create_type is not None:
+        query_params['create_type'] = create_type
+    if template_type is not None:
+        query_params['template_type'] = template_type
+    if pool_id is not None:
+        query_params['pool_id'] = pool_id
+    
+    response = client.get(url, params=query_params)
     return response
 
 
@@ -766,9 +775,9 @@ def controller_list(client: DMEAPIClient, storage_id: str) -> dict:
         - total: 控制器总数
         - controllers: 控制器列表，包含 id, name, status, type 等信息
     """
-    url = f"/rest/storagemgmt/v1/storages/{storage_id}/controllers"
+    url = "/rest/storagemgmt/v1/storages/{storage_id}/controllers"
     
-    response = client.get(url)
+    response = client.get(url, params={"storage_id": storage_id})
     return response
 
 
@@ -794,8 +803,8 @@ def disk_pool_list(client: DMEAPIClient, storage_id: str = None, page_no: int = 
     if storage_id is not None:
         try:
             # 查询存储设备详情以获取型号
-            storage_url = f"/rest/storagemgmt/v1/storages/{storage_id}/detail"
-            storage_info = client.get(storage_url)
+            storage_url = "/rest/storagemgmt/v1/storages/{storage_id}/detail"
+            storage_info = client.get(storage_url, params={"storage_id": storage_id})
             
             if storage_info and 'datas' in storage_info and len(storage_info['datas']) > 0:
                 model = storage_info['datas'][0].get('model', '')
@@ -809,7 +818,7 @@ def disk_pool_list(client: DMEAPIClient, storage_id: str = None, page_no: int = 
                         'page_size': page_size,
                         'storage_id': storage_id
                     }
-                    response = client.post(url, json=payload)
+                    response = client.post(url, body=payload)
                     return response
         except Exception as e:
             # 如果查询存储设备信息失败，继续使用通用 API
@@ -826,7 +835,7 @@ def disk_pool_list(client: DMEAPIClient, storage_id: str = None, page_no: int = 
     if storage_id is not None:
         payload['storage_id'] = storage_id
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -856,7 +865,7 @@ def enclosure_list(client: DMEAPIClient, storage_ids: list = None, page_no: int 
     if storage_ids is not None:
         payload['storage_ids'] = storage_ids
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -921,7 +930,7 @@ def initiator_list(client: DMEAPIClient, page_size: int = None, page_no: int = N
     if storage_id is not None:
         payload['storage_id'] = storage_id
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -949,7 +958,7 @@ def initiator_delete(client: DMEAPIClient, initiator_ids: list,
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -976,7 +985,7 @@ def initiator_modify(client: DMEAPIClient, initiator_id: str,
     Returns:
         任务 ID
     """
-    url = f"/rest/hostmgmt/v1/storage-initiators/{initiator_id}"
+    url = "/rest/hostmgmt/v1/storage-initiators/{initiator_id}"
 
     payload = {}
 
@@ -987,7 +996,16 @@ def initiator_modify(client: DMEAPIClient, initiator_id: str,
     if multi_path is not None:
         payload['multi_path'] = multi_path
 
-    response = client.put(url, json=payload)
+    payload = {}
+
+    if vstore_id is not None:
+        payload['vstore_id'] = vstore_id
+    if alias is not None:
+        payload['alias'] = alias
+    if multi_path is not None:
+        payload['multi_path'] = multi_path
+
+    response = client.put(url, body=payload)
     return response
 
 
@@ -1010,7 +1028,7 @@ def account_show_local_users(client: DMEAPIClient, storage_id: str, vstore_raw_i
     Returns:
         本地认证用户信息列表，包含 total 和 local_users
     """
-    url = f"/rest/fileservice/v1/storages/{storage_id}/local-users/query"
+    url = "/rest/fileservice/v1/storages/{storage_id}/local-users/query"
 
     payload = {
         'page_no': page_no,
@@ -1022,7 +1040,7 @@ def account_show_local_users(client: DMEAPIClient, storage_id: str, vstore_raw_i
     if name is not None:
         payload['name'] = name
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1045,7 +1063,16 @@ def account_create_local_user(client: DMEAPIClient, storage_id: str, name: str, 
     Returns:
         创建结果
     """
-    url = f"/rest/fileservice/v1/storages/{storage_id}/local-users"
+    url = "/rest/fileservice/v1/storages/{storage_id}/local-users"
+
+    payload = {
+        'name': name,
+        'password': password,
+        'primary_group_raw_id': primary_group_raw_id,
+    }
+
+    if description is not None:
+        payload['description'] = description
 
     payload = {
         'name': name,
@@ -1060,7 +1087,7 @@ def account_create_local_user(client: DMEAPIClient, storage_id: str, name: str, 
     if vstore_id is not None:
         payload['vstore_id'] = vstore_id
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1085,7 +1112,7 @@ def account_create_unix_user(client: DMEAPIClient, storage_id: str, name: str,
     Returns:
         创建结果
     """
-    url = f"/rest/fileservice/v1/storages/{storage_id}/unix-users"
+    url = "/rest/fileservice/v1/storages/{storage_id}/unix-users"
 
     payload = {
         'name': name,
@@ -1103,7 +1130,7 @@ def account_create_unix_user(client: DMEAPIClient, storage_id: str, name: str,
     if vstore_raw_id is not None:
         payload['vstore_raw_id'] = vstore_raw_id
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1127,7 +1154,7 @@ def account_create_windows_user(client: DMEAPIClient, storage_id: str, name: str
     Returns:
         创建结果
     """
-    url = f"/rest/fileservice/v1/storages/{storage_id}/windows-users"
+    url = "/rest/fileservice/v1/storages/{storage_id}/windows-users"
 
     payload = {
         'name': name,
@@ -1143,7 +1170,7 @@ def account_create_windows_user(client: DMEAPIClient, storage_id: str, name: str
     if vstore_raw_id is not None:
         payload['vstore_raw_id'] = vstore_raw_id
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1163,7 +1190,7 @@ def account_show_unix_users(client: DMEAPIClient, storage_id: str, vstore_raw_id
     Returns:
         UNIX 认证用户信息列表，包含 total 和 unix_users
     """
-    url = f"/rest/fileservice/v1/storages/{storage_id}/unix-users/query"
+    url = "/rest/fileservice/v1/storages/{storage_id}/unix-users/query"
 
     payload = {
         'page_no': page_no,
@@ -1175,7 +1202,7 @@ def account_show_unix_users(client: DMEAPIClient, storage_id: str, vstore_raw_id
     if name is not None:
         payload['name'] = name
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1195,7 +1222,7 @@ def account_show_windows_users(client: DMEAPIClient, storage_id: str, vstore_raw
     Returns:
         Windows 认证用户信息列表，包含 total 和 windows_users
     """
-    url = f"/rest/fileservice/v1/storages/{storage_id}/windows-users/query"
+    url = "/rest/fileservice/v1/storages/{storage_id}/windows-users/query"
 
     payload = {
         'page_no': page_no,
@@ -1207,7 +1234,7 @@ def account_show_windows_users(client: DMEAPIClient, storage_id: str, vstore_raw
     if name is not None:
         payload['name'] = name
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1227,7 +1254,7 @@ def account_show_local_user_groups(client: DMEAPIClient, storage_id: str, vstore
     Returns:
         本地认证用户组信息列表，包含 total 和 local_user_groups
     """
-    url = f"/rest/fileservice/v1/storages/{storage_id}/local-user-groups/query"
+    url = "/rest/fileservice/v1/storages/{storage_id}/local-user-groups/query"
 
     payload = {
         'page_no': page_no,
@@ -1239,7 +1266,7 @@ def account_show_local_user_groups(client: DMEAPIClient, storage_id: str, vstore
     if name is not None:
         payload['name'] = name
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1259,7 +1286,7 @@ def account_show_unix_user_groups(client: DMEAPIClient, storage_id: str, vstore_
     Returns:
         UNIX 认证用户组信息列表，包含 total 和 unix_user_groups
     """
-    url = f"/rest/fileservice/v1/storages/{storage_id}/unix-user-groups/query"
+    url = "/rest/fileservice/v1/storages/{storage_id}/unix-user-groups/query"
 
     payload = {
         'page_no': page_no,
@@ -1271,7 +1298,7 @@ def account_show_unix_user_groups(client: DMEAPIClient, storage_id: str, vstore_
     if name is not None:
         payload['name'] = name
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1291,7 +1318,7 @@ def account_show_windows_user_groups(client: DMEAPIClient, storage_id: str, vsto
     Returns:
         Windows 认证用户组信息列表，包含 total 和 windows_user_groups
     """
-    url = f"/rest/fileservice/v1/storages/{storage_id}/windows-user-groups/query"
+    url = "/rest/fileservice/v1/storages/{storage_id}/windows-user-groups/query"
 
     payload = {
         'page_no': page_no,
@@ -1303,7 +1330,7 @@ def account_show_windows_user_groups(client: DMEAPIClient, storage_id: str, vsto
     if name is not None:
         payload['name'] = name
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1374,7 +1401,7 @@ def qos_list(client: DMEAPIClient, storage_id: str, name: str = None,
     if sort_dir is not None:
         payload['sort_dir'] = sort_dir
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1388,8 +1415,8 @@ def qos_show(client: DMEAPIClient, qos_policy_id: str) -> dict:
         client: DME API 客户端
         qos_policy_id: QoS 策略 ID（必选）
     """
-    url = f"/rest/storagepolicy/v1/qos/{qos_policy_id}/detail"
-    response = client.get(url)
+    url = "/rest/storagepolicy/v1/qos/{qos_policy_id}/detail"
+    response = client.get(url, params={"qos_policy_id": qos_policy_id})
     return response
 
 
@@ -1535,7 +1562,7 @@ def qos_create(client: DMEAPIClient, name: str, storage_id: str,
             schedule_start_time['weekly_days'] = weekly_days
         payload['schedule_start_time'] = schedule_start_time
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1585,7 +1612,16 @@ def qos_modify(client: DMEAPIClient, qos_policy_id: str,
         alarm_threshold: 告警阈值%（可选）
         resume_threshold: 恢复阈值%（可选）
     """
-    url = f"/rest/storagepolicy/v1/qos/{qos_policy_id}"
+    url = "/rest/storagepolicy/v1/qos/{qos_policy_id}"
+
+    payload = {}
+
+    if name is not None:
+        payload['name'] = name
+    if description is not None:
+        payload['description'] = description
+
+    io_param = {}
 
     payload = {}
 
@@ -1642,7 +1678,7 @@ def qos_modify(client: DMEAPIClient, qos_policy_id: str,
     if resume_threshold is not None:
         payload['resume_threshold'] = resume_threshold
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload)
     return response
 
 
@@ -1662,7 +1698,7 @@ def qos_delete(client: DMEAPIClient, qos_policy_ids: list) -> dict:
         'ids': qos_policy_ids
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1682,7 +1718,7 @@ def qos_activate(client: DMEAPIClient, qos_policy_ids: list) -> dict:
         'qos_ids': qos_policy_ids
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1702,7 +1738,7 @@ def qos_deactivate(client: DMEAPIClient, qos_policy_ids: list) -> dict:
         'qos_ids': qos_policy_ids
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1719,14 +1755,14 @@ def qos_associate(client: DMEAPIClient, qos_policy_id: str,
         resource_ids: 资源 ID 列表（必选）
         resource_type: 资源类型（必选，file_system/vstore）
     """
-    url = f"/rest/storagepolicy/v1/qos/{qos_policy_id}/resources/associate"
+    url = "/rest/storagepolicy/v1/qos/{qos_policy_id}/resources/associate"
 
     payload = {
         'resource_ids': resource_ids,
         'resource_type': resource_type
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, params={"qos_policy_id": qos_policy_id})
     return response
 
 
@@ -1743,14 +1779,14 @@ def qos_unassociate(client: DMEAPIClient, qos_policy_id: str,
         resource_ids: 资源 ID 列表（必选）
         resource_type: 资源类型（必选）
     """
-    url = f"/rest/storagepolicy/v1/qos/{qos_policy_id}/resources/unassociate"
+    url = "/rest/storagepolicy/v1/qos/{qos_policy_id}/resources/unassociate"
 
     payload = {
         'resource_ids': resource_ids,
         'resource_type': resource_type
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, params={"qos_policy_id": qos_policy_id})
     return response
 
 
@@ -1791,7 +1827,7 @@ def logic_port_list(client: DMEAPIClient, storage_id: str = None, vstore_raw_id:
     if scope is not None:
         payload['scope'] = scope
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1806,9 +1842,9 @@ def logic_port_show(client: DMEAPIClient, logic_port_id: str) -> dict:
     Returns:
         响应数据，包含逻辑端口的详细信息
     """
-    url = f"/rest/storagemgmt/v1/logic-ports/{logic_port_id}"
+    url = "/rest/storagemgmt/v1/logic-ports/{logic_port_id}"
 
-    response = client.get(url)
+    response = client.get(url, params={"logic_port_id": logic_port_id})
     return response
 
 
@@ -1900,7 +1936,7 @@ def logic_port_create(client: DMEAPIClient, storage_id: str, name: str, address_
     if failback_mode is not None:
         payload['failback_mode'] = failback_mode
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1938,7 +1974,16 @@ def logic_port_update(client: DMEAPIClient, logic_port_id: str,
     Returns:
         响应数据，包含 task_id
     """
-    url = f"/rest/storagemgmt/v1/logic-ports/{logic_port_id}"
+    url = "/rest/storagemgmt/v1/logic-ports/{logic_port_id}"
+
+    payload = {}
+
+    if name is not None:
+        payload['name'] = name
+    if address_family is not None:
+        payload['address_family'] = address_family
+    if mgmt_ip is not None:
+        payload['mgmt_ip'] = mgmt_ip
 
     payload = {}
 
@@ -1975,7 +2020,7 @@ def logic_port_update(client: DMEAPIClient, logic_port_id: str,
     if failback_mode is not None:
         payload['failback_mode'] = failback_mode
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload)
     return response
 
 
@@ -1996,7 +2041,7 @@ def logic_port_delete(client: DMEAPIClient, ids: list) -> dict:
         'ids': ids
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -2017,7 +2062,7 @@ def logic_port_failback(client: DMEAPIClient, id: str) -> dict:
         'id': id
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -2060,7 +2105,7 @@ def port_list(client: DMEAPIClient, storage_id: str = None, port_type: str = Non
             payload['ipv6'] = ipv6
         if port_name is not None:
             payload['port_name'] = port_name
-        response = client.post(url, json=payload)
+        response = client.post(url, body=payload)
         return response
     elif port_type is not None and port_type.lower() == 'bond':
         # Bond 端口查询
@@ -2068,7 +2113,7 @@ def port_list(client: DMEAPIClient, storage_id: str = None, port_type: str = Non
         payload = {'storage_id': storage_id}
         if zone_id is not None:
             payload['zone_id'] = zone_id
-        response = client.post(url, json=payload)
+        response = client.post(url, body=payload)
         return response
     elif port_type is not None and port_type.lower() == 'fc':
         # FC 端口查询
@@ -2079,7 +2124,7 @@ def port_list(client: DMEAPIClient, storage_id: str = None, port_type: str = Non
         }
         if storage_id is not None:
             payload['storage_id'] = storage_id
-        response = client.post(url, json=payload)
+        response = client.post(url, body=payload)
         return response
     elif port_type is not None and port_type.lower() == 'ib':
         # IB 端口查询
@@ -2087,7 +2132,7 @@ def port_list(client: DMEAPIClient, storage_id: str = None, port_type: str = Non
         payload = {}
         if storage_id is not None:
             payload['storage_id'] = storage_id
-        response = client.post(url, json=payload)
+        response = client.post(url, body=payload)
         return response
     elif port_type is not None and port_type.lower() == 'sas':
         # SAS 端口查询
@@ -2098,7 +2143,7 @@ def port_list(client: DMEAPIClient, storage_id: str = None, port_type: str = Non
         }
         if storage_id is not None:
             payload['storage_id'] = storage_id
-        response = client.post(url, json=payload)
+        response = client.post(url, body=payload)
         return response
     else:
         # 返回所有类型端口（ETH + FC + IB + SAS）
@@ -2121,7 +2166,7 @@ def port_list(client: DMEAPIClient, storage_id: str = None, port_type: str = Non
             eth_payload['ipv6'] = ipv6
         if port_name is not None:
             eth_payload['port_name'] = port_name
-        eth_response = client.post(eth_url, json=eth_payload)
+        eth_response = client.post(eth_url, body=eth_payload)
         # ETH 端口 API 返回结构：{'total': N, 'eth_ports': [...]}
         if 'eth_ports' in eth_response:
             all_eth_ports = eth_response.get('eth_ports', [])
@@ -2135,7 +2180,7 @@ def port_list(client: DMEAPIClient, storage_id: str = None, port_type: str = Non
         }
         if storage_id is not None:
             fc_payload['storage_id'] = storage_id
-        fc_response = client.post(fc_url, json=fc_payload)
+        fc_response = client.post(fc_url, body=fc_payload)
         # FC 端口 API 返回结构：{'total': N, 'ports': [...]}
         if 'ports' in fc_response:
             all_fc_ports = fc_response.get('ports', [])
@@ -2146,7 +2191,7 @@ def port_list(client: DMEAPIClient, storage_id: str = None, port_type: str = Non
         ib_payload = {}
         if storage_id is not None:
             ib_payload['storage_id'] = storage_id
-        ib_response = client.post(ib_url, json=ib_payload)
+        ib_response = client.post(ib_url, body=ib_payload)
         # IB 端口 API 返回结构：{'ib_ports': [...]}
         if 'ib_ports' in ib_response:
             all_ib_ports = ib_response.get('ib_ports', [])
@@ -2160,7 +2205,7 @@ def port_list(client: DMEAPIClient, storage_id: str = None, port_type: str = Non
         }
         if storage_id is not None:
             sas_payload['storage_id'] = storage_id
-        sas_response = client.post(sas_url, json=sas_payload)
+        sas_response = client.post(sas_url, body=sas_payload)
         # SAS 端口 API 返回结构：{'total': N, 'ports': [...]}
         if 'ports' in sas_response:
             all_sas_ports = sas_response.get('ports', [])
@@ -2186,9 +2231,9 @@ def port_show_bond_members(client: DMEAPIClient, bond_port_id: str) -> dict:
     Returns:
         响应数据，包含 total 和 eth_ports 字段
     """
-    url = f"/rest/storagemgmt/v1/bond-ports/{bond_port_id}/eth-ports"
+    url = "/rest/storagemgmt/v1/bond-ports/{bond_port_id}/eth-ports"
 
-    response = client.get(url)
+    response = client.get(url, params={"bond_port_id": bond_port_id})
     return response
 
 
@@ -2225,7 +2270,7 @@ def vlan_list(client: DMEAPIClient, name: str = None, storage_id: str = None,
     if storage_id is not None:
         body_params['storage_id'] = storage_id
 
-    response = client.post(url, json=body_params)
+    response = client.post(url, body=body_params)
     return response
 
 
@@ -2274,9 +2319,9 @@ def vlan_delete(client: DMEAPIClient, vlan_id: str) -> dict:
     Returns:
         响应数据
     """
-    url = f"/rest/vlanmgmt/v1/vlans/{vlan_id}"
+    url = "/rest/vlanmgmt/v1/vlans/{vlan_id}"
 
-    response = client.delete(url)
+    response = client.delete(url, params={"vlan_id": vlan_id})
     return response
 
 
@@ -2296,7 +2341,7 @@ def vlan_modify(client: DMEAPIClient, vlan_id: str, name: str = None,
     Returns:
         响应数据
     """
-    url = f"/rest/vlanmgmt/v1/vlans/{vlan_id}"
+    url = "/rest/vlanmgmt/v1/vlans/{vlan_id}"
 
     body_params = {}
     if name is not None:
@@ -2304,7 +2349,7 @@ def vlan_modify(client: DMEAPIClient, vlan_id: str, name: str = None,
     if description is not None:
         body_params['description'] = description
 
-    response = client.put(url, json=body_params)
+    response = client.put(url, params={"vlan_id": vlan_id})
     return response
 
 
@@ -2341,7 +2386,7 @@ def failover_group_list(client: DMEAPIClient, storage_id: str,
     if failover_group_service_type is not None:
         payload['failover_group_service_type'] = failover_group_service_type
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -2362,14 +2407,14 @@ def failover_group_show_ports(client: DMEAPIClient, failover_group_id: str,
 
     def query_port_type(ptype: str):
         if ptype == 'bond':
-            url = f"/rest/storagemgmt/v1/failover-groups/{failover_group_id}/bond-ports"
+            url = "/rest/storagemgmt/v1/failover-groups/{failover_group_id}/bond-ports"
         elif ptype == 'eth':
-            url = f"/rest/storagemgmt/v1/failover-groups/{failover_group_id}/eth-ports"
+            url = "/rest/storagemgmt/v1/failover-groups/{failover_group_id}/eth-ports"
         elif ptype == 'ib':
-            url = f"/rest/storagemgmt/v1/failover-groups/{failover_group_id}/ib-ports"
+            url = "/rest/storagemgmt/v1/failover-groups/{failover_group_id}/ib-ports"
         else:
             return (ptype, {'error': f'Invalid port_type: {ptype}'})
-        resp = client.get(url)
+        resp = client.get(url, params={"failover_group_id": failover_group_id})
         return (ptype, resp)
 
     if port_type is None:
@@ -2409,9 +2454,9 @@ def failover_group_show_vlans(client: DMEAPIClient, failover_group_id: str) -> d
     Returns:
         响应数据，包含 vlans 字段
     """
-    url = f"/rest/storagemgmt/v1/failover-groups/{failover_group_id}/vlans"
+    url = "/rest/storagemgmt/v1/failover-groups/{failover_group_id}/vlans"
 
-    response = client.get(url)
+    response = client.get(url, params={"failover_group_id": failover_group_id})
     return response
 
 

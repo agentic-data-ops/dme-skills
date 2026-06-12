@@ -8,7 +8,7 @@ import os
 # 添加父目录到路径，以便导入 dme_api_client
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from dme_api_client import DMEAPIClient
+from client.dme_api_client import DMEAPIClient
 
 
 # ==================== 备份集群管理 ====================
@@ -39,7 +39,7 @@ def list_clusters(client: DMEAPIClient, name: str = None,
     if name is not None:
         payload['name'] = name
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -56,9 +56,9 @@ def show_cluster_capacity(client: DMEAPIClient, cluster_id: str) -> dict:
     Returns:
         备份集群容量信息
     """
-    url = f"/rest/dmebackupsoftmgmtservice/v1/clusters/{cluster_id}/capacity"
+    url = "/rest/dmebackupsoftmgmtservice/v1/clusters/{cluster_id}/capacity"
     
-    response = client.get(url)
+    response = client.get(url, params={"cluster_id": cluster_id})
     return response
 
 
@@ -80,7 +80,7 @@ def list_cluster_quotas(client: DMEAPIClient, cluster_id: str,
     Returns:
         租户配额列表
     """
-    url = f"/rest/dmebackupsoftmgmtservice/v1/clusters/{cluster_id}/tenant-quotas/query"
+    url = "/rest/dmebackupsoftmgmtservice/v1/clusters/{cluster_id}/tenant-quotas/query"
     
     payload = {
         'page_no': page_no,
@@ -90,7 +90,7 @@ def list_cluster_quotas(client: DMEAPIClient, cluster_id: str,
     if quota_type is not None:
         payload['quota_type'] = quota_type
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload, params={"cluster_id": cluster_id})
     return response
 
 

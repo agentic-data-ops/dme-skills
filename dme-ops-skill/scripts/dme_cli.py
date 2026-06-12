@@ -16,7 +16,7 @@ from typing import Optional, Dict, Any, List, Tuple
 # 添加当前目录到路径
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from dme_api_client import DMEAPIClient
+from client.dme_api_client import DMEAPIClient
 
 
 class DMECLI:
@@ -582,8 +582,6 @@ def create_parser(cli: DMECLI) -> argparse.ArgumentParser:
                         default=os.environ.get('DME_API_PASSWORD'))
     parser.add_argument('--token', help='DME API 认证密钥（可选，提供则跳过登录）',
                         default=os.environ.get('DME_API_AUTH_TOKEN'))
-    parser.add_argument('--timeout', type=int, default=10,
-                        help='API 请求超时时间（秒），默认 10 秒')
 
     # 全局选项
     parser.add_argument('--list-topics', action='store_true',
@@ -775,15 +773,10 @@ def main():
                 username=username,
                 password=password,
                 auth_token=auth_token,
-                timeout=args.timeout
             )
 
             if not auth_token:
-                if not client.login():
-                    print("登录失败")
-                    sys.exit(1)
-            else:
-                print("使用提供的认证密钥")
+                client.login()
 
             cli.client = client
 
@@ -915,15 +908,10 @@ def main():
             username=username,
             password=password,
             auth_token=auth_token,
-            timeout=args.timeout
         )
 
         if not auth_token:
-            if not client.login():
-                print("登录失败")
-                sys.exit(1)
-        else:
-            print("使用提供的认证密钥")
+            client.login()
 
         cli.client = client
 

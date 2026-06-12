@@ -8,7 +8,7 @@ import os
 # 添加父目录到路径，以便导入 dme_api_client
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from dme_api_client import DMEAPIClient
+from client.dme_api_client import DMEAPIClient
 
 
 def ipswitch_list(client: DMEAPIClient, name: str = None, page_no: int = 1, page_size: int = 20) -> dict:
@@ -36,7 +36,7 @@ def ipswitch_list(client: DMEAPIClient, name: str = None, page_no: int = 1, page
     if name is not None:
         payload['name'] = name
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -63,7 +63,7 @@ def ipswitch_frame_list(client: DMEAPIClient, ipswitch_id: str, page_no: int = 1
         'page_size': page_size
     }
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -90,7 +90,7 @@ def ipswitch_board_list(client: DMEAPIClient, ipswitch_id: str, page_no: int = 1
         'page_size': page_size
     }
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -117,7 +117,7 @@ def ipswitch_subcard_list(client: DMEAPIClient, ipswitch_id: str, page_no: int =
         'page_size': page_size
     }
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -144,7 +144,7 @@ def ipswitch_power_list(client: DMEAPIClient, ipswitch_id: str, page_no: int = 1
         'page_size': page_size
     }
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -171,7 +171,7 @@ def ipswitch_fan_list(client: DMEAPIClient, ipswitch_id: str, page_no: int = 1, 
         'page_size': page_size
     }
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -198,7 +198,7 @@ def ipswitch_port_list(client: DMEAPIClient, ipswitch_id: str, page_no: int = 1,
         'page_size': page_size
     }
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 

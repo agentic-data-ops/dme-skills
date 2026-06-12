@@ -8,7 +8,7 @@ import os
 # 添加父目录到路径，以便导入 dme_api_client
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from dme_api_client import DMEAPIClient
+from client.dme_api_client import DMEAPIClient
 
 
 # ============================================================================
@@ -72,7 +72,7 @@ def group_list(client: DMEAPIClient, name: str = None, project_id: str = None,
     if sort_dir is not None:
         payload['sort_dir'] = sort_dir
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -109,7 +109,7 @@ def group_create(client: DMEAPIClient, name: str, storage_id: str,
     if lun_group_id is not None:
         payload['lun_group_id'] = lun_group_id
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -127,7 +127,7 @@ def group_modify(client: DMEAPIClient, pg_id: str, name: str = None,
     Returns:
         响应数据
     """
-    url = f"/rest/protection/v1/protection-groups/{pg_id}"
+    url = "/rest/protection/v1/protection-groups/{pg_id}"
 
     payload = {}
 
@@ -136,7 +136,7 @@ def group_modify(client: DMEAPIClient, pg_id: str, name: str = None,
     if description is not None:
         payload['description'] = description
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload, params={"pg_id": pg_id})
     return response
 
 
@@ -160,7 +160,7 @@ def group_delete(client: DMEAPIClient, pg_ids: list) -> dict:
         'pg_ids': pg_ids
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -204,7 +204,7 @@ def group_add_luns(client: DMEAPIClient, pg_id: str, lun_ids: list = None,
     Returns:
         响应数据，包含 task_id
     """
-    url = f"/rest/protection/v1/protection-groups/{pg_id}/add-luns"
+    url = "/rest/protection/v1/protection-groups/{pg_id}/add-luns"
 
     payload = {}
 
@@ -215,7 +215,7 @@ def group_add_luns(client: DMEAPIClient, pg_id: str, lun_ids: list = None,
     if rem_reps is not None:
         payload['rem_reps'] = rem_reps
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload, params={"pg_id": pg_id})
     return response
 
 
@@ -235,7 +235,7 @@ def group_remove_luns(client: DMEAPIClient, pg_id: str, lun_ids: list,
     Returns:
         响应数据，包含 task_id
     """
-    url = f"/rest/protection/v1/protection-groups/{pg_id}/remove-luns"
+    url = "/rest/protection/v1/protection-groups/{pg_id}/remove-luns"
 
     payload = {
         'lun_ids': lun_ids
@@ -244,7 +244,7 @@ def group_remove_luns(client: DMEAPIClient, pg_id: str, lun_ids: list,
     if is_delay is not None:
         payload['is_delay'] = is_delay
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload, params={"pg_id": pg_id})
     return response
 
 
@@ -306,7 +306,7 @@ def hypermetro_group_list(client: DMEAPIClient, page_no: int = 1, page_size: int
     if remote_vstore_raw_id is not None:
         payload['remote_vstore_raw_id'] = remote_vstore_raw_id
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -360,7 +360,7 @@ def hypermetro_group_create(client: DMEAPIClient, domain_id: str, name: str,
     if remote_resource_name_rule is not None:
         payload['remote_resource_name_rule'] = remote_resource_name_rule
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -385,7 +385,7 @@ def hypermetro_group_modify(client: DMEAPIClient, group_id: str, name: str = Non
     Returns:
         响应数据
     """
-    url = f"/rest/protection/v1/metro/groups/{group_id}"
+    url = "/rest/protection/v1/metro/groups/{group_id}"
 
     payload = {}
 
@@ -404,7 +404,7 @@ def hypermetro_group_modify(client: DMEAPIClient, group_id: str, name: str = Non
     if isolation_threshold_time is not None:
         payload['isolation_threshold_time'] = isolation_threshold_time
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload, params={"group_id": group_id})
     return response
 
 
@@ -432,7 +432,7 @@ def hypermetro_group_delete(client: DMEAPIClient, ids: list, delete_mode: str,
     if is_self_adapt is not None:
         payload['is_self_adapt'] = is_self_adapt
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -450,7 +450,7 @@ def hypermetro_group_add_pairs(client: DMEAPIClient, group_id: str, pair_ids: li
     Returns:
         响应数据，包含 task_id
     """
-    url = f"/rest/protection/v1/metro/groups/{group_id}/add-pairs"
+    url = "/rest/protection/v1/metro/groups/{group_id}/add-pairs"
 
     payload = {
         'pair_ids': pair_ids
@@ -459,7 +459,7 @@ def hypermetro_group_add_pairs(client: DMEAPIClient, group_id: str, pair_ids: li
     if is_self_adapt is not None:
         payload['is_self_adapt'] = is_self_adapt
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload, params={"group_id": group_id})
     return response
 
 
@@ -475,13 +475,13 @@ def hypermetro_group_remove_pairs(client: DMEAPIClient, group_id: str, pair_ids:
     Returns:
         响应数据，包含 task_id
     """
-    url = f"/rest/protection/v1/metro/groups/{group_id}/remove-pairs"
+    url = "/rest/protection/v1/metro/groups/{group_id}/remove-pairs"
 
     payload = {
         'pair_ids': pair_ids
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload, params={"group_id": group_id})
     return response
 
 
@@ -504,7 +504,7 @@ def hypermetro_group_pause(client: DMEAPIClient, ids: list, priority_station_typ
         'priority_station_type': priority_station_type
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -527,7 +527,7 @@ def hypermetro_group_force_startup(client: DMEAPIClient, ids: list, priority_sta
         'priority_station_type': priority_station_type
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -548,7 +548,7 @@ def hypermetro_group_switch_priority(client: DMEAPIClient, ids: list) -> dict:
         'ids': ids
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -624,7 +624,7 @@ def hypermetro_pair_list(client: DMEAPIClient, page_no: int = 1, page_size: int 
     if remote_volume_name is not None:
         payload['remote_volume_name'] = remote_volume_name
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -692,7 +692,7 @@ def hypermetro_pair_create(client: DMEAPIClient, create_mode: str, local_storage
     if recovery_policy is not None:
         payload['recovery_policy'] = recovery_policy
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -715,7 +715,7 @@ def hypermetro_pair_modify(client: DMEAPIClient, pair_id: str, speed: str = None
     Returns:
         响应数据
     """
-    url = f"/rest/protection/v1/metro/lun-pairs/{pair_id}"
+    url = "/rest/protection/v1/metro/lun-pairs/{pair_id}"
 
     payload = {}
 
@@ -730,7 +730,7 @@ def hypermetro_pair_modify(client: DMEAPIClient, pair_id: str, speed: str = None
     if isolation_threshold_time is not None:
         payload['isolation_threshold_time'] = isolation_threshold_time
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload, params={"pair_id": pair_id})
     return response
 
 
@@ -762,7 +762,7 @@ def hypermetro_pair_delete(client: DMEAPIClient, ids: list, delete_mode: str = N
     if is_lun_service_interrupt is not None:
         payload['is_lun_service_interrupt'] = is_lun_service_interrupt
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -783,7 +783,7 @@ def hypermetro_pair_sync(client: DMEAPIClient, ids: list) -> dict:
         'ids': ids
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -806,7 +806,7 @@ def hypermetro_pair_pause(client: DMEAPIClient, ids: list, priority_station_type
         'priority_station_type': priority_station_type
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -829,7 +829,7 @@ def hypermetro_pair_force_startup(client: DMEAPIClient, ids: list, priority_stat
         'priority_station_type': priority_station_type
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -850,7 +850,7 @@ def hypermetro_pair_switch_priority(client: DMEAPIClient, ids: list) -> dict:
         'ids': ids
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -882,7 +882,7 @@ def hypermetro_domain_list(client: DMEAPIClient, storage_id: str = None,
     if types is not None:
         payload['types'] = types
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -951,7 +951,7 @@ def replication_pair_list(client: DMEAPIClient, page_no: int = 1, page_size: int
     if remote_volume_name is not None:
         payload['remote_volume_name'] = remote_volume_name
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1034,7 +1034,7 @@ def replication_pair_create(client: DMEAPIClient, local_storage_id: str,
     if enable_compress is not None:
         payload['enable_compress'] = enable_compress
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1065,7 +1065,7 @@ def replication_pair_modify(client: DMEAPIClient, pair_id: str, speed: str = Non
     Returns:
         响应数据
     """
-    url = f"/rest/protection/v1/replication/lun-pairs/{pair_id}"
+    url = "/rest/protection/v1/replication/lun-pairs/{pair_id}"
 
     payload = {}
 
@@ -1092,7 +1092,7 @@ def replication_pair_modify(client: DMEAPIClient, pair_id: str, speed: str = Non
     if switch_to_async is not None:
         payload['switch_to_async'] = switch_to_async
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload, params={"pair_id": pair_id})
     return response
 
 
@@ -1117,7 +1117,7 @@ def replication_pair_delete(client: DMEAPIClient, ids: list, delete_mode: str = 
     if delete_mode is not None:
         payload['delete_mode'] = delete_mode
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1138,7 +1138,7 @@ def replication_pair_sync(client: DMEAPIClient, ids: list) -> dict:
         'ids': ids
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1159,7 +1159,7 @@ def replication_pair_split(client: DMEAPIClient, ids: list) -> dict:
         'ids': ids
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1180,7 +1180,7 @@ def replication_pair_switch(client: DMEAPIClient, ids: list) -> dict:
         'ids': ids
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1196,13 +1196,13 @@ def replication_pair_switch_write_protection(client: DMEAPIClient, id: str, oper
     Returns:
         响应数据，包含 task_id
     """
-    url = f"/rest/protection/v1/replication/lun-pairs/{id}/switch-write-protection"
+    url = "/rest/protection/v1/replication/lun-pairs/{id}/switch-write-protection"
 
     payload = {
         'operation_type': operation_type
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload, params={"id": id})
     return response
 
 
@@ -1230,7 +1230,7 @@ def device_pair_list(client: DMEAPIClient, storage_id: str = None) -> dict:
     if storage_id is not None:
         payload['storage_id'] = storage_id
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1254,7 +1254,7 @@ def replication_link_list(client: DMEAPIClient, storage_id: str = None) -> dict:
     if storage_id is not None:
         payload['storage_id'] = storage_id
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1318,7 +1318,7 @@ def snapshot_list(client: DMEAPIClient, snapshot_ids: list = None, storage_id: s
     if activated_time_to is not None:
         payload['activated_time_to'] = activated_time_to
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1345,7 +1345,7 @@ def snapshot_create(client: DMEAPIClient, snapshots_info: list, is_consist_activ
     if is_consist_activate is not None:
         payload['is_consist_activate'] = is_consist_activate
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1370,7 +1370,7 @@ def snapshot_rollback(client: DMEAPIClient, rollback_speed: str, rollback_snapsh
         'rollback_snapshots': rollback_snapshots
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1401,7 +1401,7 @@ def snapshot_delete(client: DMEAPIClient, snapshot_ids: list, is_delete_target_l
     if is_auto_deactivate is not None:
         payload['is_auto_deactivate'] = is_auto_deactivate
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1436,7 +1436,7 @@ def snapshot_group_create(client: DMEAPIClient, name: str, protect_group_id: str
     if creation_mode is not None:
         payload['creation_mode'] = creation_mode
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1461,7 +1461,7 @@ def snapshot_group_delete(client: DMEAPIClient, snapshot_cg_ids: list, is_delete
     if is_delete_target_lun is not None:
         payload['is_delete_target_lun'] = is_delete_target_lun
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1485,7 +1485,7 @@ def snapshot_group_activate(client: DMEAPIClient, snapshot_cg_id: str, object_ty
     Returns:
         响应数据，包含 task_id
     """
-    url = f"/rest/protection/v1/snapshot-consistency-groups/{snapshot_cg_id}/activate"
+    url = "/rest/protection/v1/snapshot-consistency-groups/{snapshot_cg_id}/activate"
 
     payload = {}
 
@@ -1502,7 +1502,7 @@ def snapshot_group_activate(client: DMEAPIClient, snapshot_cg_id: str, object_ty
     if target_snapshot_objects is not None:
         payload['target_snapshot_objects'] = target_snapshot_objects
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload, params={"snapshot_cg_id": snapshot_cg_id})
     return response
 
 
@@ -1523,7 +1523,7 @@ def snapshot_group_deactivate(client: DMEAPIClient, snapshot_cg_ids: list) -> di
         'snapshot_cg_ids': snapshot_cg_ids
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1547,7 +1547,7 @@ def snapshot_group_rollback(client: DMEAPIClient, snapshot_cg_id: str, rollback_
     Returns:
         响应数据，包含 task_id
     """
-    url = f"/rest/protection/v1/snapshot-consistency-groups/{snapshot_cg_id}/rollback"
+    url = "/rest/protection/v1/snapshot-consistency-groups/{snapshot_cg_id}/rollback"
 
     payload = {}
 
@@ -1564,7 +1564,7 @@ def snapshot_group_rollback(client: DMEAPIClient, snapshot_cg_id: str, rollback_
     if target_snapshot_objects is not None:
         payload['target_snapshot_objects'] = target_snapshot_objects
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload, params={"snapshot_cg_id": snapshot_cg_id})
     return response
 
 
@@ -1619,7 +1619,7 @@ def clone_group_create(client: DMEAPIClient, name: str, protect_group_id: str,
     if clone_pairs is not None:
         payload['clone_pairs'] = clone_pairs
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1641,7 +1641,7 @@ def clone_group_synchronize(client: DMEAPIClient, clone_group_id: str, create_mo
     Returns:
         响应数据，包含 task_id
     """
-    url = f"/rest/protection/v1/clone-consistency-groups/{clone_group_id}/synchronize"
+    url = "/rest/protection/v1/clone-consistency-groups/{clone_group_id}/synchronize"
 
     payload = {}
 
@@ -1656,7 +1656,7 @@ def clone_group_synchronize(client: DMEAPIClient, clone_group_id: str, create_mo
     if clone_pairs is not None:
         payload['clone_pairs'] = clone_pairs
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload, params={"clone_group_id": clone_group_id})
     return response
 
 
@@ -1685,7 +1685,7 @@ def clone_group_delete(client: DMEAPIClient, ids: list, is_delete_dst_lun: bool 
     if is_recycle_dst_lun_data is not None:
         payload['is_recycle_dst_lun_data'] = is_recycle_dst_lun_data
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1759,7 +1759,7 @@ def replication_group_create(client: DMEAPIClient, cg_name: str, remote_storage_
     if name_suffix is not None:
         payload['name_suffix'] = name_suffix
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1793,7 +1793,7 @@ def replication_group_modify(client: DMEAPIClient, replication_group_id: str, na
     Returns:
         响应数据
     """
-    url = f"/rest/protection/v1/replication/groups/{replication_group_id}"
+    url = "/rest/protection/v1/replication/groups/{replication_group_id}"
 
     payload = {}
 
@@ -1824,7 +1824,7 @@ def replication_group_modify(client: DMEAPIClient, replication_group_id: str, na
     if switch_to_async is not None:
         payload['switch_to_async'] = switch_to_async
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload, params={"replication_group_id": replication_group_id})
     return response
 
 
@@ -1853,7 +1853,7 @@ def replication_group_delete(client: DMEAPIClient, ids: list, is_self_adapt: boo
     if delete_mode is not None:
         payload['delete_mode'] = delete_mode
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1869,13 +1869,13 @@ def replication_group_add_pairs(client: DMEAPIClient, group_id: str, pair_ids: l
     Returns:
         响应数据，包含 task_id
     """
-    url = f"/rest/protection/v1/replication/groups/{group_id}/add-pairs"
+    url = "/rest/protection/v1/replication/groups/{group_id}/add-pairs"
 
     payload = {
         'pair_ids': pair_ids
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload, params={"group_id": group_id})
     return response
 
 
@@ -1891,13 +1891,13 @@ def replication_group_remove_pairs(client: DMEAPIClient, group_id: str, pair_ids
     Returns:
         响应数据，包含 task_id
     """
-    url = f"/rest/protection/v1/replication/groups/{group_id}/remove-pairs"
+    url = "/rest/protection/v1/replication/groups/{group_id}/remove-pairs"
 
     payload = {
         'pair_ids': pair_ids
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload, params={"group_id": group_id})
     return response
 
 
@@ -1921,7 +1921,7 @@ def replication_group_sync(client: DMEAPIClient, ids: list) -> dict:
         'ids': ids
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1945,7 +1945,7 @@ def replication_group_split(client: DMEAPIClient, ids: list) -> dict:
         'ids': ids
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1969,7 +1969,7 @@ def replication_group_switch(client: DMEAPIClient, ids: list) -> dict:
         'ids': ids
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1985,13 +1985,13 @@ def replication_group_switch_write_protection(client: DMEAPIClient, id: str, ope
     Returns:
         响应数据，包含 task_id
     """
-    url = f"/rest/protection/v1/replication/groups/{id}/switch-write-protection"
+    url = "/rest/protection/v1/replication/groups/{id}/switch-write-protection"
 
     payload = {
         'operation_type': operation_type
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload, params={"id": id})
     return response
 
 

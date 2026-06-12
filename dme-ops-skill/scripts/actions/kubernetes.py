@@ -8,7 +8,7 @@ import os
 # 添加父目录到路径，以便导入 dme_api_client
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from dme_api_client import DMEAPIClient
+from client.dme_api_client import DMEAPIClient
 
 
 def list_clusters(client: DMEAPIClient, name: str = None,
@@ -37,7 +37,7 @@ def list_clusters(client: DMEAPIClient, name: str = None,
     if name is not None:
         payload['name'] = name
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -70,7 +70,7 @@ def list_nodes(client: DMEAPIClient, cluster_id: str = None,
     if name is not None:
         payload['name'] = name
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -107,7 +107,7 @@ def list_pods(client: DMEAPIClient, cluster_id: str = None,
     if name is not None:
         payload['name'] = name
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -140,7 +140,7 @@ def list_namespaces(client: DMEAPIClient, cluster_id: str = None,
     if name is not None:
         payload['name'] = name
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -177,7 +177,7 @@ def list_pvcs(client: DMEAPIClient, cluster_id: str = None,
     if name is not None:
         payload['name'] = name
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -210,7 +210,7 @@ def list_pvs(client: DMEAPIClient, cluster_id: str = None,
     if name is not None:
         payload['name'] = name
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 

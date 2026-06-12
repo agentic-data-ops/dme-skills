@@ -7,7 +7,7 @@ import os
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from dme_api_client import DMEAPIClient
+from client.dme_api_client import DMEAPIClient
 
 
 # ============================================================================
@@ -70,7 +70,7 @@ def dpc_list(client: DMEAPIClient, ids: list = None, hostname: str = None, ip: s
     if client_version is not None:
         payload['client_version'] = client_version
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -87,9 +87,9 @@ def dpc_show(client: DMEAPIClient, dpc_id: str) -> dict:
     Returns:
         并行客户端详细信息
     """
-    url = f"/rest/dpc-mgmt/v1/dpcs/{dpc_id}"
+    url = "/rest/dpc-mgmt/v1/dpcs/{dpc_id}"
 
-    response = client.get(url)
+    response = client.get(url, params={"dpc_id": dpc_id})
     return response
 
 
@@ -195,7 +195,7 @@ def dtree_list(client: DMEAPIClient, id_in_storage: str = None, name: str = None
     if dc_name is not None:
         payload['dc_name'] = dc_name
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -210,9 +210,9 @@ def dtree_show(client: DMEAPIClient, dtree_id: str) -> dict:
     Returns:
         Dtree 详细信息
     """
-    url = f"/rest/fileservice/v1/dtrees/{dtree_id}"
+    url = "/rest/fileservice/v1/dtrees/{dtree_id}"
 
-    response = client.get(url)
+    response = client.get(url, params={"dtree_id": dtree_id})
     return response
 
 
@@ -305,7 +305,7 @@ def dtree_create(client: DMEAPIClient, storage_id: str, create_dtrees_param: lis
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -330,7 +330,7 @@ def dtree_delete(client: DMEAPIClient, dtree_ids: list, task_remarks: str = None
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -354,7 +354,16 @@ def dtree_modify(client: DMEAPIClient, dtree_id: str, name: str = None,
     Returns:
         响应数据，包含 task_id
     """
-    url = f"/rest/fileservice/v1/dtrees/{dtree_id}"
+    url = "/rest/fileservice/v1/dtrees/{dtree_id}"
+
+    payload = {}
+
+    if name is not None:
+        payload['name'] = name
+    if quota_switch is not None:
+        payload['quota_switch'] = quota_switch
+    if security_mode is not None:
+        payload['security_mode'] = security_mode
 
     payload = {}
 
@@ -371,7 +380,7 @@ def dtree_modify(client: DMEAPIClient, dtree_id: str, name: str = None,
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload)
     return response
 
 
@@ -486,7 +495,7 @@ def nfs_share_list(client: DMEAPIClient, id_in_storage: str = None, name: str = 
     if scope is not None:
         payload['scope'] = scope
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -501,9 +510,9 @@ def nfs_share_show(client: DMEAPIClient, nfs_share_id: str) -> dict:
     Returns:
         NFS 共享详细信息
     """
-    url = f"/rest/fileservice/v1/nfs-shares/{nfs_share_id}"
+    url = "/rest/fileservice/v1/nfs-shares/{nfs_share_id}"
 
-    response = client.get(url)
+    response = client.get(url, params={"nfs_share_id": nfs_share_id})
     return response
 
 
@@ -559,7 +568,7 @@ def nfs_share_create(client: DMEAPIClient, create_nfs_share_param: dict,
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -625,7 +634,16 @@ def nfs_share_modify(client: DMEAPIClient, nfs_share_id: str,
     Returns:
         响应数据
     """
-    url = f"/rest/fileservice/v2/nfs-shares/{nfs_share_id}"
+    url = "/rest/fileservice/v2/nfs-shares/{nfs_share_id}"
+
+    payload = {}
+
+    if description is not None:
+        payload['description'] = description
+    if character_encoding is not None:
+        payload['character_encoding'] = character_encoding
+    if audit_items is not None:
+        payload['audit_items'] = audit_items
 
     payload = {}
 
@@ -648,7 +666,7 @@ def nfs_share_modify(client: DMEAPIClient, nfs_share_id: str,
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload)
     return response
 
 
@@ -674,7 +692,7 @@ def nfs_share_delete(client: DMEAPIClient, nfs_share_ids: list,
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -794,7 +812,7 @@ def cifs_share_list(client: DMEAPIClient, raw_id: str = None, name: str = None,
     if dc_name is not None:
         payload['dc_name'] = dc_name
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -809,9 +827,9 @@ def cifs_share_show(client: DMEAPIClient, cifs_share_id: str) -> dict:
     Returns:
         CIFS 共享详细信息
     """
-    url = f"/rest/fileservice/v1/cifs-shares/{cifs_share_id}"
+    url = "/rest/fileservice/v1/cifs-shares/{cifs_share_id}"
 
-    response = client.get(url)
+    response = client.get(url, params={"cifs_share_id": cifs_share_id})
     return response
 
 
@@ -879,7 +897,7 @@ def cifs_share_create(client: DMEAPIClient, create_cifs_param: dict, fs_id: str 
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -949,7 +967,16 @@ def cifs_share_modify(client: DMEAPIClient, cifs_share_id: str, description: str
     Returns:
         响应数据，包含 task_id
     """
-    url = f"/rest/fileservice/v1/cifs-shares/{cifs_share_id}"
+    url = "/rest/fileservice/v1/cifs-shares/{cifs_share_id}"
+
+    payload = {}
+
+    if description is not None:
+        payload['description'] = description
+    if op_lock_enabled is not None:
+        payload['op_lock_enabled'] = op_lock_enabled
+    if notify_enabled is not None:
+        payload['notify_enabled'] = notify_enabled
 
     payload = {}
 
@@ -992,7 +1019,7 @@ def cifs_share_modify(client: DMEAPIClient, cifs_share_id: str, description: str
     if enable_lease is not None:
         payload['enable_lease'] = enable_lease
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload)
     return response
 
 
@@ -1017,7 +1044,7 @@ def cifs_share_delete(client: DMEAPIClient, cifs_share_ids: list, task_remarks: 
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1071,7 +1098,16 @@ def cifs_share_show_permissions(client: DMEAPIClient, cifs_share_id: str,
 
     # 根据 type 参数查询对应类型的权限
     if type is None or type == 'user':
-        url = f"/rest/fileservice/v1/cifs-shares/{cifs_share_id}/auth-users/query"
+        url = "/rest/fileservice/v1/cifs-shares/{cifs_share_id}/auth-users/query"
+        payload = {}
+        if user_filter is not None:
+            for key, value in user_filter.items():
+                if value is not None:
+                    payload[key] = value
+        if sort_key is not None:
+            payload['sort_key'] = sort_key
+        if sort_dir is not None:
+            payload['sort_dir'] = sort_dir
         payload = {}
         if user_filter is not None:
             for key, value in user_filter.items():
@@ -1085,12 +1121,21 @@ def cifs_share_show_permissions(client: DMEAPIClient, cifs_share_id: str,
             payload['page_no'] = page_no
         if page_size is not None:
             payload['page_size'] = page_size
-        response = client.post(url, json=payload)
+        response = client.post(url, body=payload)
         if response.get('auth_users'):
             result['user'] = response.get('auth_users')
 
     if type is None or type == 'ip':
-        url = f"/rest/fileservice/v1/cifs-shares/{cifs_share_id}/ip-access-rules/query"
+        url = "/rest/fileservice/v1/cifs-shares/{cifs_share_id}/ip-access-rules/query"
+        payload = {}
+        if ip_filter is not None:
+            for key, value in ip_filter.items():
+                if value is not None:
+                    payload[key] = value
+        if sort_key is not None:
+            payload['sort_key'] = sort_key
+        if sort_dir is not None:
+            payload['sort_dir'] = sort_dir
         payload = {}
         if ip_filter is not None:
             for key, value in ip_filter.items():
@@ -1104,12 +1149,21 @@ def cifs_share_show_permissions(client: DMEAPIClient, cifs_share_id: str,
             payload['page_no'] = page_no
         if page_size is not None:
             payload['page_size'] = page_size
-        response = client.post(url, json=payload)
+        response = client.post(url, body=payload)
         if response.get('ip_access_rules'):
             result['ip'] = response.get('ip_access_rules')
 
     if type is None or type == 'file':
-        url = f"/rest/fileservice/v1/cifs-shares/{cifs_share_id}/file-filter-rules/query"
+        url = "/rest/fileservice/v1/cifs-shares/{cifs_share_id}/file-filter-rules/query"
+        payload = {}
+        if file_filter is not None:
+            for key, value in file_filter.items():
+                if value is not None:
+                    payload[key] = value
+        if sort_key is not None:
+            payload['sort_key'] = sort_key
+        if sort_dir is not None:
+            payload['sort_dir'] = sort_dir
         payload = {}
         if file_filter is not None:
             for key, value in file_filter.items():
@@ -1123,7 +1177,7 @@ def cifs_share_show_permissions(client: DMEAPIClient, cifs_share_id: str,
             payload['page_no'] = page_no
         if page_size is not None:
             payload['page_size'] = page_size
-        response = client.post(url, json=payload)
+        response = client.post(url, body=payload)
         if response.get('file_filter_rules'):
             result['file'] = response.get('file_filter_rules')
 
@@ -1219,7 +1273,7 @@ def dataturbo_share_list(client: DMEAPIClient, page_no: int = 1, page_size: int 
     if sort_dir is not None:
         payload['sort_dir'] = sort_dir
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1234,9 +1288,9 @@ def dataturbo_share_show(client: DMEAPIClient, dataturbo_share_id: str) -> dict:
     Returns:
         DataTurbo 共享详细信息
     """
-    url = f"/rest/fileservice/v1/dpc-shares/{dataturbo_share_id}"
+    url = "/rest/fileservice/v1/dpc-shares/{dataturbo_share_id}"
 
-    response = client.get(url)
+    response = client.get(url, params={"dataturbo_share_id": dataturbo_share_id})
     return response
 
 
@@ -1278,7 +1332,7 @@ def dataturbo_share_create(client: DMEAPIClient, charset: str, fs_id: str = None
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1303,7 +1357,16 @@ def dataturbo_share_modify(client: DMEAPIClient, dataturbo_share_id: str, descri
     Returns:
         响应数据，包含 task_id
     """
-    url = f"/rest/fileservice/v1/dpc-shares/{dataturbo_share_id}"
+    url = "/rest/fileservice/v1/dpc-shares/{dataturbo_share_id}"
+
+    payload = {}
+
+    if description is not None:
+        payload['description'] = description
+    if dataturbo_share_auth_addition is not None:
+        payload['dpc_share_auth_addition'] = dataturbo_share_auth_addition
+    if dataturbo_share_auth_deletion is not None:
+        payload['dpc_share_auth_deletion'] = dataturbo_share_auth_deletion
 
     payload = {}
 
@@ -1316,7 +1379,7 @@ def dataturbo_share_modify(client: DMEAPIClient, dataturbo_share_id: str, descri
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload)
     return response
 
 
@@ -1342,7 +1405,7 @@ def dataturbo_share_delete(client: DMEAPIClient, dataturbo_share_ids: list,
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1365,7 +1428,7 @@ def dataturbo_share_show_permissions(client: DMEAPIClient, dataturbo_share_id: s
     Returns:
         DataTurbo 共享管理员权限列表
     """
-    url = f"/rest/fileservice/v1/dpc-shares/{dataturbo_share_id}/dpc-share-auths/query"
+    url = "/rest/fileservice/v1/dpc-shares/{dataturbo_share_id}/dpc-share-auths/query"
 
     payload = {
         'page_no': page_no,
@@ -1379,7 +1442,7 @@ def dataturbo_share_show_permissions(client: DMEAPIClient, dataturbo_share_id: s
     if permission is not None:
         payload['permission'] = permission
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1451,7 +1514,7 @@ def quota_list(client: DMEAPIClient, page_no: int = 1, page_size: int = 20,
     if zone_id is not None:
         payload['zone_id'] = zone_id
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1474,7 +1537,7 @@ def quota_show(client: DMEAPIClient, quota_id: str) -> dict:
         'page_size': 1
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1536,7 +1599,7 @@ def quota_create(client: DMEAPIClient, parent_id: str, parent_type: str,
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1565,7 +1628,16 @@ def quota_modify(client: DMEAPIClient, quota_id: str,
     Returns:
         响应数据，包含 task_id
     """
-    url = f"/rest/fileservice/v1/quotas/{quota_id}"
+    url = "/rest/fileservice/v1/quotas/{quota_id}"
+
+    payload = {}
+
+    if space_soft_quota is not None:
+        payload['space_soft_quota'] = space_soft_quota
+    if space_hard_quota is not None:
+        payload['space_hard_quota'] = space_hard_quota
+    if space_advisory_quota is not None:
+        payload['space_advisory_quota'] = space_advisory_quota
 
     payload = {}
 
@@ -1588,7 +1660,7 @@ def quota_modify(client: DMEAPIClient, quota_id: str,
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload)
     return response
 
 
@@ -1614,7 +1686,7 @@ def quota_delete(client: DMEAPIClient, quota_ids: list,
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1754,7 +1826,7 @@ def filesystem_list(client: DMEAPIClient, page_no: int = 1, page_size: int = 100
     if tag_filters is not None:
         payload['tag_filters'] = tag_filters
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1769,9 +1841,9 @@ def filesystem_show(client: DMEAPIClient, filesystem_id: str) -> dict:
     Returns:
         文件系统详细信息
     """
-    url = f"/rest/fileservice/v1/filesystems/{filesystem_id}"
+    url = "/rest/fileservice/v1/filesystems/{filesystem_id}"
 
-    response = client.get(url)
+    response = client.get(url, params={"filesystem_id": filesystem_id})
     return response
 
 
@@ -1796,7 +1868,7 @@ def filesystem_delete(client: DMEAPIClient, filesystem_ids: list, task_remarks: 
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1826,7 +1898,7 @@ def filesystem_batch_modify(client: DMEAPIClient, filesystems: list, task_remark
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -2040,7 +2112,7 @@ def filesystem_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
     if unix_permissions is not None:
         payload['unix_permissions'] = unix_permissions
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -2088,7 +2160,7 @@ def filesystem_query_available(client: DMEAPIClient, feature_type: str,
     if sort_dir is not None:
         payload['sort_dir'] = sort_dir
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -2204,7 +2276,16 @@ def filesystem_modify(client: DMEAPIClient, file_system_id: str, name: str = Non
     Returns:
         响应数据，包含 task_id
     """
-    url = f"/rest/fileservice/v1/filesystems/{file_system_id}"
+    url = "/rest/fileservice/v1/filesystems/{file_system_id}"
+
+    payload = {}
+
+    if name is not None:
+        payload['name'] = name
+    if description is not None:
+        payload['description'] = description
+    if capacity is not None:
+        payload['capacity'] = capacity
 
     payload = {}
 
@@ -2257,7 +2338,7 @@ def filesystem_modify(client: DMEAPIClient, file_system_id: str, name: str = Non
     if unix_permissions is not None:
         payload['unix_permissions'] = unix_permissions
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload)
     return response
 
 
@@ -2338,7 +2419,7 @@ def namespace_list(client: DMEAPIClient, page_no: int = 1, page_size: int = 100,
     if has_gfs is not None:
         payload['has_gfs'] = has_gfs
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -2376,9 +2457,9 @@ def namespace_show(client: DMEAPIClient, namespace_id: str) -> dict:
         - worm: WORM 参数
         等详细信息
     """
-    url = f"/rest/fileservice/v1/namespaces/{namespace_id}"
+    url = "/rest/fileservice/v1/namespaces/{namespace_id}"
     
-    response = client.get(url)
+    response = client.get(url, params={"namespace_id": namespace_id})
     return response
 
 
@@ -2557,7 +2638,7 @@ def namespace_create(client: DMEAPIClient, storage_id: str, pool_raw_id: str,
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -2656,7 +2737,16 @@ def namespace_modify(client: DMEAPIClient, namespace_id: str,
     Returns:
         响应数据，包含 task_id（异步任务 ID）
     """
-    url = f"/rest/fileservice/v1/namespaces/{namespace_id}"
+    url = "/rest/fileservice/v1/namespaces/{namespace_id}"
+    
+    payload = {}
+    
+    if enable_update_atime is not None:
+        payload['enable_update_atime'] = enable_update_atime
+    if show_snap_dir is not None:
+        payload['show_snap_dir'] = show_snap_dir
+    if trash_visible is not None:
+        payload['trash_visible'] = trash_visible
     
     payload = {}
     
@@ -2695,7 +2785,7 @@ def namespace_modify(client: DMEAPIClient, namespace_id: str,
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
     
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload)
     return response
 
 
@@ -2722,7 +2812,7 @@ def namespace_delete(client: DMEAPIClient, namespace_ids: list, task_remarks: st
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -2774,7 +2864,7 @@ def nfs_share_show_clients(client: DMEAPIClient, page_no: int = 1, page_size: in
     if sort_dir is not None:
         payload['sort_dir'] = sort_dir
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -2835,7 +2925,7 @@ def account_dataturbo_admin_list(client: DMEAPIClient, storage_id: str = None, v
     if sort_dir is not None:
         payload['sort_dir'] = sort_dir
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -2858,7 +2948,16 @@ def account_unix_user_modify(client: DMEAPIClient, id: str, raw_id: int = None,
     Returns:
         修改结果
     """
-    url = f"/rest/fileservice/v1/unix-users/{id}"
+    url = "/rest/fileservice/v1/unix-users/{id}"
+
+    payload = {}
+
+    if raw_id is not None:
+        payload['raw_id'] = raw_id
+    if description is not None:
+        payload['description'] = description
+    if primary_group_name is not None:
+        payload['primary_group_name'] = primary_group_name
 
     payload = {}
 
@@ -2873,7 +2972,7 @@ def account_unix_user_modify(client: DMEAPIClient, id: str, raw_id: int = None,
     if status_enable is not None:
         payload['status_enable'] = status_enable
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload)
     return response
 
 
@@ -2911,7 +3010,7 @@ def account_unix_user_group_create(client: DMEAPIClient, storage_id: str, name: 
     if zone_id is not None:
         payload['zone_id'] = zone_id
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -2932,7 +3031,7 @@ def account_unix_user_batch_delete(client: DMEAPIClient, ids: list) -> dict:
         'ids': ids,
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -2990,7 +3089,7 @@ def account_unix_user_group_list(client: DMEAPIClient, storage_id: str = None,
     if sort_dir is not None:
         payload['sort_dir'] = sort_dir
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -3005,9 +3104,9 @@ def account_unix_user_group_show(client: DMEAPIClient, id: str) -> dict:
     Returns:
         UNIX 用户组详情
     """
-    url = f"/rest/fileservice/v1/unix-user-groups/{id}"
+    url = "/rest/fileservice/v1/unix-user-groups/{id}"
 
-    response = client.get(url)
+    response = client.get(url, params={"id": id})
     return response
 
 
@@ -3026,7 +3125,7 @@ def account_unix_user_group_modify(client: DMEAPIClient, id: str,
     Returns:
         修改结果
     """
-    url = f"/rest/fileservice/v1/unix-user-groups/{id}"
+    url = "/rest/fileservice/v1/unix-user-groups/{id}"
 
     payload = {}
 
@@ -3035,7 +3134,7 @@ def account_unix_user_group_modify(client: DMEAPIClient, id: str,
     if description is not None:
         payload['description'] = description
 
-    response = client.put(url, json=payload)
+    response = client.put(url, params={"id": id})
     return response
 
 
@@ -3056,7 +3155,7 @@ def account_unix_user_group_batch_delete(client: DMEAPIClient, ids: list) -> dic
         'ids': ids,
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -3073,13 +3172,13 @@ def account_unix_user_remove_group(client: DMEAPIClient, user_id: str,
     Returns:
         操作结果
     """
-    url = f"/rest/fileservice/v1/unix-users/{user_id}/remove-secondary-group"
+    url = "/rest/fileservice/v1/unix-users/{user_id}/remove-secondary-group"
 
     payload = {
         'secondary_group_name_list': secondary_group_name_list,
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, params={"user_id": user_id})
     return response
 
 
@@ -3094,9 +3193,9 @@ def account_unix_user_show(client: DMEAPIClient, id: str) -> dict:
     Returns:
         UNIX 认证用户详情
     """
-    url = f"/rest/fileservice/v1/unix-users/{id}"
+    url = "/rest/fileservice/v1/unix-users/{id}"
 
-    response = client.get(url)
+    response = client.get(url, params={"id": id})
     return response
 
 
@@ -3159,7 +3258,7 @@ def account_unix_user_list(client: DMEAPIClient, storage_id: str = None,
     if sort_dir is not None:
         payload['sort_dir'] = sort_dir
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -3176,13 +3275,13 @@ def account_unix_user_add_group(client: DMEAPIClient, user_id: str,
     Returns:
         操作结果
     """
-    url = f"/rest/fileservice/v1/unix-users/{user_id}/add-secondary-group"
+    url = "/rest/fileservice/v1/unix-users/{user_id}/add-secondary-group"
 
     payload = {
         'secondary_group_name_list': secondary_group_name_list,
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, params={"user_id": user_id})
     return response
 
 
@@ -3234,7 +3333,7 @@ def account_unix_user_create(client: DMEAPIClient, storage_id: str, name: str, v
     if secondary_group_name_list is not None:
         payload['secondary_group_name_list'] = secondary_group_name_list
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -3279,7 +3378,7 @@ def kvcache_batch_create(client: DMEAPIClient, storage_id: str, zone_id: str,
     if max_survival_time is not None:
         payload['max_survival_time'] = max_survival_time
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -3300,7 +3399,16 @@ def kvcache_modify(client: DMEAPIClient, kv_cache_stores_id: str, name: str = No
     Returns:
         修改结果
     """
-    url = f"/rest/kvcachemgmt/v1/kv-cache-stores/{kv_cache_stores_id}"
+    url = "/rest/kvcachemgmt/v1/kv-cache-stores/{kv_cache_stores_id}"
+
+    payload = {}
+
+    if name is not None:
+        payload['name'] = name
+    if description is not None:
+        payload['description'] = description
+    if data_cleanup_switch is not None:
+        payload['data_cleanup_switch'] = data_cleanup_switch
 
     payload = {}
 
@@ -3313,7 +3421,7 @@ def kvcache_modify(client: DMEAPIClient, kv_cache_stores_id: str, name: str = No
     if max_survival_time is not None:
         payload['max_survival_time'] = max_survival_time
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload)
     return response
 
 
@@ -3334,7 +3442,7 @@ def kvcache_batch_delete(client: DMEAPIClient, ids: list) -> dict:
         'ids': ids,
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -3403,7 +3511,7 @@ def kvcache_list(client: DMEAPIClient, storage_id: str = None, id: str = None,
     if sort_key is not None:
         payload['sort_key'] = sort_key
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 

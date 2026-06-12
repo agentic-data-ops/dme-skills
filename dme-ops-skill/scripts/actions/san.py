@@ -9,7 +9,7 @@ import os
 # 添加父目录到路径，以便导入 dme_api_client
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from dme_api_client import DMEAPIClient
+from client.dme_api_client import DMEAPIClient
 
 # ============================================================================
 # LUN 子主题函数
@@ -25,7 +25,7 @@ import os
 # 添加父目录到路径，以便导入 dme_api_client
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from dme_api_client import DMEAPIClient
+from client.dme_api_client import DMEAPIClient
 
 
 def lun_list(client: DMEAPIClient, limit: int = 1000, offset: int = 0,
@@ -133,7 +133,7 @@ def lun_list(client: DMEAPIClient, limit: int = 1000, offset: int = 0,
     if support_provisioning is not None:
         query_params['support_provisioning'] = support_provisioning
     
-    response = client.get(url, query_params=query_params)
+    response = client.get(url, params=query_params)
     return response
 
 
@@ -148,9 +148,9 @@ def lun_show(client: DMEAPIClient, volume_id: str) -> dict:
     Returns:
         LUN 详细信息
     """
-    url = f"/rest/blockservice/v1/volumes/{volume_id}"
+    url = "/rest/blockservice/v1/volumes/{volume_id}"
 
-    response = client.get(url)
+    response = client.get(url, params={"volume_id": volume_id})
     return response
 
 
@@ -257,7 +257,7 @@ def lun_create(client: DMEAPIClient, storage_id: str, lun_specs: list = None,
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -282,7 +282,7 @@ def lun_delete(client: DMEAPIClient, volume_ids: list, task_remarks: str = None)
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -319,7 +319,7 @@ def lun_modify(client: DMEAPIClient, volume_id: str, name: str = None,
     Returns:
         响应数据，包含 task_id（异步任务）
     """
-    url = f"/rest/blockservice/v1/volumes/{volume_id}"
+    url = "/rest/blockservice/v1/volumes/{volume_id}"
 
     volume = {}
     if name is not None:
@@ -342,7 +342,7 @@ def lun_modify(client: DMEAPIClient, volume_id: str, name: str = None,
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload, params={"volume_id": volume_id})
     return response
 
 
@@ -366,7 +366,7 @@ def lun_modify_name(client: DMEAPIClient, volumes: list) -> dict:
         'volumes': volumes
     }
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload)
     return response
 
 
@@ -394,7 +394,7 @@ def lun_expand(client: DMEAPIClient, volumes: list, task_remarks: str = None) ->
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -416,7 +416,7 @@ def lun_connection(client: DMEAPIClient, volume_ids: list) -> dict:
         'lun_ids': volume_ids
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -490,7 +490,7 @@ def lun_group_list(client: DMEAPIClient, page_size: int = 20, page_no: int = 1,
     if support_provisioning is not None:
         body_params['support_provisioning'] = support_provisioning
 
-    response = client.post(url, json=body_params)
+    response = client.post(url, body=body_params)
     return response
 
 
@@ -508,9 +508,9 @@ def lun_group_show(client: DMEAPIClient, group_id: str, storage_id: str = None) 
     Returns:
         LUN 组详细信息
     """
-    url = f"/rest/blockservice/v1/lun-groups/{group_id}"
+    url = "/rest/blockservice/v1/lun-groups/{group_id}"
 
-    response = client.get(url)
+    response = client.get(url, params={"group_id": group_id})
     return response
 
 
@@ -608,7 +608,7 @@ def lun_group_create(client: DMEAPIClient, storage_id: str, name: str,
     if mapping_view is not None:
         body_params['mapping_view'] = mapping_view
 
-    response = client.post(url, json=body_params)
+    response = client.post(url, body=body_params)
     return response
 
 
@@ -634,7 +634,7 @@ def lun_group_delete(client: DMEAPIClient, lun_group_ids: list,
     if task_remarks is not None:
         body_params['task_remarks'] = task_remarks
 
-    response = client.post(url, json=body_params)
+    response = client.post(url, body=body_params)
     return response
 
 
@@ -695,7 +695,16 @@ def lun_group_add_luns(client: DMEAPIClient, group_id: str,
     Returns:
         响应数据
     """
-    url = f"/rest/blockservice/v1/lun-groups/{group_id}/add-luns"
+    url = "/rest/blockservice/v1/lun-groups/{group_id}/add-luns"
+
+    body_params = {}
+
+    if existing_lun_ids is not None:
+        body_params['existing_lun_ids'] = existing_lun_ids
+    if customize_volumes is not None:
+        body_params['customize_volumes'] = customize_volumes
+    if host_lun_id_infos is not None:
+        body_params['host_lun_id_infos'] = host_lun_id_infos
 
     body_params = {}
 
@@ -710,7 +719,7 @@ def lun_group_add_luns(client: DMEAPIClient, group_id: str,
     if task_remarks is not None:
         body_params['task_remarks'] = task_remarks
 
-    response = client.post(url, json=body_params)
+    response = client.post(url, body=body_params)
     return response
 
 
@@ -728,7 +737,7 @@ def lun_group_remove_luns(client: DMEAPIClient, group_id: str,
     Returns:
         响应数据
     """
-    url = f"/rest/blockservice/v1/lun-groups/{group_id}/remove-luns"
+    url = "/rest/blockservice/v1/lun-groups/{group_id}/remove-luns"
 
     body_params = {
         'lun_ids': lun_ids
@@ -737,7 +746,7 @@ def lun_group_remove_luns(client: DMEAPIClient, group_id: str,
     if task_remarks is not None:
         body_params['task_remarks'] = task_remarks
 
-    response = client.post(url, json=body_params)
+    response = client.post(url, params={"group_id": group_id})
     return response
 
 
@@ -757,7 +766,7 @@ def lun_group_show_luns(client: DMEAPIClient, group_id: str,
     Returns:
         响应数据，包含 LUN 列表
     """
-    url = f"/rest/blockservice/v1/lun-groups/{group_id}/luns/query"
+    url = "/rest/blockservice/v1/lun-groups/{group_id}/luns/query"
 
     body_params = {
         'page_size': page_size,
@@ -767,7 +776,16 @@ def lun_group_show_luns(client: DMEAPIClient, group_id: str,
     if health_status is not None:
         body_params['health_status'] = health_status
 
-    response = client.post(url, json=body_params)
+
+    body_params = {
+        'page_size': page_size,
+        'page_no': page_no
+    }
+
+    if health_status is not None:
+        body_params['health_status'] = health_status
+
+    response = client.post(url, body=body_params)
     return response
 
 
@@ -785,7 +803,7 @@ import os
 # 添加父目录到路径，以便导入 dme_api_client
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from dme_api_client import DMEAPIClient
+from client.dme_api_client import DMEAPIClient
 
 
 def mapping_view_create(
@@ -858,7 +876,7 @@ def mapping_view_create(
     if task_remarks is not None:
         body_params['task_remarks'] = task_remarks
 
-    response = client.post(url, json=body_params)
+    response = client.post(url, body=body_params)
     return response
 
 
@@ -882,7 +900,7 @@ def mapping_view_delete(client: DMEAPIClient, mapping_view_ids: list) -> dict:
     if mapping_view_ids is not None:
         body_params['mapping_view_ids'] = mapping_view_ids
 
-    response = client.post(url, json=body_params)
+    response = client.post(url, body=body_params)
     return response
 
 
@@ -1001,7 +1019,7 @@ def mapping_view_list(
     if sort_dir is not None:
         body_params['sort_dir'] = sort_dir
 
-    response = client.post(url, json=body_params)
+    response = client.post(url, body=body_params)
     return response
 
 
@@ -1048,7 +1066,7 @@ def query_host_lun_mapping(
     if lun_name is not None:
         body_params['lun_name'] = lun_name
 
-    response = client.post(url, json=body_params)
+    response = client.post(url, body=body_params)
     return response
 
 
@@ -1080,7 +1098,7 @@ def mapping_view_query(
         'storage_id': storage_id
     }
 
-    response = client.post(url, json=body_params)
+    response = client.post(url, body=body_params)
     return response
 
 
@@ -1172,7 +1190,7 @@ def storage_host_create(client: DMEAPIClient, storage_id: str,
     if vstore_id is not None:
         payload['vstore_id'] = vstore_id
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1195,7 +1213,7 @@ def storage_host_batch_query(client: DMEAPIClient, ids: list) -> dict:
         'ids': ids
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1281,7 +1299,7 @@ def storage_host_list(client: DMEAPIClient, page_size: int = None, page_no: int 
     if vstore_name is not None:
         payload['vstore_name'] = vstore_name
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1322,7 +1340,16 @@ def storage_host_modify(client: DMEAPIClient, storage_host_id: str,
     Returns:
         修改结果
     """
-    url = f"/rest/hostmgmt/v1/storage-hosts/{storage_host_id}"
+    url = "/rest/hostmgmt/v1/storage-hosts/{storage_host_id}"
+
+    payload = {}
+
+    if storage_host_name is not None:
+        payload['storage_host_name'] = storage_host_name
+    if storage_host_description is not None:
+        payload['storage_host_description'] = storage_host_description
+    if storage_host_ip is not None:
+        payload['storage_host_ip'] = storage_host_ip
 
     payload = {}
 
@@ -1347,7 +1374,7 @@ def storage_host_modify(client: DMEAPIClient, storage_host_id: str,
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload)
     return response
 
 
@@ -1370,7 +1397,7 @@ def storage_host_delete(client: DMEAPIClient, host_ids: list) -> dict:
         'host_ids': host_ids
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1418,7 +1445,7 @@ def storage_host_show_paths(client: DMEAPIClient, page_no: int = None, page_size
     if initiator_type is not None:
         payload['initiator_type'] = initiator_type
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 # ============================================================================
 # 存储主机组 (storage_host_group) 子主题函数
@@ -1480,7 +1507,7 @@ def storage_host_group_create(client: DMEAPIClient, storage_id: str, name: str,
     if vstore_id is not None:
         payload['vstore_id'] = vstore_id
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1543,7 +1570,7 @@ def storage_host_group_list(client: DMEAPIClient, storage_id: str = None, name: 
     if support_provisioning is not None:
         payload['support_provisioning'] = support_provisioning
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1582,7 +1609,7 @@ def storage_host_group_add_hosts(client: DMEAPIClient, storage_host_group_id: st
     Returns:
         任务 ID
     """
-    url = f"/rest/hostmgmt/v1/storage-hostgroups/{storage_host_group_id}/hosts/add"
+    url = "/rest/hostmgmt/v1/storage-hostgroups/{storage_host_group_id}/hosts/add"
 
     payload = {}
 
@@ -1593,7 +1620,16 @@ def storage_host_group_add_hosts(client: DMEAPIClient, storage_host_group_id: st
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.put(url, json=payload)
+    payload = {}
+
+    if storage_host_id_ids is not None:
+        payload['storage_host_id_ids'] = storage_host_id_ids
+    if create_storage_host_params is not None:
+        payload['create_storage_host_params'] = create_storage_host_params
+    if task_remarks is not None:
+        payload['task_remarks'] = task_remarks
+
+    response = client.put(url, body=payload)
     return response
 
 
@@ -1614,7 +1650,7 @@ def storage_host_group_remove_hosts(client: DMEAPIClient, storage_host_group_id:
     Returns:
         任务 ID
     """
-    url = f"/rest/hostmgmt/v1/storage-hostgroups/{storage_host_group_id}/hosts/remove"
+    url = "/rest/hostmgmt/v1/storage-hostgroups/{storage_host_group_id}/hosts/remove"
 
     payload = {
         'storage_host_ids': storage_host_ids
@@ -1623,7 +1659,7 @@ def storage_host_group_remove_hosts(client: DMEAPIClient, storage_host_group_id:
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.put(url, json=payload)
+    response = client.put(url, params={"storage_host_group_id": storage_host_group_id})
     return response
 
 
@@ -1651,7 +1687,7 @@ def storage_host_group_delete(client: DMEAPIClient, host_group_ids: list,
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1691,7 +1727,7 @@ def storage_host_show_luns(client: DMEAPIClient, storage_host_id: str,
     if sort_dir is not None:
         payload['sort_dir'] = sort_dir
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1731,7 +1767,7 @@ def storage_host_group_show_luns(client: DMEAPIClient, storage_host_group_id: st
     if sort_dir is not None:
         payload['sort_dir'] = sort_dir
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 # ============================================================================
 # 端口组 (port_group) 子主题函数
@@ -1761,7 +1797,7 @@ def port_group_list(client: DMEAPIClient, storage_id: str = None,
     if storage_id is not None:
         payload['storage_id'] = storage_id
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1794,7 +1830,7 @@ def port_group_create(client: DMEAPIClient, storage_id: str, name: str,
     if port_ids is not None:
         body_params['port_ids'] = port_ids
 
-    response = client.post(url, json=body_params)
+    response = client.post(url, body=body_params)
     return response
 
 
@@ -1814,7 +1850,7 @@ def port_group_show_ports(client: DMEAPIClient, port_group_id: str,
     Returns:
         响应数据，包含端口列表
     """
-    url = f"/rest/storagemgmt/v1/port-groups/{port_group_id}/ports/query"
+    url = "/rest/storagemgmt/v1/port-groups/{port_group_id}/ports/query"
 
     payload = {}
 
@@ -1825,7 +1861,16 @@ def port_group_show_ports(client: DMEAPIClient, port_group_id: str,
     if page_size is not None:
         payload['page_size'] = page_size
 
-    response = client.post(url, json=payload)
+    payload = {}
+
+    if type is not None:
+        payload['type'] = type
+    if page_no is not None:
+        payload['page_no'] = page_no
+    if page_size is not None:
+        payload['page_size'] = page_size
+
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1849,7 +1894,7 @@ def port_group_show_relations(client: DMEAPIClient, page_no: int = 1,
         'page_size': page_size
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1929,7 +1974,7 @@ def physical_host_list(client: DMEAPIClient, limit: int = None, start: int = Non
     if project_id is not None:
         payload['project_id'] = project_id
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1946,9 +1991,9 @@ def physical_host_show(client: DMEAPIClient, host_id: str) -> dict:
     Returns:
         物理主机详细信息
     """
-    url = f"/rest/hostmgmt/v1/hosts/{host_id}/summary"
+    url = "/rest/hostmgmt/v1/hosts/{host_id}/summary"
 
-    response = client.get(url)
+    response = client.get(url, params={"host_id": host_id})
     return response
 
 
@@ -2029,7 +2074,7 @@ def physical_host_create(client: DMEAPIClient, access_mode: str, type: str,
     if save_public_key is not None:
         payload['save_public_key'] = save_public_key
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -2054,7 +2099,16 @@ def physical_host_modify(client: DMEAPIClient, host_id: str,
     Returns:
         修改结果
     """
-    url = f"/rest/hostmgmt/v1/hosts/{host_id}/general"
+    url = "/rest/hostmgmt/v1/hosts/{host_id}/general"
+
+    payload = {}
+
+    if ip is not None:
+        payload['ip'] = ip
+    if host_name is not None:
+        payload['host_name'] = host_name
+    if os_type is not None:
+        payload['os_type'] = os_type
 
     payload = {}
 
@@ -2069,7 +2123,7 @@ def physical_host_modify(client: DMEAPIClient, host_id: str,
     if project_id is not None:
         payload['project_id'] = project_id
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload)
     return response
 
 
@@ -2104,7 +2158,16 @@ def physical_host_modify_access_info(client: DMEAPIClient, host_id: str,
     Returns:
         修改结果
     """
-    url = f"/rest/hostmgmt/v1/hosts/{host_id}/accessinfo"
+    url = "/rest/hostmgmt/v1/hosts/{host_id}/accessinfo"
+
+    payload = {}
+
+    if ip is not None:
+        payload['ip'] = ip
+    if port is not None:
+        payload['port'] = port
+    if username is not None:
+        payload['username'] = username
 
     payload = {}
 
@@ -2133,7 +2196,7 @@ def physical_host_modify_access_info(client: DMEAPIClient, host_id: str,
     if special_mode_type is not None:
         payload['special_mode_type'] = special_mode_type
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload)
     return response
 
 
@@ -2152,9 +2215,9 @@ def physical_host_delete(client: DMEAPIClient, host_id: str,
     Returns:
         删除结果
     """
-    url = f"/rest/hostmgmt/v1/hosts/{host_id}?sync_to_storage={str(sync_to_storage).lower()}"
+    url = "/rest/hostmgmt/v1/hosts/{host_id}"
 
-    response = client.delete(url)
+    response = client.delete(url, params={"host_id": host_id, "sync_to_storage": str(sync_to_storage).lower()})
     return response
 
 
@@ -2176,13 +2239,13 @@ def physical_host_add_initiators(client: DMEAPIClient, host_id: str,
     Returns:
         添加结果
     """
-    url = f"/rest/hostmgmt/v1/hosts/{host_id}/initiators/add"
+    url = "/rest/hostmgmt/v1/hosts/{host_id}/initiators/add"
 
     payload = {
         'initiators': initiators
     }
 
-    response = client.put(url, json=payload)
+    response = client.put(url, params={"host_id": host_id})
     return response
 
 
@@ -2201,13 +2264,13 @@ def physical_host_remove_initiators(client: DMEAPIClient, host_id: str,
     Returns:
         移除结果
     """
-    url = f"/rest/hostmgmt/v1/hosts/{host_id}/initiators/remove"
+    url = "/rest/hostmgmt/v1/hosts/{host_id}/initiators/remove"
 
     payload = {
         'initiators': initiators
     }
 
-    response = client.put(url, json=payload)
+    response = client.put(url, params={"host_id": host_id})
     return response
 
 
@@ -2229,7 +2292,7 @@ def physical_host_show_initiators(client: DMEAPIClient, host_id: str,
     Returns:
         启动器列表
     """
-    url = f"/rest/hostmgmt/v1/hosts/{host_id}/initiators"
+    url = "/rest/hostmgmt/v1/hosts/{host_id}/initiators"
 
     params = {}
     if port_name is not None:
@@ -2239,7 +2302,16 @@ def physical_host_show_initiators(client: DMEAPIClient, host_id: str,
     if status is not None:
         params['status'] = status
 
-    response = client.get(url, query_params=params)
+
+    params = {}
+    if port_name is not None:
+        params['port_name'] = port_name
+    if protocol is not None:
+        params['protocol'] = protocol
+    if status is not None:
+        params['status'] = status
+
+    response = client.get(url, params=params)
     return response
 
 
@@ -2282,7 +2354,7 @@ def physical_host_test(client: DMEAPIClient, storage_id: str,
     if target_fcportgroups is not None:
         payload['target_fcportgroups'] = target_fcportgroups
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -2312,7 +2384,7 @@ def physical_host_save_sshkey(client: DMEAPIClient, ip: str, key: str,
     if port is not None:
         payload['port'] = port
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload)
     return response
 
 
@@ -2340,7 +2412,7 @@ def physical_host_query_sshkey(client: DMEAPIClient, ip: str,
     if port is not None:
         params['port'] = port
 
-    response = client.get(url, query_params=params)
+    response = client.get(url, params=params)
     return response
 
 
@@ -2371,7 +2443,7 @@ def physical_host_query_by_initiator(client: DMEAPIClient, initiator_id: str = N
     if protocol is not None:
         payload['protocol'] = protocol
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -2419,7 +2491,7 @@ def physical_host_map_luns(client: DMEAPIClient, volume_ids: list, host_id: str,
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -2450,7 +2522,7 @@ def physical_host_unmap_luns(client: DMEAPIClient, volume_ids: list, host_id: st
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -2481,7 +2553,7 @@ def storage_host_unmap_luns(client: DMEAPIClient, volume_ids: list, host_id: str
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -2533,7 +2605,7 @@ def physical_host_group_list(client: DMEAPIClient, limit: int = None, start: int
     if managed_status is not None:
         payload['managed_status'] = managed_status
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -2564,7 +2636,16 @@ def physical_host_group_show_hosts(client: DMEAPIClient, hostgroup_id: str,
     Returns:
         物理主机列表
     """
-    url = f"/rest/hostmgmt/v1/hostgroups/{hostgroup_id}/hosts/list"
+    url = "/rest/hostmgmt/v1/hostgroups/{hostgroup_id}/hosts/list"
+
+    payload = {}
+
+    if name is not None:
+        payload['name'] = name
+    if ip is not None:
+        payload['ip'] = ip
+    if display_status is not None:
+        payload['display_status'] = display_status
 
     payload = {}
 
@@ -2587,7 +2668,7 @@ def physical_host_group_show_hosts(client: DMEAPIClient, hostgroup_id: str,
     if page_no is not None:
         payload['page_no'] = page_no
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -2604,9 +2685,9 @@ def physical_host_group_show(client: DMEAPIClient, hostgroup_id: str) -> dict:
     Returns:
         物理主机组详细信息
     """
-    url = f"/rest/hostmgmt/v1/hostgroups/{hostgroup_id}/summary"
+    url = "/rest/hostmgmt/v1/hostgroups/{hostgroup_id}/summary"
 
-    response = client.get(url)
+    response = client.get(url, params={"hostgroup_id": hostgroup_id})
     return response
 
 
@@ -2643,7 +2724,7 @@ def physical_host_group_create(client: DMEAPIClient, name: str, host_ids: list,
     if description is not None:
         payload['description'] = description
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -2666,7 +2747,16 @@ def physical_host_group_modify(client: DMEAPIClient, hostgroup_id: str,
     Returns:
         修改结果
     """
-    url = f"/rest/hostmgmt/v1/hostgroups/{hostgroup_id}/general"
+    url = "/rest/hostmgmt/v1/hostgroups/{hostgroup_id}/general"
+
+    payload = {}
+
+    if name is not None:
+        payload['name'] = name
+    if description is not None:
+        payload['description'] = description
+    if azs is not None:
+        payload['azs'] = azs
 
     payload = {}
 
@@ -2679,7 +2769,7 @@ def physical_host_group_modify(client: DMEAPIClient, hostgroup_id: str,
     if project_id is not None:
         payload['project_id'] = project_id
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload)
     return response
 
 
@@ -2698,9 +2788,9 @@ def physical_host_group_delete(client: DMEAPIClient, hostgroup_id: str,
     Returns:
         删除结果
     """
-    url = f"/rest/hostmgmt/v1/hostgroups/{hostgroup_id}?sync_to_storage={str(sync_to_storage).lower()}"
+    url = "/rest/hostmgmt/v1/hostgroups/{hostgroup_id}"
 
-    response = client.delete(url)
+    response = client.delete(url, params={"hostgroup_id": hostgroup_id, "sync_to_storage": str(sync_to_storage).lower()})
     return response
 
 
@@ -2720,13 +2810,13 @@ def physical_host_group_add_hosts(client: DMEAPIClient, hostgroup_id: str,
     Returns:
         添加结果
     """
-    url = f"/rest/hostmgmt/v1/hostgroups/{hostgroup_id}/hosts/add?sync_to_storage={str(sync_to_storage).lower()}"
+    url = "/rest/hostmgmt/v1/hostgroups/{hostgroup_id}/hosts/add"
 
     payload = {
         'host_ids': host_ids
     }
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload, params={"hostgroup_id": hostgroup_id, "sync_to_storage": str(sync_to_storage).lower()})
     return response
 
 
@@ -2746,13 +2836,13 @@ def physical_host_group_remove_hosts(client: DMEAPIClient, hostgroup_id: str,
     Returns:
         移除结果
     """
-    url = f"/rest/hostmgmt/v1/hostgroups/{hostgroup_id}/hosts/remove?sync_to_storage={str(sync_to_storage).lower()}"
+    url = "/rest/hostmgmt/v1/hostgroups/{hostgroup_id}/hosts/remove"
 
     payload = {
         'host_ids': host_ids
     }
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload, params={"hostgroup_id": hostgroup_id, "sync_to_storage": str(sync_to_storage).lower()})
     return response
 
 
@@ -2800,7 +2890,7 @@ def physical_host_group_map_luns(client: DMEAPIClient, volume_ids: list, hostgro
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -2831,7 +2921,7 @@ def physical_host_group_unmap_luns(client: DMEAPIClient, volume_ids: list, hostg
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -2862,7 +2952,7 @@ def storage_host_group_unmap_luns(client: DMEAPIClient, volume_ids: list, hostgr
     if task_remarks is not None:
         payload['task_remarks'] = task_remarks
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 

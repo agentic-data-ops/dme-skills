@@ -8,7 +8,7 @@ import os
 # 添加父目录到路径，以便导入 dme_api_client
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from dme_api_client import DMEAPIClient
+from client.dme_api_client import DMEAPIClient
 
 
 # ============================================================================
@@ -51,7 +51,7 @@ def dataspace_list(client: DMEAPIClient, name: str = None, id: str = None,
     if max_site_num is not None:
         payload['max_site_num'] = max_site_num
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -76,7 +76,7 @@ def dataspace_show(client: DMEAPIClient, id: str = None, name: str = None) -> di
     if name is not None:
         payload['name'] = name
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -124,7 +124,7 @@ def dataspace_site_list(client: DMEAPIClient, raw_id: str = None,
     if account_name is not None:
         payload['account_name'] = account_name
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -173,7 +173,7 @@ def namespace_list(client: DMEAPIClient, name: str = None, gfs_group_name: str =
     if sort_dir is not None:
         payload['sort_dir'] = sort_dir
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -198,7 +198,7 @@ def namespace_show(client: DMEAPIClient, id: str = None, name_locator: str = Non
     if name_locator is not None:
         payload['name_locator'] = name_locator
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -243,7 +243,7 @@ def namespace_create(client: DMEAPIClient, name: str, gfs_group_id: str = None,
     if smart_share_members is not None:
         payload['smart_share_members'] = smart_share_members
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -277,7 +277,7 @@ def namespace_modify(client: DMEAPIClient, id: str = None, name_locator: str = N
     if smart_share_members is not None:
         payload['smart_share_members'] = smart_share_members
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -306,7 +306,7 @@ def namespace_delete(client: DMEAPIClient, id: str = None, name_locator: str = N
     if name_locator is not None:
         payload['name_locator'] = name_locator
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -379,7 +379,7 @@ def migration_task_list(client: DMEAPIClient, gfs_id: str = None,
     if sort_key is not None:
         payload['sort_key'] = sort_key
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -394,9 +394,9 @@ def migration_task_show(client: DMEAPIClient, id: str) -> dict:
     Returns:
         数据迁移任务详细信息
     """
-    url = f"/rest/fileservice/v1/gfs/migration-tasks/{id}"
+    url = "/rest/fileservice/v1/gfs/migration-tasks/{id}"
 
-    response = client.get(url)
+    response = client.get(url, params={"id": id})
     return response
 
 
@@ -553,7 +553,7 @@ def migration_task_create(client: DMEAPIClient, gfs_id: str, task_mode: str,
     if files_filter is not None:
         payload['files_filter'] = files_filter
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -583,7 +583,7 @@ def migration_task_modify(client: DMEAPIClient, id: str, task_name: str = None,
     Returns:
         响应数据
     """
-    url = f"/rest/fileservice/v1/gfs/migration-tasks/{id}"
+    url = "/rest/fileservice/v1/gfs/migration-tasks/{id}"
 
     payload = {}
 
@@ -608,7 +608,7 @@ def migration_task_modify(client: DMEAPIClient, id: str, task_name: str = None,
     if period_max_bandwidth is not None:
         payload['period_max_bandwidth'] = period_max_bandwidth
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload, params={"id": id})
     return response
 
 
@@ -629,7 +629,7 @@ def migration_task_delete(client: DMEAPIClient, ids: list) -> dict:
         'ids': ids
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -652,7 +652,7 @@ def migration_task_operate(client: DMEAPIClient, ids: list, operate_type: dict) 
         'operate_type': operate_type
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 

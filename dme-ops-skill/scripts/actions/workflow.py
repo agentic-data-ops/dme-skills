@@ -8,7 +8,7 @@ import os
 # 添加父目录到路径，以便导入 dme_api_client
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from dme_api_client import DMEAPIClient
+from client.dme_api_client import DMEAPIClient
 
 
 # ==================== template 子主题 ====================
@@ -48,7 +48,7 @@ def template_list(client: DMEAPIClient, page_no: int, page_size: int,
     if name is not None:
         payload['name'] = name
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -67,7 +67,7 @@ def template_groups(client: DMEAPIClient) -> dict:
     """
     url = "/rest/wfamgmt/v1/workflow/templates/groups/query"
     
-    response = client.post(url, json={})
+    response = client.post(url, body={})
     return response
 
 
@@ -87,13 +87,13 @@ def template_show(client: DMEAPIClient, template_id: str,
         响应数据，包含：
         - template_version_id: 模板版本 id
     """
-    url = f"/rest/wfamgmt/v1/workflow/templates/{template_id}"
+    url = "/rest/wfamgmt/v1/workflow/templates/{template_id}"
     
-    query_params = {}
+    params_dict = {}
     if template_version_id is not None:
-        query_params['template_version_id'] = template_version_id
+        params_dict['template_version_id'] = template_version_id
     
-    response = client.get(url, query_params=query_params)
+    response = client.get(url, params=params_dict)
     return response
 
 
@@ -112,9 +112,9 @@ def instance_stop(client: DMEAPIClient, instance_id: str) -> dict:
     Returns:
         响应数据（无特定返回字段）
     """
-    url = f"/rest/wfamgmt/v1/workflow/instances/{instance_id}/stop"
+    url = "/rest/wfamgmt/v1/workflow/instances/{instance_id}/stop"
     
-    response = client.post(url, json={})
+    response = client.post(url, body={}, params={"instance_id": instance_id})
     return response
 
 
@@ -142,9 +142,9 @@ def instance_show(client: DMEAPIClient, instance_id: str) -> dict:
         - instance_type: 实例类型（PRECHECK/EXECUTION）
         - template_version_id: 实例对应的模板版本 id
     """
-    url = f"/rest/wfamgmt/v1/workflow/instances/{instance_id}"
+    url = "/rest/wfamgmt/v1/workflow/instances/{instance_id}"
     
-    response = client.get(url)
+    response = client.get(url, params={"instance_id": instance_id})
     return response
 
 
@@ -182,7 +182,7 @@ def instance_create(client: DMEAPIClient, template_id: str = None,
     if params is not None:
         payload['params'] = params
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -201,9 +201,9 @@ def instance_step_log(client: DMEAPIClient, instance_id: str, step_id: str) -> d
         响应数据，包含：
         - logs: 步骤日志列表（最多 6000 条）
     """
-    url = f"/rest/wfamgmt/v1/workflow/instances/{instance_id}/steps/{step_id}/log"
+    url = "/rest/wfamgmt/v1/workflow/instances/{instance_id}/steps/{step_id}/log"
     
-    response = client.get(url)
+    response = client.get(url, params={"instance_id": instance_id, "step_id": step_id})
     return response
 
 

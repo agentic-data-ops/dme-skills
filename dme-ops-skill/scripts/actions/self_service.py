@@ -10,7 +10,7 @@ import os
 # 添加父目录到路径，以便导入 dme_api_client
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from dme_api_client import DMEAPIClient
+from client.dme_api_client import DMEAPIClient
 
 # ============ lun 子主题函数 ============
 
@@ -66,7 +66,7 @@ def lun_create(client: DMEAPIClient, volumes: list,
     if mapping is not None:
         payload['mapping'] = mapping
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -94,7 +94,7 @@ def update_volume_service_level(client: DMEAPIClient, volume_ids: list,
     if attributes_auto_change is not None:
         payload['attributes_auto_change'] = attributes_auto_change
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -122,7 +122,7 @@ def bind_service_level(client: DMEAPIClient, volume_id: str,
     if attributes_auto_change is not None:
         payload['attributes_auto_change'] = attributes_auto_change
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -143,7 +143,7 @@ def unbind_service_level(client: DMEAPIClient, volume_id: str) -> dict:
         'volume_ids': [volume_id]
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -160,13 +160,13 @@ def bind_business_group(client: DMEAPIClient, volume_id: str,
     Returns:
         响应数据
     """
-    url = f"/rest/blockservice/v1/projects/{business_group_id}/volumes/bound"
+    url = "/rest/blockservice/v1/projects/{business_group_id}/volumes/bound"
 
     payload = {
         'volume_ids': [volume_id]
     }
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload, params={"business_group_id": business_group_id})
     return response
 
 
@@ -183,13 +183,13 @@ def unbind_business_group(client: DMEAPIClient, volume_id: str,
     Returns:
         响应数据
     """
-    url = f"/rest/blockservice/v1/projects/{business_group_id}/volumes/unbound"
+    url = "/rest/blockservice/v1/projects/{business_group_id}/volumes/unbound"
 
     payload = {
         'volume_ids': [volume_id]
     }
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload, params={"business_group_id": business_group_id})
     return response
 
 
@@ -246,7 +246,7 @@ def list_service_levels(client: DMEAPIClient, name: str = None,
     if type is not None:
         query_params['type'] = type
 
-    response = client.get(url, query_params=query_params)
+    response = client.get(url, params=query_params)
     return response
 
 
@@ -276,7 +276,7 @@ def list_project_slo_relations_by_service_level(client: DMEAPIClient, tier_id: s
     if tier_id is not None:
         query_params['serviceLevelId'] = tier_id
 
-    response = client.get(url, query_params=query_params)
+    response = client.get(url, params=query_params)
     return response
 
 
@@ -309,7 +309,7 @@ def list_projects(client: DMEAPIClient, name: str = None,
     if name is not None:
         query_params['name'] = name
 
-    response = client.get(url, query_params=query_params)
+    response = client.get(url, params=query_params)
     return response
 
 
@@ -339,7 +339,7 @@ def list_project_slo_relations_by_project(client: DMEAPIClient, project_id: str 
     if project_id is not None:
         query_params['projectId'] = project_id
 
-    response = client.get(url, query_params=query_params)
+    response = client.get(url, params=query_params)
     return response
 
 

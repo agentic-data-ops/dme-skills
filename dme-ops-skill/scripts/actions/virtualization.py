@@ -8,7 +8,7 @@ import os
 # 添加父目录到路径，以便导入 dme_api_client
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from dme_api_client import DMEAPIClient
+from client.dme_api_client import DMEAPIClient
 
 
 def list_vms(client: DMEAPIClient, site_id: str = None, cluster_id: str = None,
@@ -88,7 +88,7 @@ def list_vms(client: DMEAPIClient, site_id: str = None, cluster_id: str = None,
     if datacenter_id is not None:
         body_params['datacenter_id'] = datacenter_id
     
-    response = client.post(url, json=body_params)
+    response = client.post(url, body=body_params)
     return response
 
 
@@ -106,13 +106,13 @@ def show_vm(client: DMEAPIClient, vm_id: str, vr_type: str = None) -> dict:
     Returns:
         虚拟机详细信息，包含 CPU、内存、磁盘、网卡等配置信息
     """
-    url = f"/rest/vmmgmt/v1/vms/{vm_id}"
+    url = "/rest/vmmgmt/v1/vms/{vm_id}"
     
-    query_params = {}
+    params_dict = {}
     if vr_type is not None:
-        query_params['vr_type'] = vr_type
+        params_dict['vr_type'] = vr_type
     
-    response = client.get(url, query_params=query_params)
+    response = client.get(url, params=params_dict)
     return response
 
 
@@ -181,7 +181,7 @@ def list_datastores(client: DMEAPIClient, site_id: str = None, cluster_id: str =
     if datacenter_id is not None:
         body_params['datacenter_id'] = datacenter_id
     
-    response = client.post(url, json=body_params)
+    response = client.post(url, body=body_params)
     return response
 
 
@@ -199,13 +199,13 @@ def show_datastore(client: DMEAPIClient, datastore_id: str, vr_type: str = None)
     Returns:
         数据存储详细信息
     """
-    url = f"/rest/vmmgmt/v1/datastores/{datastore_id}"
+    url = "/rest/vmmgmt/v1/datastores/{datastore_id}"
     
-    query_params = {}
+    params_dict = {}
     if vr_type is not None:
-        query_params['vr_type'] = vr_type
+        params_dict['vr_type'] = vr_type
     
-    response = client.get(url, query_params=query_params)
+    response = client.get(url, params=params_dict)
     return response
 
 
@@ -255,7 +255,7 @@ def list_hosts(client: DMEAPIClient, site_id: str = None, cluster_id: str = None
     if vr_type is not None:
         body_params['vr_type'] = vr_type
     
-    response = client.post(url, json=body_params)
+    response = client.post(url, body=body_params)
     return response
 
 
@@ -273,13 +273,13 @@ def show_host(client: DMEAPIClient, host_id: str, vr_type: str = None) -> dict:
     Returns:
         主机详细信息
     """
-    url = f"/rest/vmmgmt/v1/hosts/{host_id}"
+    url = "/rest/vmmgmt/v1/hosts/{host_id}"
     
-    query_params = {}
+    params_dict = {}
     if vr_type is not None:
-        query_params['vr_type'] = vr_type
+        params_dict['vr_type'] = vr_type
     
-    response = client.get(url, query_params=query_params)
+    response = client.get(url, params=params_dict)
     return response
 
 
@@ -319,7 +319,7 @@ def list_clusters(client: DMEAPIClient, site_id: str = None, dc_id: str = None,
     if vr_type is not None:
         body_params['vr_type'] = vr_type
     
-    response = client.post(url, json=body_params)
+    response = client.post(url, body=body_params)
     return response
 
 
@@ -337,13 +337,13 @@ def show_cluster(client: DMEAPIClient, cluster_id: str, vr_type: str = None) -> 
     Returns:
         集群详细信息
     """
-    url = f"/rest/vmmgmt/v1/clusters/{cluster_id}"
+    url = "/rest/vmmgmt/v1/clusters/{cluster_id}"
     
-    query_params = {}
+    params_dict = {}
     if vr_type is not None:
-        query_params['vr_type'] = vr_type
+        params_dict['vr_type'] = vr_type
     
-    response = client.get(url, query_params=query_params)
+    response = client.get(url, params=params_dict)
     return response
 
 
@@ -361,7 +361,7 @@ def list_sites(client: DMEAPIClient) -> dict:
     """
     url = "/rest/vmmgmt/v1/sites/query"
     
-    response = client.post(url, json={})
+    response = client.post(url, body={})
     return response
 
 
@@ -378,9 +378,9 @@ def show_site(client: DMEAPIClient, site_id: str) -> dict:
     Returns:
         站点详细信息
     """
-    url = f"/rest/vmmgmt/v1/sites/{site_id}"
+    url = "/rest/vmmgmt/v1/sites/{site_id}"
     
-    response = client.get(url)
+    response = client.get(url, params={"site_id": site_id})
     return response
 
 
@@ -474,9 +474,9 @@ def list_host_storage_adapters(client: DMEAPIClient, host_id: str) -> dict:
     Returns:
         存储适配器列表
     """
-    url = f"/rest/vmmgmt/v1/hosts/{host_id}/storage-adapters"
+    url = "/rest/vmmgmt/v1/hosts/{host_id}/storage-adapters"
     
-    response = client.get(url)
+    response = client.get(url, params={"host_id": host_id})
     return response
 
 
@@ -520,7 +520,7 @@ def list_physical_disks(client: DMEAPIClient, site_id: str = None,
     if status is not None:
         body_params['status'] = status
     
-    response = client.post(url, json=body_params)
+    response = client.post(url, body=body_params)
     return response
 
 
@@ -564,7 +564,7 @@ def list_virtual_disks(client: DMEAPIClient, site_id: str = None,
     if status is not None:
         body_params['status'] = status
     
-    response = client.post(url, json=body_params)
+    response = client.post(url, body=body_params)
     return response
 
 
@@ -581,9 +581,9 @@ def show_virtual_disk(client: DMEAPIClient, virtual_disk_id: str) -> dict:
     Returns:
         虚拟磁盘详细信息
     """
-    url = f"/rest/vmmgmt/v1/vdisks/{virtual_disk_id}"
+    url = "/rest/vmmgmt/v1/vdisks/{virtual_disk_id}"
     
-    response = client.get(url)
+    response = client.get(url, params={"virtual_disk_id": virtual_disk_id})
     return response
 
 

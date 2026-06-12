@@ -8,7 +8,7 @@ import os
 # 添加父目录到路径，以便导入 dme_api_client
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from dme_api_client import DMEAPIClient
+from client.dme_api_client import DMEAPIClient
 
 
 def list(client: DMEAPIClient, start: int = 1, limit: int = 100,
@@ -38,7 +38,7 @@ def list(client: DMEAPIClient, start: int = 1, limit: int = 100,
     if server_type is not None:
         payload['server_type'] = server_type
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -53,9 +53,9 @@ def show(client: DMEAPIClient, server_id: str) -> dict:
     Returns:
         服务器概览信息
     """
-    url = f"/rest/servermgmt/v1/servers/{server_id}/summary"
+    url = "/rest/servermgmt/v1/servers/{server_id}/summary"
     
-    response = client.get(url)
+    response = client.get(url, params={"server_id": server_id})
     return response
 
 
@@ -81,7 +81,7 @@ def show_cpu_list(client: DMEAPIClient, server_id: str,
         'limit': limit
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -107,7 +107,7 @@ def show_memory(client: DMEAPIClient, server_id: str,
         'limit': limit
     }
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -133,7 +133,7 @@ def show_disk_list(client: DMEAPIClient, server_id: str,
         'limit': limit
     }
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -161,7 +161,7 @@ def show_nic_list(client: DMEAPIClient, server_id: str = None,
     if server_id is not None:
         payload['server_id'] = server_id
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -187,7 +187,7 @@ def show_fan_list(client: DMEAPIClient, server_id: str,
         'limit': limit
     }
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -213,7 +213,7 @@ def show_power_list(client: DMEAPIClient, server_id: str,
         'limit': limit
     }
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -239,7 +239,7 @@ def show_raid_card(client: DMEAPIClient, server_id: str,
         'limit': limit
     }
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -265,7 +265,7 @@ def show_pcie_card(client: DMEAPIClient, server_id: str,
         'limit': limit
     }
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 

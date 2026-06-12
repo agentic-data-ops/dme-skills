@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 # 添加父目录到路径,以便导入 dme_api_client
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from dme_api_client import DMEAPIClient
+from client.dme_api_client import DMEAPIClient
 
 
 def _build_current_alarm_params(alarm_id: str = None, severity: list = None,
@@ -222,7 +222,7 @@ def list_alarms(client: DMEAPIClient, alarm_id: str = None, severity: list = Non
         occur_utc_end=occur_utc_end, fields=fields, page_size=page_size
     )
 
-    current_response = client.post(current_url, json=current_params)
+    current_response = client.post(current_url, body=current_params)
     result['current_alarms'] = current_response
 
     # 如果指定了 include_history,同时查询历史告警
@@ -235,7 +235,7 @@ def list_alarms(client: DMEAPIClient, alarm_id: str = None, severity: list = Non
             iterator=iterator
         )
 
-        history_response = client.post(history_url, json=history_params)
+        history_response = client.post(history_url, body=history_params)
         result['history_alarms'] = history_response
 
     return result
@@ -267,7 +267,7 @@ def ack(client: DMEAPIClient, csns: list) -> dict:
     print(f"请求 URL: {url}")
     print(f"请求负载:{json.dumps(payload, ensure_ascii=False, indent=2)}")
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -297,7 +297,7 @@ def unack(client: DMEAPIClient, csns: list) -> dict:
     print(f"请求 URL: {url}")
     print(f"请求负载:{json.dumps(payload, ensure_ascii=False, indent=2)}")
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -327,7 +327,7 @@ def clear(client: DMEAPIClient, csns: list) -> dict:
     print(f"请求 URL: {url}")
     print(f"请求负载:{json.dumps(payload, ensure_ascii=False, indent=2)}")
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -392,7 +392,7 @@ def diagnose_task_create(client: DMEAPIClient, object_ids: list, object_type: st
     print(f"请求 URL: {url}")
     print(f"请求负载:{json.dumps(payload, ensure_ascii=False, indent=2)}")
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -429,7 +429,7 @@ def create_collect_task(client: DMEAPIClient, begin_time: int, end_time: int,
         'indicator_ids': indicator_ids
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -444,9 +444,9 @@ def download_collect_result(client: DMEAPIClient, task_id: str) -> dict:
     Returns:
         性能文件下载链接或文件内容
     """
-    url = f"/rest/pmmgmt/v1/performance-data/download/{task_id}"
+    url = "/rest/pmmgmt/v1/performance-data/download/{task_id}"
 
-    response = client.get(url)
+    response = client.get(url, params={"task_id": task_id})
     return response
 
 
@@ -521,7 +521,7 @@ def query(client: DMEAPIClient, obj_type_id: int, indicator_ids: list,
     if end_time is not None:
         payload['end_time'] = end_time
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -544,7 +544,7 @@ def show_indicators(client: DMEAPIClient, indicators: list) -> dict:
         indicators = [int(i) for i in indicators]
 
     # API 要求直接传递数组,而不是对象
-    response = client.post(url, json=indicators)
+    response = client.post(url, body=indicators)
     return response
 
 
@@ -559,9 +559,9 @@ def list_indicators(client: DMEAPIClient, obj_type_id: int) -> dict:
     Returns:
         监控指标信息,包含 indicator_ids 列表
     """
-    url = f"/rest/metrics/v1/mgr-svc/obj-types/{obj_type_id}/indicators"
+    url = "/rest/metrics/v1/mgr-svc/obj-types/{obj_type_id}/indicators"
 
-    response = client.get(url)
+    response = client.get(url, params={"obj_type_id": obj_type_id})
     return response
 
 
@@ -635,7 +635,7 @@ def health_query_data(client: DMEAPIClient, type: str, object_id: str, begin_tim
     if indicator is not None:
         payload['indicator'] = indicator
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -684,7 +684,7 @@ def health_show_score(client: DMEAPIClient, object_type: str, object_name: str =
     if sort_dir is not None:
         payload['sort_dir'] = sort_dir
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -718,7 +718,7 @@ def health_show_detail(client: DMEAPIClient, object_id: str, object_type: str,
         'health_dimension': health_dimension
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -764,7 +764,7 @@ def diagnose_task_status(client: DMEAPIClient, task_id: str) -> dict:
     print(f"请求 URL: {url}")
     print(f"请求负载:{json.dumps(payload, ensure_ascii=False, indent=2)}")
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -840,7 +840,7 @@ def list_check_policies(client: DMEAPIClient, policy_name: str = None, exact_que
     if object_category is not None:
         body_params['object_category'] = object_category
 
-    response = client.post(url, json=body_params)
+    response = client.post(url, body=body_params)
     return response
 
 
@@ -857,9 +857,9 @@ def execute_check_policy(client: DMEAPIClient, policy_id: str) -> dict:
     Returns:
         响应数据
     """
-    url = f"/rest/policymgmt/v1/policies/{policy_id}/execute"
+    url = "/rest/policymgmt/v1/policies/{policy_id}/execute"
 
-    response = client.post(url)
+    response = client.post(url, params={"policy_id": policy_id})
     return response
 
 
@@ -876,9 +876,9 @@ def enable_check_policy(client: DMEAPIClient, policy_id: str) -> dict:
     Returns:
         响应数据
     """
-    url = f"/rest/policymgmt/v1/policies/{policy_id}/enable"
+    url = "/rest/policymgmt/v1/policies/{policy_id}/enable"
 
-    response = client.post(url)
+    response = client.post(url, params={"policy_id": policy_id})
     return response
 
 
@@ -895,9 +895,9 @@ def disable_check_policy(client: DMEAPIClient, policy_id: str) -> dict:
     Returns:
         响应数据
     """
-    url = f"/rest/policymgmt/v1/policies/{policy_id}/disable"
+    url = "/rest/policymgmt/v1/policies/{policy_id}/disable"
 
-    response = client.post(url)
+    response = client.post(url, params={"policy_id": policy_id})
     return response
 
 
@@ -914,9 +914,9 @@ def delete_check_policy(client: DMEAPIClient, policy_id: str) -> dict:
     Returns:
         响应数据
     """
-    url = f"/rest/policymgmt/v1/policies/{policy_id}"
+    url = "/rest/policymgmt/v1/policies/{policy_id}"
 
-    response = client.delete(url)
+    response = client.delete(url, params={"policy_id": policy_id})
     return response
 
 
@@ -995,7 +995,7 @@ def list_abnormal_results(client: DMEAPIClient, object_name: str = None, level: 
     if sort_dir is not None:
         body_params['sort_dir'] = sort_dir
 
-    response = client.post(url, json=body_params)
+    response = client.post(url, body=body_params)
     return response
 
 
@@ -1012,9 +1012,9 @@ def show_abnormal_result(client: DMEAPIClient, check_result_id: str) -> dict:
     Returns:
         响应数据，包含检查结果的详细信息
     """
-    url = f"/rest/policymgmt/v1/abnormal-check-results/{check_result_id}"
+    url = "/rest/policymgmt/v1/abnormal-check-results/{check_result_id}"
 
-    response = client.get(url)
+    response = client.get(url, params={"check_result_id": check_result_id})
     return response
 
 
@@ -1073,7 +1073,7 @@ def query_luns(client: DMEAPIClient, entry_objects: list, storage_pool_id: str,
     print(f"请求 URL: {url}")
     print(f"请求负载：{json.dumps(payload, ensure_ascii=False, indent=2)}")
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1123,7 +1123,7 @@ def query_san_path(client: DMEAPIClient, entry_objects: list, san_type: str = No
         ip_san_payload = {"entry_objects": entry_objects}
         print(f"请求 URL: {ip_san_url}")
         print(f"请求负载：{json.dumps(ip_san_payload, ensure_ascii=False, indent=2)}")
-        ip_san_response = client.post(ip_san_url, json=ip_san_payload)
+        ip_san_response = client.post(ip_san_url, body=ip_san_payload)
         result['ip_san'] = ip_san_response
 
         # 调用 FC_SAN API
@@ -1131,7 +1131,7 @@ def query_san_path(client: DMEAPIClient, entry_objects: list, san_type: str = No
         fc_san_payload = {"entry_objects": entry_objects}
         print(f"请求 URL: {fc_san_url}")
         print(f"请求负载：{json.dumps(fc_san_payload, ensure_ascii=False, indent=2)}")
-        fc_san_response = client.post(fc_san_url, json=fc_san_payload)
+        fc_san_response = client.post(fc_san_url, body=fc_san_payload)
         result['fc_san'] = fc_san_response
 
         return result
@@ -1142,7 +1142,7 @@ def query_san_path(client: DMEAPIClient, entry_objects: list, san_type: str = No
         payload = {"entry_objects": entry_objects}
         print(f"请求 URL: {url}")
         print(f"请求负载：{json.dumps(payload, ensure_ascii=False, indent=2)}")
-        response = client.post(url, json=payload)
+        response = client.post(url, body=payload)
         return response
 
     elif san_type == 'fc_san':
@@ -1150,7 +1150,7 @@ def query_san_path(client: DMEAPIClient, entry_objects: list, san_type: str = No
         payload = {"entry_objects": entry_objects}
         print(f"请求 URL: {url}")
         print(f"请求负载：{json.dumps(payload, ensure_ascii=False, indent=2)}")
-        response = client.post(url, json=payload)
+        response = client.post(url, body=payload)
         return response
 
     else:
@@ -1208,7 +1208,7 @@ def query_vms(client: DMEAPIClient, entry_objects: list, host_id: str,
     print(f"请求 URL: {url}")
     print(f"请求负载：{json.dumps(payload, ensure_ascii=False, indent=2)}")
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1274,7 +1274,7 @@ def graph_query(client: DMEAPIClient, entry_res_type: str, entry_res_id: str,
     print(f"请求 URL: {url}")
     print(f"请求负载：{json.dumps(payload, ensure_ascii=False, indent=2)}")
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 

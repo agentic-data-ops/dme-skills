@@ -8,7 +8,7 @@ import os
 # 添加父目录到路径，以便导入 dme_api_client
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from dme_api_client import DMEAPIClient
+from client.dme_api_client import DMEAPIClient
 
 
 def list(client: DMEAPIClient, name: str = None, 
@@ -37,7 +37,7 @@ def list(client: DMEAPIClient, name: str = None,
     if name is not None:
         payload['name'] = name
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -54,9 +54,9 @@ def sync(client: DMEAPIClient, switch_id: str) -> dict:
     Returns:
         响应数据，包含 task_id
     """
-    url = f"/rest/fcswitchmgmt/v1/fcswitches/{switch_id}/sync"
+    url = "/rest/fcswitchmgmt/v1/fcswitches/{switch_id}/sync"
     
-    response = client.post(url)
+    response = client.post(url, params={"switch_id": switch_id})
     return response
 
 
@@ -90,7 +90,7 @@ def port_list(client: DMEAPIClient, switch_id: str = None,
     if port_name is not None:
         payload['port_name'] = port_name
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -121,7 +121,7 @@ def controller_list(client: DMEAPIClient, switch_id: str = None,
     if switch_id is not None:
         payload['switch_id'] = switch_id
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -151,7 +151,7 @@ def fabric_list(client: DMEAPIClient, name: str = None,
     if name is not None:
         payload['name'] = name
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -171,14 +171,14 @@ def fabric_show_ports(client: DMEAPIClient, fabric_id: str,
     Returns:
         响应数据，包含 total 和 ports 字段
     """
-    url = f"/rest/fcswitchmgmt/v1/fabrics/{fabric_id}/ports/list"
+    url = "/rest/fcswitchmgmt/v1/fabrics/{fabric_id}/ports/list"
     
     payload = {
         'page_no': page_no,
         'page_size': page_size
     }
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload, params={"fabric_id": fabric_id})
     return response
 
 
@@ -198,7 +198,7 @@ def fabric_backup(client: DMEAPIClient, fabric_id: str, backup_server_id: str,
     Returns:
         响应数据，包含 task_id
     """
-    url = f"/rest/fcswitchmgmt/v1/fabrics/{fabric_id}/backup"
+    url = "/rest/fcswitchmgmt/v1/fabrics/{fabric_id}/backup"
     
     payload = {
         'backupRequest': {
@@ -207,7 +207,7 @@ def fabric_backup(client: DMEAPIClient, fabric_id: str, backup_server_id: str,
         }
     }
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload, params={"fabric_id": fabric_id})
     return response
 
 
@@ -234,7 +234,7 @@ def vsan_list(client: DMEAPIClient, page_no: int = 1, page_size: int = 20) -> di
         'page_size': page_size
     }
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -290,7 +290,7 @@ def zone_list(client: DMEAPIClient, fabric_wwn: str = None, name: str = None,
     if page_size is not None:
         payload['page_size'] = page_size
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -346,7 +346,7 @@ def zone_create(client: DMEAPIClient, name: str, fabric_wwn: str = None,
     if device_alias_members is not None:
         payload['device_alias_members'] = device_alias_members
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -373,7 +373,7 @@ def zone_modify(client: DMEAPIClient, zone_id: str, zone_name: str = None,
     Returns:
         响应数据
     """
-    url = f"/rest/fcswitchmgmt/v1/zones/{zone_id}"
+    url = "/rest/fcswitchmgmt/v1/zones/{zone_id}"
 
     payload = {}
     if zone_name is not None:
@@ -391,7 +391,7 @@ def zone_modify(client: DMEAPIClient, zone_id: str, zone_name: str = None,
     if device_alias_members is not None:
         payload['device_alias_members'] = device_alias_members
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload, params={"zone_id": zone_id})
     return response
 
 
@@ -409,9 +409,9 @@ def zone_delete(client: DMEAPIClient, zone_id: str) -> dict:
     Returns:
         响应数据
     """
-    url = f"/rest/fcswitchmgmt/v1/zones/{zone_id}"
+    url = "/rest/fcswitchmgmt/v1/zones/{zone_id}"
     
-    response = client.delete(url)
+    response = client.delete(url, params={"zone_id": zone_id})
     return response
 
 
@@ -445,7 +445,7 @@ def zone_batch_create(client: DMEAPIClient, is_active_zone: str, zones: list) ->
         'zone_list': zones
     }
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -468,22 +468,22 @@ def zone_show_members(client: DMEAPIClient, zone_id: str, type: str = None) -> d
 
     # 根据 type 参数查询对应类型的成员
     if type is None or type == 'port':
-        url = f"/rest/fcswitchmgmt/v1/zones/{zone_id}/port-members/list"
+        url = "/rest/fcswitchmgmt/v1/zones/{zone_id}/port-members/list"
         payload = {}
-        response = client.post(url, json=payload)
+        response = client.post(url, body=payload, params={"zone_id": zone_id})
         if response.get('port_members'):
             result['port_members'] = response.get('port_members')
 
     if type is None or type == 'wwn':
-        url = f"/rest/fcswitchmgmt/v1/zones/{zone_id}/wwn-members/list"
-        response = client.get(url)
+        url = "/rest/fcswitchmgmt/v1/zones/{zone_id}/wwn-members/list"
+        response = client.get(url, params={"zone_id": zone_id})
         if response.get('wwn_members'):
             result['wwn_members'] = response.get('wwn_members')
 
     if type is None or type == 'alias':
-        url = f"/rest/fcswitchmgmt/v1/zones/{zone_id}/alias-members/list"
+        url = "/rest/fcswitchmgmt/v1/zones/{zone_id}/alias-members/list"
         payload = {}
-        response = client.post(url, json=payload)
+        response = client.post(url, body=payload, params={"zone_id": zone_id})
         if response.get('alias_members'):
             result['alias_members'] = response.get('alias_members')
 
@@ -526,7 +526,7 @@ def alias_list(client: DMEAPIClient, fabric_wwn: str,
         'page_size': page_size
     }
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -578,7 +578,7 @@ def alias_create(client: DMEAPIClient, name: str, fabric_wwn: str = None,
     if device_alias_members is not None:
         payload['device_alias_members'] = device_alias_members
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -605,7 +605,7 @@ def alias_modify(client: DMEAPIClient, alias_id: str, name: str = None,
     Returns:
         响应数据
     """
-    url = f"/rest/fcswitchmgmt/v1/aliases/{alias_id}"
+    url = "/rest/fcswitchmgmt/v1/aliases/{alias_id}"
     
     payload = {}
     if name is not None:
@@ -621,7 +621,7 @@ def alias_modify(client: DMEAPIClient, alias_id: str, name: str = None,
     if device_alias_members is not None:
         payload['device_alias_members'] = device_alias_members
     
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload, params={"alias_id": alias_id})
     return response
 
 
@@ -639,9 +639,9 @@ def alias_delete(client: DMEAPIClient, alias_id: str) -> dict:
     Returns:
         响应数据
     """
-    url = f"/rest/fcswitchmgmt/v1/aliases/{alias_id}"
+    url = "/rest/fcswitchmgmt/v1/aliases/{alias_id}"
     
-    response = client.delete(url)
+    response = client.delete(url, params={"alias_id": alias_id})
     return response
 
 
@@ -664,15 +664,15 @@ def alias_members_list(client: DMEAPIClient, alias_id: str, type: str = None) ->
 
     # 如果指定了 type 或默认为 None 时，查询对应类型的成员
     if type is None or type == 'port':
-        url = f"/rest/fcswitchmgmt/v1/aliases/{alias_id}/port-members/list"
+        url = "/rest/fcswitchmgmt/v1/aliases/{alias_id}/port-members/list"
         payload = {}
-        response = client.post(url, json=payload)
+        response = client.post(url, body=payload, params={"alias_id": alias_id})
         if response.get('port_members'):
             result['port_members'] = response.get('port_members')
 
     if type is None or type == 'wwn':
-        url = f"/rest/fcswitchmgmt/v1/aliases/{alias_id}/wwn-members/list"
-        response = client.get(url)
+        url = "/rest/fcswitchmgmt/v1/aliases/{alias_id}/wwn-members/list"
+        response = client.get(url, params={"alias_id": alias_id})
         # API 返回字段为 wwn_member（单数）
         if response.get('wwn_member'):
             result['wwn_members'] = response.get('wwn_member')

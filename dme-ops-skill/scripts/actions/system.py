@@ -8,35 +8,33 @@ import os
 # 添加父目录到路径，以便导入 dme_api_client
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from dme_api_client import DMEAPIClient
+from client.dme_api_client import DMEAPIClient
 
 
 def login(client: DMEAPIClient) -> dict:
     """
     认证用户登录
 
-    实现三方用户的认证登录。客户端已在 CLI 中完成登录，
-    此函数用于打印 accessSession 提示用户配置环境变量。
+    强制调用 client.login() 完成认证，然后从 header 获取 accessSession，
+    提示用户可配置环境变量复用认证密钥，避免重复登录。
 
     Args:
-        client: DME API 客户端（已登录）
+        client: DME API 客户端
 
     Returns:
-        响应数据，包含 accessSession, roaRand, expires 等
+        响应数据，包含 accessSession
         - accessSession: 会话 token，用于后续请求的 X-Auth-Token header
-        - roaRand: 非 GET 请求需要的随机数
-        - expires: 会话有效期（秒）
     """
-    # 客户端已登录，直接使用 client 中的 access_session
-    if client.access_session:
+    client.login()
+
+    access_session = client.headers.get("X-Auth-Token", "")
+    if access_session:
         print(f"\n登录成功！")
-        print(f"accessSession: {client.access_session}")
         print(f"\n提示：配置环境变量复用认证密钥，避免重复登录：")
-        print(f"  export DME_API_AUTH_TOKEN={client.access_session}")
+        print(f"  export DME_API_AUTH_TOKEN={access_session}")
 
     return {
-        'accessSession': client.access_session,
-        'roaRand': client.roa_rand
+        'accessSession': access_session
     }
 
 
@@ -72,14 +70,14 @@ def reset_password(client: DMEAPIClient, user_name: str, new_password: str,
     Returns:
         响应数据
     """
-    url = f"/rest/usm/v1/users/{user_name}/reset-credentials"
+    url = "/rest/usm/v1/users/{user_name}/reset-credentials"
 
     payload = {
         'newValue': new_password,
         'isInitialPassword': is_initial_password
     }
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload, params={"user_name": user_name})
     return response
 
 
@@ -94,9 +92,9 @@ def delete(client: DMEAPIClient, user_id: str) -> dict:
     Returns:
         响应数据
     """
-    url = f"/rest/usermgmt/v1/users/{user_id}"
+    url = "/rest/usermgmt/v1/users/{user_id}"
 
-    response = client.delete(url)
+    response = client.delete(url, params={"user_id": user_id})
     return response
 
 
@@ -135,7 +133,7 @@ def create(client: DMEAPIClient, username: str, password: str,
     if description is not None:
         payload['description'] = description
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -153,7 +151,7 @@ def list(client: DMEAPIClient, start: int = 1, limit: int = 100) -> dict:
     """
     url = "/rest/usermgmt/v1/users"
     
-    response = client.get(url, query_params={'start': start, 'limit': limit})
+    response = client.get(url, params={'start': start, 'limit': limit})
     return response
 
 
@@ -171,7 +169,7 @@ def list_roles(client: DMEAPIClient, page_no: int = 1, page_size: int = 100) -> 
     """
     url = "/rest/usermgmt/v1/roles"
     
-    response = client.get(url, query_params={'page_no': page_no, 'page_size': page_size})
+    response = client.get(url, params={'page_no': page_no, 'page_size': page_size})
     return response
 
 
@@ -186,9 +184,9 @@ def show(client: DMEAPIClient, user_id: str) -> dict:
     Returns:
         用户详细信息
     """
-    url = f"/rest/usermgmt/v1/users/{user_id}"
+    url = "/rest/usermgmt/v1/users/{user_id}"
     
-    response = client.get(url)
+    response = client.get(url, params={"user_id": user_id})
     return response
 
 
@@ -254,7 +252,7 @@ def list_backup_servers(client: DMEAPIClient, address: str = None,
     if name is not None:
         query_params['name'] = name
     
-    response = client.get(url, query_params=query_params)
+    response = client.get(url, params=query_params)
     return response
 
 
@@ -327,7 +325,7 @@ def todo_task_group_list(client: DMEAPIClient, group_id: str = None, name: str =
     if sort_dir is not None:
         params['sort_dir'] = sort_dir
 
-    response = client.get(url, query_params=params)
+    response = client.get(url, params=params)
     return response
 
 
@@ -344,9 +342,9 @@ def todo_task_group_execute(client: DMEAPIClient, group_id: str) -> dict:
     Returns:
         执行结果，包含 task_id
     """
-    url = f"/rest/taskmgmt/v1/todo-groups/{group_id}/execute"
+    url = "/rest/taskmgmt/v1/todo-groups/{group_id}/execute"
 
-    response = client.put(url, json={})
+    response = client.put(url, body={}, params={"group_id": group_id})
     return response
 
 
@@ -363,9 +361,9 @@ def todo_task_group_confirm(client: DMEAPIClient, group_id: str) -> dict:
     Returns:
         确认结果
     """
-    url = f"/rest/taskmgmt/v1/todo-groups/{group_id}/confirm"
+    url = "/rest/taskmgmt/v1/todo-groups/{group_id}/confirm"
 
-    response = client.put(url, json={})
+    response = client.put(url, body={}, params={"group_id": group_id})
     return response
 
 
@@ -401,7 +399,7 @@ def todo_task_list(client: DMEAPIClient, service_type: str,
     if page_size is not None:
         payload['page_size'] = page_size
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -418,9 +416,9 @@ def todo_task_show(client: DMEAPIClient, item_id: str) -> dict:
     Returns:
         待办项详细信息
     """
-    url = f"/rest/taskmgmt/v1/todo-items/{item_id}"
+    url = "/rest/taskmgmt/v1/todo-items/{item_id}"
 
-    response = client.get(url)
+    response = client.get(url, params={"item_id": item_id})
     return response
 
 
@@ -437,9 +435,9 @@ def todo_task_execute(client: DMEAPIClient, item_id: str) -> dict:
     Returns:
         执行结果，包含 task_id
     """
-    url = f"/rest/taskmgmt/v1/todo-items/{item_id}/execute"
+    url = "/rest/taskmgmt/v1/todo-items/{item_id}/execute"
 
-    response = client.put(url, json={})
+    response = client.put(url, body={}, params={"item_id": item_id})
     return response
 
 
@@ -459,7 +457,7 @@ def todo_task_audit(client: DMEAPIClient, item_id: str, is_approval: bool,
     Returns:
         审核结果
     """
-    url = f"/rest/taskmgmt/v1/todo-items/{item_id}/audit"
+    url = "/rest/taskmgmt/v1/todo-items/{item_id}/audit"
 
     payload = {
         'is_approval': is_approval
@@ -467,7 +465,7 @@ def todo_task_audit(client: DMEAPIClient, item_id: str, is_approval: bool,
     if suggestion is not None:
         payload['suggestion'] = suggestion
 
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload, params={"item_id": item_id})
     return response
 
 
@@ -484,9 +482,9 @@ def todo_task_revoke(client: DMEAPIClient, item_id: str) -> dict:
     Returns:
         撤销结果
     """
-    url = f"/rest/taskmgmt/v1/todo-items/{item_id}/revoke-audit"
+    url = "/rest/taskmgmt/v1/todo-items/{item_id}/revoke-audit"
 
-    response = client.put(url, json={})
+    response = client.put(url, body={}, params={"item_id": item_id})
     return response
 
 
@@ -504,13 +502,13 @@ def todo_task_close(client: DMEAPIClient, item_id: str, reason: str) -> dict:
     Returns:
         关闭结果
     """
-    url = f"/rest/taskmgmt/v1/todo-items/{item_id}/close"
+    url = "/rest/taskmgmt/v1/todo-items/{item_id}/close"
 
     payload = {
         'reason': reason
     }
 
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload, params={"item_id": item_id})
     return response
 
 
@@ -550,9 +548,9 @@ def task_show(client: DMEAPIClient, task_id: str) -> list:
         - remarks: 备注信息
         - resources: 任务关联的资源列表
     """
-    url = f"/rest/taskmgmt/v1/tasks/{task_id}"
+    url = "/rest/taskmgmt/v1/tasks/{task_id}"
     
-    response = client.get(url)
+    response = client.get(url, params={"task_id": task_id})
     return response
 
 
@@ -594,7 +592,7 @@ def task_list(client: DMEAPIClient, start: int = 1, limit: int = 100,
     if create_time_to is not None:
         params['createTimeTo'] = create_time_to
     
-    response = client.get(url, query_params=params)
+    response = client.get(url, params=params)
     return response
 
 
@@ -611,9 +609,9 @@ def task_retry(client: DMEAPIClient, task_id: str) -> dict:
     Returns:
         重试结果
     """
-    url = f"/rest/taskmgmt/v1/tasks/{task_id}/retry"
+    url = "/rest/taskmgmt/v1/tasks/{task_id}/retry"
 
-    response = client.post(url, json={})
+    response = client.post(url, body={}, params={"task_id": task_id})
     return response
 
 
@@ -692,7 +690,7 @@ def tag_type_create(client: DMEAPIClient, name: str, description: str = None) ->
     if description is not None:
         payload['description'] = description
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -720,7 +718,7 @@ def tag_type_list(client: DMEAPIClient, start: int = 1, limit: int = 100,
     if name is not None:
         payload['name'] = name
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -738,7 +736,7 @@ def tag_type_modify(client: DMEAPIClient, tag_type_id: str, name: str = None,
     Returns:
         修改后的标签类型信息
     """
-    url = f"/rest/tagmgmt/v1/tag-types/{tag_type_id}"
+    url = "/rest/tagmgmt/v1/tag-types/{tag_type_id}"
     
     payload = {}
     
@@ -747,7 +745,7 @@ def tag_type_modify(client: DMEAPIClient, tag_type_id: str, name: str = None,
     if description is not None:
         payload['description'] = description
     
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload, params={"tag_type_id": tag_type_id})
     return response
 
 
@@ -768,7 +766,7 @@ def tag_type_delete(client: DMEAPIClient, tag_type_ids: list) -> dict:
         'ids': tag_type_ids
     }
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -804,7 +802,7 @@ def tag_create(client: DMEAPIClient, name: str, tag_type_id: str,
     if color is not None:
         payload['color'] = color
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -835,7 +833,7 @@ def tag_list(client: DMEAPIClient, start: int = 1, limit: int = 100,
     if tag_type_id is not None:
         payload['tag_type_id'] = tag_type_id
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -854,7 +852,7 @@ def tag_modify(client: DMEAPIClient, tag_id: str, name: str = None,
     Returns:
         修改后的标签信息
     """
-    url = f"/rest/tagmgmt/v1/tags/{tag_id}"
+    url = "/rest/tagmgmt/v1/tags/{tag_id}"
     
     payload = {}
     
@@ -865,7 +863,7 @@ def tag_modify(client: DMEAPIClient, tag_id: str, name: str = None,
     if color is not None:
         payload['color'] = color
     
-    response = client.put(url, json=payload)
+    response = client.put(url, body=payload, params={"tag_id": tag_id})
     return response
 
 
@@ -886,7 +884,7 @@ def tag_delete(client: DMEAPIClient, tag_ids: list) -> dict:
         'ids': tag_ids
     }
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -902,13 +900,13 @@ def tag_bind(client: DMEAPIClient, tag_id: str, resources: list) -> dict:
     Returns:
         关联结果
     """
-    url = f"/rest/tagmgmt/v1/tags/{tag_id}/associate-resources"
+    url = "/rest/tagmgmt/v1/tags/{tag_id}/associate-resources"
     
     payload = {
         'resources': resources
     }
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload, params={"tag_id": tag_id})
     return response
 
 
@@ -924,13 +922,13 @@ def tag_unbind(client: DMEAPIClient, tag_id: str, resources: list) -> dict:
     Returns:
         取消关联结果
     """
-    url = f"/rest/tagmgmt/v1/tags/{tag_id}/disassociate-resources"
+    url = "/rest/tagmgmt/v1/tags/{tag_id}/disassociate-resources"
     
     payload = {
         'resources': resources
     }
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload, params={"tag_id": tag_id})
     return response
 
 
@@ -968,7 +966,7 @@ def az_list(client: DMEAPIClient, az_name: str = None, operate_status: str = Non
     if is_sc is not None:
         query_params['is_sc'] = str(is_sc).lower()
 
-    response = client.get(url, query_params=query_params)
+    response = client.get(url, params=query_params)
     return response
 
 
@@ -1000,7 +998,7 @@ def dc_list(client: DMEAPIClient, name: str = None,
     if name is not None:
         payload['name'] = name
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
@@ -1017,9 +1015,9 @@ def dc_show(client: DMEAPIClient, dc_id: str) -> dict:
     Returns:
         数据中心详细信息
     """
-    url = f"/rest/dcmgmt/dcmgmtservice/v1/datacenters/{dc_id}"
+    url = "/rest/dcmgmt/dcmgmtservice/v1/datacenters/{dc_id}"
     
-    response = client.get(url)
+    response = client.get(url, params={"dc_id": dc_id})
     return response
 
 
@@ -1054,7 +1052,7 @@ def dc_show_devices(client: DMEAPIClient, dc_id: str,
     if device_type is not None:
         payload['device_type'] = device_type
     
-    response = client.post(url, json=payload)
+    response = client.post(url, body=payload)
     return response
 
 
