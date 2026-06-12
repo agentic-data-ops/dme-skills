@@ -186,6 +186,7 @@ class DMEAPIClient(BaseClient):
             "X-Auth-Token": auth_token or "",
         }
         super().__init__(endpoint, headers, verify, session_timeout, enable_log)
+        self.base_url = self.endpoint
         self.username = username
         self.password = password
         self.storage_clients = {}
@@ -194,7 +195,6 @@ class DMEAPIClient(BaseClient):
             self.last_accessed = time.time()
 
     def login(self):
-        self.base_url = self.endpoint
         path = "/rest/plat/smapp/v1/sessions"
         url = f"{self.base_url}{path}"
         body = {

@@ -27,14 +27,14 @@ def login(client: DMEAPIClient) -> dict:
     """
     client.login()
 
-    access_session = client.headers.get("X-Auth-Token", "")
-    if access_session:
+    accessSession = client.headers.get("X-Auth-Token", "")
+    if accessSession:
         print(f"\n登录成功！")
         print(f"\n提示：配置环境变量复用认证密钥，避免重复登录：")
-        print(f"  export DME_API_AUTH_TOKEN={access_session}")
+        print("  export DME_API_AUTH_TOKEN='<accessSession>'")
 
     return {
-        'accessSession': access_session
+        'accessSession': accessSession
     }
 
 

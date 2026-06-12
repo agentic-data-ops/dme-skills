@@ -767,7 +767,6 @@ def main():
                 sys.exit(1)
 
             # 创建客户端并登录
-            print(f"正在连接 DME: {endpoint}")
             client = DMEAPIClient(
                 endpoint=endpoint,
                 username=username,
@@ -776,6 +775,7 @@ def main():
             )
 
             if not auth_token:
+                print(f"正在连接 DME: {endpoint}")
                 client.login()
 
             cli.client = client
@@ -902,7 +902,6 @@ def main():
             sys.exit(1)
 
         # 创建客户端并登录
-        print(f"正在连接 DME: {endpoint}")
         client = DMEAPIClient(
             endpoint=endpoint,
             username=username,
@@ -911,6 +910,7 @@ def main():
         )
 
         if not auth_token:
+            print(f"正在连接 DME: {endpoint}")
             client.login()
 
         cli.client = client
