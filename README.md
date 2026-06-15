@@ -44,6 +44,6 @@ pydme system show
 ```text
 安装dme-ops-skill
 
-查询存储设备列表，选择一个最空闲的Dorado存储设备，创建2个100GB LUN
+/dme-ops-skill 查询存储设备列表，选择一个最空闲的Dorado存储设备，创建2个100GB LUN
 ```
 
