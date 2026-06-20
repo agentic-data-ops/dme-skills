@@ -19,8 +19,6 @@ pip install git+https://github.com/agentic-data-ops/dme-python-sdk.git
 DME_API_ENDPOINT=https://dme-float-ip:26335
 DME_API_USERNAME=your-username
 DME_API_PASSWORD=your-password
-# 或使用认证令牌代替用户名/密码：
-# DME_API_AUTH_TOKEN=your-token
 ```
 
 ## 标准流程
@@ -30,19 +28,19 @@ DME_API_PASSWORD=your-password
 3. **执行动作步骤**：
    - 调用 `pydme <topic> <subtopic> <action> --help` 获取动作参数帮助
    - 调用 `pydme <topic> <subtopic> <action> --param1 value1 --param2 value2` 执行具体动作（变更类动作需提示用户确认后执行）
-   - 如果动作返回异步任务ID，调用 `pydme system task show` 查询任务状态，等待任务完成
+   - 如果动作返回异步任务ID，调用 `pydme system task wait` 等待任务完成
    - 规划后续要执行的动作
 4. **总结输出**：格式化输出信息，并进行总结
 5. **提示下一步**：根据输出信息和相关主题的帮助信息，提示用户下一步操作
 
 ## 注意事项
 
-1. **认证**: 如果 DME_API_AUTH_TOKEN 环境变量为空，或执行动作时提示会话超时，则调用 system login 动作登录，获取 accessSession，设置环境变量 DME_API_AUTH_TOKEN='<accessSession>'
-2. **分页**: 部分接口支持分页查询，注意设置合适的 `page_size`
-3. **异步任务**: 某些操作（如添加、删除、修改）会返回异步任务 ID，可以使用 `pydme system task wait` 等待任务完成
-4. **环境变量**: 可以通过环境变量设置 DME 连接信息，避免每次输入
-5. **风险确认**：风险动作会被pydme命令行拦截，必须获得用户确认后，再追加 `--accept-risk` 参数执行
-6. **过滤查询**：查询对象列表前获取动作帮助，尽量使用过滤条件，避免返回大量数据
+1. **分页**: 部分接口支持分页查询，注意设置合适的 `page_size`
+2. **异步任务**: 某些操作（如添加、删除、修改）会返回异步任务 ID，可以使用 `pydme system task wait` 等待任务完成
+3. **环境变量**: 可以通过环境变量设置 DME 连接信息，避免每次输入
+4. **风险确认**：风险动作会被pydme命令行拦截，必须获得用户确认后，再追加 `--accept-risk` 参数执行
+5. **过滤查询**：查询对象列表前获取动作帮助，尽量使用过滤条件，避免返回大量数据
+6. **复杂参数格式**：动作的命令行帮助中如果参数包含内部格式，这指定为JSON字符串，JSON参数需要使用双引号
 
 ## 参考信息
 
@@ -70,9 +68,9 @@ pydme <topic> <subtopic> <action> --param1 value1 --param2 value2
 - `--endpoint` / `-e`: DME API 的访问地址，格式：`https://<dme_ip_address>:<dme_port>`，可通过 `DME_API_ENDPOINT` 环境变量传入
 - `--user` / `-u`: DME API 的用户名，可通过 `DME_API_USERNAME` 环境变量传入
 - `--password` / `-p`: DME API 的密码，可通过 `DME_API_PASSWORD` 环境变量传入
-- `--token`: DME API 的认证密钥，提供则跳过登录，可通过 `DME_API_AUTH_TOKEN` 环境变量传入
-- `--timeout`: API 请求超时时间（秒），默认 30 秒
+- `--timeout`: API 请求超时时间（秒），默认 90 秒
 - `--list-topics`: 列出所有可用的主题（树形结构展示）
+- `--accept-risk`: 确认接受风险，可通过`DME_ACCEPT_RISK`环境变量传入（不建议通过环境变量传入）
 
 **位置参数**：
 - `topic`: 动作主题，例如：`storage`, `storagepool`, `lun`, `filesystem`, `host`, `task`, `system`

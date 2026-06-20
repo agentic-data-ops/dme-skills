@@ -29,8 +29,6 @@ pip install git+https://github.com/agentic-data-ops/dme-python-sdk.git
 export DME_API_ENDPOINT=https://dme-float-ip:26335
 export DME_API_USERNAME=your-username
 export DME_API_PASSWORD=your-password
-# 或使用认证令牌代替用户名/密码：
-# export DME_API_AUTH_TOKEN=your-token
 ```
 
 #### 3. 验证连接
@@ -44,6 +42,6 @@ pydme system show
 ```text
 安装dme-ops-skill
 
-/dme-ops-skill 查询存储设备列表，选择一个最空闲的Dorado存储设备，创建2个100GB LUN
+查询存储设备列表，选择一个最空闲的Dorado存储设备，创建2个100GB LUN
 ```
 
