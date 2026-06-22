@@ -80,17 +80,17 @@ pydme <topic> <subtopic> <action> --param1 value1 --param2 value2
 ### 帮助信息
 
 ```bash
-# 查看所有主题（树形结构）
+# 查看所有主题动作（树形结构）
 pydme --list-topics
 
 # 查看主题帮助（显示所有直接动作和子主题）
-pydme storage --help
+pydme <topic> --help
 
 # 查看子主题帮助
-pydme storage disk --help
+pydme <topic> <subtopic> --help
 
 # 查看动作参数帮助
-pydme storage list --help
-pydme storage disk list --help
+pydme <topic> <action> --help
+pydme <topic> <subtopic> <action> --help
 ```
 
