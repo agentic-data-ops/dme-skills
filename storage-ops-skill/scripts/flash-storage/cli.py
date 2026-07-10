@@ -165,11 +165,14 @@ class FlashStorageCLI:
         # 命令执行
         for cmd in commands:
             escaped_cmd = self._escape_tcl(cmd)
+            # 清空缓冲区，避免登录残留数据混入
+            parts.append('expect -re ".+" timeout {}')
             parts.append(f'send "{escaped_cmd}\\r"')
             parts.append("expect {")
             parts.append('    "(y/n)" { send "y\\r"; exp_continue }')
             parts.append(
                 '    -re "(:/>|/diagnose>|minisystem>)" {'
+                ' puts "===CMD===";'
                 " puts -nonewline $expect_out(buffer);"
                 " puts $expect_out(0,string)"
                 " }"
@@ -191,30 +194,19 @@ class FlashStorageCLI:
     def _parse_results(self, output: str) -> List[str]:
         """从 expect 的 stdout 中分离每条命令的输出。
 
-        输出包含完整的命令回显、设备响应和提示符行。
-        以提示符行为分隔，每条命令的输出包含其自身的提示符。
+        输出以 ===CMD=== 标记分隔，每条命令包含完整的
+        命令回显、设备响应和提示符行。
         """
-        lines = output.splitlines()
+        blocks = output.split("===CMD===\n")
         results: List[str] = []
-        current: List[str] = []
 
-        for line in lines:
-            if line == "==TIMEOUT==":
-                raise TimeoutError("命令执行超时")
-            if _is_prompt_line(line):
-                # 将提示符行加入当前命令的末尾
-                if current:
-                    current.append(line)
-                    results.append("\n".join(current))
-                    current = []
-                else:
-                    results.append(line)
+        for block in blocks:
+            block = block.strip()
+            if not block:
                 continue
-            current.append(line)
-
-        # 末尾可能还有未闭合的输出
-        if current:
-            results.append("\n".join(current))
+            if "==TIMEOUT==" in block:
+                raise TimeoutError("命令执行超时")
+            results.append(block)
 
         return results
 
