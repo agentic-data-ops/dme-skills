@@ -1,80 +1,19 @@
 """FlashStorageCLI — SSH 远程登录华为闪存存储设备 CLI，交互式执行命令。
 
-通过启动后台 expect 进程实现 SSH 交互，不使用 pexpect 库。
+每次执行命令时构建独立的 expect 脚本，通过 subprocess.run 运行。
+不使用后台守护进程，不维护持久连接。
 """
+from __future__ import annotations
 
 import argparse
 import os
 import re
 import subprocess
-import sys
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 # ---------------------------------------------------------------------------
-# Expect 守护进程脚本模板
+# Prompt 检测 — 所有模式下的提示符行
 # ---------------------------------------------------------------------------
-# 注意：Tcl 的控制结构（while / if / expect 的 action 块）中的 {} 在
-# Python .format() 中需要写为 {{ }}；\r 在 Python 字符串中用 \\r 表示。
-_EXPECT_DAEMON_TMPL = r"""set timeout {timeout}
-spawn ssh -o StrictHostKeyChecking=no {username}@{address}
-expect {{
-    "password:" {{}}
-    timeout {{ puts "==CONNECT_FAILED=="; flush stdout; exit 1 }}
-}}
-send "{password}\r"
-expect {{
-    "{username}:/>" {{}}
-    timeout {{ puts "==LOGIN_FAILED=="; flush stdout; exit 1 }}
-}}
-puts "==LOGIN_OK=="
-flush stdout
-
-while {{1}} {{
-    expect_user {{
-        -re "(.*)\r" {{
-            set command $expect_out(1,string)
-        }}
-        timeout {{
-            continue
-        }}
-        eof {{
-            break
-        }}
-    }}
-    if {{![info exists command]}} {{
-        continue
-    }}
-    if {{$command == "__QUIT__"}} {{
-        send "exit\r"
-        expect "(y/n):"
-        send "y\r"
-        expect eof
-        exit
-    }}
-    send "$command\r"
-    expect {{
-        "(y/n)" {{
-            send "y\r"
-            exp_continue
-        }}
-        -re "(:/>|/diagnose>|minisystem>)" {{
-            puts $expect_out(buffer)
-            flush stdout
-        }}
-        timeout {{
-            puts "==TIMEOUTHIT=="
-            flush stdout
-        }}
-    }}
-    unset command
-}}
-"""
-
-
-# ---------------------------------------------------------------------------
-# Prompt 检测
-# ---------------------------------------------------------------------------
-# 所有可能的命令行提示符模式
 _PROMPT_PATTERNS = [
     r"^[^:]+:/>",           # username:/>  或  engineer:/>  或  developer:/>
     r"^[^:]+:/diagnose>",   # username:/diagnose>
@@ -84,7 +23,6 @@ _PROMPT_RE = re.compile("|".join(_PROMPT_PATTERNS))
 
 
 def _is_prompt_line(line: str) -> bool:
-    """判断一行文本是否匹配某个已知的命令行提示符。"""
     return bool(_PROMPT_RE.match(line.strip()))
 
 
@@ -93,9 +31,12 @@ def _is_prompt_line(line: str) -> bool:
 # ---------------------------------------------------------------------------
 
 class FlashStorageCLI:
-    """通过后台 expect 进程交互华为闪存存储设备 CLI。"""
+    """SSH 远程登录华为闪存存储设备 CLI 并执行命令。
 
-    # 模式 → (切换命令, 切换后的提示符)
+    每次执行命令生成一个完整的 expect 脚本（登录 → 模式切换 → 命令 → 退出），
+    通过 subprocess.run 一次性运行。
+    """
+
     MODE_PROMPT: Dict[str, str] = {
         "normal": "{username}:/>",
         "engineer": "engineer:/>",
@@ -108,280 +49,203 @@ class FlashStorageCLI:
         self,
         address: str,
         username: str,
-        password: str,
+        password: [redacted],
         mode: str = "normal",
         timeout: int = 60,
     ) -> None:
         self._address = address
         self._username = username
         self._password = password
+        self._default_mode = mode
         self._timeout = timeout
 
-        # 当前状态
-        self._current_mode: str = "normal"
-        self._prompt: str = f"{username}:/>"
-
-        # 构建 expect 脚本并启动子进程
-        script = _EXPECT_DAEMON_TMPL.format(
-            address=address,
-            username=username,
-            password=password,
-            timeout=timeout,
-        )
-        self._proc = subprocess.Popen(
-            ["expect", "-c", script],
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            universal_newlines=True,
-        )
-        # 读取登录确认标记
-        ok = self._proc.stdout.readline()  # type: ignore[union-attr]
-        if ok is None or "==LOGIN_OK==" not in ok:
-            err_parts: list[str] = []
-            if ok:
-                err_parts.append(ok.strip())
-            stderr = self._proc.stderr.read()  # type: ignore[union-attr]
-            if stderr:
-                err_parts.append(stderr.strip())
-            self._proc.terminate()
-            raise RuntimeError(
-                f"SSH 登录失败（{address}）：{' '.join(err_parts)}"
-            )
-
-        # 如果要求非 normal 模式，立即切换
-        if mode != "normal":
-            self.switch_mode(mode)
-
     # ------------------------------------------------------------------
-    # 底层读写
+    # 脚本生成
     # ------------------------------------------------------------------
 
-    def _send_raw(self, command: str) -> None:
-        """向 expect 进程发送一行命令（以 \\r 结尾）。"""
-        assert self._proc.stdin is not None
-        self._proc.stdin.write(f"{command}\r")
-        self._proc.stdin.flush()
+    @staticmethod
+    def _escape_tcl(text: str) -> str:
+        """转义 Tcl 双引号字符串中的特殊字符。"""
+        return (
+            text.replace("\\", "\\\\")
+            .replace('"', '\\"')
+            .replace("$", "\\$")
+            .replace("[", "\\[")
+            .replace("]", "\\]")
+        )
 
-    def _read_until_prompt(self) -> List[str]:
-        """逐行读取 stdout 直到遇到当前提示符，返回中间内容（不含提示符行）。"""
-        assert self._proc.stdout is not None
+    def _prompt_for(self, mode: str) -> str:
+        """返回指定模式的实际提示符文本。"""
+        m = self.MODE_PROMPT[mode]
+        return m.replace("{username}", self._username)
+
+    def _enter_mode_script(self, mode: str) -> List[str]:
+        """生成从 normal 进入指定模式的 Tcl 脚本段。"""
         lines: List[str] = []
-        while True:
-            line = self._proc.stdout.readline()
-            if not line:
-                raise RuntimeError("expect 进程意外退出")
-            line = line.rstrip("\r\n")
-            if _is_prompt_line(line):
-                break
-            if line == "==TIMEOUTHIT==":
-                raise TimeoutError("命令执行超时")
-            lines.append(line)
-        return lines
-
-    def _exec(self, command: str) -> List[str]:
-        """发送一条命令到设备并返回设备输出（每行一个元素）。"""
-        self._send_raw(command)
-        lines = self._read_until_prompt()
-        if not lines:
-            return []
-        # 去掉第一行（命令回显），其余为实际输出
-        return lines[1:]
-
-    # ------------------------------------------------------------------
-    # 模式切换
-    # ------------------------------------------------------------------
-
-    @property
-    def current_mode(self) -> str:
-        return self._current_mode
-
-    def switch_mode(self, mode: str) -> None:
-        """将设备 CLI 切换到指定模式。
-
-        严格按照设计文档中的 expect 交互序列执行退出 → 进入。
-        """
-        if mode == self._current_mode:
-            return
-        if mode not in self.MODE_PROMPT:
-            raise ValueError(f"不支持的模式：{mode}")
-
-        # ---- 退出当前模式到 normal ----
-        target_prompt = f"{self._username}:/>"
-
-        if self._current_mode in ("engineer", "developer"):
-            # 直接 exit → normal
-            self._exec("exit")
-        elif self._current_mode == "debug":
-            # exit → developer → exit → normal
-            self._send_raw("exit")
-            # 等待 developer:/>
-            self._wait_for_prompt("developer:/>")
-            self._send_raw("exit")
-            self._wait_for_prompt(target_prompt)
-        elif self._current_mode == "minisystem":
-            # exit → (y/n) → y → (y/n) → y → developer → exit → normal
-            self._send_raw("exit")
-            self._wait_for_yn(times=2)
-            self._wait_for_prompt("developer:/>")
-            self._send_raw("exit")
-            self._wait_for_prompt(target_prompt)
-
-        self._current_mode = "normal"
-        self._prompt = target_prompt
-
-        # ---- 进入目标模式 ----
-        if mode == "normal":
-            return
+        target_prompt = self._prompt_for(mode)
 
         if mode == "engineer":
-            self._send_raw("change user_mode current_mode user_mode=engineer")
-            self._wait_for_prompt("engineer:/>")
-            self._current_mode = "engineer"
-            self._prompt = "engineer:/>"
+            lines.append(
+                'send "change user_mode current_mode user_mode=engineer\\r"'
+            )
+            lines.append(f'expect "{target_prompt}"')
 
         elif mode == "developer":
-            self._send_raw("change user_mode current_mode user_mode=developer")
-            self._wait_for_yn(times=2)
-            self._wait_for_prompt("developer:/>")
-            self._current_mode = "developer"
-            self._prompt = "developer:/>"
+            lines.append(
+                'send "change user_mode current_mode user_mode=developer\\r"'
+            )
+            lines.append("expect {")
+            lines.append('    "(y/n)" { send "y\\r"; exp_continue }')
+            lines.append(f'    "{target_prompt}" {{ }}')
+            lines.append("}")
 
         elif mode == "debug":
-            # 先进入 developer
-            self._send_raw("change user_mode current_mode user_mode=developer")
-            self._wait_for_yn(times=2)
-            self._wait_for_prompt("developer:/>")
-            # 再 debug
-            self._send_raw("debug")
-            self._wait_for_prompt(f"{self._username}:/diagnose>")
-            self._current_mode = "debug"
-            self._prompt = f"{self._username}:/diagnose>"
+            dev_prompt = self._prompt_for("developer")
+            lines.append(
+                'send "change user_mode current_mode user_mode=developer\\r"'
+            )
+            lines.append("expect {")
+            lines.append('    "(y/n)" { send "y\\r"; exp_continue }')
+            lines.append(f'    "{dev_prompt}" {{ }}')
+            lines.append("}")
+            lines.append('send "debug\\r"')
+            lines.append(f'expect "{target_prompt}"')
 
         elif mode == "minisystem":
-            # 先进入 developer
-            self._send_raw("change user_mode current_mode user_mode=developer")
-            self._wait_for_yn(times=2)
-            self._wait_for_prompt("developer:/>")
-            # 再 minisystem
-            self._send_raw("minisystem")
-            self._wait_for_prompt("Storage: minisystem>")
-            self._current_mode = "minisystem"
-            self._prompt = "Storage: minisystem>"
+            dev_prompt = self._prompt_for("developer")
+            lines.append(
+                'send "change user_mode current_mode user_mode=developer\\r"'
+            )
+            lines.append("expect {")
+            lines.append('    "(y/n)" { send "y\\r"; exp_continue }')
+            lines.append(f'    "{dev_prompt}" {{ }}')
+            lines.append("}")
+            lines.append('send "minisystem\\r"')
+            lines.append(f'expect "{target_prompt}"')
 
-    def _wait_for_prompt(self, prompt: str) -> None:
-        """读取 stdout 直到遇到指定的提示符行。"""
-        assert self._proc.stdout is not None
-        while True:
-            line = self._proc.stdout.readline()
-            if not line:
-                raise RuntimeError("expect 进程意外退出")
-            line = line.rstrip("\r\n")
-            if _is_prompt_line(line):
-                # 确认匹配的是我们期望的提示符
-                if prompt in line:
-                    break
-                # 否则继续读 — 可能有多行输出
-                continue
-            if line == "==TIMEOUTHIT==":
-                raise TimeoutError("等待提示符超时")
+        return lines
 
-    def _wait_for_yn(self, times: int = 1) -> None:
-        """读取 stdout 跳过指定次数的 (y/n) 风险提示。
+    def _build_script(self, commands: List[str], mode: str) -> str:
+        """生成完整的 expect 脚本。
 
-        expect 守护进程遇到 (y/n) 时已经自动发送了 "y"，所以我们
-        只需要消费输出，直到遇到提示符或 (y/n) 相关行被消耗完毕。
+        登录 → 模式切换（如需）→ 顺序执行命令 → 退出。
+        每条命令的输出后跟随提示符行，作为 Python 侧的分隔标记。
         """
-        assert self._proc.stdout is not None
-        consumed = 0
-        while consumed < times:
-            line = self._proc.stdout.readline()
-            if not line:
-                raise RuntimeError("expect 进程意外退出")
-            line = line.rstrip("\r\n")
-            if "(y/n)" in line:
-                consumed += 1
-            elif _is_prompt_line(line):
-                break
-            elif line == "==TIMEOUTHIT==":
-                raise TimeoutError("等待风险提示超时")
+        escaped_pass = self._escape_tcl(self._password)
+        login_prompt = self._prompt_for("normal")
+        cmd_prompt = self._prompt_for(mode)
+
+        parts: List[str] = []
+
+        # 超时
+        parts.append(f"set timeout {self._timeout}")
+
+        # 登录
+        parts.append(
+            f"spawn ssh -o StrictHostKeyChecking=no "
+            f"{self._username}@{self._address}"
+        )
+        parts.append('expect "password:"')
+        parts.append(f'send "{escaped_pass}\\r"')
+        parts.append(f'expect "{login_prompt}"')
+
+        # 模式切换（从 normal 进入目标模式）
+        if mode != "normal":
+            parts.extend(self._enter_mode_script(mode))
+
+        # 命令执行
+        for cmd in commands:
+            escaped_cmd = self._escape_tcl(cmd)
+            parts.append(f'send "{escaped_cmd}\\r"')
+            parts.append("expect {")
+            parts.append('    "(y/n)" { send "y\\r"; exp_continue }')
+            parts.append(
+                '    -re "(:/>|/diagnose>|minisystem>)" {'
+                " puts $expect_out(buffer);"
+                " puts $expect_out(0,string)"
+                " }"
+            )
+            parts.append('    timeout { puts "==TIMEOUT==" }')
+            parts.append("}")
+
+        # 退出
+        if mode != "normal":
+            normal_prompt = self._prompt_for("normal")
+            parts.append(f'expect "{normal_prompt}"')
+        parts.append('send "exit\\r"')
+        parts.append('expect "(y/n):"')
+        parts.append('send "y\\r"')
+        parts.append("expect eof")
+
+        return "\n".join(parts)
+
+    def _parse_results(self, output: str) -> List[str]:
+        """从 expect 的 stdout 中分离每条命令的输出。
+
+        输出格式为每条命令：<echo + 输出> + <提示符行> + <下一条...>。
+        以提示符行为分隔，剥离首行回显后得到纯结果。
+        """
+        lines = output.splitlines()
+        results: List[str] = []
+        current: List[str] = []
+
+        for line in lines:
+            if line == "==TIMEOUT==":
+                raise TimeoutError("命令执行超时")
+            if _is_prompt_line(line):
+                if current:
+                    # 去掉第一行（命令回显）
+                    results.append("\n".join(current[1:]) if len(current) > 1 else "")
+                    current = []
+                else:
+                    results.append("")
+                continue
+            current.append(line)
+
+        # 末尾可能还有未闭合的输出
+        if current:
+            results.append("\n".join(current[1:]) if len(current) > 1 else "")
+
+        return results
 
     # ------------------------------------------------------------------
     # 命令执行
     # ------------------------------------------------------------------
 
-    def execute_command(self, command: str, mode: Optional[str] = None) -> str:
-        """执行一条命令，可选择先切换到指定模式。返回纯命令输出文本。"""
-        if mode is not None and mode != self._current_mode:
-            self.switch_mode(mode)
-        lines = self._exec(command)
-        return "\n".join(lines)
+    def execute_command(self, command: str, mode: str | None = None) -> str:
+        """执行一条命令。mode 默认使用构造时指定的模式。"""
+        results = self.execute_commands([command], mode)
+        return results[0] if results else ""
 
     def execute_commands(
-        self, commands: List[str], mode: Optional[str] = None
+        self, commands: List[str], mode: str | None = None
     ) -> List[str]:
-        """执行多条命令（均在同一模式下执行）。返回结果列表。"""
-        return [self.execute_command(cmd, mode) for cmd in commands]
+        """执行多条命令（同一 SSH 会话中顺序执行）。
 
-    # ------------------------------------------------------------------
-    # 关闭连接
-    # ------------------------------------------------------------------
+        Args:
+            commands: 要执行的命令列表
+            mode: 执行模式，None 表示使用 __init__ 时指定的默认模式
 
-    def close(self) -> None:
-        """断开与设备的连接。
-
-        严格按设计文档：
-          1. 退出当前模式到 normal
-          2. 发送 exit → expect (y/n): → send y → expect eof
-          3. 关闭 expect 子进程
+        Returns:
+            每条命令的输出文本列表
         """
-        if self._proc is None:
-            return
+        target_mode = mode if mode is not None else self._default_mode
+        if target_mode not in self.MODE_PROMPT:
+            raise ValueError(f"不支持的模式：{target_mode}")
 
-        # 1. 退出到 normal
-        if self._current_mode != "normal":
-            cur = self._current_mode
-            self._current_mode = "normal"
-            self._prompt = f"{self._username}:/>"
+        script = self._build_script(commands, target_mode)
+        result = subprocess.run(
+            ["expect", "-c", script],
+            capture_output=True,
+            text=True,
+        )
 
-            if cur in ("engineer", "developer"):
-                self._send_raw("exit")
-                try:
-                    self._wait_for_prompt(self._prompt)
-                except Exception:
-                    pass
-            elif cur == "debug":
-                self._send_raw("exit")
-                try:
-                    self._wait_for_prompt("developer:/>")
-                except Exception:
-                    pass
-                self._send_raw("exit")
-                try:
-                    self._wait_for_prompt(self._prompt)
-                except Exception:
-                    pass
-            elif cur == "minisystem":
-                self._send_raw("exit")
-                try:
-                    self._wait_for_prompt("developer:/>")
-                except Exception:
-                    pass
-                self._send_raw("exit")
-                try:
-                    self._wait_for_prompt(self._prompt)
-                except Exception:
-                    pass
+        if result.returncode != 0:
+            stderr = result.stderr.strip()
+            if stderr:
+                raise RuntimeError(f"expect 执行失败：{stderr}")
 
-        # 2. 发送 QUIT 让 expect 进程处理设备退出
-        try:
-            self._send_raw("__QUIT__")
-            self._proc.wait(timeout=10)
-        except Exception:
-            self._proc.terminate()
-            self._proc.wait(timeout=5)
-        finally:
-            self._proc = None  # type: ignore[assignment]
+        return self._parse_results(result.stdout)
 
 
 # ---------------------------------------------------------------------------
@@ -389,26 +253,23 @@ class FlashStorageCLI:
 # ---------------------------------------------------------------------------
 
 
-def _parse_args(argv: Optional[List[str]] = None) -> argparse.Namespace:
+def _parse_args(argv: List[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="SSH 远程登录华为闪存存储设备 CLI 并执行命令",
     )
     parser.add_argument(
         "--address",
         default=os.environ.get("STORAGE_ADDRESS", ""),
-        required=False,
         help="设备 IP 地址（环境变量 STORAGE_ADDRESS）",
     )
     parser.add_argument(
         "--username",
         default=os.environ.get("STORAGE_USERNAME", ""),
-        required=False,
         help="登录用户名（环境变量 STORAGE_USERNAME）",
     )
     parser.add_argument(
         "--password",
         default=os.environ.get("STORAGE_PASSWORD", ""),
-        required=False,
         help="登录密码（环境变量 STORAGE_PASSWORD）",
     )
     parser.add_argument(
@@ -438,30 +299,28 @@ def _parse_args(argv: Optional[List[str]] = None) -> argparse.Namespace:
     return ns
 
 
-def main(argv: Optional[List[str]] = None) -> None:
+def main(argv: List[str] | None = None) -> None:
     ns = _parse_args(argv)
-    commands = [c.strip() for c in ns.command.split(r"\n") if c.strip()]
+    raw_commands = ns.command.split(r"\n") if ns.command else []
+    commands = [c for c in raw_commands if c.strip()]
 
     cli = FlashStorageCLI(
         address=ns.address,
         username=ns.username,
-        password=ns.password,
+        password=[redacted],
         mode=ns.mode,
         timeout=ns.timeout,
     )
-    try:
-        if not commands:
-            print("已连接到设备，当前模式：", cli.current_mode)
-            return
+    if not commands:
+        print("请输入要执行的命令。")
+        return
 
-        results = cli.execute_commands(commands)
-        for i, result in enumerate(results):
-            if result:
-                print(result)
-            if i < len(results) - 1:
-                print()
-    finally:
-        cli.close()
+    results = cli.execute_commands(commands)
+    for i, result in enumerate(results):
+        if result:
+            print(result)
+        if i < len(results) - 1 and result:
+            print()
 
 
 if __name__ == "__main__":
