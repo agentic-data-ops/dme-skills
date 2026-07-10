@@ -24,8 +24,19 @@ puts "==LOGIN_OK=="
 flush stdout
 
 while {{1}} {{
-    expect_user -re "(.*)\r" {{
-        set command $expect_out(1,string)
+    expect_user {{
+        -re "(.*)\r" {{
+            set command $expect_out(1,string)
+        }}
+        timeout {{
+            continue
+        }}
+        eof {{
+            break
+        }}
+    }}
+    if {{![info exists command]}} {{
+        continue
     }}
     if {{$command == "__QUIT__"}} {{
         send "exit\r"
@@ -49,6 +60,7 @@ while {{1}} {{
             flush stdout
         }}
     }}
+    unset command
 }}
 """
 
@@ -115,7 +127,7 @@ class FlashStorageCLI:
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            text=True,
+            universal_newlines=True,
         )
         # 读取登录确认标记
         ok = self._proc.stdout.readline()  # type: ignore[union-attr]
