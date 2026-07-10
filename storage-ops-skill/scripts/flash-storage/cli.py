@@ -17,9 +17,15 @@ from typing import Dict, List, Optional
 # Python .format() 中需要写为 {{ }}；\r 在 Python 字符串中用 \\r 表示。
 _EXPECT_DAEMON_TMPL = r"""set timeout {timeout}
 spawn ssh -o StrictHostKeyChecking=no {username}@{address}
-expect "password:"
+expect {{
+    "password:" {{}}
+    timeout {{ puts "==CONNECT_FAILED=="; exit 1 }}
+}}
 send "{password}\r"
-expect "{username}:/>"
+expect {{
+    "{username}:/>" {{}}
+    timeout {{ puts "==LOGIN_FAILED=="; exit 1 }}
+}}
 puts "==LOGIN_OK=="
 flush stdout
 
@@ -132,10 +138,21 @@ class FlashStorageCLI:
         # 读取登录确认标记
         ok = self._proc.stdout.readline()  # type: ignore[union-attr]
         if ok is None or "==LOGIN_OK==" not in ok:
+            err_parts: list[str] = []
+            if ok:
+                err_parts.append(ok.strip())
+            try:
+                rest_out = self._proc.stdout.read()  # type: ignore[union-attr]
+                if rest_out:
+                    err_parts.append(rest_out.strip())
+            except Exception:
+                pass
             stderr = self._proc.stderr.read()  # type: ignore[union-attr]
+            if stderr:
+                err_parts.append(stderr.strip())
             self._proc.terminate()
             raise RuntimeError(
-                f"SSH 登录失败（{address}）：{stderr.strip()}"
+                f"SSH 登录失败（{address}）：{' '.join(err_parts)}"
             )
 
         # 如果要求非 normal 模式，立即切换
