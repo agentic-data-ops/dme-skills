@@ -2,13 +2,13 @@
 
 通过启动后台 expect 进程实现 SSH 交互，不使用 pexpect 库。
 """
-from __future__ import annotations
 
 import argparse
 import os
 import re
 import subprocess
 import sys
+from typing import Dict, List, Optional
 
 # ---------------------------------------------------------------------------
 # Expect 守护进程脚本模板
@@ -78,7 +78,7 @@ class FlashStorageCLI:
     """通过后台 expect 进程交互华为闪存存储设备 CLI。"""
 
     # 模式 → (切换命令, 切换后的提示符)
-    MODE_PROMPT: dict[str, str] = {
+    MODE_PROMPT: Dict[str, str] = {
         "normal": "{username}:/>",
         "engineer": "engineer:/>",
         "developer": "developer:/>",
@@ -140,10 +140,10 @@ class FlashStorageCLI:
         self._proc.stdin.write(f"{command}\r")
         self._proc.stdin.flush()
 
-    def _read_until_prompt(self) -> list[str]:
+    def _read_until_prompt(self) -> List[str]:
         """逐行读取 stdout 直到遇到当前提示符，返回中间内容（不含提示符行）。"""
         assert self._proc.stdout is not None
-        lines: list[str] = []
+        lines: List[str] = []
         while True:
             line = self._proc.stdout.readline()
             if not line:
@@ -156,7 +156,7 @@ class FlashStorageCLI:
             lines.append(line)
         return lines
 
-    def _exec(self, command: str) -> list[str]:
+    def _exec(self, command: str) -> List[str]:
         """发送一条命令到设备并返回设备输出（每行一个元素）。"""
         self._send_raw(command)
         lines = self._read_until_prompt()
@@ -287,7 +287,7 @@ class FlashStorageCLI:
     # 命令执行
     # ------------------------------------------------------------------
 
-    def execute_command(self, command: str, mode: str | None = None) -> str:
+    def execute_command(self, command: str, mode: Optional[str] = None) -> str:
         """执行一条命令，可选择先切换到指定模式。返回纯命令输出文本。"""
         if mode is not None and mode != self._current_mode:
             self.switch_mode(mode)
@@ -295,8 +295,8 @@ class FlashStorageCLI:
         return "\n".join(lines)
 
     def execute_commands(
-        self, commands: list[str], mode: str | None = None
-    ) -> list[str]:
+        self, commands: List[str], mode: Optional[str] = None
+    ) -> List[str]:
         """执行多条命令（均在同一模式下执行）。返回结果列表。"""
         return [self.execute_command(cmd, mode) for cmd in commands]
 
@@ -366,7 +366,7 @@ class FlashStorageCLI:
 # ---------------------------------------------------------------------------
 
 
-def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+def _parse_args(argv: Optional[List[str]] = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="SSH 远程登录华为闪存存储设备 CLI 并执行命令",
     )
@@ -415,7 +415,7 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     return ns
 
 
-def main(argv: list[str] | None = None) -> None:
+def main(argv: Optional[List[str]] = None) -> None:
     ns = _parse_args(argv)
     commands = [c.strip() for c in ns.command.split(r"\n") if c.strip()]
 
