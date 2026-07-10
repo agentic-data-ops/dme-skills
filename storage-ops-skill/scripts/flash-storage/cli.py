@@ -249,10 +249,6 @@ class FlashStorageCLI:
     # 命令执行
     # ------------------------------------------------------------------
 
-    def execute_command(self, command: str, mode: str | None = None) -> str:
-        """执行一条命令。mode 默认使用构造时指定的模式。"""
-        results = self.execute_commands([command], mode)
-        return results[0] if results else ""
 
     def execute_commands(
         self, commands: List[str], mode: str | None = None
