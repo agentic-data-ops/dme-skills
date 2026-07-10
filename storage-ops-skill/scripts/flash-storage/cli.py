@@ -19,12 +19,12 @@ _EXPECT_DAEMON_TMPL = r"""set timeout {timeout}
 spawn ssh -o StrictHostKeyChecking=no {username}@{address}
 expect {{
     "password:" {{}}
-    timeout {{ puts "==CONNECT_FAILED=="; exit 1 }}
+    timeout {{ puts "==CONNECT_FAILED=="; flush stdout; exit 1 }}
 }}
 send "{password}\r"
 expect {{
     "{username}:/>" {{}}
-    timeout {{ puts "==LOGIN_FAILED=="; exit 1 }}
+    timeout {{ puts "==LOGIN_FAILED=="; flush stdout; exit 1 }}
 }}
 puts "==LOGIN_OK=="
 flush stdout
@@ -141,12 +141,6 @@ class FlashStorageCLI:
             err_parts: list[str] = []
             if ok:
                 err_parts.append(ok.strip())
-            try:
-                rest_out = self._proc.stdout.read()  # type: ignore[union-attr]
-                if rest_out:
-                    err_parts.append(rest_out.strip())
-            except Exception:
-                pass
             stderr = self._proc.stderr.read()  # type: ignore[union-attr]
             if stderr:
                 err_parts.append(stderr.strip())
