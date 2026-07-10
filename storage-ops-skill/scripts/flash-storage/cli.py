@@ -198,24 +198,16 @@ class FlashStorageCLI:
         if mode != "normal":
             parts.extend(self._enter_mode_script(mode))
 
-        # 命令执行
+        # 命令执行 — 严格按设计文档：send → expect { (y/n) | prompt }
+        cmd_prompt = self._prompt_for(mode)
         for cmd in commands:
             escaped_cmd = self._escape_tcl(cmd)
-            # 清空缓冲区，避免登录残留数据混入
-            parts.append('expect -re ".+" timeout {}')
-            parts.append(f'send "{escaped_cmd}\\r"')
+            parts.append(f'send "{escaped_cmd}\\r"')  
             parts.append("expect {")
-            parts.append('    "(y/n)" { send "y\\r"; exp_continue }')
-            parts.append(
-                '    -re "(:/>|/diagnose>|minisystem>)" {'
-                ' puts "===CMD===";'
-                " puts -nonewline $expect_out(buffer);"
-                " puts $expect_out(0,string)"
-                " }"
-            )
+            parts.append('    "(y/n)" { send "y\r"; exp_continue }')
+            parts.append(f'    "{cmd_prompt}" {{ }}')
             parts.append('    timeout { puts "==TIMEOUT==" }')
             parts.append("}")
-
         # 退出（先退模式到 normal，再退 CLI）
         if mode != "normal":
             parts.extend(self._exit_mode_script(mode))
@@ -227,21 +219,28 @@ class FlashStorageCLI:
         return "\n".join(parts)
 
     def _parse_results(self, output: str) -> List[str]:
-        """从 expect 的 stdout 中分离每条命令的输出。
+        """从 expect stdout 中提取每条命令的输出。
 
-        输出以 ===CMD=== 标记分隔，每条命令包含完整的
-        命令回显、设备响应和提示符行。
+        利用自然会话输出中的提示符行作为分隔：
+        相邻两条提示符之间的内容为一条命令的输出（含回显）。
         """
-        blocks = output.split("===CMD===\n")
-        results: List[str] = []
+        lines = output.splitlines()
+        prompt_indices = [
+            i for i, line in enumerate(lines) if _is_prompt_line(line)
+        ]
+        if not prompt_indices:
+            return []
 
-        for block in blocks:
-            block = block.strip()
-            if not block:
-                continue
-            if "==TIMEOUT==" in block:
+        results: List[str] = []
+        for j in range(len(prompt_indices) - 1):
+            start = prompt_indices[j] + 1
+            end = prompt_indices[j + 1]
+            seg_lines = lines[start:end]
+            text = "\n".join(seg_lines).strip() if seg_lines else ""
+            if "==TIMEOUT==" in text:
                 raise TimeoutError("命令执行超时")
-            results.append(block)
+            if text:
+                results.append(text)
 
         return results
 
