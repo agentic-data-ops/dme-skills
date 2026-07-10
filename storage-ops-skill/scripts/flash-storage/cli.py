@@ -27,6 +27,14 @@ def _is_prompt_line(line: str) -> bool:
 
 
 # ---------------------------------------------------------------------------
+# 辅助：生成 multi-pattern expect（带 timeout）
+# ---------------------------------------------------------------------------
+def _expect_with_timeout(pattern: str) -> str:
+    """生成 expect {{ "{pattern}" {{}} timeout {{ puts "==TIMEOUT==" }} }}。"""
+    return f'expect {{ "{pattern}" {{}} timeout {{ puts "==TIMEOUT==" }} }}'
+
+
+# ---------------------------------------------------------------------------
 # FlashStorageCLI
 # ---------------------------------------------------------------------------
 
@@ -86,15 +94,13 @@ class FlashStorageCLI:
 
         if mode == "engineer":
             lines.append(
-                'send "change_user_mode current_mode user_mode=engineer\\r"'
+                'send "change user_mode current_mode user_mode=engineer\\r"'
             )
-            lines.append(
-                'expect {{\n    "{tp}" {{}}\n    timeout {{ puts "==TIMEOUT==" }}\n}}'.format(tp=target_prompt)
-            )
+            lines.append(_expect_with_timeout(target_prompt))
 
         elif mode == "developer":
             lines.append(
-                'send "change_user_mode current_mode user_mode=developer\\r"'
+                'send "change user_mode current_mode user_mode=developer\\r"'
             )
             lines.append("expect {")
             lines.append('    "(y/n)" { send "y\\r"; exp_continue }')
@@ -105,7 +111,7 @@ class FlashStorageCLI:
         elif mode == "debug":
             dev_prompt = self._prompt_for("developer")
             lines.append(
-                'send "change_user_mode current_mode user_mode=developer\\r"'
+                'send "change user_mode current_mode user_mode=developer\\r"'
             )
             lines.append("expect {")
             lines.append('    "(y/n)" { send "y\\r"; exp_continue }')
@@ -113,14 +119,12 @@ class FlashStorageCLI:
             lines.append('    timeout { puts "==TIMEOUT==" }')
             lines.append("}")
             lines.append('send "debug\\r"')
-            lines.append(
-                'expect {{\n    "{tp}" {{}}\n    timeout {{ puts "==TIMEOUT==" }}\n}}'.format(tp=target_prompt)
-            )
+            lines.append(_expect_with_timeout(target_prompt))
 
         elif mode == "minisystem":
             dev_prompt = self._prompt_for("developer")
             lines.append(
-                'send "change_user_mode current_mode user_mode=developer\\r"'
+                'send "change user_mode current_mode user_mode=developer\\r"'
             )
             lines.append("expect {")
             lines.append('    "(y/n)" { send "y\\r"; exp_continue }')
@@ -128,21 +132,53 @@ class FlashStorageCLI:
             lines.append('    timeout { puts "==TIMEOUT==" }')
             lines.append("}")
             lines.append('send "minisystem\\r"')
-            lines.append(
-                'expect {{\n    "{tp}" {{}}\n    timeout {{ puts "==TIMEOUT==" }}\n}}'.format(tp=target_prompt)
-            )
+            lines.append(_expect_with_timeout(target_prompt))
+
+        return lines
+
+    def _exit_mode_script(self, mode: str) -> List[str]:
+        """生成从指定模式退回到 normal 的 Tcl 脚本段。
+
+        严格按设计文档中的 switch_mode 退出序列。
+        """
+        lines: List[str] = []
+        normal_prompt = self._prompt_for("normal")
+
+        if mode == "engineer":
+            lines.append('send "exit\\r"')
+            lines.append(_expect_with_timeout(normal_prompt))
+
+        elif mode == "developer":
+            lines.append('send "exit\\r"')
+            lines.append(_expect_with_timeout(normal_prompt))
+
+        elif mode == "debug":
+            dev_prompt = self._prompt_for("developer")
+            lines.append('send "exit\\r"')
+            lines.append(_expect_with_timeout(dev_prompt))
+            lines.append('send "exit\\r"')
+            lines.append(_expect_with_timeout(normal_prompt))
+
+        elif mode == "minisystem":
+            dev_prompt = self._prompt_for("developer")
+            lines.append('send "exit\\r"')
+            lines.append("expect {")
+            lines.append('    "(y/n)" { send "y\\r"; exp_continue }')
+            lines.append(f'    "{dev_prompt}" {{ }}')
+            lines.append('    timeout { puts "==TIMEOUT==" }')
+            lines.append("}")
+            lines.append('send "exit\\r"')
+            lines.append(_expect_with_timeout(normal_prompt))
 
         return lines
 
     def _build_script(self, commands: List[str], mode: str) -> str:
         """生成完整的 expect 脚本。
 
-        登录 → 模式切换（如需）→ 顺序执行命令 → 退出。
-        每条命令的输出后跟随提示符行，作为 Python 侧的分隔标记。
+        登录 → 模式切换（如需）→ 顺序命令执行 → 退出模式 → 退出 CLI。
         """
         escaped_pass = self._escape_tcl(self._password)
         login_prompt = self._prompt_for("normal")
-        cmd_prompt = self._prompt_for(mode)
 
         parts: List[str] = []
 
@@ -154,9 +190,9 @@ class FlashStorageCLI:
             f"spawn ssh -o StrictHostKeyChecking=no "
             f"{self._username}@{self._address}"
         )
-        parts.append('expect "password:"')
+        parts.append(_expect_with_timeout("password:"))
         parts.append(f'send "{escaped_pass}\\r"')
-        parts.append(f'expect "{login_prompt}"')
+        parts.append(_expect_with_timeout(login_prompt))
 
         # 模式切换（从 normal 进入目标模式）
         if mode != "normal":
@@ -180,12 +216,11 @@ class FlashStorageCLI:
             parts.append('    timeout { puts "==TIMEOUT==" }')
             parts.append("}")
 
-        # 退出
+        # 退出（先退模式到 normal，再退 CLI）
         if mode != "normal":
-            normal_prompt = self._prompt_for("normal")
-            parts.append(f'expect "{normal_prompt}"')
+            parts.extend(self._exit_mode_script(mode))
         parts.append('send "exit\\r"')
-        parts.append('expect "(y/n):"')
+        parts.append(_expect_with_timeout("(y/n):"))
         parts.append('send "y\\r"')
         parts.append("expect eof")
 
