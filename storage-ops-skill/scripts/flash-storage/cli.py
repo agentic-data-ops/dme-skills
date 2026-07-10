@@ -86,42 +86,51 @@ class FlashStorageCLI:
 
         if mode == "engineer":
             lines.append(
-                'send "change user_mode current_mode user_mode=engineer\\r"'
+                'send "change_user_mode current_mode user_mode=engineer\\r"'
             )
-            lines.append(f'expect "{target_prompt}"')
+            lines.append(
+                'expect {{\n    "{tp}" {{}}\n    timeout {{ puts "==TIMEOUT==" }}\n}}'.format(tp=target_prompt)
+            )
 
         elif mode == "developer":
             lines.append(
-                'send "change user_mode current_mode user_mode=developer\\r"'
+                'send "change_user_mode current_mode user_mode=developer\\r"'
             )
             lines.append("expect {")
             lines.append('    "(y/n)" { send "y\\r"; exp_continue }')
             lines.append(f'    "{target_prompt}" {{ }}')
+            lines.append('    timeout { puts "==TIMEOUT==" }')
             lines.append("}")
 
         elif mode == "debug":
             dev_prompt = self._prompt_for("developer")
             lines.append(
-                'send "change user_mode current_mode user_mode=developer\\r"'
+                'send "change_user_mode current_mode user_mode=developer\\r"'
             )
             lines.append("expect {")
             lines.append('    "(y/n)" { send "y\\r"; exp_continue }')
             lines.append(f'    "{dev_prompt}" {{ }}')
+            lines.append('    timeout { puts "==TIMEOUT==" }')
             lines.append("}")
             lines.append('send "debug\\r"')
-            lines.append(f'expect "{target_prompt}"')
+            lines.append(
+                'expect {{\n    "{tp}" {{}}\n    timeout {{ puts "==TIMEOUT==" }}\n}}'.format(tp=target_prompt)
+            )
 
         elif mode == "minisystem":
             dev_prompt = self._prompt_for("developer")
             lines.append(
-                'send "change user_mode current_mode user_mode=developer\\r"'
+                'send "change_user_mode current_mode user_mode=developer\\r"'
             )
             lines.append("expect {")
             lines.append('    "(y/n)" { send "y\\r"; exp_continue }')
             lines.append(f'    "{dev_prompt}" {{ }}')
+            lines.append('    timeout { puts "==TIMEOUT==" }')
             lines.append("}")
             lines.append('send "minisystem\\r"')
-            lines.append(f'expect "{target_prompt}"')
+            lines.append(
+                'expect {{\n    "{tp}" {{}}\n    timeout {{ puts "==TIMEOUT==" }}\n}}'.format(tp=target_prompt)
+            )
 
         return lines
 
@@ -161,7 +170,7 @@ class FlashStorageCLI:
             parts.append('    "(y/n)" { send "y\\r"; exp_continue }')
             parts.append(
                 '    -re "(:/>|/diagnose>|minisystem>)" {'
-                " puts $expect_out(buffer);"
+                " puts -nonewline $expect_out(buffer);"
                 " puts $expect_out(0,string)"
                 " }"
             )
@@ -182,8 +191,8 @@ class FlashStorageCLI:
     def _parse_results(self, output: str) -> List[str]:
         """从 expect 的 stdout 中分离每条命令的输出。
 
-        输出格式为每条命令：<echo + 输出> + <提示符行> + <下一条...>。
-        以提示符行为分隔，剥离首行回显后得到纯结果。
+        输出包含完整的命令回显、设备响应和提示符行。
+        以提示符行为分隔，每条命令的输出包含其自身的提示符。
         """
         lines = output.splitlines()
         results: List[str] = []
@@ -193,18 +202,19 @@ class FlashStorageCLI:
             if line == "==TIMEOUT==":
                 raise TimeoutError("命令执行超时")
             if _is_prompt_line(line):
+                # 将提示符行加入当前命令的末尾
                 if current:
-                    # 去掉第一行（命令回显）
-                    results.append("\n".join(current[1:]) if len(current) > 1 else "")
+                    current.append(line)
+                    results.append("\n".join(current))
                     current = []
                 else:
-                    results.append("")
+                    results.append(line)
                 continue
             current.append(line)
 
         # 末尾可能还有未闭合的输出
         if current:
-            results.append("\n".join(current[1:]) if len(current) > 1 else "")
+            results.append("\n".join(current))
 
         return results
 
