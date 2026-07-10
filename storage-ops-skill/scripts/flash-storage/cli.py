@@ -49,7 +49,7 @@ class FlashStorageCLI:
         self,
         address: str,
         username: str,
-        password: [redacted],
+        password: str,
         mode: str = "normal",
         timeout: int = 60,
     ) -> None:
@@ -307,7 +307,7 @@ def main(argv: List[str] | None = None) -> None:
     cli = FlashStorageCLI(
         address=ns.address,
         username=ns.username,
-        password=[redacted],
+        password=ns.password,
         mode=ns.mode,
         timeout=ns.timeout,
     )
