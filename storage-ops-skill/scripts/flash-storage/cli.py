@@ -11,28 +11,6 @@ import re
 import subprocess
 from typing import Dict, List
 
-# ---------------------------------------------------------------------------
-# Prompt 检测 — 所有模式下的提示符行
-# ---------------------------------------------------------------------------
-_PROMPT_PATTERNS = [
-    r"^[^:]+:/>",           # username:/>  或  engineer:/>  或  developer:/>
-    r"^[^:]+:/diagnose>",   # username:/diagnose>
-    r"^Storage: minisystem>",  # Storage: minisystem>
-]
-_PROMPT_RE = re.compile("|".join(_PROMPT_PATTERNS))
-
-
-def _is_prompt_line(line: str) -> bool:
-    return bool(_PROMPT_RE.match(line.strip()))
-
-
-# ---------------------------------------------------------------------------
-# 辅助：生成 multi-pattern expect（带 timeout）
-# ---------------------------------------------------------------------------
-def _expect_with_timeout(pattern: str) -> str:
-    """生成 expect {{ "{pattern}" {{}} timeout {{ puts "==TIMEOUT==" }} }}。"""
-    return f'expect {{ "{pattern}" {{}} timeout {{ puts "==TIMEOUT==" }} }}'
-
 
 # ---------------------------------------------------------------------------
 # FlashStorageCLI
@@ -45,26 +23,16 @@ class FlashStorageCLI:
     通过 subprocess.run 一次性运行。
     """
 
-    MODE_PROMPT: Dict[str, str] = {
-        "normal": "{username}:/>",
-        "engineer": "engineer:/>",
-        "developer": "developer:/>",
-        "debug": "{username}:/diagnose>",
-        "minisystem": "Storage: minisystem>",
-    }
-
     def __init__(
         self,
         address: str,
         username: str,
         password: str,
-        mode: str = "normal",
         timeout: int = 60,
     ) -> None:
         self._address = address
         self._username = username
         self._password = password
-        self._default_mode = mode
         self._timeout = timeout
 
     # ------------------------------------------------------------------
@@ -82,190 +50,57 @@ class FlashStorageCLI:
             .replace("]", "\\]")
         )
 
-    def _prompt_for(self, mode: str) -> str:
-        """返回指定模式的实际提示符文本。"""
-        m = self.MODE_PROMPT[mode]
-        return m.replace("{username}", self._username)
-
-    def _enter_mode_script(self, mode: str) -> List[str]:
-        """生成从 normal 进入指定模式的 Tcl 脚本段。"""
-        lines: List[str] = []
-        target_prompt = self._prompt_for(mode)
-
-        if mode == "engineer":
-            lines.append(
-                'send "change user_mode current_mode user_mode=engineer\\r"'
-            )
-            lines.append(_expect_with_timeout(target_prompt))
-
-        elif mode == "developer":
-            lines.append(
-                'send "change user_mode current_mode user_mode=developer\\r"'
-            )
-            lines.append("expect {")
-            lines.append('    "(y/n)" { send "y\\r"; exp_continue }')
-            lines.append(f'    "{target_prompt}" {{ }}')
-            lines.append('    timeout { puts "==TIMEOUT==" }')
-            lines.append("}")
-
-        elif mode == "debug":
-            dev_prompt = self._prompt_for("developer")
-            lines.append(
-                'send "change user_mode current_mode user_mode=developer\\r"'
-            )
-            lines.append("expect {")
-            lines.append('    "(y/n)" { send "y\\r"; exp_continue }')
-            lines.append(f'    "{dev_prompt}" {{ }}')
-            lines.append('    timeout { puts "==TIMEOUT==" }')
-            lines.append("}")
-            lines.append('send "debug\\r"')
-            lines.append(_expect_with_timeout(target_prompt))
-
-        elif mode == "minisystem":
-            dev_prompt = self._prompt_for("developer")
-            lines.append(
-                'send "change user_mode current_mode user_mode=developer\\r"'
-            )
-            lines.append("expect {")
-            lines.append('    "(y/n)" { send "y\\r"; exp_continue }')
-            lines.append(f'    "{dev_prompt}" {{ }}')
-            lines.append('    timeout { puts "==TIMEOUT==" }')
-            lines.append("}")
-            lines.append('send "minisystem\\r"')
-            lines.append(_expect_with_timeout(target_prompt))
-
-        return lines
-
-    def _exit_mode_script(self, mode: str) -> List[str]:
-        """生成从指定模式退回到 normal 的 Tcl 脚本段。
-
-        严格按设计文档中的 switch_mode 退出序列。
-        """
-        lines: List[str] = []
-        normal_prompt = self._prompt_for("normal")
-
-        if mode == "engineer":
-            lines.append('send "exit\\r"')
-            lines.append(_expect_with_timeout(normal_prompt))
-
-        elif mode == "developer":
-            lines.append('send "exit\\r"')
-            lines.append(_expect_with_timeout(normal_prompt))
-
-        elif mode == "debug":
-            dev_prompt = self._prompt_for("developer")
-            lines.append('send "exit\\r"')
-            lines.append(_expect_with_timeout(dev_prompt))
-            lines.append('send "exit\\r"')
-            lines.append(_expect_with_timeout(normal_prompt))
-
-        elif mode == "minisystem":
-            dev_prompt = self._prompt_for("developer")
-            lines.append('send "exit\\r"')
-            lines.append("expect {")
-            lines.append('    "(y/n)" { send "y\\r"; exp_continue }')
-            lines.append(f'    "{dev_prompt}" {{ }}')
-            lines.append('    timeout { puts "==TIMEOUT==" }')
-            lines.append("}")
-            lines.append('send "exit\\r"')
-            lines.append(_expect_with_timeout(normal_prompt))
-
-        return lines
-
-    def _build_script(self, commands: List[str], mode: str) -> str:
+    def _build_script(self, commands: List[str]) -> str:
         """生成完整的 expect 脚本。
 
         登录 → 模式切换（如需）→ 顺序命令执行 → 退出模式 → 退出 CLI。
         """
-        escaped_pass = self._escape_tcl(self._password)
-        login_prompt = self._prompt_for("normal")
+        blocks: List[str] = []
 
-        parts: List[str] = []
+        blocks.append(f"""
+        set timeout {self._timeout}
+        spawn ssh -o StrictHostKeyChecking=no {self._username}@{self._address}
+        expect "password:"
+        send "{self._password}\r"
+        expect ":/>"
+        """.replace("        ", ""))
+        
+        for command in commands:
+            blocks.append(f"""
+            send "{command}\r"
+            expect {{ 
+                "(y/n):" {{ send "y\r"; exp_continue }}
+                -re ":/>|:/diagnose>|minisystem>" {{ }}
+            }}
+            """.replace("            ", ""))
+        
+        blocks.append(f"""
+        send "exit\r"
+        expect {{ 
+            "(y/n):" {{ send "y\r"; exp_continue }}
+            -re ":/>|:/diagnose>|minisystem>" {{ send "exit\r"; exp_continue }}
+            eof {{ }}
+        }}
+        """.replace("        ", ""))
 
-        # 超时
-        parts.append(f"set timeout {self._timeout}")
-
-        # 登录
-        parts.append(
-            f"spawn ssh -o StrictHostKeyChecking=no "
-            f"{self._username}@{self._address}"
-        )
-        parts.append(_expect_with_timeout("password:"))
-        parts.append(f'send "{escaped_pass}\\r"')
-        parts.append(_expect_with_timeout(login_prompt))
-
-        # 模式切换（从 normal 进入目标模式）
-        if mode != "normal":
-            parts.extend(self._enter_mode_script(mode))
-
-        # 命令执行 — 严格按设计文档：send → expect { (y/n) | prompt }
-        cmd_prompt = self._prompt_for(mode)
-        for cmd in commands:
-            escaped_cmd = self._escape_tcl(cmd)
-            parts.append(f'send "{escaped_cmd}\\r"')  
-            parts.append("expect {")
-            parts.append('    "(y/n)" { send "y\r"; exp_continue }')
-            parts.append(f'    "{cmd_prompt}" {{ }}')
-            parts.append('    timeout { puts "==TIMEOUT==" }')
-            parts.append("}")
-        # 退出（先退模式到 normal，再退 CLI）
-        if mode != "normal":
-            parts.extend(self._exit_mode_script(mode))
-        parts.append('send "exit\\r"')
-        parts.append(_expect_with_timeout("(y/n):"))
-        parts.append('send "y\\r"')
-        parts.append("expect eof")
-
-        return "\n".join(parts)
-
-    def _parse_results(self, output: str) -> List[str]:
-        """从 expect stdout 中提取每条命令的输出。
-
-        利用自然会话输出中的提示符行作为分隔：
-        相邻两条提示符之间的内容为一条命令的输出（含回显）。
-        """
-        lines = output.splitlines()
-        prompt_indices = [
-            i for i, line in enumerate(lines) if _is_prompt_line(line)
-        ]
-        if not prompt_indices:
-            return []
-
-        results: List[str] = []
-        for j in range(len(prompt_indices) - 1):
-            start = prompt_indices[j] + 1
-            end = prompt_indices[j + 1]
-            seg_lines = lines[start:end]
-            text = "\n".join(seg_lines).strip() if seg_lines else ""
-            if "==TIMEOUT==" in text:
-                raise TimeoutError("命令执行超时")
-            if text:
-                results.append(text)
-
-        return results
-
-    # ------------------------------------------------------------------
-    # 命令执行
-    # ------------------------------------------------------------------
-
+        return "\n".join(blocks)
 
     def execute_commands(
-        self, commands: List[str], mode: str | None = None
+        self, commands: List[str], dumpscript: str | None = None
     ) -> List[str]:
-        """执行多条命令（同一 SSH 会话中顺序执行）。
+        """执行多条命令。
 
         Args:
             commands: 要执行的命令列表
-            mode: 执行模式，None 表示使用 __init__ 时指定的默认模式
 
         Returns:
-            每条命令的输出文本列表
+            输出文本
         """
-        target_mode = mode if mode is not None else self._default_mode
-        if target_mode not in self.MODE_PROMPT:
-            raise ValueError(f"不支持的模式：{target_mode}")
-
-        script = self._build_script(commands, target_mode)
+        script = self._build_script(commands)
+        if dumpscript:
+            with open(dumpscript, "w", encoding="utf-8") as f:
+                f.write(script)
+        
         result = subprocess.run(
             ["expect", "-c", script],
             capture_output=True,
@@ -277,12 +112,7 @@ class FlashStorageCLI:
             if stderr:
                 raise RuntimeError(f"expect 执行失败：{stderr}")
 
-        return self._parse_results(result.stdout)
-
-
-# ---------------------------------------------------------------------------
-# 命令行入口
-# ---------------------------------------------------------------------------
+        return result.stdout
 
 
 def _parse_args(argv: List[str] | None = None) -> argparse.Namespace:
@@ -311,13 +141,12 @@ def _parse_args(argv: List[str] | None = None) -> argparse.Namespace:
         help="命令超时秒数，默认 60（环境变量 STORAGE_TIMEOUT）",
     )
     parser.add_argument(
-        "--mode",
-        default="normal",
-        choices=list(FlashStorageCLI.MODE_PROMPT),
-        help="CLI 命令行模式，默认 normal",
+        "--dumpscript",
+        default=None,
+        help="导出 expect 脚本到指定文件（用于调试）",
     )
     parser.add_argument(
-        "command",
+        "commands",
         nargs="?",
         default="",
         help="要执行的命令（多条命令用 \\n 分隔）",
@@ -332,28 +161,22 @@ def _parse_args(argv: List[str] | None = None) -> argparse.Namespace:
 
 
 def main(argv: List[str] | None = None) -> None:
-    ns = _parse_args(argv)
-    raw_commands = ns.command.split(r"\n") if ns.command else []
+    args = _parse_args(argv)
+    raw_commands = args.commands.split(r"\n") if args.commands else []
     commands = [c for c in raw_commands if c.strip()]
 
     cli = FlashStorageCLI(
-        address=ns.address,
-        username=ns.username,
-        password=ns.password,
-        mode=ns.mode,
-        timeout=ns.timeout,
+        address=args.address,
+        username=args.username,
+        password=args.password,
+        timeout=args.timeout,
     )
     if not commands:
         print("请输入要执行的命令。")
         return
 
-    results = cli.execute_commands(commands)
-    for i, result in enumerate(results):
-        if result:
-            print(result)
-        if i < len(results) - 1 and result:
-            print()
-
+    results = cli.execute_commands(commands, args.dumpscript)
+    print(results)
 
 if __name__ == "__main__":
     main()
