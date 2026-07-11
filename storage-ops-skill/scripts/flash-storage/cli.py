@@ -61,24 +61,24 @@ class FlashStorageCLI:
         set timeout {self._timeout}
         spawn ssh -o StrictHostKeyChecking=no {self._username}@{self._address}
         expect "password:"
-        send "{self._password}\r"
+        send "{self._password}\\r"
         expect ":/>"
         """.replace("        ", ""))
         
         for command in commands:
             blocks.append(f"""
-            send "{command}\r"
+            send "{command}\\r"
             expect {{ 
-                "(y/n):" {{ send "y\r"; exp_continue }}
+                "(y/n):" {{ send "y\\r"; exp_continue }}
                 -re ":/>|:/diagnose>|minisystem>" {{ }}
             }}
             """.replace("            ", ""))
         
         blocks.append(f"""
-        send "exit\r"
+        send "exit\\r"
         expect {{ 
-            "(y/n):" {{ send "y\r"; exp_continue }}
-            -re ":/>|:/diagnose>|minisystem>" {{ send "exit\r"; exp_continue }}
+            "(y/n):" {{ send "y\\r"; exp_continue }}
+            -re ":/>|:/diagnose>|minisystem>" {{ send "exit\\r"; exp_continue }}
             eof {{ }}
         }}
         """.replace("        ", ""))
