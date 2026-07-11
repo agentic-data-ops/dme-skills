@@ -69,7 +69,7 @@ class FlashStorageCLI:
             blocks.append(f"""
             send "{command}\\r"
             expect {{ 
-                "(y/n):" {{ send "y\\r"; exp_continue }}
+                "(y/n)" {{ send "y\\r"; exp_continue }}
                 -re ":/>|:/diagnose>|minisystem>" {{ }}
             }}
             """.replace("            ", ""))
@@ -77,7 +77,7 @@ class FlashStorageCLI:
         blocks.append(f"""
         send "exit\\r"
         expect {{ 
-            "(y/n):" {{ send "y\\r"; exp_continue }}
+            "(y/n)" {{ send "y\\r"; exp_continue }}
             -re ":/>|:/diagnose>|minisystem>" {{ send "exit\\r"; exp_continue }}
             eof {{ }}
         }}
