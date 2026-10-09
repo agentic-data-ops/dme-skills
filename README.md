@@ -46,6 +46,54 @@ Install dme-ops-skill
 List storage devices, select the most idle Dorado storage device, and create two 100GB LUNs
 ```
 
+## storage-ops-skill
+
+Huawei all-flash storage device operations skill that logs in to the device CLI over SSH and executes batch commands. Core components:
+
+- `SKILL.md` — skill definition and standard workflow
+- `scripts/flash-storage/cli.py` — SSH CLI executor built on Python + expect
+- `reference/dorado-v6-cli-ref.md` — OceanStor Dorado 6.1.2 Command Reference (complete command reference generated from Huawei official documentation, 1080 sections; each command includes Function / Format / Parameters / Example / System Output)
+
+### Standard Workflow
+
+1. **Query command help**: Search `reference/dorado-v6-cli-ref.md` for command help (for non-English requests, first extract English keywords to search, as the command-line help is English-only)
+2. **Assemble batch commands**: Build the batch command string, one command per line, separated by `\n`
+3. **Risk check and confirmation**: Identify risky commands (change-type commands and commands in the High-Risk Command List), show the command list with risky ones annotated, and obtain user confirmation
+4. **Execute**: After user confirmation, run `scripts/flash-storage/cli.py` to execute the commands
+5. **Summarize**: Summarize the execution results based on the output
+6. **Suggest next steps**: Recommend next actions based on the results
+
+### Quick Start
+
+#### 1. Set Environment Variables (password via environment variable is strongly recommended)
+
+```bash
+export STORAGE_ADDRESS=192.168.1.10
+export STORAGE_USERNAME=admin
+export STORAGE_PASSWORD='your-password'
+export STORAGE_TIMEOUT=60
+```
+
+#### 2. Execute Commands
+
+```bash
+python3 storage-ops-skill/scripts/flash-storage/cli.py "show version\nshow storage pool"
+```
+
+#### 3. Use the Skill
+
+```text
+Install storage-ops-skill
+
+Query the device version and storage pool information, and check for alarms
+```
+
+### Notes
+
+- **Risk confirmation**: Risky commands (e.g., change-type commands such as `delete`, `create`, `modify`, and commands in the High-Risk Command List) must be confirmed by the user before execution
+- **Language**: The command-line help is English-only; for non-English requests, extract English keywords to search. The final summary should be in the same language as the user's input
+- **Password security**: Strongly recommended to pass the password via the `STORAGE_PASSWORD` environment variable to avoid exposing it on the command line
+
 # Disclaimer
 
 1. **Unofficial project**: This project is not officially provided by Huawei DME. It is maintained by individuals and serves only as a reference sample, without technical support.
