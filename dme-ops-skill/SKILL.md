@@ -1,19 +1,19 @@
 ---
 name: dme-ops-skill
-description: DME 运维技能，用于存储设备的日常运维工作，包括存储监控、分析和配置操作。
+description: DME operations skill for day-to-day storage device administration, including storage monitoring, analysis, and configuration operations.
 ---
 
-# DME 运维技能
+# DME Operations Skill
 
-DME 运维技能，用于存储设备的日常运维工作，包括存储监控、分析和配置操作。
+DME operations skill for day-to-day storage device administration, including storage monitoring, analysis, and configuration operations.
 
-## 安装依赖包
+## Install Dependencies
 
 ```bash
 pip install git+https://github.com/agentic-data-ops/dme-python-sdk.git
 ```
 
-## 设置环境变量
+## Set Environment Variables
 
 ```
 DME_API_ENDPOINT=https://dme-float-ip:26335
@@ -21,76 +21,90 @@ DME_API_USERNAME=your-username
 DME_API_PASSWORD=your-password
 ```
 
-## 标准流程
+## Set Comment Language
 
-1. **获取帮助信息**：调用 `pydme --list-topics` 获取所有可用的主题和动作
-2. **规划执行步骤**：根据用户请求规划执行步骤
-3. **执行动作步骤**：
-   - 调用 `pydme <topic> <subtopic> <action> --help` 获取动作参数帮助
-   - 调用 `pydme <topic> <subtopic> <action> --param1 value1 --param2 value2` 执行具体动作（变更类动作需提示用户确认后执行）
-   - 如果动作返回异步任务ID，调用 `pydme system task wait` 等待任务完成
-   - 规划后续要执行的动作
-4. **总结输出**：格式化输出信息，并进行总结
-5. **提示下一步**：根据输出信息和相关主题的帮助信息，提示用户下一步操作
+The CLI supports bilingual comments. Set the language via the DME_CLI_LANG environment variable or the --lang argument:
 
-## 注意事项
+```bash
+# Chinese (default)
+export DME_CLI_LANG=zh_CN
 
-1. **分页**: 部分接口支持分页查询，注意设置合适的 `page_size`
-2. **异步任务**: 某些操作（如添加、删除、修改）会返回异步任务 ID，可以使用 `pydme system task wait` 等待任务完成
-3. **环境变量**: 可以通过环境变量设置 DME 连接信息，避免每次输入
-4. **风险确认**：风险动作会被pydme命令行拦截，必须获得用户确认后，再追加 `--accept-risk` 参数执行
-5. **过滤查询**：查询对象列表前获取动作帮助，尽量使用过滤条件，避免返回大量数据
-6. **复杂参数格式**：动作的命令行帮助中如果参数包含内部格式，这指定为JSON字符串，JSON参数需要使用双引号
+# English
+export DME_CLI_LANG=en_US
 
-## 参考信息
+# Or pass --lang per invocation (takes precedence over the environment variable)
+pydme --lang en_US storage list --help
+```
 
-- `reference/dme-python-sdk.md` - DME Python SDK 参考文档
+## Standard Workflow
 
-## 命令行工具
+1. **Get help information**: Run `pydme --list-topics` to list all available topics and actions
+2. **Plan execution steps**: Plan the execution steps based on the user's request
+3. **Execute action steps**:
+   - Run `pydme <topic> <subtopic> <action> --help` to get action parameter help
+   - Run `pydme <topic> <subtopic> <action> --param1 value1 --param2 value2` to execute the action (ask the user for confirmation before executing change operations)
+   - If the action returns an asynchronous task ID, run `pydme system task wait` to wait for the task to complete
+   - Plan the subsequent actions
+4. **Summarize output**: Format the output information and provide a summary
+5. **Suggest next steps**: Based on the output and the help information of related topics, suggest next steps to the user
 
-### 命令格式
+## Notes
 
-CLI 支持两种命令格式，根据 API URI 的层级自动判断：
+1. **Pagination**: Some interfaces support pagination; set an appropriate `page_size`
+2. **Asynchronous tasks**: Some operations (such as add, delete, modify) return an asynchronous task ID, which can be tracked with `pydme system task wait`
+3. **Environment variables**: DME connection settings can be provided via environment variables to avoid entering them every time
+4. **Risk confirmation**: Risky actions are intercepted by the pydme CLI; you must obtain user confirmation before re-running with `--accept-risk`
+5. **Filter queries**: Get the action help before querying object lists and use filters where possible to avoid large result sets
+6. **Complex parameter formats**: If an action's CLI help shows a parameter with internal structure, specify it as a JSON string; JSON parameters must use double quotes
 
-**两级结构**（直接动作）：
+## Reference
+
+- `reference/dme-python-sdk/README.md` - DME Python SDK reference documentation
+
+## Command Line Tool
+
+### Command Format
+
+The CLI supports two command formats, determined automatically by the API URI hierarchy:
+
+**Two-level structure** (direct action):
 ```bash
 pydme <topic> <action> --param1 value1 --param2 value2
 ```
 
-**三级结构**（子主题动作）：
+**Three-level structure** (subtopic action):
 ```bash
 pydme <topic> <subtopic> <action> --param1 value1 --param2 value2
 ```
 
-### 参数说明
+### Arguments
 
-**全局参数**：
-- `--endpoint` / `-e`: DME API 的访问地址，格式：`https://<dme_ip_address>:<dme_port>`，可通过 `DME_API_ENDPOINT` 环境变量传入
-- `--user` / `-u`: DME API 的用户名，可通过 `DME_API_USERNAME` 环境变量传入
-- `--password` / `-p`: DME API 的密码，可通过 `DME_API_PASSWORD` 环境变量传入
-- `--timeout`: API 请求超时时间（秒），默认 90 秒
-- `--list-topics`: 列出所有可用的主题（树形结构展示）
-- `--accept-risk`: 确认接受风险，可通过`DME_ACCEPT_RISK`环境变量传入（不建议通过环境变量传入）
+**Global arguments**:
+- `--endpoint` / `-e`: DME API access address, format: `https://<dme_ip_address>:<dme_port>`, can be passed via the `DME_API_ENDPOINT` environment variable
+- `--user` / `-u`: DME API username, can be passed via the `DME_API_USERNAME` environment variable
+- `--password` / `-p`: DME API password, can be passed via the `DME_API_PASSWORD` environment variable
+- `--timeout`: API request timeout in seconds, default 90 seconds
+- `--list-topics`: List all available topics (tree structure)
+- `--accept-risk`: Confirm acceptance of risk, can be passed via the `DME_ACCEPT_RISK` environment variable (not recommended via environment variable)
 
-**位置参数**：
-- `topic`: 动作主题，例如：`storage`, `storagepool`, `lun`, `filesystem`, `host`, `task`, `system`
-- `subtopic`: 子主题（可选），例如：`disk`, `fan`, `node`, `pool`, `snapshot`, `initiator`
-- `action`: 动作名称，例如：`list`, `create`, `delete`, `show`, `modify`
+**Positional arguments**:
+- `topic`: Action topic, e.g.: `storage`, `storagepool`, `lun`, `filesystem`, `host`, `task`, `system`
+- `subtopic`: Subtopic (optional), e.g.: `disk`, `fan`, `node`, `pool`, `snapshot`, `initiator`
+- `action`: Action name, e.g.: `list`, `create`, `delete`, `show`, `modify`
 
-### 帮助信息
+### Help
 
 ```bash
-# 查看所有主题动作（树形结构）
+# View all topics and actions (tree structure)
 pydme --list-topics
 
-# 查看主题帮助（显示所有直接动作和子主题）
+# View topic help (shows all direct actions and subtopics)
 pydme <topic> --help
 
-# 查看子主题帮助
+# View subtopic help
 pydme <topic> <subtopic> --help
 
-# 查看动作参数帮助
+# View action parameter help
 pydme <topic> <action> --help
 pydme <topic> <subtopic> <action> --help
 ```
-
