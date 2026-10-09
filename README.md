@@ -1,29 +1,30 @@
 # DME Skills
 
-DME 运维技能集合，用于存储设备的日常运维工作。
+[English](./README.md) | [简体中文](./README_zh.md)
 
+A collection of DME operations skills for day-to-day storage device administration.
 
 ## dme-ops-skill
 
-DME 运维技能，覆盖存储设备的**监控、分析和配置操作**。通过 `pydme` CLI 工具与 DME RESTful API 交互，支持：
+DME operations skill covering **monitoring, analysis, and configuration operations** for storage devices. It interacts with the DME RESTful API through the `pydme` CLI tool and supports:
 
-- **存储设备管理** — 查询/配置存储池、LUN、文件系统、主机等
-- **系统管理** — 任务跟踪、系统配置、登录认证
-- **告警 & 监控** — 查看设备告警、运行状态、性能数据
-- **SAN & NAS** — 块存储和文件存储的统一管理
-- **虚拟化 & 容器** — 对接虚拟化和 Kubernetes 环境
-- **数据保护** — 备份、容灾策略管理
-- **智能运维** — AIOps 异常检测与分析
+- **Storage device management** — query/configure storage pools, LUNs, file systems, hosts, etc.
+- **System management** — task tracking, system configuration, login authentication
+- **Alarms & monitoring** — view device alarms, running status, performance data
+- **SAN & NAS** — unified management of block storage and file storage
+- **Virtualization & containers** — integration with virtualization and Kubernetes environments
+- **Data protection** — backup and disaster recovery policy management
+- **Intelligent operations** — AIOps anomaly detection and analysis
 
-### 快速开始
+### Quick Start
 
-#### 1. 安装依赖
+#### 1. Install Dependencies
 
 ```bash
 pip install git+https://github.com/agentic-data-ops/dme-python-sdk.git
 ```
 
-#### 2. 设置环境变量
+#### 2. Set Environment Variables
 
 ```bash
 export DME_API_ENDPOINT=https://dme-float-ip:26335
@@ -31,23 +32,22 @@ export DME_API_USERNAME=your-username
 export DME_API_PASSWORD=your-password
 ```
 
-#### 3. 验证连接
+#### 3. Verify the Connection
 
 ```bash
 pydme system show
 ```
 
-#### 4. 使用技能
+#### 4. Use the Skill
 
 ```text
-安装dme-ops-skill
+Install dme-ops-skill
 
-查询存储设备列表，选择一个最空闲的Dorado存储设备，创建2个100GB LUN
+List storage devices, select the most idle Dorado storage device, and create two 100GB LUNs
 ```
 
-# 免责声明
+# Disclaimer
 
-1. **非官方项目**：本项目非华为 DME 官方提供，由个人维护，仅提供参考样例，不提供技术支持。
+1. **Unofficial project**: This project is not officially provided by Huawei DME. It is maintained by individuals and serves only as a reference sample, without technical support.
 
-2. **AI 生成代码**：本项目依赖的 `dme-python-sdk` 完全由 AI 编码工具开发和测试，仍存在少部分动作因缺乏环境未进行实际测试（动作实现与 API 是一致的），请谨慎评估后使用。
-
+2. **AI-generated code**: The `dme-python-sdk` this project depends on was fully developed and tested by AI coding tools. A small number of actions have not been actually tested due to lack of environment (the action implementations are consistent with the API). Please evaluate carefully before use.
