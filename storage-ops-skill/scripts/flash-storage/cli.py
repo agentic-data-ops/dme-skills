@@ -84,17 +84,16 @@ class FlashStorageCLI:
         shell.settimeout(self._timeout)
         log = open(dumpscript, "w", encoding="utf-8") if dumpscript else None
         try:
-            # Login banner + first prompt
-            self._read_until_prompt(shell, log)
-            outputs: List[str] = []
+            # Login banner + first prompt (kept as part of the output)
+            output = self._read_until_prompt(shell, log)
             for cmd in commands:
                 if log:
                     log.write(f">>> {cmd}\n")
                 shell.send(cmd + "\r")
-                outputs.append(self._read_until_prompt(shell, log))
+                output += self._read_until_prompt(shell, log)
             # Quit the device CLI
             self._quit(shell, log)
-            return "\n".join(outputs)
+            return output
         finally:
             if log:
                 log.close()
