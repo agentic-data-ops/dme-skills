@@ -9,8 +9,10 @@ Huawei storage device operations skill. It currently supports **Huawei all-flash
 
 ## Prerequisites
 
-- Python 3 with the system `expect` command available
+- Python 3 with the `paramiko` library installed: `pip install paramiko`
 - Network reachability from the execution host to the storage device management port (SSH)
+
+> Note: The CLI is implemented purely in Python (paramiko) and works on both Windows and Linux — no system `expect` command is required.
 
 ## Setting Environment Variables
 
@@ -45,7 +47,7 @@ python3 scripts/flash-storage/cli.py --address <IP> --username <user> "cmd1\ncmd
 | `--username` | Login username | `STORAGE_USERNAME` |
 | `--password` | Login password (prefer environment variable) | `STORAGE_PASSWORD` |
 | `--timeout` | Command timeout in seconds, default 60 | `STORAGE_TIMEOUT` |
-| `--dumpscript` | Export the generated expect script to a file (for debugging) | — |
+| `--dumpscript` | Export the interaction log to a file (for debugging) | — |
 | `commands` | Positional argument: batch commands separated by literal `\n`, **one command per line** | — |
 
 ### Notes

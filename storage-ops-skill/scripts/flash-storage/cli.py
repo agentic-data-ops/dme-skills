@@ -1,15 +1,31 @@
 """FlashStorageCLI — SSH 远程登录华为闪存存储设备 CLI，交互式执行命令。
 
-每次执行命令时构建独立的 expect 脚本，通过 subprocess.run 运行。
-不使用后台守护进程，不维护持久连接。
+基于 paramiko（纯 Python SSH 库）实现，兼容 Windows 和 Linux，
+无需安装系统 expect 命令。
+
+每次 execute_commands 建立独立 SSH 连接：登录 → 顺序执行命令 → 退出，
+与设备交互结束后关闭连接。
 """
 from __future__ import annotations
 
 import argparse
 import os
 import re
-import subprocess
-from typing import Dict, List
+import time
+from typing import List
+
+import paramiko
+
+
+# 设备 CLI 提示符：
+#   normal    admin:/>            engineer    engineer:/>
+#   developer developer:/>        debug       admin:/diagnose>
+#   minisystem Storage: minisystem>
+_PROMPT_RE = re.compile(r"(?:[\w-]+:/>|/diagnose>|minisystem>)")
+# 风险确认提示（华为 CLI 的 (y/n) 询问）
+_CONFIRM_RE = re.compile(r"\(y/n\)")
+
+_RECV_CHUNK = 65535
 
 
 # ---------------------------------------------------------------------------
@@ -17,11 +33,7 @@ from typing import Dict, List
 # ---------------------------------------------------------------------------
 
 class FlashStorageCLI:
-    """SSH 远程登录华为闪存存储设备 CLI 并执行命令。
-
-    每次执行命令生成一个完整的 expect 脚本（登录 → 模式切换 → 命令 → 退出），
-    通过 subprocess.run 一次性运行。
-    """
+    """通过 paramiko SSH 登录华为闪存存储设备 CLI 并执行批量命令。"""
 
     def __init__(
         self,
@@ -36,84 +48,106 @@ class FlashStorageCLI:
         self._timeout = timeout
 
     # ------------------------------------------------------------------
-    # 脚本生成
+    # 执行入口
     # ------------------------------------------------------------------
-
-    @staticmethod
-    def _escape_tcl(text: str) -> str:
-        """转义 Tcl 双引号字符串中的特殊字符。"""
-        return (
-            text.replace("\\", "\\\\")
-            .replace('"', '\\"')
-            .replace("$", "\\$")
-            .replace("[", "\\[")
-            .replace("]", "\\]")
-        )
-
-    def _build_script(self, commands: List[str]) -> str:
-        """生成完整的 expect 脚本。
-
-        登录 → 模式切换（如需）→ 顺序命令执行 → 退出模式 → 退出 CLI。
-        """
-        blocks: List[str] = []
-
-        blocks.append(f"""
-        set timeout {self._timeout}
-        spawn ssh -o StrictHostKeyChecking=no {self._username}@{self._address}
-        expect "password:"
-        send "{self._password}\\r"
-        expect ":/>"
-        """.replace("        ", ""))
-        
-        for command in commands:
-            blocks.append(f"""
-            send "{command}\\r"
-            expect {{ 
-                "(y/n)" {{ send "y\\r"; exp_continue }}
-                -re ":/>|:/diagnose>|minisystem>" {{ }}
-            }}
-            """.replace("            ", ""))
-        
-        blocks.append(f"""
-        send "exit\\r"
-        expect {{ 
-            "(y/n)" {{ send "y\\r"; exp_continue }}
-            -re ":/>|:/diagnose>|minisystem>" {{ send "exit\\r"; exp_continue }}
-            eof {{ }}
-        }}
-        """.replace("        ", ""))
-
-        return "\n".join(blocks)
 
     def execute_commands(
         self, commands: List[str], dumpscript: str | None = None
-    ) -> List[str]:
-        """执行多条命令。
+    ) -> str:
+        """执行多条命令（每个命令一行，顺序执行）。
 
         Args:
             commands: 要执行的命令列表
+            dumpscript: 导出交互日志到指定文件（用于调试）
 
         Returns:
-            输出文本
+            设备输出文本
         """
-        script = self._build_script(commands)
-        if dumpscript:
-            with open(dumpscript, "w", encoding="utf-8") as f:
-                f.write(script)
-        
-        result = subprocess.run(
-            ["expect", "-c", script],
-            capture_output=True,
-            text=True,
-        )
+        client = paramiko.SSHClient()
+        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        try:
+            client.connect(
+                self._address,
+                username=self._username,
+                password=self._password,
+                timeout=self._timeout,
+                auth_timeout=self._timeout,
+                look_for_keys=False,
+                allow_agent=False,
+            )
+        except paramiko.AuthenticationException as ex:
+            raise RuntimeError(f"SSH 登录失败（认证错误）：{ex}") from ex
+        except Exception as ex:
+            raise RuntimeError(f"SSH 连接失败：{ex}") from ex
 
-        if result.returncode != 0:
-            stderr = result.stderr.strip()
-            if stderr:
-                raise RuntimeError(f"expect 执行失败：{stderr}")
+        shell = client.invoke_shell(width=200, height=50)
+        shell.settimeout(self._timeout)
+        log = open(dumpscript, "w", encoding="utf-8") if dumpscript else None
+        try:
+            # 登录横幅 + 首个提示符
+            self._read_until_prompt(shell, log)
+            outputs: List[str] = []
+            for cmd in commands:
+                if log:
+                    log.write(f">>> {cmd}\n")
+                shell.send(cmd + "\r")
+                outputs.append(self._read_until_prompt(shell, log))
+            # 退出设备 CLI
+            self._quit(shell, log)
+            return "\n".join(outputs)
+        finally:
+            if log:
+                log.close()
+            client.close()
 
-        return result.stdout
+    # ------------------------------------------------------------------
+    # 交互原语
+    # ------------------------------------------------------------------
 
+    def _read_until_prompt(self, shell, log=None) -> str:
+        """读取设备输出直到出现 CLI 提示符（自动接受 (y/n) 风险确认）。"""
+        buf = ""
+        deadline = time.monotonic() + self._timeout
+        while time.monotonic() < deadline:
+            try:
+                data = shell.recv(_RECV_CHUNK).decode("utf-8", "replace")
+            except (TimeoutError, OSError, paramiko.SSHException):
+                break
+            if not data:
+                break
+            buf += data
+            if log:
+                log.write(data)
+            # 风险确认提示：自动发送 y 继续执行
+            while _CONFIRM_RE.search(buf):
+                buf = _CONFIRM_RE.sub("", buf, count=1)
+                shell.send("y\r")
+            if _PROMPT_RE.search(buf):
+                break
+        return buf
+
+    def _quit(self, shell, log=None) -> None:
+        """退出设备 CLI：发送 exit，处理 (y/n) 确认，直至连接关闭。"""
+        try:
+            for _ in range(5):
+                shell.send("exit\r")
+                try:
+                    data = shell.recv(_RECV_CHUNK).decode("utf-8", "replace")
+                except (TimeoutError, OSError, paramiko.SSHException):
+                    break
+                if not data:
+                    break
+                if log:
+                    log.write(data)
+                if _CONFIRM_RE.search(data):
+                    shell.send("y\r")
+        except Exception:
+            pass
+
+
+# ---------------------------------------------------------------------------
+# 命令行入口
+# ---------------------------------------------------------------------------
 
 def _parse_args(argv: List[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
@@ -132,7 +166,7 @@ def _parse_args(argv: List[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--password",
         default=os.environ.get("STORAGE_PASSWORD", ""),
-        help="登录密码（环境变量 STORAGE_PASSWORD）",
+        help="登录密码（环境变量 STORAGE_PASSWORD，建议通过环境变量传入）",
     )
     parser.add_argument(
         "--timeout",
@@ -143,7 +177,7 @@ def _parse_args(argv: List[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--dumpscript",
         default=None,
-        help="导出 expect 脚本到指定文件（用于调试）",
+        help="导出交互日志到指定文件（用于调试）",
     )
     parser.add_argument(
         "commands",
@@ -175,8 +209,13 @@ def main(argv: List[str] | None = None) -> None:
         print("请输入要执行的命令。")
         return
 
-    results = cli.execute_commands(commands, args.dumpscript)
+    try:
+        results = cli.execute_commands(commands, args.dumpscript)
+    except RuntimeError as ex:
+        print(f"错误：{ex}")
+        return
     print(results)
+
 
 if __name__ == "__main__":
     main()

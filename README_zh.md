@@ -52,7 +52,7 @@ pydme system show
 华为闪存存储设备运维技能，通过 SSH 登录设备 CLI 执行批量命令。核心组件：
 
 - `SKILL.md` — 技能定义与标准流程
-- `scripts/flash-storage/cli.py` — 基于 Python + expect 的 SSH CLI 执行器
+- `scripts/flash-storage/cli.py` — 基于 Python（paramiko，跨平台 Windows/Linux）的 SSH CLI 执行器
 - `reference/dorado-v6-cli-ref.md` — OceanStor Dorado 6.1.2 Command Reference（由华为官方文档生成的完整命令参考，1080 个章节，每个命令包含 Function / Format / Parameters / Example / System Output）
 
 ### 标准流程

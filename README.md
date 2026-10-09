@@ -51,7 +51,7 @@ List storage devices, select the most idle Dorado storage device, and create two
 Huawei all-flash storage device operations skill that logs in to the device CLI over SSH and executes batch commands. Core components:
 
 - `SKILL.md` — skill definition and standard workflow
-- `scripts/flash-storage/cli.py` — SSH CLI executor built on Python + expect
+- `scripts/flash-storage/cli.py` — SSH CLI executor built on Python (paramiko, cross-platform Windows/Linux)
 - `reference/dorado-v6-cli-ref.md` — OceanStor Dorado 6.1.2 Command Reference (complete command reference generated from Huawei official documentation, 1080 sections; each command includes Function / Format / Parameters / Example / System Output)
 
 ### Standard Workflow
