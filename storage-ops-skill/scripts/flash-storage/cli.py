@@ -178,49 +178,23 @@ def list_topics() -> str:
     return _read_doc("_topics.md", "Topics file")
 
 
-def list_topic_commands(topic: str) -> str:
-    """Return the commands of a topic, aggregated from its command group indexes.
-
-    The topic -> command group mapping lives in docs/_topics.md; each group has
-    its own docs/<group-slug>/_index.md.
-    """
-    topics_content = _read_doc("_topics.md", "Topics file")
-    sections = re.split(r"^## ", topics_content, flags=re.M)[1:]
-    topic_slug = slugify(topic)
-    target_title = None
-    groups: List[str] = []
-    for sec in sections:
-        title = sec.split("\n", 1)[0].strip()
-        if slugify(title) == topic_slug:
-            target_title = title
-            groups = [
-                m.group(1)
-                for line in sec.split("\n")
-                if (m := re.match(r"^- (.+)$", line.strip()))
-            ]
-            break
-    if target_title is None:
-        available = [sec.split("\n", 1)[0].strip() for sec in sections]
-        raise RuntimeError(
-            f"Topic not found: '{topic}' (slug '{topic_slug}'). "
-            f"Available topics: {', '.join(available) or 'none'}"
+def list_commands(group: str) -> str:
+    """Return the command list of a command group (docs/<group>/_index.md)."""
+    group_slug = slugify(group)
+    try:
+        return _read_doc(
+            os.path.join(group_slug, "_index.md"),
+            f"Index for group '{group}'",
         )
-
-    parts = [f"# {target_title}", ""]
-    for g in groups:
-        try:
-            idx = _read_doc(
-                os.path.join(slugify(g), "_index.md"),
-                f"Index for group '{g}'",
-            )
-        except RuntimeError:
-            continue
-        lines = idx.split("\n")
-        if lines and lines[0].startswith("# "):
-            lines[0] = "## " + lines[0][2:]  # demote group heading under the topic
-        parts.append("\n".join(lines))
-        parts.append("")
-    return "\n".join(parts).rstrip()
+    except RuntimeError:
+        available = sorted(
+            d for d in os.listdir(DOCS_DIR)
+            if os.path.isdir(os.path.join(DOCS_DIR, d))
+        ) if os.path.isdir(DOCS_DIR) else []
+        raise RuntimeError(
+            f"Command group not found: '{group}' (slug '{group_slug}'). "
+            f"Available groups: {', '.join(available) or 'none'}"
+        ) from None
 
 
 def show_command_help(command: str) -> str:
@@ -277,9 +251,9 @@ def _parse_args(argv: List[str] | None = None) -> argparse.Namespace:
         help="list all topics (no device connection needed)",
     )
     parser.add_argument(
-        "--list-topic-commands",
-        metavar="TOPIC",
-        help="list the commands of a topic, e.g. basic-operation-commands (no device connection needed)",
+        "--list-commands",
+        metavar="GROUP",
+        help="list the commands of a command group, e.g. base (no device connection needed)",
     )
     parser.add_argument(
         "--show-command-help",
@@ -294,7 +268,7 @@ def _parse_args(argv: List[str] | None = None) -> argparse.Namespace:
     )
     ns = parser.parse_args(argv)
 
-    help_mode = ns.list_topics or ns.list_topic_commands or ns.show_command_help
+    help_mode = ns.list_topics or ns.list_commands or ns.show_command_help
     if not help_mode:
         missing = [k for k in ("address", "username", "password") if not getattr(ns, k)]
         if missing:
@@ -311,8 +285,8 @@ def main(argv: List[str] | None = None) -> None:
         if args.show_command_help:
             print(show_command_help(args.show_command_help))
             return
-        if args.list_topic_commands:
-            print(list_topic_commands(args.list_topic_commands))
+        if args.list_commands:
+            print(list_commands(args.list_commands))
             return
         if args.list_topics:
             print(list_topics())
