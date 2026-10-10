@@ -5,7 +5,7 @@ description: Huawei storage device operations skill, currently supporting Huawei
 
 # Huawei Storage Operations Skill
 
-Huawei storage device operations skill. It currently supports **Huawei all-flash (flash) storage devices** (e.g., OceanStor Dorado V6 series) by logging in to the device CLI over SSH and executing commands through `scripts/flash-storage/cli.py`.
+Huawei storage device operations skill. It currently supports **Huawei all-flash (flash) storage devices** (e.g., OceanStor Flash Storage) by logging in to the device CLI over SSH and executing commands through `scripts/flash-storage/cli.py`.
 
 ## Prerequisites
 
