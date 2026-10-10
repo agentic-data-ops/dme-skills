@@ -184,8 +184,11 @@ def write_docs(topics: List[Topic]) -> None:
         if t.intro:
             topic_lines.extend(t.intro)
             topic_lines.append("")
+        topic_lines.append("| command group | function |")
+        topic_lines.append("|---|---|")
         for g in t.groups:
-            topic_lines.append(f"- {g.name}")
+            name = g.name.replace("|", "\\|")
+            topic_lines.append(f"| {name} |  |")
         topic_lines.append("")
     with open(os.path.join(DOCS_DIR, "_topics.md"), "w", encoding="utf-8") as f:
         f.write("\n".join(topic_lines))
