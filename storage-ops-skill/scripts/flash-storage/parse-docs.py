@@ -26,7 +26,13 @@ DOCS_DIR = os.path.join(
 )
 
 # Topics excluded from the topic list (intro/guide chapters, not command topics)
-EXCLUDED_TOPICS = {"About This Document", "CLI Use Guidance"}
+EXCLUDED_TOPICS = {
+    "About This Document",
+    "CLI Use Guidance",
+    "High-Risk Command List",
+    "How to Obtain Help",
+    "Glossary",
+}
 
 # Redundant prefix removed from command function descriptions,
 # e.g. 'The **create lun** command is used to create LUNs.' -> 'create LUNs.'
