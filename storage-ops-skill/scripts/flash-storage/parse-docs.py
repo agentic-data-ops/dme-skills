@@ -198,11 +198,17 @@ def write_docs(topics: List[Topic]) -> None:
             group_dir = os.path.join(DOCS_DIR, slugify(g.name))
             os.makedirs(group_dir, exist_ok=True)
 
-            # Command group index: _index.md
-            index_lines = [f"# {g.name}", ""]
+            # Command group index: _index.md (markdown table: command | function)
+            index_lines = [
+                f"# {g.name}",
+                "",
+                "| command | function |",
+                "|---|---|",
+            ]
             for cmd in g.commands:
-                desc = f": {cmd.function}" if cmd.function else ""
-                index_lines.append(f"- {cmd.name}{desc}")
+                name = cmd.name.replace("|", "\\|")
+                function = (cmd.function or "").replace("|", "\\|")
+                index_lines.append(f"| {name} | {function} |")
             with open(os.path.join(group_dir, "_index.md"), "w", encoding="utf-8") as f:
                 f.write("\n".join(index_lines))
 
