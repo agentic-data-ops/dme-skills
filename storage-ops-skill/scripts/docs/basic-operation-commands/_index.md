@@ -1,0 +1,25 @@
+# Basic Operation Commands
+
+Basic commands are used to execute basic command line interface (CLI) operations including querying the online help information on a command, viewing and modifying command CLI settings, checking and exporting command execution history, and exiting the CLI.
+
+## base
+
+- add bond_port ipv4_route: add an IPv4 route to the bond port. You can run this command to add a route to connect the storage system to the application server when their IPv4 addresses are not at the same network segment.
+- add bond_port ipv6_route: add an IPv6 route to the bond port. You can run this command to add a route to connect the storage system to the application server when their IPv6 addresses are not at the same network segment.
+- change bond_port ipv4_address: change the IPv4 address of the bond port.
+- change bond_port ipv6_address: change the IPv6 address of the bond port.
+- change user_password: change current user's logging password.
+- exit: In the developer or engineer view, the **exit** command is used to **exit** and enter the user view. In the upgrade or user view, this command is used to **exit** the CLI.
+- export cli history: export the historical records of executed commands.
+- help object: query online help information on an object, including the list of available commands, formats of those commands, descriptions for available parameters, usage guidelines, and command instances.
+- remove bond_port ipv4_address: delete the IPv4 address of a bond port.
+- remove bond_port ipv4_route: delete the IPv4 route of a host bond port.
+- remove bond_port ipv6_address: delete the IPv6 address of a bond port.
+- remove bond_port ipv6_route: delete the IPv6 route of a host bond port.
+- restore recycle_bin_view: restore objects from the recycle bin.
+- show auth_diagnose: query the cause of an authentication failure.
+- show cli configuration: query command line interface (CLI) settings.
+- show cli history: query the history of executed commands.
+- show system general: query the general system information.
+- show task general: query configuration tasks.
+- show user: check basic information about users.

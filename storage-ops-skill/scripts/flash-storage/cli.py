@@ -148,6 +148,73 @@ class FlashStorageCLI:
 # Command-line entry point
 # ---------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# Docs-based help (no device connection required)
+# ---------------------------------------------------------------------------
+
+DOCS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "docs")
+
+
+def slugify(name: str) -> str:
+    """Lowercase, strip non-alphanumeric chars, join whitespace runs with '-'."""
+    s = name.lower()
+    s = re.sub(r"[^\w\s-]", "", s)
+    s = re.sub(r"[\s-]+", "-", s)
+    return s.strip("-")
+
+
+def _read_doc(rel_path: str, what: str) -> str:
+    path = os.path.join(DOCS_DIR, rel_path)
+    if not os.path.isfile(path):
+        raise RuntimeError(
+            f"{what} not found: {path} (run parse-docs.py to generate the docs)"
+        )
+    with open(path, encoding="utf-8") as f:
+        return f.read()
+
+
+def list_topics() -> str:
+    """Return the content of docs/_topics.md."""
+    return _read_doc("_topics.md", "Topics file")
+
+
+def list_topic_commands(topic: str) -> str:
+    """Return the command list of a topic (docs/<topic>/_index.md)."""
+    topic_slug = slugify(topic)
+    try:
+        return _read_doc(
+            os.path.join(topic_slug, "_index.md"),
+            f"Index for topic '{topic}'",
+        )
+    except RuntimeError:
+        available = sorted(
+            d for d in os.listdir(DOCS_DIR)
+            if os.path.isdir(os.path.join(DOCS_DIR, d))
+        ) if os.path.isdir(DOCS_DIR) else []
+        raise RuntimeError(
+            f"Topic not found: '{topic}' (slug '{topic_slug}'). "
+            f"Available topics: {', '.join(available) or 'none'}"
+        ) from None
+
+
+def show_command_help(command: str) -> str:
+    """Search all topic dirs for the command help file and return its content."""
+    command_slug = slugify(command)
+    if os.path.isdir(DOCS_DIR):
+        for d in sorted(os.listdir(DOCS_DIR)):
+            dir_path = os.path.join(DOCS_DIR, d)
+            if not os.path.isdir(dir_path):
+                continue
+            file_path = os.path.join(dir_path, f"{command_slug}.md")
+            if os.path.isfile(file_path):
+                with open(file_path, encoding="utf-8") as f:
+                    return f.read()
+    raise RuntimeError(
+        f"Command not found: '{command}' (slug '{command_slug}'). "
+        "Run parse-docs.py to generate the docs, or check the command name."
+    )
+
+
 def _parse_args(argv: List[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="SSH login to a Huawei flash storage device CLI and execute commands",
@@ -179,6 +246,21 @@ def _parse_args(argv: List[str] | None = None) -> argparse.Namespace:
         help="write the interaction log to this file (for debugging)",
     )
     parser.add_argument(
+        "--list-topics",
+        action="store_true",
+        help="list all topics (no device connection needed)",
+    )
+    parser.add_argument(
+        "--list-topic-commands",
+        metavar="TOPIC",
+        help="list the commands of a topic, e.g. basic-operation-commands (no device connection needed)",
+    )
+    parser.add_argument(
+        "--show-command-help",
+        metavar="COMMAND",
+        help="show the help of a command, e.g. \"create lun\" (no device connection needed)",
+    )
+    parser.add_argument(
         "commands",
         nargs="?",
         default="",
@@ -186,15 +268,33 @@ def _parse_args(argv: List[str] | None = None) -> argparse.Namespace:
     )
     ns = parser.parse_args(argv)
 
-    missing = [k for k in ("address", "username", "password") if not getattr(ns, k)]
-    if missing:
-        parser.error(f"missing required arguments: {', '.join(missing)} (can be set via environment variables)")
+    help_mode = ns.list_topics or ns.list_topic_commands or ns.show_command_help
+    if not help_mode:
+        missing = [k for k in ("address", "username", "password") if not getattr(ns, k)]
+        if missing:
+            parser.error(f"missing required arguments: {', '.join(missing)} (can be set via environment variables)")
 
     return ns
 
 
 def main(argv: List[str] | None = None) -> None:
     args = _parse_args(argv)
+
+    # Help mode: read docs locally, no device connection required
+    try:
+        if args.show_command_help:
+            print(show_command_help(args.show_command_help))
+            return
+        if args.list_topic_commands:
+            print(list_topic_commands(args.list_topic_commands))
+            return
+        if args.list_topics:
+            print(list_topics())
+            return
+    except RuntimeError as ex:
+        print(f"Error: {ex}")
+        return
+
     raw_commands = args.commands.split(r"\n") if args.commands else []
     commands = [c for c in raw_commands if c.strip()]
 
