@@ -1,0 +1,60 @@
+# lun_snapshot
+
+- add hyper_cdp_schedule lun: add LUNs to a HyperCDP schedule.
+- add hyper_cdp_schedule lun_consistency_group: add LUN consistency groups to a HyperCDP schedule.
+- add hyper_cdp_schedule protect_group: add protection groups to a HyperCDP schedule.
+- change hyper_cdp cancel_restore: cancel the rollback of a HyperCDP object.
+- change hyper_cdp general: modify the name and restoration speed of a HyperCDP object.
+- change hyper_cdp restore: restore data using HyperCDP objects. You can use the HyperCDP objects to restore the source LUN data by running this command.
+- change hyper_cdp_consistency_group cancel_restore: **change hyper_cdp_consistency_group cancel_restore** command is used to cancel the restoration of a HyperCDP consistency group.
+- change hyper_cdp_consistency_group general: modify the name and restoration speed of a HyperCDP consistency group.
+- change hyper_cdp_consistency_group restore: restore data using HyperCDP consistency groups. You can use the HyperCDP consistency groups to restore the source protection group data by running this command.
+- change hyper_cdp_schedule enabled: enable or disable a HyperCDP schedule.
+- change hyper_cdp_schedule general: modify information about a HyperCDP schedule, including the name, schedule policy type, and time.
+- change snapshot activate: activate snapshots.
+- change snapshot cancel_restore: cancel the rollback of a snapshot.
+- change snapshot capacity: modify the capacity of a snapshot.
+- change snapshot deactivate: deactivate a snapshot.
+- change snapshot description: modify the description of snapshots.
+- change snapshot io_priority: change the I/O priority of the snapshot.
+- change snapshot name: rename snapshots.
+- change snapshot reactivate: reactivate snapshots. Use this command if you want to set the point in time of a snapshot to the latest point in time of the source LUN or HyperCDP object.
+- change snapshot restore: roll back snapshots. You can use the snapshots to restore the destination LUN data by running this command.
+- change snapshot speed: change the rollback speed of the snapshot.
+- change snapshot_consistency_group activate: activate a snapshot consistency group.
+- change snapshot_consistency_group cancel_restore: cancel restoration from a snapshot consistency group.
+- change snapshot_consistency_group deactivate: deactivate a snapshot consistency group.
+- change snapshot_consistency_group general: modify the properties of a snapshot consistency group.
+- change snapshot_consistency_group reactivate: reactivate a snapshot consistency group.
+- change snapshot_consistency_group restore: start restoration from a snapshot consistency group.
+- create hyper_cdp general: create a HyperCDP object. You can create a point-in-time backup for a LUN by running this command.
+- create hyper_cdp_consistency_group general: create a HyperCDP consistency group for a specified LUN consistency group.
+- create hyper_cdp_consistency_group universal: create a HyperCDP consistency group for a specified protection group.
+- create hyper_cdp_schedule general: create a HyperCDP schedule.
+- create snapshot duplicate: create a duplicate for a snapshot or a HyperCDP object. You can back up a snapshot or a HyperCDP object by running this command.
+- create snapshot general: create snapshots. You can create an identical and usable point-in-time duplicate for a data object by running this command.
+- create snapshot_consistency_group duplicate: create a duplicate for a specified snapshot consistency group or HyperCDP consistency group.
+- create snapshot_consistency_group general: create a snapshot consistency group for a specified LUN consistency group.
+- create snapshot_consistency_group universal: create a snapshot consistency group for a specified LUN protection group.
+- delete hyper_cdp: delete HyperCDP objects.
+- delete hyper_cdp_consistency_group: delete HyperCDP consistency groups.
+- delete hyper_cdp_schedule: delete HyperCDP schedules.
+- delete snapshot: **delete snapshot**s.
+- delete snapshot_consistency_group: delete a snapshot consistency group.
+- remove hyper_cdp_schedule lun: remove LUNs from a HyperCDP schedule.
+- remove hyper_cdp_schedule lun_consistency_group: remove LUN consistency groups from a HyperCDP schedule.
+- remove hyper_cdp_schedule protect_group: remove protection groups from a HyperCDP schedule.
+- show hyper_cdp general: query HyperCDP object information.
+- show hyper_cdp_consistency_group cdp: query information about HyperCDP objects in a HyperCDP consistency group.
+- show hyper_cdp_consistency_group general: query information about a HyperCDP consistency group.
+- show hyper_cdp_consistency_group universal: query information about a HyperCDP consistency group.
+- show hyper_cdp_schedule general: query information about a HyperCDP schedule.
+- show hyper_cdp_schedule protect_group: query information about protection groups in a HyperCDP schedule.
+- show lun_clone available_snapshot: query the snapshot for which the clone can be created.
+- show snapshot available_lun: query the information on the logical unit numbers (LUNs) that can serve as snapshot source LUNs.
+- show snapshot available_snapshot: query snapshots for which the snapshots can be created.
+- show snapshot general: query snapshot information.
+- show snapshot lun_group: query information about the LUN group that is associated with a snapshot.
+- show snapshot_consistency_group general: query basic information about snapshot consistency groups.
+- show snapshot_consistency_group snapshot: query information about member snapshots in a specified snapshot consistency group.
+- show snapshot_consistency_group universal: query basic universal about snapshot consistency groups.

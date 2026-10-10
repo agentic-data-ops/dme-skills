@@ -179,22 +179,48 @@ def list_topics() -> str:
 
 
 def list_topic_commands(topic: str) -> str:
-    """Return the command list of a topic (docs/<topic>/_index.md)."""
+    """Return the commands of a topic, aggregated from its command group indexes.
+
+    The topic -> command group mapping lives in docs/_topics.md; each group has
+    its own docs/<group-slug>/_index.md.
+    """
+    topics_content = _read_doc("_topics.md", "Topics file")
+    sections = re.split(r"^## ", topics_content, flags=re.M)[1:]
     topic_slug = slugify(topic)
-    try:
-        return _read_doc(
-            os.path.join(topic_slug, "_index.md"),
-            f"Index for topic '{topic}'",
-        )
-    except RuntimeError:
-        available = sorted(
-            d for d in os.listdir(DOCS_DIR)
-            if os.path.isdir(os.path.join(DOCS_DIR, d))
-        ) if os.path.isdir(DOCS_DIR) else []
+    target_title = None
+    groups: List[str] = []
+    for sec in sections:
+        title = sec.split("\n", 1)[0].strip()
+        if slugify(title) == topic_slug:
+            target_title = title
+            groups = [
+                m.group(1)
+                for line in sec.split("\n")
+                if (m := re.match(r"^- (.+)$", line.strip()))
+            ]
+            break
+    if target_title is None:
+        available = [sec.split("\n", 1)[0].strip() for sec in sections]
         raise RuntimeError(
             f"Topic not found: '{topic}' (slug '{topic_slug}'). "
             f"Available topics: {', '.join(available) or 'none'}"
-        ) from None
+        )
+
+    parts = [f"# {target_title}", ""]
+    for g in groups:
+        try:
+            idx = _read_doc(
+                os.path.join(slugify(g), "_index.md"),
+                f"Index for group '{g}'",
+            )
+        except RuntimeError:
+            continue
+        lines = idx.split("\n")
+        if lines and lines[0].startswith("# "):
+            lines[0] = "## " + lines[0][2:]  # demote group heading under the topic
+        parts.append("\n".join(lines))
+        parts.append("")
+    return "\n".join(parts).rstrip()
 
 
 def show_command_help(command: str) -> str:

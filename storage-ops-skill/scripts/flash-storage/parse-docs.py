@@ -193,27 +193,20 @@ def write_docs(topics: List[Topic]) -> None:
     conflict_log: List[str] = []
 
     for t in topics:
-        topic_dir = os.path.join(DOCS_DIR, slugify(t.name))
-        os.makedirs(topic_dir, exist_ok=True)
-
-        # _index.md
-        index_lines = [f"# {t.name}", ""]
-        if t.intro:
-            index_lines.extend(t.intro)
-            index_lines.append("")
         for g in t.groups:
-            index_lines.append(f"## {g.name}")
-            index_lines.append("")
+            group_dir = os.path.join(DOCS_DIR, slugify(g.name))
+            os.makedirs(group_dir, exist_ok=True)
+
+            # Command group index: _index.md
+            index_lines = [f"# {g.name}", ""]
             for cmd in g.commands:
                 desc = f": {cmd.function}" if cmd.function else ""
                 index_lines.append(f"- {cmd.name}{desc}")
-            index_lines.append("")
-        with open(os.path.join(topic_dir, "_index.md"), "w", encoding="utf-8") as f:
-            f.write("\n".join(index_lines))
+            with open(os.path.join(group_dir, "_index.md"), "w", encoding="utf-8") as f:
+                f.write("\n".join(index_lines))
 
-        # command help files
-        for group in t.groups:
-            for cmd in group.commands:
+            # Command help files
+            for cmd in g.commands:
                 base = slugify(cmd.name)
                 slug_used[base] += 1
                 n = slug_used[base]
@@ -222,15 +215,15 @@ def write_docs(topics: List[Topic]) -> None:
                     conflict_log.append(f"{cmd.name} skipped (duplicate slug '{base}')")
                     continue
                 content = [f"# {cmd.name}", ""] + cmd.body
-                with open(os.path.join(topic_dir, f"{base}.md"), "w", encoding="utf-8") as f:
+                with open(os.path.join(group_dir, f"{base}.md"), "w", encoding="utf-8") as f:
                     f.write("\n".join(content))
 
     # stats
     total_cmds = sum(len(g.commands) for t in topics for g in t.groups)
     total_files = sum(
-        len([f for f in os.listdir(os.path.join(DOCS_DIR, slugify(t.name)))
+        len([f for f in os.listdir(os.path.join(DOCS_DIR, slugify(g.name)))
              if f.endswith(".md") and f != "_index.md"])
-        for t in topics
+        for t in topics for g in t.groups
     )
     print(f"Topics: {len(topics)}")
     print(f"Command groups: {sum(len(t.groups) for t in topics)}")
