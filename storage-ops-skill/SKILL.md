@@ -78,6 +78,59 @@ flash-storage-cli --address <IP> --username <user> "show system general\nshow st
 | Command-line options | The full list of `flash-storage-cli` options and their meanings. |
 | Examples | Sample invocations: single command, multiple commands, environment-variable based, and offline command help. |
 
+## Command Line Conventions
+
+A command line consists of several segments:
+
+- **Starting segment**: general descriptor of an activity to be performed, such as `change` and `show`.
+- **Second segment**: performer of the activity, such as `storage_pool` and `host`.
+- **Third segment** (available for certain commands): attribute of the performer, such as `relocation_speed`.
+- **Remaining segments**: parameters required for the command.
+
+Command line conventions:
+
+| Pattern | Definition |
+|---|---|
+| **Bold** | The keywords of a command line, which must not be changed. |
+| *Italic* | The parameters of a command line, which will be replaced by actual values. |
+| `[ ]` | Items (keywords or parameters) in brackets `[ ]` are optional. |
+| `{ x \| y \| ... }` | Optional items are grouped in braces `{}` and separated by vertical bars (`\|`); one item must be selected. |
+| `[ x \| y \| ... ]` | Optional items are grouped in brackets `[]` and separated by vertical bars (`\|`); one or no item is selected. |
+| `{ x \| y \| ... } *` | Optional items are grouped in braces and separated by vertical bars; at least one item or all items at most are selected. |
+| `[ x \| y \| ... ] *` | Optional items are grouped in brackets and separated by vertical bars; more than one or no item is selected. |
+
+Example: the `change user user_name=? { level=? \| action=? }` command implies that `change user` is a fixed keyword, `user_name=?` is required, either `level=?` or `action=?` is used, and the `?` in `level=?` is replaced with an actual value such as `level=admin`.
+
+## CLI Command Filtering
+
+### Column Filtering Command
+
+`show xxx|filterColumn { exclude \| include } columnList=?` is used to filter column information off a command output.
+
+- `xxx` is the ending keywords of the command that you want to query column information for.
+- If the name of a selected column field contains a space, replace the space with `\s`. For example, to query the **Write Policy** column for LUNs, run `show lun general|filterColumn include columnList=Write\sPolicy`.
+
+| Parameter | Description |
+|---|---|
+| `exclude` | Column fields available for filtering that do not need to be displayed. |
+| `include` | Column fields available for filtering that need to be displayed. |
+| `columnList=?` | Column fields that are available for filtering; separate multiple fields by commas. |
+
+### Row Filtering Command
+
+`show xxx |filterRow column=? predict=? [ predict2=? ] value=? [ logicOp=? ]` is used to filter row information off a command output.
+
+- `xxx` is the ending keywords of the command that you want to query row information for.
+- If the name of a selected column field contains a space, replace the space with `\s`. For example, to query the **Write Policy** column for LUNs, run `show lun general|filterRow column=Write\sPolicy`.
+
+| Parameter | Description |
+|---|---|
+| `column=?` | Column fields that you want to include into a filtering. |
+| `predict=?` | A filter condition: `not`, `equal_to`, `greater_than`, `greater_equal`, `less_than`, `less_equal`, or `match` (regular expression match). |
+| `predict2=?` | Additional filter condition; required when `predict=?` is set to `not`. |
+| `value=?` | Value of a field. |
+| `logicOp=?` | Logical relationship between multiple column fields: `and` (match all) or `or` (match any). |
+
 ## Standard Workflow
 
 1. **Query command help**: Use the CLI help parameters to look up command help before executing:
