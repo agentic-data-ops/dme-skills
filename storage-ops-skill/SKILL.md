@@ -62,7 +62,7 @@ python3 scripts/flash-storage/cli.py --address <IP> --username <user> "show syst
 
 ## Reference Document Key Sections
 
-`reference/flash-storage/command-reference.md` — OceanStor Dorado 6.1.2 Command Reference. Key sections for command-line usage:
+`reference/flash-storage/command-reference.md` — OceanStor Flash Storage Command Reference. Key sections for command-line usage:
 
 | Section | Description |
 |---|---|
