@@ -1,5 +1,9 @@
 # space
 
+Manage storage space and protection groups, including the recycle bin.
+
+Manage storage space and protection groups, including the recycle bin.
+
 | command | function |
 |---|---|
 | add protect_group lun | add a member LUN to a specified protection group. |

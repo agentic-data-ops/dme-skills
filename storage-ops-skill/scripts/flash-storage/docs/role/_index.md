@@ -1,5 +1,9 @@
 # role
 
+Manage user roles and their permissions.
+
+Manage user roles and their permissions.
+
 | command | function |
 |---|---|
 | add role permit | add permissions to roles. |

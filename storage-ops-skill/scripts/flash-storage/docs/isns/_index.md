@@ -1,5 +1,9 @@
 # isns
 
+Manage iSNS server settings.
+
+Manage iSNS server settings.
+
 | command | function |
 |---|---|
 | change isns server_ip | set the IP address of the Internet Storage Name Service (iSNS) server. |

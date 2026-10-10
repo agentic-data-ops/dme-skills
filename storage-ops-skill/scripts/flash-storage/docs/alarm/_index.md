@@ -1,5 +1,9 @@
 # alarm
 
+Manage alarms and event notifications, including notification receivers, SMTP servers, alarm masking, and event configuration.
+
+Manage alarms and event notifications, including notification receivers, SMTP servers, alarm masking, and event configuration.
+
 | command | function |
 |---|---|
 | add notification receiver | add email addresses or phone numbers used to receive alarm or event notifications. |

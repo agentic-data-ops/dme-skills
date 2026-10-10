@@ -1,5 +1,9 @@
 # disk
 
+Manage disk operations, including media scanning, precopy, routine tests, and SSD route switching.
+
+Manage disk operations, including media scanning, precopy, routine tests, and SSD route switching.
+
 | command | function |
 |---|---|
 | change disk light | turn on or turn off the location indicator of a specific disk. |

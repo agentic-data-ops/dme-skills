@@ -1,5 +1,9 @@
 # port
 
+Manage ports (FC, Ethernet, RoCE), bond ports, and IP/route configuration.
+
+Manage ports (FC, Ethernet, RoCE), bond ports, and IP/route configuration.
+
 | command | function |
 |---|---|
 | add port ipv4_route | add an IPv4 route for a specific Ethernet port. If the IPv4 address of the storage system and that of an application server reside on different network segments, you can run this command to add a route to connect the storage system to application server. |

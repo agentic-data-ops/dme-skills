@@ -1,5 +1,9 @@
 # disk_domain
 
+Manage disk domains, including disk addition, domain creation, rekeying, and redundancy recovery.
+
+Manage disk domains, including disk addition, domain creation, rekeying, and redundancy recovery.
+
 | command | function |
 |---|---|
 | add disk_domain disk | add disks to a disk domain. |

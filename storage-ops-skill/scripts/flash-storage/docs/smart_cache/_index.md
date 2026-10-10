@@ -1,5 +1,9 @@
 # smart_cache
 
+Manage SmartCache pools and partitions for SSD caching acceleration.
+
+Manage SmartCache pools and partitions for SSD caching acceleration.
+
 | command | function |
 |---|---|
 | add smart_cache_partition file_system | add file systems to a SmartCache partition. |

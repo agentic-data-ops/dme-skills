@@ -1,5 +1,9 @@
 # initiator
 
+Manage initiators (FC, iSCSI, NVMe over RoCE), including creation, modification, and deletion.
+
+Manage initiators (FC, iSCSI, NVMe over RoCE), including creation, modification, and deletion.
+
 | command | function |
 |---|---|
 | add host nvme_over_roce_initiator | add an NVMe over RoCE initiator to a host. |

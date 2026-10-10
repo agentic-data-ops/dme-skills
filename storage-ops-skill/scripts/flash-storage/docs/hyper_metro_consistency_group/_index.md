@@ -1,5 +1,9 @@
 # hyper_metro_consistency_group
 
+Manage HyperMetro consistency groups for synchronous remote replication.
+
+Manage HyperMetro consistency groups for synchronous remote replication.
+
 | command | function |
 |---|---|
 | add hyper_metro_consistency_group pair | add a HyperMetro pair to a HyperMetro consistency group. |

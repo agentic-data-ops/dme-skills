@@ -1,5 +1,9 @@
 # user
 
+Manage device users, including creation, lock/unlock, and RADIUS authentication.
+
+Manage device users, including creation, lock/unlock, and RADIUS authentication.
+
 | command | function |
 |---|---|
 | change radius configuration | modify the RADIUS configuration. |

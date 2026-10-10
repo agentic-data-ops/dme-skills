@@ -1,5 +1,9 @@
 # upgrade
 
+Query upgrade packages and redundant links.
+
+Query upgrade packages and redundant links.
+
 | command | function |
 |---|---|
 | show upgrade package | query details of the upgrade package. |

@@ -1,5 +1,9 @@
 # ldap
 
+Manage LDAP authentication configuration.
+
+Manage LDAP authentication configuration.
+
 | command | function |
 |---|---|
 | change ldap configuration | modify the configuration of Lightweight Directory Application Protocol (LDAP) servers. |

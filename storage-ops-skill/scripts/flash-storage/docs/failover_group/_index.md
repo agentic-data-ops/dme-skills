@@ -1,5 +1,9 @@
 # failover_group
 
+Manage failover groups for link failover, including bond, Ethernet, and VLAN port membership.
+
+Manage failover groups for link failover, including bond, Ethernet, and VLAN port membership.
+
 | command | function |
 |---|---|
 | add failover_group bond_port | add bond ports to a customized failover group. |

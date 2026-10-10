@@ -1,5 +1,9 @@
 # enclosure
 
+Manage enclosures and network planes, including port/route configuration and enclosure location/light control.
+
+Manage enclosures and network planes, including port/route configuration and enclosure location/light control.
+
 | command | function |
 |---|---|
 | add net_plane eth_port | add a front-end Ethernet port of a container to the network plane. |

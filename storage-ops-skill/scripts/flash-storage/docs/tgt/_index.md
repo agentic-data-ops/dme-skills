@@ -1,5 +1,9 @@
 # TGT
 
+Manage device mappings (host LUN IDs) and mapping switch settings.
+
+Manage device mappings (host LUN IDs) and mapping switch settings.
+
 | command | function |
 |---|---|
 | change mapping general | modify mapping information. |

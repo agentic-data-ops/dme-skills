@@ -1,5 +1,9 @@
 # remote_device
 
+Manage remote devices for remote replication, including link and white list configuration.
+
+Manage remote devices for remote replication, including link and white list configuration.
+
 | command | function |
 |---|---|
 | change remote_device general | modify the name and link of remote devices. |

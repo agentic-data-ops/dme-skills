@@ -1,5 +1,9 @@
 # smartqos
 
+Manage SmartQoS policy attachments to hosts and file systems.
+
+Manage SmartQoS policy attachments to hosts and file systems.
+
 | command | function |
 |---|---|
 | add smartqos_policy host | add hosts to a SmartQoS policy. |

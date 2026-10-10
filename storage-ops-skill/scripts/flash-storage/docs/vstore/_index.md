@@ -1,5 +1,9 @@
 # vstore
 
+Manage vStores for multi-tenant storage, including creation and view configuration.
+
+Manage vStores for multi-tenant storage, including creation and view configuration.
+
 | command | function |
 |---|---|
 | change vstore info | modify the basic information about a vStore. |

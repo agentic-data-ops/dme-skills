@@ -1,5 +1,9 @@
 # lun
 
+Manage LUNs and LUN consistency groups, including creation, modification, deletion, and LUN takeover.
+
+Manage LUNs and LUN consistency groups, including creation, modification, deletion, and LUN takeover.
+
 | command | function |
 |---|---|
 | add lun_consistency_group lun | add a member LUN to a specified LUN consistency group. Use this command if consistency management is required for LUNs. |

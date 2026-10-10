@@ -1,5 +1,9 @@
 # dr_star
 
+Manage DR Star disaster recovery functionality, including creation, enabling/disabling, and member management.
+
+Manage DR Star disaster recovery functionality, including creation, enabling/disabling, and member management.
+
 | command | function |
 |---|---|
 | change dr_star disable | deactivate DR Star. |

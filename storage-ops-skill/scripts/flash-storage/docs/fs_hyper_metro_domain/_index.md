@@ -1,5 +1,9 @@
 # fs_hyper_metro_domain
 
+Manage file system HyperMetro domains for synchronous replication between file systems.
+
+Manage file system HyperMetro domains for synchronous replication between file systems.
+
 | command | function |
 |---|---|
 | add fs_hyper_metro_domain quorum_server | add a quorum server to a HyperMetro domain. |

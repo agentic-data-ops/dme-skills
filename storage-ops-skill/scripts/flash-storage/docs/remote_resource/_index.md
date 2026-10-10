@@ -1,5 +1,9 @@
 # remote_resource
 
+Query remote LUN resources and their link status.
+
+Query remote LUN resources and their link status.
+
 | command | function |
 |---|---|
 | scan remote_lun | scan for LUNs on a third-party storage system. When a LUN mapping is added to or deleted from a remote disk array, or an initiator is added to or deleted from a host group, you must manually run this command. |

@@ -1,5 +1,9 @@
 # fs_snapshot
 
+Manage file system snapshots and HyperCDP, including creation, restoration, and deletion.
+
+Manage file system snapshots and HyperCDP, including creation, restoration, and deletion.
+
 | command | function |
 |---|---|
 | change fs_hyper_cdp general | modify basic attributes of a file system HyperCDP object, including the name and description. |

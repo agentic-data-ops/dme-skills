@@ -1,5 +1,9 @@
 # port_group
 
+Manage port groups, including adding or removing ports and querying mappings.
+
+Manage port groups, including adding or removing ports and querying mappings.
+
 | command | function |
 |---|---|
 | add port_group port | add ports to a port group. The ID varies depending on a specific product. |

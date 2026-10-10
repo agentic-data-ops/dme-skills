@@ -1,5 +1,9 @@
 # container_application
 
+Manage container applications, including deployment, configuration, and query.
+
+Manage container applications, including deployment, configuration, and query.
+
 | command | function |
 |---|---|
 | change container_application general | update an application. |

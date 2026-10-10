@@ -1,5 +1,9 @@
 # vlan
 
+Manage VLANs, including creation, modification, and deletion.
+
+Manage VLANs, including creation, modification, and deletion.
+
 | command | function |
 |---|---|
 | change vlan general | change the VLAN maximum transmission unit. |

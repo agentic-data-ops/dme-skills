@@ -1,5 +1,9 @@
 # user_mode
 
+Manage user mode switching (enabled state).
+
+Manage user mode switching (enabled state).
+
 | command | function |
 |---|---|
 | change user_mode enabled | set the supported views. |

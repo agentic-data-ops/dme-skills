@@ -6,8 +6,8 @@ When an alarm is generated on the storage system, the system automatically recor
 
 | command group | function |
 |---|---|
-| alarm |  |
-| event |  |
+| alarm | Manage alarms and event notifications, including notification receivers, SMTP servers, alarm masking, and event configuration. |
+| event | Query and manage operation logs (event records). |
 
 ## Basic Operation Commands
 
@@ -15,7 +15,7 @@ Basic commands are used to execute basic command line interface (CLI) operations
 
 | command group | function |
 |---|---|
-| base |  |
+| base | Perform basic CLI operations, including bond port routes, user password changes, CLI history, and system/task queries. |
 
 ## Container Management Commands
 
@@ -23,9 +23,9 @@ Container management commands are used for container deployment, management, and
 
 | command group | function |
 |---|---|
-| container_application |  |
-| container_node |  |
-| container_service |  |
+| container_application | Manage container applications, including deployment, configuration, and query. |
+| container_node | Query container node information. |
+| container_service | Manage container services, including activation, deployment, and configuration. |
 
 ## Data Protect Management Commands
 
@@ -33,24 +33,24 @@ Data protection management commands functionally covers complete data protection
 
 | command group | function |
 |---|---|
-| consistency_group |  |
-| device_manager |  |
-| dr_star |  |
-| fs_hyper_metro_domain |  |
-| fs_snapshot |  |
-| hyper_copy |  |
-| hyper_metro_consistency_group |  |
-| hyper_metro_domain |  |
-| hyper_metro_pair |  |
-| kmc |  |
-| kmm |  |
-| lun_snapshot |  |
-| quorum_server_for_server |  |
-| quorum_server_link |  |
-| remote_device |  |
-| remote_replication |  |
-| snapshot_group |  |
-| vstore_pair |  |
+| consistency_group | Manage consistency groups for remote replication and disaster recovery, including creation, modification, splitting, and synchronization. |
+| device_manager | Configure device manager settings, including cipher suites, web configuration, and REST message return types. |
+| dr_star | Manage DR Star disaster recovery functionality, including creation, enabling/disabling, and member management. |
+| fs_hyper_metro_domain | Manage file system HyperMetro domains for synchronous replication between file systems. |
+| fs_snapshot | Manage file system snapshots and HyperCDP, including creation, restoration, and deletion. |
+| hyper_copy | Manage HyperCopy clone relationships and consistency groups for local data replication. |
+| hyper_metro_consistency_group | Manage HyperMetro consistency groups for synchronous remote replication. |
+| hyper_metro_domain | Manage HyperMetro domains, including quorum servers and domain creation. |
+| hyper_metro_pair | Manage HyperMetro pairs for synchronous replication between storage systems. |
+| kmc | Manage the key management center (KMC) and key service, including key backup and testing. |
+| kmm | Test system trust (key management module). |
+| lun_snapshot | Manage LUN snapshots and HyperCDP (continuous data protection), including snapshots, consistency groups, and schedules. |
+| quorum_server_for_server | Manage quorum servers used for HyperMetro arbitration. |
+| quorum_server_link | Add quorum server links. |
+| remote_device | Manage remote devices for remote replication, including link and white list configuration. |
+| remote_replication | Manage remote replication relationships between storage systems. |
+| snapshot_group | Manage snapshot consistency group membership. |
+| vstore_pair | Manage vStore pairs for HyperMetro and remote replication between vStores. |
 
 ## Hardware Management Commands
 
@@ -58,22 +58,22 @@ Hardware management commands are used to query and modify hardware parameters. H
 
 | command group | function |
 |---|---|
-| bbu |  |
-| configuration_data |  |
-| controller |  |
-| disk |  |
-| dns_zone |  |
-| enclosure |  |
-| expansion_module |  |
-| failover_group |  |
-| fan |  |
-| interface_module |  |
-| logical_port |  |
-| port |  |
-| power_supply |  |
-| running_data |  |
-| support |  |
-| vlan |  |
+| bbu | Query the status of the backup battery unit (BBU). |
+| configuration_data | Export the device configuration data. |
+| controller | Configure and query controller settings, such as service sessions and I/O information. |
+| disk | Manage disk operations, including media scanning, precopy, routine tests, and SSD route switching. |
+| dns_zone | Manage DNS zones, including creation, modification, and deletion. |
+| enclosure | Manage enclosures and network planes, including port/route configuration and enclosure location/light control. |
+| expansion_module | Query expansion module information. |
+| failover_group | Manage failover groups for link failover, including bond, Ethernet, and VLAN port membership. |
+| fan | Query cooling unit and fan status. |
+| interface_module | Manage interface modules, including power on/off and configuration. |
+| logical_port | Manage logical ports, including creation, routes, failover, and VLAN configuration. |
+| port | Manage ports (FC, Ethernet, RoCE), bond ports, and IP/route configuration. |
+| power_supply | Query power supply status. |
+| running_data | Export running data for diagnostics. |
+| support | Manage support and maintenance functions, including user modes, diagnostics, and protocol services. |
+| vlan | Manage VLANs, including creation, modification, and deletion. |
 
 ## License Management Commands
 
@@ -81,7 +81,7 @@ License files are authority credentials for value-added functions such as snapsh
 
 | command group | function |
 |---|---|
-| license |  |
+| license | Manage device licenses, including import, export, and query. |
 
 ## Storage Domain Management Commands
 
@@ -89,35 +89,35 @@ Storage space management commands functionally involve the entire process of con
 
 | command group | function |
 |---|---|
-| GUARANTEED_CAPACITY_INFO |  |
-| TGT |  |
-| cifs_service |  |
-| disk_destroy_data |  |
-| disk_domain |  |
-| file_system |  |
-| host |  |
-| host_group |  |
-| initiator |  |
-| lun |  |
-| lun_group |  |
-| mapping_view |  |
-| ndmp_service |  |
-| nfs_service |  |
-| port_group |  |
-| qos |  |
-| quota |  |
-| quota_tree |  |
-| remote_resource |  |
-| resource_user |  |
-| share |  |
-| share_permission |  |
-| smart_cache |  |
-| smart_migration |  |
-| smart_qos |  |
-| smartqos |  |
-| space |  |
-| storage_pool |  |
-| vstore |  |
+| GUARANTEED_CAPACITY_INFO | Configure and query the effective capacity (guaranteed capacity) information. |
+| TGT | Manage device mappings (host LUN IDs) and mapping switch settings. |
+| cifs_service | Configure and query CIFS file sharing services and connections. |
+| disk_destroy_data | Destroy data on disks (disk erase). |
+| disk_domain | Manage disk domains, including disk addition, domain creation, rekeying, and redundancy recovery. |
+| file_system | Manage file systems, including creation, modification, cloning, and HyperCDP schedules. |
+| host | Manage hosts and their initiators, including creation, modification, and mapping queries. |
+| host_group | Manage host groups, including adding or removing hosts and querying mappings. |
+| initiator | Manage initiators (FC, iSCSI, NVMe over RoCE), including creation, modification, and deletion. |
+| lun | Manage LUNs and LUN consistency groups, including creation, modification, deletion, and LUN takeover. |
+| lun_group | Manage LUN groups, including adding or removing LUNs and querying mappings. |
+| mapping_view | Manage mapping views by associating host groups, LUN groups, and port groups. |
+| ndmp_service | Manage the NDMP service for tape backup, including configuration, users, and service restart. |
+| nfs_service | Configure and query NFS service settings. |
+| port_group | Manage port groups, including adding or removing ports and querying mappings. |
+| qos | Manage SmartQoS policy minimum guaranteed resources. |
+| quota | Manage file system quotas, including creation, modification, and deletion. |
+| quota_tree | Manage quota trees (directories) for file system quotas. |
+| remote_resource | Query remote LUN resources and their link status. |
+| resource_user | Manage resource users and identity mapping (Unix/Windows users, groups, and identity mapping rules). |
+| share | Manage CIFS/NFS shares and share permissions, including home directory rules. |
+| share_permission | Manage NFS share permissions. |
+| smart_cache | Manage SmartCache pools and partitions for SSD caching acceleration. |
+| smart_migration | Manage LUN migration for relocating data between storage pools. |
+| smart_qos | Manage SmartQoS policies for service quality control. |
+| smartqos | Manage SmartQoS policy attachments to hosts and file systems. |
+| space | Manage storage space and protection groups, including the recycle bin. |
+| storage_pool | Manage storage pools, including creation, disk addition, and modification. |
+| vstore | Manage vStores for multi-tenant storage, including creation and view configuration. |
 
 ## Storage Performance Monitoring Management Commands
 
@@ -125,7 +125,7 @@ Storage performance management commands are used to enable or disable system per
 
 | command group | function |
 |---|---|
-| performance |  |
+| performance | Query and manage performance statistics, including thresholds, retention strategies, and per-object performance data. |
 
 ## Storage System Management Commands
 
@@ -133,15 +133,15 @@ Storage system management commands are used to configure and query the storage s
 
 | command group | function |
 |---|---|
-| audit_strategy |  |
-| call_home |  |
-| dns_server |  |
-| isns |  |
-| snmp |  |
-| system |  |
-| target |  |
-| upgrade |  |
-| version |  |
+| audit_strategy | Configure and query the audit log strategy. |
+| call_home | Manage Call Home and remote support services, including user contacts and support agreements. |
+| dns_server | Configure and query DNS server settings. |
+| isns | Manage iSNS server settings. |
+| snmp | Manage SNMP settings, including communities, users, versions, and ports. |
+| system | Manage system-level settings, including time, NTP, name, description, containers, and power control. |
+| target | Manage iSCSI targets, including creation, modification, and name configuration. |
+| upgrade | Query upgrade packages and redundant links. |
+| version | Query the device version information. |
 
 ## Storage System Security Management Commands
 
@@ -149,11 +149,11 @@ The storage system provides multiple storage security functions including the ac
 
 | command group | function |
 |---|---|
-| certificate |  |
-| certificate_management |  |
-| domain |  |
-| ldap |  |
-| security_rule |  |
+| certificate | Manage device certificates and certificate revocation lists (CRLs), including import, export, and automatic update. |
+| certificate_management | Configure and query the CA server used for certificate management. |
+| domain | Manage authentication domains (AD, LDAP, NIS), including configuration, monitoring, and testing. |
+| ldap | Manage LDAP authentication configuration. |
+| security_rule | Manage security rules and NAS security settings. |
 
 ## User Management Commands
 
@@ -161,9 +161,9 @@ User management commands are used to create or delete users, change or initializ
 
 | command group | function |
 |---|---|
-| role |  |
-| safe_strategy |  |
-| ssh |  |
-| sso |  |
-| user |  |
-| user_mode |  |
+| role | Manage user roles and their permissions. |
+| safe_strategy | Manage password and security policies, including weak password management. |
+| ssh | Manage SSH host keys, including deletion and import. |
+| sso | Configure and query SSO (single sign-on) settings. |
+| user | Manage device users, including creation, lock/unlock, and RADIUS authentication. |
+| user_mode | Manage user mode switching (enabled state). |

@@ -1,5 +1,9 @@
 # quorum_server_for_server
 
+Manage quorum servers used for HyperMetro arbitration.
+
+Manage quorum servers used for HyperMetro arbitration.
+
 | command | function |
 |---|---|
 | change quorum_server general | change the information about a third-place quorum server. |

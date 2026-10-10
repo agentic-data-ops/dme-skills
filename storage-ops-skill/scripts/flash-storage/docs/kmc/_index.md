@@ -1,5 +1,9 @@
 # kmc
 
+Manage the key management center (KMC) and key service, including key backup and testing.
+
+Manage the key management center (KMC) and key service, including key backup and testing.
+
 | command | function |
 |---|---|
 | add kmc general | add the configuration of an external key management server. |

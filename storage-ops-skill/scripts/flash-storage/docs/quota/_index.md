@@ -1,5 +1,9 @@
 # quota
 
+Manage file system quotas, including creation, modification, and deletion.
+
+Manage file system quotas, including creation, modification, and deletion.
+
 | command | function |
 |---|---|
 | change quota general | change a specified quota of a file system. |

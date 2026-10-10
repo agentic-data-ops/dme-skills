@@ -1,5 +1,9 @@
 # smart_qos
 
+Manage SmartQoS policies for service quality control.
+
+Manage SmartQoS policies for service quality control.
+
 | command | function |
 |---|---|
 | add smartqos_policy file_system | add file systems to a SmartQoS policy. |

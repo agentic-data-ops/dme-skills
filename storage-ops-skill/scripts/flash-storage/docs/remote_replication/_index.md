@@ -1,5 +1,9 @@
 # remote_replication
 
+Manage remote replication relationships between storage systems.
+
+Manage remote replication relationships between storage systems.
+
 | command | function |
 |---|---|
 | change remote_replication file_system | modify the settings of a specified file system remote replication pair. |

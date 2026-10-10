@@ -1,5 +1,9 @@
 # consistency_group
 
+Manage consistency groups for remote replication and disaster recovery, including creation, modification, splitting, and synchronization.
+
+Manage consistency groups for remote replication and disaster recovery, including creation, modification, splitting, and synchronization.
+
 | command | function |
 |---|---|
 | add consistency_group remote_replication | add a remote replication pair to a consistency group. |

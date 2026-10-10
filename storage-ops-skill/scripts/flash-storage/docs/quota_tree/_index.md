@@ -1,5 +1,9 @@
 # quota_tree
 
+Manage quota trees (directories) for file system quotas.
+
+Manage quota trees (directories) for file system quotas.
+
 | command | function |
 |---|---|
 | change dtree | modify dtree information in a file system. |

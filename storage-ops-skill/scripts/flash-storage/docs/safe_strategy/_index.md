@@ -1,5 +1,9 @@
 # safe_strategy
 
+Manage password and security policies, including weak password management.
+
+Manage password and security policies, including weak password management.
+
 | command | function |
 |---|---|
 | add weak_password | add a user-defined weak password to the weak password dictionary. |
