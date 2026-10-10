@@ -60,6 +60,18 @@ python3 scripts/flash-storage/cli.py --address <IP> --username <user> "show syst
 
 > Note: The command-line help is available in English only. If the user asks in another language, **extract the English keywords** of the intended commands (e.g., translate "创建LUN" → `create lun`) and search the help with those English keywords.
 
+## Reference Document Key Sections
+
+`reference/flash-storage/command-reference.md` — OceanStor Dorado 6.1.2 Command Reference. Key sections for command-line usage:
+
+| Section | Description |
+|---|---|
+| CLI Escape Characters | Lists the characters that have special meanings on the CLI and must be escaped before being entered, together with their escaped forms. |
+| Column Filtering Command | Filters columns off a command output: `show xxx\|filterColumn { exclude \| include } columnList=?`. |
+| Row Filtering Command | Filters rows off a command output: `show xxx \|filterRow column=? predict=? value=? [logicOp=?]`. |
+| Glossary | Defines the terminology used in this document. |
+| Acronyms and Abbreviations | Lists the acronyms and abbreviations used in this document. |
+
 ## Standard Workflow
 
 1. **Query command help**: Use the CLI help parameters to look up command help before executing:
