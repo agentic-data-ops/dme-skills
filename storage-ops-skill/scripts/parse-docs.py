@@ -20,7 +20,10 @@ REF_PATH = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
     "..", "reference", "flash-storage", "command-reference.md",
 )
-DOCS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs")
+DOCS_DIR = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "flash-storage", "docs",
+)
 
 # Topics excluded from the topic list (intro/guide chapters, not command topics)
 EXCLUDED_TOPICS = {"About This Document", "CLI Use Guidance"}

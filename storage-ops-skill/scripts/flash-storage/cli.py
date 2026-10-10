@@ -152,7 +152,7 @@ class FlashStorageCLI:
 # Docs-based help (no device connection required)
 # ---------------------------------------------------------------------------
 
-DOCS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "docs")
+DOCS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs")
 
 
 def slugify(name: str) -> str:
