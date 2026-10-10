@@ -167,7 +167,7 @@ def _read_doc(rel_path: str, what: str) -> str:
     path = os.path.join(DOCS_DIR, rel_path)
     if not os.path.isfile(path):
         raise RuntimeError(
-            f"{what} not found: {path} (run parse-docs.py to generate the docs)"
+            f"{what} not found: {path} (run gen_help_docs.py to generate the docs)"
         )
     with open(path, encoding="utf-8") as f:
         return f.read()
@@ -211,7 +211,7 @@ def show_command_help(command: str) -> str:
                     return f.read()
     raise RuntimeError(
         f"Command not found: '{command}' (slug '{command_slug}'). "
-        "Run parse-docs.py to generate the docs, or check the command name."
+        "Run gen_help_docs.py to generate the docs, or check the command name."
     )
 
 
