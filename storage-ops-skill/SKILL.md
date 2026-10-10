@@ -28,7 +28,7 @@ export STORAGE_TIMEOUT=60                  # command timeout in seconds (default
 Then run commands without putting any secret on the command line:
 
 ```bash
-python3 scripts/flash-storage/cli.py "show version\nshow storage pool"
+python3 scripts/flash-storage/cli.py "cmd1\ncmd2\ncmd3"
 ```
 
 ## Command Line Interface
