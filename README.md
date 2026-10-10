@@ -52,11 +52,10 @@ Huawei all-flash storage device operations skill that logs in to the device CLI 
 
 - `SKILL.md` — skill definition and standard workflow
 - `scripts/flash-storage/cli.py` — SSH CLI executor built on Python (paramiko, cross-platform Windows/Linux)
-- `reference/dorado-v6-cli-ref.md` — OceanStor Dorado 6.1.2 Command Reference (complete command reference generated from Huawei official documentation, 1080 sections; each command includes Function / Format / Parameters / Example / System Output)
 
 ### Standard Workflow
 
-1. **Query command help**: Search `reference/dorado-v6-cli-ref.md` for command help (for non-English requests, first extract English keywords to search, as the command-line help is English-only)
+1. **Query command help**: Obtain command help from the CLI script (for non-English requests, first extract English keywords to search, as the command-line help is English-only)
 2. **Assemble batch commands**: Build the batch command string, one command per line, separated by `\n`
 3. **Risk check and confirmation**: Identify risky commands (change-type commands and commands in the High-Risk Command List), show the command list with risky ones annotated, and obtain user confirmation
 4. **Execute**: After user confirmation, run `scripts/flash-storage/cli.py` to execute the commands

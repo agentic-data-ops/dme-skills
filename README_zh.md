@@ -53,11 +53,10 @@ pydme system show
 
 - `SKILL.md` — 技能定义与标准流程
 - `scripts/flash-storage/cli.py` — 基于 Python（paramiko，跨平台 Windows/Linux）的 SSH CLI 执行器
-- `reference/dorado-v6-cli-ref.md` — OceanStor Dorado 6.1.2 Command Reference（由华为官方文档生成的完整命令参考，1080 个章节，每个命令包含 Function / Format / Parameters / Example / System Output）
 
 ### 标准流程
 
-1. **查询命令帮助**：搜索 `reference/dorado-v6-cli-ref.md` 获取命令帮助（非英文输入先提取英文关键字搜索，因为命令行帮助仅有英文）
+1. **查询命令帮助**：通过 CLI 脚本获取命令帮助（非英文输入先提取英文关键字搜索，因为命令行帮助仅有英文）
 2. **组装批量命令**：组装批量命令行，每个命令 1 行，用 `\n` 分隔
 3. **风险检查与确认**：识别风险命令（变更类命令及 High-Risk Command List 中的命令），展示即将执行的命令列表并标注风险命令，征得用户确认
 4. **执行**：用户确认后调用 `scripts/flash-storage/cli.py` 执行命令

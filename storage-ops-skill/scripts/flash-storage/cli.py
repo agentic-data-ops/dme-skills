@@ -52,13 +52,13 @@ class FlashStorageCLI:
     # ------------------------------------------------------------------
 
     def execute_commands(
-        self, commands: List[str], dumpscript: str | None = None
+        self, commands: List[str], logfile: str | None = None
     ) -> str:
         """Execute multiple commands (one per line, sequentially).
 
         Args:
             commands: The list of commands to execute.
-            dumpscript: Write the interaction log to this file (for debugging).
+            logfile: Write the interaction log to this file (for debugging).
 
         Returns:
             The device output text.
@@ -82,7 +82,7 @@ class FlashStorageCLI:
 
         shell = client.invoke_shell(width=200, height=50)
         shell.settimeout(self._timeout)
-        log = open(dumpscript, "w", encoding="utf-8") if dumpscript else None
+        log = open(logfile, "w", encoding="utf-8") if logfile else None
         try:
             # Login banner + first prompt (kept as part of the output)
             output = self._read_until_prompt(shell, log)
@@ -174,7 +174,7 @@ def _parse_args(argv: List[str] | None = None) -> argparse.Namespace:
         help="command timeout in seconds, default 60 (env STORAGE_TIMEOUT)",
     )
     parser.add_argument(
-        "--dumpscript",
+        "--logfile",
         default=None,
         help="write the interaction log to this file (for debugging)",
     )
@@ -209,7 +209,7 @@ def main(argv: List[str] | None = None) -> None:
         return
 
     try:
-        results = cli.execute_commands(commands, args.dumpscript)
+        results = cli.execute_commands(commands, args.logfile)
     except RuntimeError as ex:
         print(f"Error: {ex}")
         return

@@ -66,14 +66,14 @@ This document describes commands used by customers when they use Huawei devices 
 
 Some advanced commands are used to implement a project or locate faults. Improper use of those commands may cause device exceptions or service interruptions. This document does not provide the advanced commands. If you need such commands, contact Huawei for help.
 
--   [Logging In to the CLI of the Storage System](Logging%20In%20to%20the%20CLI%20of%20the%20Storage%20System.htm#array_T_0001)
--   [Configuring Basic Storage Services](Configuring%20Basic%20Storage%20Services.htm#bas_svr_cfg_flw)
--   [Command Line Conventions](Command%20Line%20Conventions.htm#array_T_330304)
--   [Command Line Completion](Command%20Line%20Completion.htm#array_T_330305)
--   [Context-sensitive Help](Context-sensitive%20Help.htm#array_T_330306)
--   [CLI Command Filtering](CLI%20Command%20Filtering.htm#array_T_330364)
--   [Information on Command Line Misentries](Information%20on%20Command%20Line%20Misentries.htm#array_T_330307)
--   [Shortcut Keys](Shortcut%20Keys.htm#array_T_330308)
+-   [Logging In to the CLI of the Storage System](#logging-in-to-the-cli-of-the-storage-system)
+-   [Configuring Basic Storage Services](#configuring-basic-storage-services)
+-   [Command Line Conventions](#command-line-conventions)
+-   [Command Line Completion](#command-line-completion)
+-   [Context-sensitive Help](#context-sensitive-help)
+-   [CLI Command Filtering](#cli-command-filtering)
+-   [Information on Command Line Misentries](#information-on-command-line-misentries)
+-   [Shortcut Keys](#shortcut-keys)
 
 ### Logging In to the CLI of the Storage System
 
@@ -98,7 +98,7 @@ After the controller enclosure is connected with the maintenance terminal using 
 -   This document uses the PuTTY software as an example. You can download PuTTY from chiark website.
 -   You are advised to use the latest version of PuTTY, otherwise you may fail to log in to the storage system.
 
-1.  Run the PuTTY software. The **PuTTY Configuration** dialog box is displayed, as shown in [Figure 1-1](#en-us_topic_0213335713_en-us_topic_0208528227_en-us_topic_0202496092_fig_330302_0601).
+1.  Run the PuTTY software. The **PuTTY Configuration** dialog box is displayed, as shown in Figure 1-1.
 
 Figure 1-1 The dialog box of **PuTTY Configuration**
 
@@ -195,9 +195,9 @@ Log in to the Linux client and run the **rpm -qa \| grep minicom** command.
 [root@localhost ~]# minicom-2.3-27.24.4.1
 ```
 
-Go to [5](#en-us_topic_0213335713_en-us_topic_0208528227_en-us_topic_0202496092_config_minicom) to configure Minicom.
+Go to 5 to configure Minicom.
 
--   If Minicom is not installed, no information will be returned. Go to [2](#en-us_topic_0213335713_en-us_topic_0208528227_en-us_topic_0202496092_commit_minicom), [3](#en-us_topic_0213335713_en-us_topic_0208528227_en-us_topic_0202496092_setup_minicom) and [4](#en-us_topic_0213335713_en-us_topic_0208528227_en-us_topic_0202496092_install_minicom) to install it.
+-   If Minicom is not installed, no information will be returned. Go to 2, 3 and 4 to install it.
 
 2.  Upload the Minicom and rzsz installation package to the Linux host. This document uses SSH Secure Shell Client on a Windows host to upload the packages to the Linux host.
 1.  Install SSH Secure Shell Client on a Windows host. Double-click the **Secure File Transfer Client** shortcut to run the software.
@@ -321,7 +321,7 @@ WARNING: You have accessed the system.
 -   This document uses the PuTTY software as an example. You can download PuTTY from chiark website.
 -   You are advised to use the latest version of PuTTY, otherwise you may fail to log in to the storage system.
 
-1.  Run the PuTTY software. The **PuTTY Configuration** dialog box is displayed, as shown in [Figure 1-2](#en-us_topic_0213335713_en-us_topic_0208528227_en-us_topic_0202496092_fig_330302_06).
+1.  Run the PuTTY software. The **PuTTY Configuration** dialog box is displayed, as shown in Figure 1-2.
 
 Figure 1-2 The dialog box of **PuTTY Configuration**
 
@@ -394,11 +394,11 @@ WARNING: You have accessed the system.
 -   This document uses the PuTTY software as an example. You can download PuTTY from chiark website.
 -   You are advised to use the latest version of PuTTY, otherwise you may fail to log in to the storage system.
 
-1.  Run the PuTTY software. The **PuTTY Configuration** dialog box is displayed, as shown in [Figure 1-3](#en-us_topic_0213335713_en-us_topic_0208528227_en-us_topic_0202496092_fig_330302_0602).
+1.  Run the PuTTY software. The **PuTTY Configuration** dialog box is displayed, as shown in Figure 1-3.
 
 Figure 1-3 The dialog box of **PuTTY Configuration**
 
-2.  Select **Session** and set parameters as shown in [Figure 1-4](#en-us_topic_0213335713_en-us_topic_0208528227_en-us_topic_0202496092_cmd_fig01).
+2.  Select **Session** and set parameters as shown in Figure 1-4.
 
 Figure 1-4 Setting the Session parameter
 
@@ -406,7 +406,7 @@ Figure 1-4 Setting the Session parameter
 -   Select **Connection type** as **SSH**.
 -   In **Close Windows on exit**, select **Never**.
 
-3.  Select **SSH**. In **Remote command**, enter the command that needs to be executed, as shown in [Figure 1-5](#en-us_topic_0213335713_en-us_topic_0208528227_en-us_topic_0202496092_cmd_fig02).
+3.  Select **SSH**. In **Remote command**, enter the command that needs to be executed, as shown in Figure 1-5.
 
 Figure 1-5 Options remote command
 
@@ -484,7 +484,7 @@ Configure the storage system to divide the storage space into LUNs, and map them
 
 This section briefs the major procedures and reference commands for configuring basic storage services. For details, see descriptions of the corresponding commands.
 
-[Table 1-1](#en-us_topic_0208528578_d0e928) describes the major procedures for configuring basic storage services.
+Table 1-1 describes the major procedures for configuring basic storage services.
 
 Table 1-1 Major procedures for configuring storage space
 
@@ -521,7 +521,7 @@ A command line consists of several segments, each of which is describes as follo
 -   Third segment (available for certain commands): attribute of the performer, such as **relocation_speed**.
 -   Remaining segments: parameters required for the command.
 
-[Table 1-2](#en-us_topic_0208528589_d0e1214) describes the command line conventions.
+Table 1-2 describes the command line conventions.
 
 Table 1-2 Command line conventions
 
@@ -549,7 +549,7 @@ admin:/>change user user_name=newuser level=admin
 
 #### CLI Escape Characters
 
-Some characters must be escaped before being entered on the command-line interface (CLI) because they have special meanings on the CLI. And [Table 1-3](#en-us_topic_0208528589_d0e1406) describes how to escape characters used on the CLI. Typically, the user name and password entered by a user for authentication do not need to be escaped. However, a user name and password may be escaped in certain cases.
+Some characters must be escaped before being entered on the command-line interface (CLI) because they have special meanings on the CLI. And Table 1-3 describes how to escape characters used on the CLI. Typically, the user name and password entered by a user for authentication do not need to be escaped. However, a user name and password may be escaped in certain cases.
 
 Table 1-3 CLI Escape Characters
 
@@ -776,7 +776,7 @@ CLI command outputs are displayed in columns and rows. After typing a complete c
 
 #### Column Filtering Command
 
-**show xxx\|filterColumn** { **exclude** \| **include** } **columnList=***?* is used to filter column information off a command output. [Table 1-4](#en-us_topic_0208528622_en-us_concept_0201901836_t330364_tab01) describes the parameters of the command and their meanings.
+**show xxx\|filterColumn** { **exclude** \| **include** } **columnList=***?* is used to filter column information off a command output. Table 1-4 describes the parameters of the command and their meanings.
 
  
 
@@ -845,7 +845,7 @@ Inter ID  ID
 
 #### Row Filtering Command
 
-**show xxx \|filterRow** **column=***?* **predict=***?* \[ **predict2=***?* \] **value=***?* \[ **logicOp=***?* \] is used to filter row information off a command output. [Table 1-5](#en-us_topic_0208528622_en-us_concept_0201901836_t330364_tab02) describes the parameters of the command and their meanings.
+**show xxx \|filterRow** **column=***?* **predict=***?* \[ **predict2=***?* \] **value=***?* \[ **logicOp=***?* \] is used to filter row information off a command output. Table 1-5 describes the parameters of the command and their meanings.
 
  
 
@@ -942,7 +942,7 @@ When a command line contains multiple misentries, only the initial misentry will
 
 Use command line interface (CLI) shortcut keys for improved operation efficiency.
 
-CLI shortcut keys are categorized as the following types: movement control, deletion control, and screen scrolling control. The [Table 1-6](#en-us_topic_0208528644_d0e2510) lists the function of each shortcut key.
+CLI shortcut keys are categorized as the following types: movement control, deletion control, and screen scrolling control. The Table 1-6 lists the function of each shortcut key.
 
 Table 1-6 The Function Of Shortcut Keys
 
@@ -968,58 +968,58 @@ Table 1-6 The Function Of Shortcut Keys
 
 When an alarm is generated on the storage system, the system automatically records the information on the alarm and sends the information to associated personnel
 
--   [alarm](alarm.htm#alarm_142)
--   [event](event.htm#event_143)
+-   [alarm](#alarm)
+-   [event](#event)
 
 ### alarm
 
 This section describes commands related to alarm.
 
--   [add notification receiver](add%20notification%20receiver.htm#alarm_add-notification-receiver)
--   [add notification trap](add%20notification%20trap.htm#alarm_add-notification-trap)
--   [add smtp_server general](add%20smtp_server%20general.htm#alarm_add-smtp_server-general)
--   [change alarm clear](change%20alarm%20clear.htm#alarm_change-alarm-clear)
--   [change alarm_level](change%20alarm_level.htm#alarm_change-alarm_level)
--   [change alarm_mask](change%20alarm_mask.htm#alarm_change-alarm_mask)
--   [change alarm_object_mask](change%20alarm_object_mask.htm#alarm_change-alarm_object_mask)
--   [change event_config](change%20event_config.htm#alarm_change-event_config)
--   [change event_restore address](change%20event_restore%20address.htm#alarm_change-event_restore-address)
--   [change event_restore enabled](change%20event_restore%20enabled.htm#alarm_change-event_restore-enabled)
--   [change notification email](change%20notification%20email.htm#alarm_change-notification-email)
--   [change notification email_extend](change%20notification%20email_extend.htm#alarm_change-notification-email_extend)
--   [change notification event](change%20notification%20event.htm#alarm_change-notification-event)
--   [change notification sms](change%20notification%20sms.htm#alarm_change-notification-sms)
--   [change notification syslog](change%20notification%20syslog.htm#alarm_change-notification-syslog)
--   [change notification trap](change%20notification%20trap.htm#alarm_change-notification-trap)
--   [change smtp_server config](change%20smtp_server%20config.htm#alarm_change-smtp_server-config)
--   [change system client_name](change%20system%20client_name.htm#alarm_change-system-client_name)
--   [change user_auth_email_server](change%20user_auth_email_server.htm#alarm_change-user_auth_email_server)
--   [create alarm test](create%20alarm%20test.htm#alarm_create-alarm-test)
--   [delete file](delete%20file.htm#alarm_delete-file)
--   [delete notification trap](delete%20notification%20trap.htm#alarm_delete-notification-trap)
--   [export event](export%20event.htm#alarm_export-event)
--   [remove notification receiver](remove%20notification%20receiver.htm#alarm_remove-notification-receiver)
--   [remove smtp_server general](remove%20smtp_server%20general.htm#alarm_remove-smtp_server-general)
--   [show alarm](show%20alarm.htm#alarm_show-alarm)
--   [show alarm_mask](show%20alarm_mask.htm#alarm_show-alarm_mask)
--   [show alarm_object](show%20alarm_object.htm#alarm_show-alarm_object)
--   [show event](show%20event.htm#alarm_show-event)
--   [show event_config](show%20event_config.htm#alarm_show-event_config)
--   [show event_restore](show%20event_restore.htm#alarm_show-event_restore)
--   [show file export_path](show%20file%20export_path.htm#alarm_show-file-export_path)
--   [show file notification](show%20file%20notification.htm#alarm_show-file-notification)
--   [show file package_result](show%20file%20package_result.htm#alarm_show-file-package_result)
--   [show notification email](show%20notification%20email.htm#alarm_show-notification-email)
--   [show notification email_extend](show%20notification%20email_extend.htm#alarm_show-notification-email_extend)
--   [show notification event](show%20notification%20event.htm#alarm_show-notification-event)
--   [show notification receiver](show%20notification%20receiver.htm#alarm_show-notification-receiver)
--   [show notification sms](show%20notification%20sms.htm#alarm_show-notification-sms)
--   [show notification syslog](show%20notification%20syslog.htm#alarm_show-notification-syslog)
--   [show notification trap](show%20notification%20trap.htm#alarm_show-notification-trap)
--   [show smtp_server general](show%20smtp_server%20general.htm#alarm_show-smtp_server-general)
--   [show user_auth_email_server general](show%20user_auth_email_server%20general.htm#alarm_show-user_auth_email_server-general)
--   [test smtp_server general](test%20smtp_server%20general.htm#alarm_test-smtp_server-general)
--   [test user_auth_email_server](test%20user_auth_email_server.htm#alarm_test-user_auth_email_server)
+-   [add notification receiver](#add-notification-receiver)
+-   [add notification trap](#add-notification-trap)
+-   [add smtp_server general](#add-smtp_server-general)
+-   [change alarm clear](#change-alarm-clear)
+-   [change alarm_level](#change-alarm_level)
+-   [change alarm_mask](#change-alarm_mask)
+-   [change alarm_object_mask](#change-alarm_object_mask)
+-   [change event_config](#change-event_config)
+-   [change event_restore address](#change-event_restore-address)
+-   [change event_restore enabled](#change-event_restore-enabled)
+-   [change notification email](#change-notification-email)
+-   [change notification email_extend](#change-notification-email_extend)
+-   [change notification event](#change-notification-event)
+-   [change notification sms](#change-notification-sms)
+-   [change notification syslog](#change-notification-syslog)
+-   [change notification trap](#change-notification-trap)
+-   [change smtp_server config](#change-smtp_server-config)
+-   [change system client_name](#change-system-client_name)
+-   [change user_auth_email_server](#change-user_auth_email_server)
+-   [create alarm test](#create-alarm-test)
+-   [delete file](#delete-file)
+-   [delete notification trap](#delete-notification-trap)
+-   [export event](#export-event)
+-   [remove notification receiver](#remove-notification-receiver)
+-   [remove smtp_server general](#remove-smtp_server-general)
+-   [show alarm](#show-alarm)
+-   [show alarm_mask](#show-alarm_mask)
+-   [show alarm_object](#show-alarm_object)
+-   [show event](#show-event)
+-   [show event_config](#show-event_config)
+-   [show event_restore](#show-event_restore)
+-   [show file export_path](#show-file-export_path)
+-   [show file notification](#show-file-notification)
+-   [show file package_result](#show-file-package_result)
+-   [show notification email](#show-notification-email)
+-   [show notification email_extend](#show-notification-email_extend)
+-   [show notification event](#show-notification-event)
+-   [show notification receiver](#show-notification-receiver)
+-   [show notification sms](#show-notification-sms)
+-   [show notification syslog](#show-notification-syslog)
+-   [show notification trap](#show-notification-trap)
+-   [show smtp_server general](#show-smtp_server-general)
+-   [show user_auth_email_server general](#show-user_auth_email_server-general)
+-   [test smtp_server general](#test-smtp_server-general)
+-   [test user_auth_email_server](#test-user_auth_email_server)
 
 #### add notification receiver
 
@@ -3698,8 +3698,8 @@ None
 
 This section describes commands related to event.
 
--   [change operation_log](change%20operation_log.htm#event_change-operation_log)
--   [show operation_log](show%20operation_log.htm#event_show-operation_log)
+-   [change operation_log](#change-operation_log)
+-   [show operation_log](#show-operation_log)
 
 #### change operation_log
 
@@ -3791,31 +3791,31 @@ The following table describes the parameter meanings.
 
 Basic commands are used to execute basic command line interface (CLI) operations including querying the online help information on a command, viewing and modifying command CLI settings, checking and exporting command execution history, and exiting the CLI.
 
--   [base](base.htm#base_2)
+-   [base](#base)
 
 ### base
 
 This section describes commands related to cli.
 
--   [add bond_port ipv4_route](add%20bond_port%20ipv4_route.htm#base_add-bond_port-ipv4_route)
--   [add bond_port ipv6_route](add%20bond_port%20ipv6_route.htm#base_add-bond_port-ipv6_route)
--   [change bond_port ipv4_address](change%20bond_port%20ipv4_address.htm#base_change-bond_port-ipv4_address)
--   [change bond_port ipv6_address](change%20bond_port%20ipv6_address.htm#base_change-bond_port-ipv6_address)
--   [change user_password](change%20user_password.htm#base_change-user_password)
--   [exit](exit.htm#base_exit)
--   [export cli history](export%20cli%20history.htm#base_export-cli-history)
--   [help object](help%20object.htm#base_help-object)
--   [remove bond_port ipv4_address](remove%20bond_port%20ipv4_address.htm#base_remove-bond_port-ipv4_address)
--   [remove bond_port ipv4_route](remove%20bond_port%20ipv4_route.htm#base_remove-bond_port-ipv4_route)
--   [remove bond_port ipv6_address](remove%20bond_port%20ipv6_address.htm#base_remove-bond_port-ipv6_address)
--   [remove bond_port ipv6_route](remove%20bond_port%20ipv6_route.htm#base_remove-bond_port-ipv6_route)
--   [restore recycle_bin_view](restore%20recycle_bin_view.htm#base_restore-recycle_bin_view)
--   [show auth_diagnose](show%20auth_diagnose.htm#base_show-auth_diagnose)
--   [show cli configuration](show%20cli%20configuration.htm#base_show-cli-configuration)
--   [show cli history](show%20cli%20history.htm#base_show-cli-history)
--   [show system general](show%20system%20general.htm#base_show-system-general)
--   [show task general](show%20task%20general.htm#base_show-task-general)
--   [show user](show%20user.htm#base_show-user)
+-   [add bond_port ipv4_route](#add-bond_port-ipv4_route)
+-   [add bond_port ipv6_route](#add-bond_port-ipv6_route)
+-   [change bond_port ipv4_address](#change-bond_port-ipv4_address)
+-   [change bond_port ipv6_address](#change-bond_port-ipv6_address)
+-   [change user_password](#change-user_password)
+-   [exit](#exit)
+-   [export cli history](#export-cli-history)
+-   [help object](#help-object)
+-   [remove bond_port ipv4_address](#remove-bond_port-ipv4_address)
+-   [remove bond_port ipv4_route](#remove-bond_port-ipv4_route)
+-   [remove bond_port ipv6_address](#remove-bond_port-ipv6_address)
+-   [remove bond_port ipv6_route](#remove-bond_port-ipv6_route)
+-   [restore recycle_bin_view](#restore-recycle_bin_view)
+-   [show auth_diagnose](#show-auth_diagnose)
+-   [show cli configuration](#show-cli-configuration)
+-   [show cli history](#show-cli-history)
+-   [show system general](#show-system-general)
+-   [show task general](#show-task-general)
+-   [show user](#show-user)
 
 #### add bond_port ipv4_route
 
@@ -4902,20 +4902,20 @@ The following table describes the parameter meanings.
 
 Container management commands are used for container deployment, management, and usage. The functions of this type of commands include activating, re-activating, deploying, starting, stopping, and querying the container service, adding and querying container nodes, as well as installing, querying, modifying, and deleting container applications.
 
--   [container_application](container_application.htm#container_application_427)
--   [container_node](container_node.htm#container_node_425)
--   [container_service](container_service.htm#container_service_423)
+-   [container_application](#container_application)
+-   [container_node](#container_node)
+-   [container_service](#container_service)
 
 ### container_application
 
 This section describes commands related to container_application.
 
--   [change container_application general](change%20container_application%20general.htm#container_application_change-container_application-general)
--   [change container_application view](change%20container_application%20view.htm#container_application_change-container_application-view)
--   [create container_application general](create%20container_application%20general.htm#container_application_create-container_application-general)
--   [delete container_application general](delete%20container_application%20general.htm#container_application_delete-container_application-general)
--   [show container_application dynamic_config](show%20container_application%20dynamic_config.htm#container_application_show-container_application-dynamic_config)
--   [show container_application general](show%20container_application%20general.htm#container_application_show-container_application-general)
+-   [change container_application general](#change-container_application-general)
+-   [change container_application view](#change-container_application-view)
+-   [create container_application general](#create-container_application-general)
+-   [delete container_application general](#delete-container_application-general)
+-   [show container_application dynamic_config](#show-container_application-dynamic_config)
+-   [show container_application general](#show-container_application-general)
 
 #### change container_application general
 
@@ -5284,7 +5284,7 @@ The following table describes the parameter meanings.
 
 This section describes commands related to container_node.
 
--   [show container_node general](show%20container_node%20general.htm#container_node_show-container_node-general)
+-   [show container_node general](#show-container_node-general)
 
 #### show container_node general
 
@@ -5345,11 +5345,11 @@ The following table describes the parameter meanings.
 
 This section describes commands related to container_service.
 
--   [add container_service general](add%20container_service%20general.htm#container_service_add-container_service-general)
--   [change container_service active](change%20container_service%20active.htm#container_service_change-container_service-active)
--   [change container_service general](change%20container_service%20general.htm#container_service_change-container_service-general)
--   [create container_service general](create%20container_service%20general.htm#container_service_create-container_service-general)
--   [show container_service general](show%20container_service%20general.htm#container_service_show-container_service-general)
+-   [add container_service general](#add-container_service-general)
+-   [change container_service active](#change-container_service-active)
+-   [change container_service general](#change-container_service-general)
+-   [create container_service general](#create-container_service-general)
+-   [show container_service general](#show-container_service-general)
 
 #### add container_service general
 
@@ -5620,45 +5620,45 @@ The following table describes the parameter meanings.
 
 Data protection management commands functionally covers complete data protection functions provided by the storage system. Those functions can improve data redundancy and reduce data loss risks.
 
--   [consistency_group](consistency_group.htm#consistency_group_99)
--   [device_manager](device_manager.htm#device_manager_323)
--   [dr_star](dr_star.htm#dr_star_379)
--   [fs_hyper_metro_domain](fs_hyper_metro_domain.htm#fs_hyper_metro_domain_419)
--   [fs_snapshot](fs_snapshot.htm#fs_snapshot_106)
--   [hyper_copy](hyper_copy.htm#hyper_copy_401)
--   [hyper_metro_consistency_group](hyper_metro_consistency_group.htm#hyper_metro_consistency_group_124)
--   [hyper_metro_domain](hyper_metro_domain.htm#hyper_metro_domain_123)
--   [hyper_metro_pair](hyper_metro_pair.htm#hyper_metro_pair_121)
--   [kmc](kmc.htm#kmc_127)
--   [kmm](kmm.htm#kmm_375)
--   [lun_snapshot](lun_snapshot.htm#lun_snapshot_96)
--   [quorum_server_for_server](quorum_server_for_server.htm#quorum_server_for_server_125)
--   [quorum_server_link](quorum_server_link.htm#quorum_server_link_128)
--   [remote_device](remote_device.htm#remote_device_101)
--   [remote_replication](remote_replication.htm#remote_replication_98)
--   [snapshot_group](snapshot_group.htm#snapshot_group_396)
--   [vstore_pair](vstore_pair.htm#vstore_pair_417)
+-   [consistency_group](#consistency_group)
+-   [device_manager](#device_manager)
+-   [dr_star](#dr_star)
+-   [fs_hyper_metro_domain](#fs_hyper_metro_domain)
+-   [fs_snapshot](#fs_snapshot)
+-   [hyper_copy](#hyper_copy)
+-   [hyper_metro_consistency_group](#hyper_metro_consistency_group)
+-   [hyper_metro_domain](#hyper_metro_domain)
+-   [hyper_metro_pair](#hyper_metro_pair)
+-   [kmc](#kmc)
+-   [kmm](#kmm)
+-   [lun_snapshot](#lun_snapshot)
+-   [quorum_server_for_server](#quorum_server_for_server)
+-   [quorum_server_link](#quorum_server_link)
+-   [remote_device](#remote_device)
+-   [remote_replication](#remote_replication)
+-   [snapshot_group](#snapshot_group)
+-   [vstore_pair](#vstore_pair)
 
 ### consistency_group
 
 This section describes commands related to consistency_group.
 
--   [add consistency_group remote_replication](add%20consistency_group%20remote_replication.htm#consistency_group_add-consistency_group-remote_replication)
--   [add consistency_group remote_replication_delay](add%20consistency_group%20remote_replication_delay.htm#consistency_group_add-consistency_group-remote_replication_delay)
--   [change consistency_group general](change%20consistency_group%20general.htm#consistency_group_change-consistency_group-general)
--   [change consistency_group mode](change%20consistency_group%20mode.htm#consistency_group_change-consistency_group-mode)
--   [change consistency_group split](change%20consistency_group%20split.htm#consistency_group_change-consistency_group-split)
--   [change consistency_group synchronize](change%20consistency_group%20synchronize.htm#consistency_group_change-consistency_group-synchronize)
--   [create consistency_group asynchronization](create%20consistency_group%20asynchronization.htm#consistency_group_create-consistency_group-asynchronization)
--   [create consistency_group protect_group](create%20consistency_group%20protect_group.htm#consistency_group_create-consistency_group-protect_group)
--   [create consistency_group synchronization](create%20consistency_group%20synchronization.htm#consistency_group_create-consistency_group-synchronization)
--   [create consistency_group verification_session](create%20consistency_group%20verification_session.htm#consistency_group_create-consistency_group-verification_session)
--   [delete consistency_group](delete%20consistency_group.htm#consistency_group_delete-consistency_group)
--   [remove consistency_group remote_replication](remove%20consistency_group%20remote_replication.htm#consistency_group_remove-consistency_group-remote_replication)
--   [show consistency_group available_remote_replication](show%20consistency_group%20available_remote_replication.htm#consistency_group_show-consistency_group-available_remote_replication)
--   [show consistency_group general](show%20consistency_group%20general.htm#consistency_group_show-consistency_group-general)
--   [show consistency_group member](show%20consistency_group%20member.htm#consistency_group_show-consistency_group-member)
--   [swap consistency_group](swap%20consistency_group.htm#consistency_group_swap-consistency_group)
+-   [add consistency_group remote_replication](#add-consistency_group-remote_replication)
+-   [add consistency_group remote_replication_delay](#add-consistency_group-remote_replication_delay)
+-   [change consistency_group general](#change-consistency_group-general)
+-   [change consistency_group mode](#change-consistency_group-mode)
+-   [change consistency_group split](#change-consistency_group-split)
+-   [change consistency_group synchronize](#change-consistency_group-synchronize)
+-   [create consistency_group asynchronization](#create-consistency_group-asynchronization)
+-   [create consistency_group protect_group](#create-consistency_group-protect_group)
+-   [create consistency_group synchronization](#create-consistency_group-synchronization)
+-   [create consistency_group verification_session](#create-consistency_group-verification_session)
+-   [delete consistency_group](#delete-consistency_group)
+-   [remove consistency_group remote_replication](#remove-consistency_group-remote_replication)
+-   [show consistency_group available_remote_replication](#show-consistency_group-available_remote_replication)
+-   [show consistency_group general](#show-consistency_group-general)
+-   [show consistency_group member](#show-consistency_group-member)
+-   [swap consistency_group](#swap-consistency_group)
 
 #### add consistency_group remote_replication
 
@@ -6508,10 +6508,10 @@ None
 
 This section describes commands related to device_manager.
 
--   [change devicemanager ciphersuite](change%20devicemanager%20ciphersuite.htm#device_manager_change-devicemanager-ciphersuite)
--   [change devicemanager web_config](change%20devicemanager%20web_config.htm#device_manager_change-devicemanager-web_config)
--   [change rest msg_return_type](change%20rest%20msg_return_type.htm#device_manager_change-rest-msg_return_type)
--   [show devicemanager ciphersuite](show%20devicemanager%20ciphersuite.htm#device_manager_show-devicemanager-ciphersuite)
+-   [change devicemanager ciphersuite](#change-devicemanager-ciphersuite)
+-   [change devicemanager web_config](#change-devicemanager-web_config)
+-   [change rest msg_return_type](#change-rest-msg_return_type)
+-   [show devicemanager ciphersuite](#show-devicemanager-ciphersuite)
 
 #### change devicemanager ciphersuite
 
@@ -6681,15 +6681,15 @@ The following table describes the parameter meanings.
 
 This section describes commands related to dr_star.
 
--   [change dr_star disable](change%20dr_star%20disable.htm#dr_star_change-dr_star-disable)
--   [change dr_star enable](change%20dr_star%20enable.htm#dr_star_change-dr_star-enable)
--   [change dr_star general](change%20dr_star%20general.htm#dr_star_change-dr_star-general)
--   [change dr_star third_resource_access](change%20dr_star%20third_resource_access.htm#dr_star_change-dr_star-third_resource_access)
--   [create dr_star general](create%20dr_star%20general.htm#dr_star_create-dr_star-general)
--   [delete dr_star general](delete%20dr_star%20general.htm#dr_star_delete-dr_star-general)
--   [show dr_star general](show%20dr_star%20general.htm#dr_star_show-dr_star-general)
--   [show dr_star member](show%20dr_star%20member.htm#dr_star_show-dr_star-member)
--   [swap dr_star](swap%20dr_star.htm#dr_star_swap-dr_star)
+-   [change dr_star disable](#change-dr_star-disable)
+-   [change dr_star enable](#change-dr_star-enable)
+-   [change dr_star general](#change-dr_star-general)
+-   [change dr_star third_resource_access](#change-dr_star-third_resource_access)
+-   [create dr_star general](#create-dr_star-general)
+-   [delete dr_star general](#delete-dr_star-general)
+-   [show dr_star general](#show-dr_star-general)
+-   [show dr_star member](#show-dr_star-member)
+-   [swap dr_star](#swap-dr_star)
 
 #### change dr_star disable
 
@@ -7112,20 +7112,20 @@ None
 
 This section describes commands related to fs_hyper_metro_domain
 
--   [add fs_hyper_metro_domain quorum_server](add%20fs_hyper_metro_domain%20quorum_server.htm#fs_hyper_metro_domain_add-fs_hyper_metro_domain-quorum_server)
--   [change fs_hyper_metro_domain general](change%20fs_hyper_metro_domain%20general.htm#fs_hyper_metro_domain_change-fs_hyper_metro_domain-general)
--   [change fs_hyper_metro_domain local_logical_port_work_status](change%20fs_hyper_metro_domain%20local_logical_port_work_status.htm#fs_hyper_metro_domain_change-fs_hyper_metro_domain-local_logical_port_work_status)
--   [change fs_hyper_metro_domain priority](change%20fs_hyper_metro_domain%20priority.htm#fs_hyper_metro_domain_change-fs_hyper_metro_domain-priority)
--   [change fs_hyper_metro_domain recover](change%20fs_hyper_metro_domain%20recover.htm#fs_hyper_metro_domain_change-fs_hyper_metro_domain-recover)
--   [change fs_hyper_metro_domain recover_policy](change%20fs_hyper_metro_domain%20recover_policy.htm#fs_hyper_metro_domain_change-fs_hyper_metro_domain-recover_policy)
--   [change fs_hyper_metro_domain second_fs_access](change%20fs_hyper_metro_domain%20second_fs_access.htm#fs_hyper_metro_domain_change-fs_hyper_metro_domain-second_fs_access)
--   [change fs_hyper_metro_domain split](change%20fs_hyper_metro_domain%20split.htm#fs_hyper_metro_domain_change-fs_hyper_metro_domain-split)
--   [change fs_hyper_metro_domain start](change%20fs_hyper_metro_domain%20start.htm#fs_hyper_metro_domain_change-fs_hyper_metro_domain-start)
--   [create fs_hyper_metro_domain general](create%20fs_hyper_metro_domain%20general.htm#fs_hyper_metro_domain_create-fs_hyper_metro_domain-general)
--   [delete fs_hyper_metro_domain general](delete%20fs_hyper_metro_domain%20general.htm#fs_hyper_metro_domain_delete-fs_hyper_metro_domain-general)
--   [remove fs_hyper_metro_domain quorum_server](remove%20fs_hyper_metro_domain%20quorum_server.htm#fs_hyper_metro_domain_remove-fs_hyper_metro_domain-quorum_server)
--   [show fs_hyper_metro_domain general](show%20fs_hyper_metro_domain%20general.htm#fs_hyper_metro_domain_show-fs_hyper_metro_domain-general)
--   [swap fs_hyper_metro_domain](swap%20fs_hyper_metro_domain.htm#fs_hyper_metro_domain_swap-fs_hyper_metro_domain)
+-   [add fs_hyper_metro_domain quorum_server](#add-fs_hyper_metro_domain-quorum_server)
+-   [change fs_hyper_metro_domain general](#change-fs_hyper_metro_domain-general)
+-   [change fs_hyper_metro_domain local_logical_port_work_status](#change-fs_hyper_metro_domain-local_logical_port_work_status)
+-   [change fs_hyper_metro_domain priority](#change-fs_hyper_metro_domain-priority)
+-   [change fs_hyper_metro_domain recover](#change-fs_hyper_metro_domain-recover)
+-   [change fs_hyper_metro_domain recover_policy](#change-fs_hyper_metro_domain-recover_policy)
+-   [change fs_hyper_metro_domain second_fs_access](#change-fs_hyper_metro_domain-second_fs_access)
+-   [change fs_hyper_metro_domain split](#change-fs_hyper_metro_domain-split)
+-   [change fs_hyper_metro_domain start](#change-fs_hyper_metro_domain-start)
+-   [create fs_hyper_metro_domain general](#create-fs_hyper_metro_domain-general)
+-   [delete fs_hyper_metro_domain general](#delete-fs_hyper_metro_domain-general)
+-   [remove fs_hyper_metro_domain quorum_server](#remove-fs_hyper_metro_domain-quorum_server)
+-   [show fs_hyper_metro_domain general](#show-fs_hyper_metro_domain-general)
+-   [swap fs_hyper_metro_domain](#swap-fs_hyper_metro_domain)
 
 #### add fs_hyper_metro_domain quorum_server
 
@@ -7713,18 +7713,18 @@ None
 
 This section describes commands related fs_snapshot.
 
--   [change fs_hyper_cdp general](change%20fs_hyper_cdp%20general.htm#fs_snapshot_change-fs_hyper_cdp-general)
--   [change fs_hyper_cdp restore](change%20fs_hyper_cdp%20restore.htm#fs_snapshot_change-fs_hyper_cdp-restore)
--   [change fs_snapshot general](change%20fs_snapshot%20general.htm#fs_snapshot_change-fs_snapshot-general)
--   [change fs_snapshot restore](change%20fs_snapshot%20restore.htm#fs_snapshot_change-fs_snapshot-restore)
--   [create fs_hyper_cdp general](create%20fs_hyper_cdp%20general.htm#fs_snapshot_create-fs_hyper_cdp-general)
--   [create fs_snapshot general](create%20fs_snapshot%20general.htm#fs_snapshot_create-fs_snapshot-general)
--   [delete fs_hyper_cdp general](delete%20fs_hyper_cdp%20general.htm#fs_snapshot_delete-fs_hyper_cdp-general)
--   [delete fs_snapshot general](delete%20fs_snapshot%20general.htm#fs_snapshot_delete-fs_snapshot-general)
--   [show fs_hyper_cdp general](show%20fs_hyper_cdp%20general.htm#fs_snapshot_show-fs_hyper_cdp-general)
--   [show fs_hyper_cdp restore](show%20fs_hyper_cdp%20restore.htm#fs_snapshot_show-fs_hyper_cdp-restore)
--   [show fs_snapshot general](show%20fs_snapshot%20general.htm#fs_snapshot_show-fs_snapshot-general)
--   [show fs_snapshot restore](show%20fs_snapshot%20restore.htm#fs_snapshot_show-fs_snapshot-restore)
+-   [change fs_hyper_cdp general](#change-fs_hyper_cdp-general)
+-   [change fs_hyper_cdp restore](#change-fs_hyper_cdp-restore)
+-   [change fs_snapshot general](#change-fs_snapshot-general)
+-   [change fs_snapshot restore](#change-fs_snapshot-restore)
+-   [create fs_hyper_cdp general](#create-fs_hyper_cdp-general)
+-   [create fs_snapshot general](#create-fs_snapshot-general)
+-   [delete fs_hyper_cdp general](#delete-fs_hyper_cdp-general)
+-   [delete fs_snapshot general](#delete-fs_snapshot-general)
+-   [show fs_hyper_cdp general](#show-fs_hyper_cdp-general)
+-   [show fs_hyper_cdp restore](#show-fs_hyper_cdp-restore)
+-   [show fs_snapshot general](#show-fs_snapshot-general)
+-   [show fs_snapshot restore](#show-fs_snapshot-restore)
 
 #### change fs_hyper_cdp general
 
@@ -8517,37 +8517,37 @@ The following table describes the parameter meanings.
 
 This section describes commands related to hyper_copy.
 
--   [add clone_consistency_group clone](add%20clone_consistency_group%20clone.htm#hyper_copy_add-clone_consistency_group-clone)
--   [add hyper_copy_consistency_group hyper_copy](add%20hyper_copy_consistency_group%20hyper_copy.htm#hyper_copy_add-hyper_copy_consistency_group-hyper_copy)
--   [change clone general](change%20clone%20general.htm#hyper_copy_change-clone-general)
--   [change clone restore](change%20clone%20restore.htm#hyper_copy_change-clone-restore)
--   [change clone synchronize](change%20clone%20synchronize.htm#hyper_copy_change-clone-synchronize)
--   [change clone_consistency_group general](change%20clone_consistency_group%20general.htm#hyper_copy_change-clone_consistency_group-general)
--   [change clone_consistency_group restore](change%20clone_consistency_group%20restore.htm#hyper_copy_change-clone_consistency_group-restore)
--   [change clone_consistency_group synchronize](change%20clone_consistency_group%20synchronize.htm#hyper_copy_change-clone_consistency_group-synchronize)
--   [change hyper_copy general](change%20hyper_copy%20general.htm#hyper_copy_change-hyper_copy-general)
--   [change hyper_copy restore](change%20hyper_copy%20restore.htm#hyper_copy_change-hyper_copy-restore)
--   [change hyper_copy synchronize](change%20hyper_copy%20synchronize.htm#hyper_copy_change-hyper_copy-synchronize)
--   [change hyper_copy_consistency_group general](change%20hyper_copy_consistency_group%20general.htm#hyper_copy_change-hyper_copy_consistency_group-general)
--   [change hyper_copy_consistency_group restore](change%20hyper_copy_consistency_group%20restore.htm#hyper_copy_change-hyper_copy_consistency_group-restore)
--   [change hyper_copy_consistency_group synchronize](change%20hyper_copy_consistency_group%20synchronize.htm#hyper_copy_change-hyper_copy_consistency_group-synchronize)
--   [create clone general](create%20clone%20general.htm#hyper_copy_create-clone-general)
--   [create clone relation](create%20clone%20relation.htm#hyper_copy_create-clone-relation)
--   [create clone_consistency_group](create%20clone_consistency_group.htm#hyper_copy_create-clone_consistency_group)
--   [create hyper_copy local](create%20hyper_copy%20local.htm#hyper_copy_create-hyper_copy-local)
--   [create hyper_copy_consistency_group](create%20hyper_copy_consistency_group.htm#hyper_copy_create-hyper_copy_consistency_group)
--   [delete clone](delete%20clone.htm#hyper_copy_delete-clone)
--   [delete clone_consistency_group](delete%20clone_consistency_group.htm#hyper_copy_delete-clone_consistency_group)
--   [delete hyper_copy](delete%20hyper_copy.htm#hyper_copy_delete-hyper_copy)
--   [delete hyper_copy_consistency_group](delete%20hyper_copy_consistency_group.htm#hyper_copy_delete-hyper_copy_consistency_group)
--   [remove clone_consistency_group clone](remove%20clone_consistency_group%20clone.htm#hyper_copy_remove-clone_consistency_group-clone)
--   [remove hyper_copy_consistency_group hyper_copy](remove%20hyper_copy_consistency_group%20hyper_copy.htm#hyper_copy_remove-hyper_copy_consistency_group-hyper_copy)
--   [show clone general](show%20clone%20general.htm#hyper_copy_show-clone-general)
--   [show clone_consistency_group clone](show%20clone_consistency_group%20clone.htm#hyper_copy_show-clone_consistency_group-clone)
--   [show clone_consistency_group general](show%20clone_consistency_group%20general.htm#hyper_copy_show-clone_consistency_group-general)
--   [show hyper_copy general](show%20hyper_copy%20general.htm#hyper_copy_show-hyper_copy-general)
--   [show hyper_copy_consistency_group general](show%20hyper_copy_consistency_group%20general.htm#hyper_copy_show-hyper_copy_consistency_group-general)
--   [show hyper_copy_consistency_group hyper_copy](show%20hyper_copy_consistency_group%20hyper_copy.htm#hyper_copy_show-hyper_copy_consistency_group-hyper_copy)
+-   [add clone_consistency_group clone](#add-clone_consistency_group-clone)
+-   [add hyper_copy_consistency_group hyper_copy](#add-hyper_copy_consistency_group-hyper_copy)
+-   [change clone general](#change-clone-general)
+-   [change clone restore](#change-clone-restore)
+-   [change clone synchronize](#change-clone-synchronize)
+-   [change clone_consistency_group general](#change-clone_consistency_group-general)
+-   [change clone_consistency_group restore](#change-clone_consistency_group-restore)
+-   [change clone_consistency_group synchronize](#change-clone_consistency_group-synchronize)
+-   [change hyper_copy general](#change-hyper_copy-general)
+-   [change hyper_copy restore](#change-hyper_copy-restore)
+-   [change hyper_copy synchronize](#change-hyper_copy-synchronize)
+-   [change hyper_copy_consistency_group general](#change-hyper_copy_consistency_group-general)
+-   [change hyper_copy_consistency_group restore](#change-hyper_copy_consistency_group-restore)
+-   [change hyper_copy_consistency_group synchronize](#change-hyper_copy_consistency_group-synchronize)
+-   [create clone general](#create-clone-general)
+-   [create clone relation](#create-clone-relation)
+-   [create clone_consistency_group](#create-clone_consistency_group)
+-   [create hyper_copy local](#create-hyper_copy-local)
+-   [create hyper_copy_consistency_group](#create-hyper_copy_consistency_group)
+-   [delete clone](#delete-clone)
+-   [delete clone_consistency_group](#delete-clone_consistency_group)
+-   [delete hyper_copy](#delete-hyper_copy)
+-   [delete hyper_copy_consistency_group](#delete-hyper_copy_consistency_group)
+-   [remove clone_consistency_group clone](#remove-clone_consistency_group-clone)
+-   [remove hyper_copy_consistency_group hyper_copy](#remove-hyper_copy_consistency_group-hyper_copy)
+-   [show clone general](#show-clone-general)
+-   [show clone_consistency_group clone](#show-clone_consistency_group-clone)
+-   [show clone_consistency_group general](#show-clone_consistency_group-general)
+-   [show hyper_copy general](#show-hyper_copy-general)
+-   [show hyper_copy_consistency_group general](#show-hyper_copy_consistency_group-general)
+-   [show hyper_copy_consistency_group hyper_copy](#show-hyper_copy_consistency_group-hyper_copy)
 
 #### add clone_consistency_group clone
 
@@ -10090,19 +10090,19 @@ The following table describes the parameter meanings.
 
 This section describes commands related to hyper_metro_consistency_group.
 
--   [add hyper_metro_consistency_group pair](add%20hyper_metro_consistency_group%20pair.htm#hyper_metro_consistency_group_add-hyper_metro_consistency_group-pair)
--   [change hyper_metro_consistency_group general](change%20hyper_metro_consistency_group%20general.htm#hyper_metro_consistency_group_change-hyper_metro_consistency_group-general)
--   [change hyper_metro_consistency_group pause](change%20hyper_metro_consistency_group%20pause.htm#hyper_metro_consistency_group_change-hyper_metro_consistency_group-pause)
--   [change hyper_metro_consistency_group priority](change%20hyper_metro_consistency_group%20priority.htm#hyper_metro_consistency_group_change-hyper_metro_consistency_group-priority)
--   [change hyper_metro_consistency_group start](change%20hyper_metro_consistency_group%20start.htm#hyper_metro_consistency_group_change-hyper_metro_consistency_group-start)
--   [change hyper_metro_consistency_group synchronize](change%20hyper_metro_consistency_group%20synchronize.htm#hyper_metro_consistency_group_change-hyper_metro_consistency_group-synchronize)
--   [create hyper_metro_consistency_group general](create%20hyper_metro_consistency_group%20general.htm#hyper_metro_consistency_group_create-hyper_metro_consistency_group-general)
--   [create hyper_metro_consistency_group protect_group](create%20hyper_metro_consistency_group%20protect_group.htm#hyper_metro_consistency_group_create-hyper_metro_consistency_group-protect_group)
--   [create hyper_metro_consistency_group verification_session](create%20hyper_metro_consistency_group%20verification_session.htm#hyper_metro_consistency_group_create-hyper_metro_consistency_group-verification_session)
--   [delete hyper_metro_consistency_group](delete%20hyper_metro_consistency_group.htm#hyper_metro_consistency_group_delete-hyper_metro_consistency_group)
--   [remove hyper_metro_consistency_group pair](remove%20hyper_metro_consistency_group%20pair.htm#hyper_metro_consistency_group_remove-hyper_metro_consistency_group-pair)
--   [show hyper_metro_consistency_group general](show%20hyper_metro_consistency_group%20general.htm#hyper_metro_consistency_group_show-hyper_metro_consistency_group-general)
--   [show hyper_metro_consistency_group pair](show%20hyper_metro_consistency_group%20pair.htm#hyper_metro_consistency_group_show-hyper_metro_consistency_group-pair)
+-   [add hyper_metro_consistency_group pair](#add-hyper_metro_consistency_group-pair)
+-   [change hyper_metro_consistency_group general](#change-hyper_metro_consistency_group-general)
+-   [change hyper_metro_consistency_group pause](#change-hyper_metro_consistency_group-pause)
+-   [change hyper_metro_consistency_group priority](#change-hyper_metro_consistency_group-priority)
+-   [change hyper_metro_consistency_group start](#change-hyper_metro_consistency_group-start)
+-   [change hyper_metro_consistency_group synchronize](#change-hyper_metro_consistency_group-synchronize)
+-   [create hyper_metro_consistency_group general](#create-hyper_metro_consistency_group-general)
+-   [create hyper_metro_consistency_group protect_group](#create-hyper_metro_consistency_group-protect_group)
+-   [create hyper_metro_consistency_group verification_session](#create-hyper_metro_consistency_group-verification_session)
+-   [delete hyper_metro_consistency_group](#delete-hyper_metro_consistency_group)
+-   [remove hyper_metro_consistency_group pair](#remove-hyper_metro_consistency_group-pair)
+-   [show hyper_metro_consistency_group general](#show-hyper_metro_consistency_group-general)
+-   [show hyper_metro_consistency_group pair](#show-hyper_metro_consistency_group-pair)
 
 #### add hyper_metro_consistency_group pair
 
@@ -10717,12 +10717,12 @@ The following table describes the parameter meanings.
 
 This section describes commands related to hyper_metro_domain.
 
--   [add hyper_metro_domain quorum_server](add%20hyper_metro_domain%20quorum_server.htm#hyper_metro_domain_add-hyper_metro_domain-quorum_server)
--   [change hyper_metro_domain general](change%20hyper_metro_domain%20general.htm#hyper_metro_domain_change-hyper_metro_domain-general)
--   [create hyper_metro_domain general](create%20hyper_metro_domain%20general.htm#hyper_metro_domain_create-hyper_metro_domain-general)
--   [delete hyper_metro_domain general](delete%20hyper_metro_domain%20general.htm#hyper_metro_domain_delete-hyper_metro_domain-general)
--   [remove hyper_metro_domain quorum_server](remove%20hyper_metro_domain%20quorum_server.htm#hyper_metro_domain_remove-hyper_metro_domain-quorum_server)
--   [show hyper_metro_domain general](show%20hyper_metro_domain%20general.htm#hyper_metro_domain_show-hyper_metro_domain-general)
+-   [add hyper_metro_domain quorum_server](#add-hyper_metro_domain-quorum_server)
+-   [change hyper_metro_domain general](#change-hyper_metro_domain-general)
+-   [create hyper_metro_domain general](#create-hyper_metro_domain-general)
+-   [delete hyper_metro_domain general](#delete-hyper_metro_domain-general)
+-   [remove hyper_metro_domain quorum_server](#remove-hyper_metro_domain-quorum_server)
+-   [show hyper_metro_domain general](#show-hyper_metro_domain-general)
 
 #### add hyper_metro_domain quorum_server
 
@@ -10997,18 +10997,18 @@ The following table describes the parameter meanings.
 
 This section describes commands related to hyper_metro_pair.
 
--   [change hyper_metro_pair general](change%20hyper_metro_pair%20general.htm#hyper_metro_pair_change-hyper_metro_pair-general)
--   [change hyper_metro_pair general](change%20hyper_metro_pair%20general-1.htm#hyper_metro_pair_change-hyper_metro_pair-general_0)
--   [change hyper_metro_pair pause](change%20hyper_metro_pair%20pause.htm#hyper_metro_pair_change-hyper_metro_pair-pause)
--   [change hyper_metro_pair priority](change%20hyper_metro_pair%20priority.htm#hyper_metro_pair_change-hyper_metro_pair-priority)
--   [change hyper_metro_pair start](change%20hyper_metro_pair%20start.htm#hyper_metro_pair_change-hyper_metro_pair-start)
--   [change hyper_metro_pair synchronize](change%20hyper_metro_pair%20synchronize.htm#hyper_metro_pair_change-hyper_metro_pair-synchronize)
--   [create hyper_metro_pair unified](create%20hyper_metro_pair%20unified.htm#hyper_metro_pair_create-hyper_metro_pair-unified)
--   [create hyper_metro_pair verification_session](create%20hyper_metro_pair%20verification_session.htm#hyper_metro_pair_create-hyper_metro_pair-verification_session)
--   [delete hyper_metro_pair general](delete%20hyper_metro_pair%20general.htm#hyper_metro_pair_delete-hyper_metro_pair-general)
--   [show fs_hyper_metro_domain fs_pair](show%20fs_hyper_metro_domain%20fs_pair.htm#hyper_metro_pair_show-fs_hyper_metro_domain-fs_pair)
--   [show hyper_metro_pair general](show%20hyper_metro_pair%20general.htm#hyper_metro_pair_show-hyper_metro_pair-general)
--   [show vstore_pair hyper_metro_pair](show%20vstore_pair%20hyper_metro_pair.htm#hyper_metro_pair_show-vstore_pair-hyper_metro_pair)
+-   [change hyper_metro_pair general](#change-hyper_metro_pair-general)
+-   [change hyper_metro_pair general](#change-hyper_metro_pair-general)
+-   [change hyper_metro_pair pause](#change-hyper_metro_pair-pause)
+-   [change hyper_metro_pair priority](#change-hyper_metro_pair-priority)
+-   [change hyper_metro_pair start](#change-hyper_metro_pair-start)
+-   [change hyper_metro_pair synchronize](#change-hyper_metro_pair-synchronize)
+-   [create hyper_metro_pair unified](#create-hyper_metro_pair-unified)
+-   [create hyper_metro_pair verification_session](#create-hyper_metro_pair-verification_session)
+-   [delete hyper_metro_pair general](#delete-hyper_metro_pair-general)
+-   [show fs_hyper_metro_domain fs_pair](#show-fs_hyper_metro_domain-fs_pair)
+-   [show hyper_metro_pair general](#show-hyper_metro_pair-general)
+-   [show vstore_pair hyper_metro_pair](#show-vstore_pair-hyper_metro_pair)
 
 #### change hyper_metro_pair general
 
@@ -11764,16 +11764,16 @@ The following table describes the parameter meanings.
 
 This section describes commands related to kmc.
 
--   [add kmc general](add%20kmc%20general.htm#kmc_add-kmc-general)
--   [add kmc test](add%20kmc%20test.htm#kmc_add-kmc-test)
--   [change key_service general](change%20key_service%20general.htm#kmc_change-key_service-general)
--   [change kms key_backup](change%20kms%20key_backup.htm#kmc_change-kms-key_backup)
--   [delete kmc general](delete%20kmc%20general.htm#kmc_delete-kmc-general)
--   [export kms key](export%20kms%20key.htm#kmc_export-kms-key)
--   [show key_service general](show%20key_service%20general.htm#kmc_show-key_service-general)
--   [show kmc general](show%20kmc%20general.htm#kmc_show-kmc-general)
--   [show kms key_backup](show%20kms%20key_backup.htm#kmc_show-kms-key_backup)
--   [test kms key_backup](test%20kms%20key_backup.htm#kmc_test-kms-key_backup)
+-   [add kmc general](#add-kmc-general)
+-   [add kmc test](#add-kmc-test)
+-   [change key_service general](#change-key_service-general)
+-   [change kms key_backup](#change-kms-key_backup)
+-   [delete kmc general](#delete-kmc-general)
+-   [export kms key](#export-kms-key)
+-   [show key_service general](#show-key_service-general)
+-   [show kmc general](#show-kmc-general)
+-   [show kms key_backup](#show-kms-key_backup)
+-   [test kms key_backup](#test-kms-key_backup)
 
 #### add kmc general
 
@@ -12173,7 +12173,7 @@ None
 
 This section describes commands related to kmm.
 
--   [test system trust](test%20system%20trust.htm#kmm_test-system-trust)
+-   [test system trust](#test-system-trust)
 
 #### test system trust
 
@@ -12226,64 +12226,64 @@ The following table describes the parameter meanings.
 
 This section describes commands related to lun_snapshot.
 
--   [add hyper_cdp_schedule lun](add%20hyper_cdp_schedule%20lun.htm#lun_snapshot_add-hyper_cdp_schedule-lun)
--   [add hyper_cdp_schedule lun_consistency_group](add%20hyper_cdp_schedule%20lun_consistency_group.htm#lun_snapshot_add-hyper_cdp_schedule-lun_consistency_group)
--   [add hyper_cdp_schedule protect_group](add%20hyper_cdp_schedule%20protect_group.htm#lun_snapshot_add-hyper_cdp_schedule-protect_group)
--   [change hyper_cdp cancel_restore](change%20hyper_cdp%20cancel_restore.htm#lun_snapshot_change-hyper_cdp-cancel_restore)
--   [change hyper_cdp general](change%20hyper_cdp%20general.htm#lun_snapshot_change-hyper_cdp-general)
--   [change hyper_cdp restore](change%20hyper_cdp%20restore.htm#lun_snapshot_change-hyper_cdp-restore)
--   [change hyper_cdp_consistency_group cancel_restore](change%20hyper_cdp_consistency_group%20cancel_restore.htm#lun_snapshot_change-hyper_cdp_consistency_group-cancel_restore)
--   [change hyper_cdp_consistency_group general](change%20hyper_cdp_consistency_group%20general.htm#lun_snapshot_change-hyper_cdp_consistency_group-general)
--   [change hyper_cdp_consistency_group restore](change%20hyper_cdp_consistency_group%20restore.htm#lun_snapshot_change-hyper_cdp_consistency_group-restore)
--   [change hyper_cdp_schedule enabled](change%20hyper_cdp_schedule%20enabled.htm#lun_snapshot_change-hyper_cdp_schedule-enabled)
--   [change hyper_cdp_schedule general](change%20hyper_cdp_schedule%20general.htm#lun_snapshot_change-hyper_cdp_schedule-general)
--   [change snapshot activate](change%20snapshot%20activate.htm#lun_snapshot_change-snapshot-activate)
--   [change snapshot cancel_restore](change%20snapshot%20cancel_restore.htm#lun_snapshot_change-snapshot-cancel_restore)
--   [change snapshot capacity](change%20snapshot%20capacity.htm#lun_snapshot_change-snapshot-capacity)
--   [change snapshot deactivate](change%20snapshot%20deactivate.htm#lun_snapshot_change-snapshot-deactivate)
--   [change snapshot description](change%20snapshot%20description.htm#lun_snapshot_change-snapshot-description)
--   [change snapshot io_priority](change%20snapshot%20io_priority.htm#lun_snapshot_change-snapshot-io_priority)
--   [change snapshot name](change%20snapshot%20name.htm#lun_snapshot_change-snapshot-name)
--   [change snapshot reactivate](change%20snapshot%20reactivate.htm#lun_snapshot_change-snapshot-reactivate)
--   [change snapshot restore](change%20snapshot%20restore.htm#lun_snapshot_change-snapshot-restore)
--   [change snapshot speed](change%20snapshot%20speed.htm#lun_snapshot_change-snapshot-speed)
--   [change snapshot_consistency_group activate](change%20snapshot_consistency_group%20activate.htm#lun_snapshot_change-snapshot_consistency_group-activate)
--   [change snapshot_consistency_group cancel_restore](change%20snapshot_consistency_group%20cancel_restore.htm#lun_snapshot_change-snapshot_consistency_group-cancel_restore)
--   [change snapshot_consistency_group deactivate](change%20snapshot_consistency_group%20deactivate.htm#lun_snapshot_change-snapshot_consistency_group-deactivate)
--   [change snapshot_consistency_group general](change%20snapshot_consistency_group%20general.htm#lun_snapshot_change-snapshot_consistency_group-general)
--   [change snapshot_consistency_group reactivate](change%20snapshot_consistency_group%20reactivate.htm#lun_snapshot_change-snapshot_consistency_group-reactivate)
--   [change snapshot_consistency_group restore](change%20snapshot_consistency_group%20restore.htm#lun_snapshot_change-snapshot_consistency_group-restore)
--   [create hyper_cdp general](create%20hyper_cdp%20general.htm#lun_snapshot_create-hyper_cdp-general)
--   [create hyper_cdp_consistency_group general](create%20hyper_cdp_consistency_group%20general.htm#lun_snapshot_create-hyper_cdp_consistency_group-general)
--   [create hyper_cdp_consistency_group universal](create%20hyper_cdp_consistency_group%20universal.htm#lun_snapshot_create-hyper_cdp_consistency_group-universal)
--   [create hyper_cdp_schedule general](create%20hyper_cdp_schedule%20general.htm#lun_snapshot_create-hyper_cdp_schedule-general)
--   [create snapshot duplicate](create%20snapshot%20duplicate.htm#lun_snapshot_create-snapshot-duplicate)
--   [create snapshot general](create%20snapshot%20general.htm#lun_snapshot_create-snapshot-general)
--   [create snapshot_consistency_group duplicate](create%20snapshot_consistency_group%20duplicate.htm#lun_snapshot_create-snapshot_consistency_group-duplicate)
--   [create snapshot_consistency_group general](create%20snapshot_consistency_group%20general.htm#lun_snapshot_create-snapshot_consistency_group-general)
--   [create snapshot_consistency_group universal](create%20snapshot_consistency_group%20universal.htm#lun_snapshot_create-snapshot_consistency_group-universal)
--   [delete hyper_cdp](delete%20hyper_cdp.htm#lun_snapshot_delete-hyper_cdp)
--   [delete hyper_cdp_consistency_group](delete%20hyper_cdp_consistency_group.htm#lun_snapshot_delete-hyper_cdp_consistency_group)
--   [delete hyper_cdp_schedule](delete%20hyper_cdp_schedule.htm#lun_snapshot_delete-hyper_cdp_schedule)
--   [delete snapshot](delete%20snapshot.htm#lun_snapshot_delete-snapshot)
--   [delete snapshot_consistency_group](delete%20snapshot_consistency_group.htm#lun_snapshot_delete-snapshot_consistency_group)
--   [remove hyper_cdp_schedule lun](remove%20hyper_cdp_schedule%20lun.htm#lun_snapshot_remove-hyper_cdp_schedule-lun)
--   [remove hyper_cdp_schedule lun_consistency_group](remove%20hyper_cdp_schedule%20lun_consistency_group.htm#lun_snapshot_remove-hyper_cdp_schedule-lun_consistency_group)
--   [remove hyper_cdp_schedule protect_group](remove%20hyper_cdp_schedule%20protect_group.htm#lun_snapshot_remove-hyper_cdp_schedule-protect_group)
--   [show hyper_cdp general](show%20hyper_cdp%20general.htm#lun_snapshot_show-hyper_cdp-general)
--   [show hyper_cdp_consistency_group cdp](show%20hyper_cdp_consistency_group%20cdp.htm#lun_snapshot_show-hyper_cdp_consistency_group-cdp)
--   [show hyper_cdp_consistency_group general](show%20hyper_cdp_consistency_group%20general.htm#lun_snapshot_show-hyper_cdp_consistency_group-general)
--   [show hyper_cdp_consistency_group universal](show%20hyper_cdp_consistency_group%20universal.htm#lun_snapshot_show-hyper_cdp_consistency_group-universal)
--   [show hyper_cdp_schedule general](show%20hyper_cdp_schedule%20general.htm#lun_snapshot_show-hyper_cdp_schedule-general)
--   [show hyper_cdp_schedule protect_group](show%20hyper_cdp_schedule%20protect_group.htm#lun_snapshot_show-hyper_cdp_schedule-protect_group)
--   [show lun_clone available_snapshot](show%20lun_clone%20available_snapshot.htm#lun_snapshot_show-lun_clone-available_snapshot)
--   [show snapshot available_lun](show%20snapshot%20available_lun.htm#lun_snapshot_show-snapshot-available_lun)
--   [show snapshot available_snapshot](show%20snapshot%20available_snapshot.htm#lun_snapshot_show-snapshot-available_snapshot)
--   [show snapshot general](show%20snapshot%20general.htm#lun_snapshot_show-snapshot-general)
--   [show snapshot lun_group](show%20snapshot%20lun_group.htm#lun_snapshot_show-snapshot-lun_group)
--   [show snapshot_consistency_group general](show%20snapshot_consistency_group%20general.htm#lun_snapshot_show-snapshot_consistency_group-general)
--   [show snapshot_consistency_group snapshot](show%20snapshot_consistency_group%20snapshot.htm#lun_snapshot_show-snapshot_consistency_group-snapshot)
--   [show snapshot_consistency_group universal](show%20snapshot_consistency_group%20universal.htm#lun_snapshot_show-snapshot_consistency_group-universal)
+-   [add hyper_cdp_schedule lun](#add-hyper_cdp_schedule-lun)
+-   [add hyper_cdp_schedule lun_consistency_group](#add-hyper_cdp_schedule-lun_consistency_group)
+-   [add hyper_cdp_schedule protect_group](#add-hyper_cdp_schedule-protect_group)
+-   [change hyper_cdp cancel_restore](#change-hyper_cdp-cancel_restore)
+-   [change hyper_cdp general](#change-hyper_cdp-general)
+-   [change hyper_cdp restore](#change-hyper_cdp-restore)
+-   [change hyper_cdp_consistency_group cancel_restore](#change-hyper_cdp_consistency_group-cancel_restore)
+-   [change hyper_cdp_consistency_group general](#change-hyper_cdp_consistency_group-general)
+-   [change hyper_cdp_consistency_group restore](#change-hyper_cdp_consistency_group-restore)
+-   [change hyper_cdp_schedule enabled](#change-hyper_cdp_schedule-enabled)
+-   [change hyper_cdp_schedule general](#change-hyper_cdp_schedule-general)
+-   [change snapshot activate](#change-snapshot-activate)
+-   [change snapshot cancel_restore](#change-snapshot-cancel_restore)
+-   [change snapshot capacity](#change-snapshot-capacity)
+-   [change snapshot deactivate](#change-snapshot-deactivate)
+-   [change snapshot description](#change-snapshot-description)
+-   [change snapshot io_priority](#change-snapshot-io_priority)
+-   [change snapshot name](#change-snapshot-name)
+-   [change snapshot reactivate](#change-snapshot-reactivate)
+-   [change snapshot restore](#change-snapshot-restore)
+-   [change snapshot speed](#change-snapshot-speed)
+-   [change snapshot_consistency_group activate](#change-snapshot_consistency_group-activate)
+-   [change snapshot_consistency_group cancel_restore](#change-snapshot_consistency_group-cancel_restore)
+-   [change snapshot_consistency_group deactivate](#change-snapshot_consistency_group-deactivate)
+-   [change snapshot_consistency_group general](#change-snapshot_consistency_group-general)
+-   [change snapshot_consistency_group reactivate](#change-snapshot_consistency_group-reactivate)
+-   [change snapshot_consistency_group restore](#change-snapshot_consistency_group-restore)
+-   [create hyper_cdp general](#create-hyper_cdp-general)
+-   [create hyper_cdp_consistency_group general](#create-hyper_cdp_consistency_group-general)
+-   [create hyper_cdp_consistency_group universal](#create-hyper_cdp_consistency_group-universal)
+-   [create hyper_cdp_schedule general](#create-hyper_cdp_schedule-general)
+-   [create snapshot duplicate](#create-snapshot-duplicate)
+-   [create snapshot general](#create-snapshot-general)
+-   [create snapshot_consistency_group duplicate](#create-snapshot_consistency_group-duplicate)
+-   [create snapshot_consistency_group general](#create-snapshot_consistency_group-general)
+-   [create snapshot_consistency_group universal](#create-snapshot_consistency_group-universal)
+-   [delete hyper_cdp](#delete-hyper_cdp)
+-   [delete hyper_cdp_consistency_group](#delete-hyper_cdp_consistency_group)
+-   [delete hyper_cdp_schedule](#delete-hyper_cdp_schedule)
+-   [delete snapshot](#delete-snapshot)
+-   [delete snapshot_consistency_group](#delete-snapshot_consistency_group)
+-   [remove hyper_cdp_schedule lun](#remove-hyper_cdp_schedule-lun)
+-   [remove hyper_cdp_schedule lun_consistency_group](#remove-hyper_cdp_schedule-lun_consistency_group)
+-   [remove hyper_cdp_schedule protect_group](#remove-hyper_cdp_schedule-protect_group)
+-   [show hyper_cdp general](#show-hyper_cdp-general)
+-   [show hyper_cdp_consistency_group cdp](#show-hyper_cdp_consistency_group-cdp)
+-   [show hyper_cdp_consistency_group general](#show-hyper_cdp_consistency_group-general)
+-   [show hyper_cdp_consistency_group universal](#show-hyper_cdp_consistency_group-universal)
+-   [show hyper_cdp_schedule general](#show-hyper_cdp_schedule-general)
+-   [show hyper_cdp_schedule protect_group](#show-hyper_cdp_schedule-protect_group)
+-   [show lun_clone available_snapshot](#show-lun_clone-available_snapshot)
+-   [show snapshot available_lun](#show-snapshot-available_lun)
+-   [show snapshot available_snapshot](#show-snapshot-available_snapshot)
+-   [show snapshot general](#show-snapshot-general)
+-   [show snapshot lun_group](#show-snapshot-lun_group)
+-   [show snapshot_consistency_group general](#show-snapshot_consistency_group-general)
+-   [show snapshot_consistency_group snapshot](#show-snapshot_consistency_group-snapshot)
+-   [show snapshot_consistency_group universal](#show-snapshot_consistency_group-universal)
 
 #### add hyper_cdp_schedule lun
 
@@ -15291,12 +15291,12 @@ The following table describes the parameter meanings.
 
 This section describes commands related to quorum_server_for_server.
 
--   [change quorum_server general](change%20quorum_server%20general.htm#quorum_server_for_server_change-quorum_server-general)
--   [create quorum_server general](create%20quorum_server%20general.htm#quorum_server_for_server_create-quorum_server-general)
--   [delete quorum_server general](delete%20quorum_server%20general.htm#quorum_server_for_server_delete-quorum_server-general)
--   [remove quorum_server_link general](remove%20quorum_server_link%20general.htm#quorum_server_for_server_remove-quorum_server_link-general)
--   [show quorum_server general](show%20quorum_server%20general.htm#quorum_server_for_server_show-quorum_server-general)
--   [show quorum_server_link general](show%20quorum_server_link%20general.htm#quorum_server_for_server_show-quorum_server_link-general)
+-   [change quorum_server general](#change-quorum_server-general)
+-   [create quorum_server general](#create-quorum_server-general)
+-   [delete quorum_server general](#delete-quorum_server-general)
+-   [remove quorum_server_link general](#remove-quorum_server_link-general)
+-   [show quorum_server general](#show-quorum_server-general)
+-   [show quorum_server_link general](#show-quorum_server_link-general)
 
 #### change quorum_server general
 
@@ -15602,7 +15602,7 @@ The following table describes the parameter meanings.
 
 This section describes commands related to quorum_server_link.
 
--   [add quorum_server_link general](add%20quorum_server_link%20general.htm#quorum_server_link_add-quorum_server_link-general)
+-   [add quorum_server_link general](#add-quorum_server_link-general)
 
 #### add quorum_server_link general
 
@@ -15652,15 +15652,15 @@ None
 
 This section describes commands related to remote_device.
 
--   [change remote_device general](change%20remote_device%20general.htm#remote_device_change-remote_device-general)
--   [change remote_device user_password](change%20remote_device%20user_password.htm#remote_device_change-remote_device-user_password)
--   [change remote_device white_list](change%20remote_device%20white_list.htm#remote_device_change-remote_device-white_list)
--   [create remote_device general](create%20remote_device%20general.htm#remote_device_create-remote_device-general)
--   [delete remote_device](delete%20remote_device.htm#remote_device_delete-remote_device)
--   [show remote_device elink](show%20remote_device%20elink.htm#remote_device_show-remote_device-elink)
--   [show remote_device general](show%20remote_device%20general.htm#remote_device_show-remote_device-general)
--   [show remote_device link](show%20remote_device%20link.htm#remote_device_show-remote_device-link)
--   [show remote_device white_list](show%20remote_device%20white_list.htm#remote_device_show-remote_device-white_list)
+-   [change remote_device general](#change-remote_device-general)
+-   [change remote_device user_password](#change-remote_device-user_password)
+-   [change remote_device white_list](#change-remote_device-white_list)
+-   [create remote_device general](#create-remote_device-general)
+-   [delete remote_device](#delete-remote_device)
+-   [show remote_device elink](#show-remote_device-elink)
+-   [show remote_device general](#show-remote_device-general)
+-   [show remote_device link](#show-remote_device-link)
+-   [show remote_device white_list](#show-remote_device-white_list)
 
 #### change remote_device general
 
@@ -16349,19 +16349,19 @@ The following table describes the parameter meanings.
 
 This section describes commands related to remote_replication.
 
--   [change remote_replication file_system](change%20remote_replication%20file_system.htm#remote_replication_change-remote_replication-file_system)
--   [change remote_replication general](change%20remote_replication%20general.htm#remote_replication_change-remote_replication-general)
--   [change remote_replication mode](change%20remote_replication%20mode.htm#remote_replication_change-remote_replication-mode)
--   [change remote_replication second_fs_access](change%20remote_replication%20second_fs_access.htm#remote_replication_change-remote_replication-second_fs_access)
--   [change remote_replication split](change%20remote_replication%20split.htm#remote_replication_change-remote_replication-split)
--   [change remote_replication synchronize](change%20remote_replication%20synchronize.htm#remote_replication_change-remote_replication-synchronize)
--   [create remote_replication general](create%20remote_replication%20general.htm#remote_replication_create-remote_replication-general)
--   [create remote_replication unified](create%20remote_replication%20unified.htm#remote_replication_create-remote_replication-unified)
--   [create remote_replication verification_session](create%20remote_replication%20verification_session.htm#remote_replication_create-remote_replication-verification_session)
--   [delete remote_replication](delete%20remote_replication.htm#remote_replication_delete-remote_replication)
--   [show remote_replication general](show%20remote_replication%20general.htm#remote_replication_show-remote_replication-general)
--   [show remote_replication unified](show%20remote_replication%20unified.htm#remote_replication_show-remote_replication-unified)
--   [swap remote_replication](swap%20remote_replication.htm#remote_replication_swap-remote_replication)
+-   [change remote_replication file_system](#change-remote_replication-file_system)
+-   [change remote_replication general](#change-remote_replication-general)
+-   [change remote_replication mode](#change-remote_replication-mode)
+-   [change remote_replication second_fs_access](#change-remote_replication-second_fs_access)
+-   [change remote_replication split](#change-remote_replication-split)
+-   [change remote_replication synchronize](#change-remote_replication-synchronize)
+-   [create remote_replication general](#create-remote_replication-general)
+-   [create remote_replication unified](#create-remote_replication-unified)
+-   [create remote_replication verification_session](#create-remote_replication-verification_session)
+-   [delete remote_replication](#delete-remote_replication)
+-   [show remote_replication general](#show-remote_replication-general)
+-   [show remote_replication unified](#show-remote_replication-unified)
+-   [swap remote_replication](#swap-remote_replication)
 
 #### change remote_replication file_system
 
@@ -17322,8 +17322,8 @@ None
 
 This section describes commands related to snapshot_group.
 
--   [add snapshot_consistency_group snapshot](add%20snapshot_consistency_group%20snapshot.htm#snapshot_group_add-snapshot_consistency_group-snapshot)
--   [remove snapshot_consistency_group snapshot](remove%20snapshot_consistency_group%20snapshot.htm#snapshot_group_remove-snapshot_consistency_group-snapshot)
+-   [add snapshot_consistency_group snapshot](#add-snapshot_consistency_group-snapshot)
+-   [remove snapshot_consistency_group snapshot](#remove-snapshot_consistency_group-snapshot)
 
 #### add snapshot_consistency_group snapshot
 
@@ -17403,10 +17403,10 @@ None
 
 This section describes commands related to vstore_pair.
 
--   [create vstore_pair general](create%20vstore_pair%20general.htm#vstore_pair_create-vstore_pair-general)
--   [delete vstore_pair general](delete%20vstore_pair%20general.htm#vstore_pair_delete-vstore_pair-general)
--   [show fs_hyper_metro_domain vstore_pair](show%20fs_hyper_metro_domain%20vstore_pair.htm#vstore_pair_show-fs_hyper_metro_domain-vstore_pair)
--   [show vstore_pair general](show%20vstore_pair%20general.htm#vstore_pair_show-vstore_pair-general)
+-   [create vstore_pair general](#create-vstore_pair-general)
+-   [delete vstore_pair general](#delete-vstore_pair-general)
+-   [show fs_hyper_metro_domain vstore_pair](#show-fs_hyper_metro_domain-vstore_pair)
+-   [show vstore_pair general](#show-vstore_pair-general)
 
 #### create vstore_pair general
 
@@ -17618,28 +17618,28 @@ The following table describes the parameter meanings.
 
 Hardware management commands are used to query and modify hardware parameters. Hardware includes controllers, caches, power modules, interface modules, ports, fan modules, expansion modules, BBUs, engines, disk enclosures, hard disks, and DBs.
 
--   [bbu](bbu.htm#bbu_171)
--   [configuration_data](configuration_data.htm#configuration_data_180)
--   [controller](controller.htm#controller_165)
--   [disk](disk.htm#disk_173)
--   [dns_zone](dns_zone.htm#dns_zone_381)
--   [enclosure](enclosure.htm#enclosure_172)
--   [expansion_module](expansion_module.htm#expansion_module_170)
--   [failover_group](failover_group.htm#failover_group_189)
--   [fan](fan.htm#fan_169)
--   [interface_module](interface_module.htm#interface_module_167)
--   [logical_port](logical_port.htm#logical_port_187)
--   [port](port.htm#port_168)
--   [power_supply](power_supply.htm#power_supply_166)
--   [running_data](running_data.htm#running_data_179)
--   [support](support.htm#support_183)
--   [vlan](vlan.htm#vlan_188)
+-   [bbu](#bbu)
+-   [configuration_data](#configuration_data)
+-   [controller](#controller)
+-   [disk](#disk)
+-   [dns_zone](#dns_zone)
+-   [enclosure](#enclosure)
+-   [expansion_module](#expansion_module)
+-   [failover_group](#failover_group)
+-   [fan](#fan)
+-   [interface_module](#interface_module)
+-   [logical_port](#logical_port)
+-   [port](#port)
+-   [power_supply](#power_supply)
+-   [running_data](#running_data)
+-   [support](#support)
+-   [vlan](#vlan)
 
 ### bbu
 
 This section describes commands related to bbu.
 
--   [show bbu general](show%20bbu%20general.htm#bbu_show-bbu-general)
+-   [show bbu general](#show-bbu-general)
 
 #### show bbu general
 
@@ -17718,7 +17718,7 @@ The following table describes the parameter meanings.
 
 This section describes commands related to configuration_data.
 
--   [export configuration_data](export%20configuration_data.htm#configuration_data_export-configuration_data)
+-   [export configuration_data](#export-configuration_data)
 
 #### export configuration_data
 
@@ -17784,10 +17784,10 @@ None
 
 This section describes commands related to controller.
 
--   [change controller service_session](change%20controller%20service_session.htm#controller_change-controller-service_session)
--   [change controller starting_point_date](change%20controller%20starting_point_date.htm#controller_change-controller-starting_point_date)
--   [show controller general](show%20controller%20general.htm#controller_show-controller-general)
--   [show controller io](show%20controller%20io.htm#controller_show-controller-io)
+-   [change controller service_session](#change-controller-service_session)
+-   [change controller starting_point_date](#change-controller-starting_point_date)
+-   [show controller general](#show-controller-general)
+-   [show controller io](#show-controller-io)
 
 #### change controller service_session
 
@@ -18044,19 +18044,19 @@ The following table describes the parameter meanings.
 
 This section describes commands related to disk.
 
--   [change disk light](change%20disk%20light.htm#disk_change-disk-light)
--   [change disk media_scan](change%20disk%20media_scan.htm#disk_change-disk-media_scan)
--   [change disk precopy](change%20disk%20precopy.htm#disk_change-disk-precopy)
--   [change disk routine_test](change%20disk%20routine_test.htm#disk_change-disk-routine_test)
--   [change ssd routeswitch](change%20ssd%20routeswitch.htm#disk_change-ssd-routeswitch)
--   [show disk general](show%20disk%20general.htm#disk_show-disk-general)
--   [show disk health](show%20disk%20health.htm#disk_show-disk-health)
--   [show disk in_domain](show%20disk%20in_domain.htm#disk_show-disk-in_domain)
--   [show disk media_scan](show%20disk%20media_scan.htm#disk_show-disk-media_scan)
--   [show disk precopy](show%20disk%20precopy.htm#disk_show-disk-precopy)
--   [show disk routine_test](show%20disk%20routine_test.htm#disk_show-disk-routine_test)
--   [show smart_cache_pool disk](show%20smart_cache_pool%20disk.htm#disk_show-smart_cache_pool-disk)
--   [show ssd routeswitch](show%20ssd%20routeswitch.htm#disk_show-ssd-routeswitch)
+-   [change disk light](#change-disk-light)
+-   [change disk media_scan](#change-disk-media_scan)
+-   [change disk precopy](#change-disk-precopy)
+-   [change disk routine_test](#change-disk-routine_test)
+-   [change ssd routeswitch](#change-ssd-routeswitch)
+-   [show disk general](#show-disk-general)
+-   [show disk health](#show-disk-health)
+-   [show disk in_domain](#show-disk-in_domain)
+-   [show disk media_scan](#show-disk-media_scan)
+-   [show disk precopy](#show-disk-precopy)
+-   [show disk routine_test](#show-disk-routine_test)
+-   [show smart_cache_pool disk](#show-smart_cache_pool-disk)
+-   [show ssd routeswitch](#show-ssd-routeswitch)
 
 #### change disk light
 
@@ -18667,10 +18667,10 @@ The following table describes the parameter meanings.
 
 This section describes commands related to dns_zone.
 
--   [change dns_zone general](change%20dns_zone%20general.htm#dns_zone_change-dns_zone-general)
--   [create dns_zone general](create%20dns_zone%20general.htm#dns_zone_create-dns_zone-general)
--   [delete dns_zone general](delete%20dns_zone%20general.htm#dns_zone_delete-dns_zone-general)
--   [show dns_zone general](show%20dns_zone%20general.htm#dns_zone_show-dns_zone-general)
+-   [change dns_zone general](#change-dns_zone-general)
+-   [create dns_zone general](#create-dns_zone-general)
+-   [delete dns_zone general](#delete-dns_zone-general)
+-   [show dns_zone general](#show-dns_zone-general)
 
 #### change dns_zone general
 
@@ -18829,24 +18829,24 @@ The following table describes the parameter meanings.
 
 This section describes commands related to enclosure.
 
--   [add net_plane eth_port](add%20net_plane%20eth_port.htm#enclosure_add-net_plane-eth_port)
--   [add net_plane route](add%20net_plane%20route.htm#enclosure_add-net_plane-route)
--   [change enclosure id](change%20enclosure%20id.htm#enclosure_change-enclosure-id)
--   [change enclosure light](change%20enclosure%20light.htm#enclosure_change-enclosure-light)
--   [change enclosure location](change%20enclosure%20location.htm#enclosure_change-enclosure-location)
--   [change net_plane](change%20net_plane.htm#enclosure_change-net_plane)
--   [create net_plane](create%20net_plane.htm#enclosure_create-net_plane)
--   [delete net_plane](delete%20net_plane.htm#enclosure_delete-net_plane)
--   [remove net_plane eth_port](remove%20net_plane%20eth_port.htm#enclosure_remove-net_plane-eth_port)
--   [remove net_plane ipv4_address](remove%20net_plane%20ipv4_address.htm#enclosure_remove-net_plane-ipv4_address)
--   [remove net_plane ipv4_gateway](remove%20net_plane%20ipv4_gateway.htm#enclosure_remove-net_plane-ipv4_gateway)
--   [remove net_plane ipv6_address](remove%20net_plane%20ipv6_address.htm#enclosure_remove-net_plane-ipv6_address)
--   [remove net_plane ipv6_gateway](remove%20net_plane%20ipv6_gateway.htm#enclosure_remove-net_plane-ipv6_gateway)
--   [remove net_plane route](remove%20net_plane%20route.htm#enclosure_remove-net_plane-route)
--   [show enclosure](show%20enclosure.htm#enclosure_show-enclosure)
--   [show net_plane general](show%20net_plane%20general.htm#enclosure_show-net_plane-general)
--   [show net_plane member](show%20net_plane%20member.htm#enclosure_show-net_plane-member)
--   [show net_plane route](show%20net_plane%20route.htm#enclosure_show-net_plane-route)
+-   [add net_plane eth_port](#add-net_plane-eth_port)
+-   [add net_plane route](#add-net_plane-route)
+-   [change enclosure id](#change-enclosure-id)
+-   [change enclosure light](#change-enclosure-light)
+-   [change enclosure location](#change-enclosure-location)
+-   [change net_plane](#change-net_plane)
+-   [create net_plane](#create-net_plane)
+-   [delete net_plane](#delete-net_plane)
+-   [remove net_plane eth_port](#remove-net_plane-eth_port)
+-   [remove net_plane ipv4_address](#remove-net_plane-ipv4_address)
+-   [remove net_plane ipv4_gateway](#remove-net_plane-ipv4_gateway)
+-   [remove net_plane ipv6_address](#remove-net_plane-ipv6_address)
+-   [remove net_plane ipv6_gateway](#remove-net_plane-ipv6_gateway)
+-   [remove net_plane route](#remove-net_plane-route)
+-   [show enclosure](#show-enclosure)
+-   [show net_plane general](#show-net_plane-general)
+-   [show net_plane member](#show-net_plane-member)
+-   [show net_plane route](#show-net_plane-route)
 
 #### add net_plane eth_port
 
@@ -19647,7 +19647,7 @@ The following table describes the parameter meanings.
 
 This section describes commands related to expansion_module.
 
--   [show expansion_module](show%20expansion_module.htm#expansion_module_show-expansion_module)
+-   [show expansion_module](#show-expansion_module)
 
 #### show expansion_module
 
@@ -19729,18 +19729,18 @@ The following table describes the parameter meanings.
 
 This section describes commands related to failover_group.
 
--   [add failover_group bond_port](add%20failover_group%20bond_port.htm#failover_group_add-failover_group-bond_port)
--   [add failover_group eth_port](add%20failover_group%20eth_port.htm#failover_group_add-failover_group-eth_port)
--   [add failover_group vlan_port](add%20failover_group%20vlan_port.htm#failover_group_add-failover_group-vlan_port)
--   [change failover_group general](change%20failover_group%20general.htm#failover_group_change-failover_group-general)
--   [create failover_group general](create%20failover_group%20general.htm#failover_group_create-failover_group-general)
--   [delete failover_group general](delete%20failover_group%20general.htm#failover_group_delete-failover_group-general)
--   [remove failover_group bond_port](remove%20failover_group%20bond_port.htm#failover_group_remove-failover_group-bond_port)
--   [remove failover_group eth_port](remove%20failover_group%20eth_port.htm#failover_group_remove-failover_group-eth_port)
--   [remove failover_group vlan_port](remove%20failover_group%20vlan_port.htm#failover_group_remove-failover_group-vlan_port)
--   [show failover_group count](show%20failover_group%20count.htm#failover_group_show-failover_group-count)
--   [show failover_group general](show%20failover_group%20general.htm#failover_group_show-failover_group-general)
--   [show failover_group member](show%20failover_group%20member.htm#failover_group_show-failover_group-member)
+-   [add failover_group bond_port](#add-failover_group-bond_port)
+-   [add failover_group eth_port](#add-failover_group-eth_port)
+-   [add failover_group vlan_port](#add-failover_group-vlan_port)
+-   [change failover_group general](#change-failover_group-general)
+-   [create failover_group general](#create-failover_group-general)
+-   [delete failover_group general](#delete-failover_group-general)
+-   [remove failover_group bond_port](#remove-failover_group-bond_port)
+-   [remove failover_group eth_port](#remove-failover_group-eth_port)
+-   [remove failover_group vlan_port](#remove-failover_group-vlan_port)
+-   [show failover_group count](#show-failover_group-count)
+-   [show failover_group general](#show-failover_group-general)
+-   [show failover_group member](#show-failover_group-member)
 
 #### add failover_group bond_port
 
@@ -20651,8 +20651,8 @@ The following table describes the parameter meanings.
 
 This section describes commands related to fan.
 
--   [show assistant_cooling_unit](show%20assistant_cooling_unit.htm#fan_show-assistant_cooling_unit)
--   [show fan](show%20fan.htm#fan_show-fan)
+-   [show assistant_cooling_unit](#show-assistant_cooling_unit)
+-   [show fan](#show-fan)
 
 #### show assistant_cooling_unit
 
@@ -20768,10 +20768,10 @@ The following table describes the parameter meanings.
 
 This section describes commands related to interface_module.
 
--   [change interface_module](change%20interface_module.htm#interface_module_change-interface_module)
--   [poweroff interface_module](poweroff%20interface_module.htm#interface_module_poweroff-interface_module)
--   [poweron interface_module](poweron%20interface_module.htm#interface_module_poweron-interface_module)
--   [show interface_module](show%20interface_module.htm#interface_module_show-interface_module)
+-   [change interface_module](#change-interface_module)
+-   [poweroff interface_module](#poweroff-interface_module)
+-   [poweron interface_module](#poweron-interface_module)
+-   [show interface_module](#show-interface_module)
 
 #### change interface_module
 
@@ -20989,20 +20989,20 @@ The following table describes the parameter meanings.
 
 This section describes commands related to logical_port.
 
--   [add logical_port ipv4_route](add%20logical_port%20ipv4_route.htm#logical_port_add-logical_port-ipv4_route)
--   [add logical_port ipv6_route](add%20logical_port%20ipv6_route.htm#logical_port_add-logical_port-ipv6_route)
--   [change logical_port failback](change%20logical_port%20failback.htm#logical_port_change-logical_port-failback)
--   [change logical_port failover_group](change%20logical_port%20failover_group.htm#logical_port_change-logical_port-failover_group)
--   [change logical_port general](change%20logical_port%20general.htm#logical_port_change-logical_port-general)
--   [create logical_port bond](create%20logical_port%20bond.htm#logical_port_create-logical_port-bond)
--   [create logical_port eth](create%20logical_port%20eth.htm#logical_port_create-logical_port-eth)
--   [create logical_port vlan](create%20logical_port%20vlan.htm#logical_port_create-logical_port-vlan)
--   [delete logical_port general](delete%20logical_port%20general.htm#logical_port_delete-logical_port-general)
--   [remove logical_port ipv4_route](remove%20logical_port%20ipv4_route.htm#logical_port_remove-logical_port-ipv4_route)
--   [remove logical_port ipv6_route](remove%20logical_port%20ipv6_route.htm#logical_port_remove-logical_port-ipv6_route)
--   [show logical_port count](show%20logical_port%20count.htm#logical_port_show-logical_port-count)
--   [show logical_port general](show%20logical_port%20general.htm#logical_port_show-logical_port-general)
--   [show logical_port route](show%20logical_port%20route.htm#logical_port_show-logical_port-route)
+-   [add logical_port ipv4_route](#add-logical_port-ipv4_route)
+-   [add logical_port ipv6_route](#add-logical_port-ipv6_route)
+-   [change logical_port failback](#change-logical_port-failback)
+-   [change logical_port failover_group](#change-logical_port-failover_group)
+-   [change logical_port general](#change-logical_port-general)
+-   [create logical_port bond](#create-logical_port-bond)
+-   [create logical_port eth](#create-logical_port-eth)
+-   [create logical_port vlan](#create-logical_port-vlan)
+-   [delete logical_port general](#delete-logical_port-general)
+-   [remove logical_port ipv4_route](#remove-logical_port-ipv4_route)
+-   [remove logical_port ipv6_route](#remove-logical_port-ipv6_route)
+-   [show logical_port count](#show-logical_port-count)
+-   [show logical_port general](#show-logical_port-general)
+-   [show logical_port route](#show-logical_port-route)
 
 #### add logical_port ipv4_route
 
@@ -21747,37 +21747,37 @@ The following table describes the parameter meanings.
 
 This section describes commands related to port.
 
--   [add port ipv4_route](add%20port%20ipv4_route.htm#port_add-port-ipv4_route)
--   [add port ipv6_route](add%20port%20ipv6_route.htm#port_add-port-ipv6_route)
--   [change bond_port general](change%20bond_port%20general.htm#port_change-bond_port-general)
--   [change icmp switch](change%20icmp%20switch.htm#port_change-icmp-switch)
--   [change port eth](change%20port%20eth.htm#port_change-port-eth)
--   [change port eth_snsd_switch](change%20port%20eth_snsd_switch.htm#port_change-port-eth_snsd_switch)
--   [change port fc](change%20port%20fc.htm#port_change-port-fc)
--   [change port ipv4_address](change%20port%20ipv4_address.htm#port_change-port-ipv4_address)
--   [change port ipv6_address](change%20port%20ipv6_address.htm#port_change-port-ipv6_address)
--   [change port roce](change%20port%20roce.htm#port_change-port-roce)
--   [change system management_ip](change%20system%20management_ip.htm#port_change-system-management_ip)
--   [clear port bit_error](clear%20port%20bit_error.htm#port_clear-port-bit_error)
--   [create bond_port](create%20bond_port.htm#port_create-bond_port)
--   [delete bond_port](delete%20bond_port.htm#port_delete-bond_port)
--   [remove port ipv4_address](remove%20port%20ipv4_address.htm#port_remove-port-ipv4_address)
--   [remove port ipv4_route](remove%20port%20ipv4_route.htm#port_remove-port-ipv4_route)
--   [remove port ipv6_address](remove%20port%20ipv6_address.htm#port_remove-port-ipv6_address)
--   [remove port ipv6_route](remove%20port%20ipv6_route.htm#port_remove-port-ipv6_route)
--   [remove system management_ip](remove%20system%20management_ip.htm#port_remove-system-management_ip)
--   [show bond_port](show%20bond_port.htm#port_show-bond_port)
--   [show bond_port_count](show%20bond_port_count.htm#port_show-bond_port_count)
--   [show port bit_error](show%20port%20bit_error.htm#port_show-port-bit_error)
--   [show port electrical_module](show%20port%20electrical_module.htm#port_show-port-electrical_module)
--   [show port eth_snsd_switch](show%20port%20eth_snsd_switch.htm#port_show-port-eth_snsd_switch)
--   [show port fibre_module](show%20port%20fibre_module.htm#port_show-port-fibre_module)
--   [show port general](show%20port%20general.htm#port_show-port-general)
--   [show port initiator](show%20port%20initiator.htm#port_show-port-initiator)
--   [show port ip](show%20port%20ip.htm#port_show-port-ip)
--   [show port route](show%20port%20route.htm#port_show-port-route)
--   [show route general](show%20route%20general.htm#port_show-route-general)
--   [show system management_ip](show%20system%20management_ip.htm#port_show-system-management_ip)
+-   [add port ipv4_route](#add-port-ipv4_route)
+-   [add port ipv6_route](#add-port-ipv6_route)
+-   [change bond_port general](#change-bond_port-general)
+-   [change icmp switch](#change-icmp-switch)
+-   [change port eth](#change-port-eth)
+-   [change port eth_snsd_switch](#change-port-eth_snsd_switch)
+-   [change port fc](#change-port-fc)
+-   [change port ipv4_address](#change-port-ipv4_address)
+-   [change port ipv6_address](#change-port-ipv6_address)
+-   [change port roce](#change-port-roce)
+-   [change system management_ip](#change-system-management_ip)
+-   [clear port bit_error](#clear-port-bit_error)
+-   [create bond_port](#create-bond_port)
+-   [delete bond_port](#delete-bond_port)
+-   [remove port ipv4_address](#remove-port-ipv4_address)
+-   [remove port ipv4_route](#remove-port-ipv4_route)
+-   [remove port ipv6_address](#remove-port-ipv6_address)
+-   [remove port ipv6_route](#remove-port-ipv6_route)
+-   [remove system management_ip](#remove-system-management_ip)
+-   [show bond_port](#show-bond_port)
+-   [show bond_port_count](#show-bond_port_count)
+-   [show port bit_error](#show-port-bit_error)
+-   [show port electrical_module](#show-port-electrical_module)
+-   [show port eth_snsd_switch](#show-port-eth_snsd_switch)
+-   [show port fibre_module](#show-port-fibre_module)
+-   [show port general](#show-port-general)
+-   [show port initiator](#show-port-initiator)
+-   [show port ip](#show-port-ip)
+-   [show port route](#show-port-route)
+-   [show route general](#show-route-general)
+-   [show system management_ip](#show-system-management_ip)
 
 #### add port ipv4_route
 
@@ -23682,7 +23682,7 @@ The following table describes the parameter meanings.
 
 This section describes commands related to power_supply.
 
--   [show power_supply](show%20power_supply.htm#power_supply_show-power_supply)
+-   [show power_supply](#show-power_supply)
 
 #### show power_supply
 
@@ -23769,7 +23769,7 @@ The following table describes the parameter meanings.
 
 This section describes commands related to running_data.
 
--   [export running_data](export%20running_data.htm#running_data_export-running_data)
+-   [export running_data](#export-running_data)
 
 #### export running_data
 
@@ -23833,23 +23833,23 @@ None
 
 This section describes commands related to support.
 
--   [change dsm copy_num](change%20dsm%20copy_num.htm#support_change-dsm-copy_num)
--   [change ftds level](change%20ftds%20level.htm#support_change-ftds-level)
--   [change ftds switch](change%20ftds%20switch.htm#support_change-ftds-switch)
--   [change iostat policy](change%20iostat%20policy.htm#support_change-iostat-policy)
--   [change protocol service](change%20protocol%20service.htm#support_change-protocol-service)
--   [change user_mode current_mode](change%20user_mode%20current_mode.htm#support_change-user_mode-current_mode)
--   [change user_ssh_auth_info general](change%20user_ssh_auth_info%20general.htm#support_change-user_ssh_auth_info-general)
--   [reboot storage service](reboot%20storage%20service.htm#support_reboot-storage-service)
--   [show devicemanager tls_versions](show%20devicemanager%20tls_versions.htm#support_show-devicemanager-tls_versions)
--   [show diagnose_code](show%20diagnose_code.htm#support_show-diagnose_code)
--   [show dsm partition_status](show%20dsm%20partition_status.htm#support_show-dsm-partition_status)
--   [show ftds level](show%20ftds%20level.htm#support_show-ftds-level)
--   [show ftds switch](show%20ftds%20switch.htm#support_show-ftds-switch)
--   [show iostat policy](show%20iostat%20policy.htm#support_show-iostat-policy)
--   [show user_ssh_auth_info general](show%20user_ssh_auth_info%20general.htm#support_show-user_ssh_auth_info-general)
--   [test ldap configuration](test%20ldap%20configuration.htm#support_test-ldap-configuration)
--   [test ntp_server general](test%20ntp_server%20general.htm#support_test-ntp_server-general)
+-   [change dsm copy_num](#change-dsm-copy_num)
+-   [change ftds level](#change-ftds-level)
+-   [change ftds switch](#change-ftds-switch)
+-   [change iostat policy](#change-iostat-policy)
+-   [change protocol service](#change-protocol-service)
+-   [change user_mode current_mode](#change-user_mode-current_mode)
+-   [change user_ssh_auth_info general](#change-user_ssh_auth_info-general)
+-   [reboot storage service](#reboot-storage-service)
+-   [show devicemanager tls_versions](#show-devicemanager-tls_versions)
+-   [show diagnose_code](#show-diagnose_code)
+-   [show dsm partition_status](#show-dsm-partition_status)
+-   [show ftds level](#show-ftds-level)
+-   [show ftds switch](#show-ftds-switch)
+-   [show iostat policy](#show-iostat-policy)
+-   [show user_ssh_auth_info general](#show-user_ssh_auth_info-general)
+-   [test ldap configuration](#test-ldap-configuration)
+-   [test ntp_server general](#test-ntp_server-general)
 
 #### change dsm copy_num
 
@@ -24606,11 +24606,11 @@ None
 
 This section describes commands related to vlan.
 
--   [change vlan general](change%20vlan%20general.htm#vlan_change-vlan-general)
--   [create vlan general](create%20vlan%20general.htm#vlan_create-vlan-general)
--   [delete vlan general](delete%20vlan%20general.htm#vlan_delete-vlan-general)
--   [show vlan count](show%20vlan%20count.htm#vlan_show-vlan-count)
--   [show vlan general](show%20vlan%20general.htm#vlan_show-vlan-general)
+-   [change vlan general](#change-vlan-general)
+-   [create vlan general](#create-vlan-general)
+-   [delete vlan general](#delete-vlan-general)
+-   [show vlan count](#show-vlan-count)
+-   [show vlan general](#show-vlan-general)
 
 #### change vlan general
 
@@ -24883,16 +24883,16 @@ The following table describes the parameter meanings.
 
 License files are authority credentials for value-added functions such as snapshot, remote replication, clone, and SmartQoS. License management commands are used to import and query the license files.
 
--   [license](license.htm#license_12)
+-   [license](#license)
 
 ### license
 
 This section describes commands related to license.
 
--   [export license](export%20license.htm#license_export-license)
--   [import license](import%20license.htm#license_import-license)
--   [show license](show%20license.htm#license_show-license)
--   [show license_active](show%20license_active.htm#license_show-license_active)
+-   [export license](#export-license)
+-   [import license](#import-license)
+-   [show license](#show-license)
+-   [show license_active](#show-license_active)
 
 #### export license
 
@@ -25147,42 +25147,42 @@ The following table describes the parameter meanings.
 
 Storage space management commands functionally involve the entire process of configuring and using storage space. Those commands can create and manage storage pools, create LUNs in storage pools, create mapping views, map LUNs to hosts for utilization, and configure the commands used by the SmartQoS functions.
 
--   [GUARANTEED_CAPACITY_INFO](GUARANTEED_CAPACITY_INFO.htm#GUARANTEED_CAPACITY_INFO_410)
--   [TGT](TGT.htm#TGT_84)
--   [cifs_service](cifs_service.htm#cifs_service_47)
--   [disk_destroy_data](disk_destroy_data.htm#disk_destroy_data_355)
--   [disk_domain](disk_domain.htm#disk_domain_15)
--   [file_system](file_system.htm#file_system_46)
--   [host](host.htm#host_19)
--   [host_group](host_group.htm#host_group_21)
--   [initiator](initiator.htm#initiator_29)
--   [lun](lun.htm#lun_17)
--   [lun_group](lun_group.htm#lun_group_20)
--   [mapping_view](mapping_view.htm#mapping_view_23)
--   [ndmp_service](ndmp_service.htm#ndmp_service_357)
--   [nfs_service](nfs_service.htm#nfs_service_356)
--   [port_group](port_group.htm#port_group_22)
--   [qos](qos.htm#qos_38)
--   [quota](quota.htm#quota_39)
--   [quota_tree](quota_tree.htm#quota_tree_83)
--   [remote_resource](remote_resource.htm#remote_resource_27)
--   [resource_user](resource_user.htm#resource_user_50)
--   [share](share.htm#share_52)
--   [share_permission](share_permission.htm#share_permission_53)
--   [smart_cache](smart_cache.htm#smart_cache_62)
--   [smart_migration](smart_migration.htm#smart_migration_32)
--   [smart_qos](smart_qos.htm#smart_qos_25)
--   [smartqos](smartqos.htm#smartqos_362)
--   [space](space.htm#space_277)
--   [storage_pool](storage_pool.htm#storage_pool_16)
--   [vstore](vstore.htm#vstore_34)
+-   [GUARANTEED_CAPACITY_INFO](#guaranteed_capacity_info)
+-   [TGT](#tgt)
+-   [cifs_service](#cifs_service)
+-   [disk_destroy_data](#disk_destroy_data)
+-   [disk_domain](#disk_domain)
+-   [file_system](#file_system)
+-   [host](#host)
+-   [host_group](#host_group)
+-   [initiator](#initiator)
+-   [lun](#lun)
+-   [lun_group](#lun_group)
+-   [mapping_view](#mapping_view)
+-   [ndmp_service](#ndmp_service)
+-   [nfs_service](#nfs_service)
+-   [port_group](#port_group)
+-   [qos](#qos)
+-   [quota](#quota)
+-   [quota_tree](#quota_tree)
+-   [remote_resource](#remote_resource)
+-   [resource_user](#resource_user)
+-   [share](#share)
+-   [share_permission](#share_permission)
+-   [smart_cache](#smart_cache)
+-   [smart_migration](#smart_migration)
+-   [smart_qos](#smart_qos)
+-   [smartqos](#smartqos)
+-   [space](#space)
+-   [storage_pool](#storage_pool)
+-   [vstore](#vstore)
 
 ### GUARANTEED_CAPACITY_INFO
 
 This section describes commands related to GUARANTEED_CAPACITY_INFO.
 
--   [change effective_capacity general](change%20effective_capacity%20general.htm#GUARANTEED_CAPACITY_INFO_change-effective_capacity-general)
--   [show effective_capacity general](show%20effective_capacity%20general.htm#GUARANTEED_CAPACITY_INFO_show-effective_capacity-general)
+-   [change effective_capacity general](#change-effective_capacity-general)
+-   [show effective_capacity general](#show-effective_capacity-general)
 
 #### change effective_capacity general
 
@@ -25272,14 +25272,14 @@ The following table describes the parameter meanings.
 
 This section describes commands related to TGT.
 
--   [change mapping general](change%20mapping%20general.htm#TGT_change-mapping-general)
--   [change mapping host_lun_id](change%20mapping%20host_lun_id.htm#TGT_change-mapping-host_lun_id)
--   [change tgt_switch map_foolproof](change%20tgt_switch%20map_foolproof.htm#TGT_change-tgt_switch-map_foolproof)
--   [create mapping general](create%20mapping%20general.htm#TGT_create-mapping-general)
--   [delete mapping general](delete%20mapping%20general.htm#TGT_delete-mapping-general)
--   [show mapping general](show%20mapping%20general.htm#TGT_show-mapping-general)
--   [show mapping host_lun_id](show%20mapping%20host_lun_id.htm#TGT_show-mapping-host_lun_id)
--   [show tgt_switch map_foolproof](show%20tgt_switch%20map_foolproof.htm#TGT_show-tgt_switch-map_foolproof)
+-   [change mapping general](#change-mapping-general)
+-   [change mapping host_lun_id](#change-mapping-host_lun_id)
+-   [change tgt_switch map_foolproof](#change-tgt_switch-map_foolproof)
+-   [create mapping general](#create-mapping-general)
+-   [delete mapping general](#delete-mapping-general)
+-   [show mapping general](#show-mapping-general)
+-   [show mapping host_lun_id](#show-mapping-host_lun_id)
+-   [show tgt_switch map_foolproof](#show-tgt_switch-map_foolproof)
 
 #### change mapping general
 
@@ -26036,11 +26036,11 @@ The following table describes the parameter meanings.
 
 This section describes commands related to cifs_service.
 
--   [change service cifs](change%20service%20cifs.htm#cifs_service_change-service-cifs)
--   [change service cifs_config](change%20service%20cifs_config.htm#cifs_service_change-service-cifs_config)
--   [clear cifs connection](clear%20cifs%20connection.htm#cifs_service_clear-cifs-connection)
--   [show service cifs](show%20service%20cifs.htm#cifs_service_show-service-cifs)
--   [show service cifs_config](show%20service%20cifs_config.htm#cifs_service_show-service-cifs_config)
+-   [change service cifs](#change-service-cifs)
+-   [change service cifs_config](#change-service-cifs_config)
+-   [clear cifs connection](#clear-cifs-connection)
+-   [show service cifs](#show-service-cifs)
+-   [show service cifs_config](#show-service-cifs_config)
 
 #### change service cifs
 
@@ -26695,7 +26695,7 @@ The following table describes the parameter meanings.
 
 This section describes commands related to disk_destroy_data.
 
--   [change disk erase](change%20disk%20erase.htm#disk_destroy_data_change-disk-erase)
+-   [change disk erase](#change-disk-erase)
 
 #### change disk erase
 
@@ -26745,17 +26745,17 @@ None
 
 This section describes commands related to disk_domain.
 
--   [add disk_domain disk](add%20disk_domain%20disk.htm#disk_domain_add-disk_domain-disk)
--   [change disk_domain general](change%20disk_domain%20general.htm#disk_domain_change-disk_domain-general)
--   [change disk_domain rekey](change%20disk_domain%20rekey.htm#disk_domain_change-disk_domain-rekey)
--   [create disk_domain](create%20disk_domain.htm#disk_domain_create-disk_domain)
--   [delete disk_domain](delete%20disk_domain.htm#disk_domain_delete-disk_domain)
--   [show bst configuration](show%20bst%20configuration.htm#disk_domain_show-bst-configuration)
--   [show disk_domain available_capacity](show%20disk_domain%20available_capacity.htm#disk_domain_show-disk_domain-available_capacity)
--   [show disk_domain general](show%20disk_domain%20general.htm#disk_domain_show-disk_domain-general)
--   [show disk_domain redundancy_recovery_task](show%20disk_domain%20redundancy_recovery_task.htm#disk_domain_show-disk_domain-redundancy_recovery_task)
--   [show disk_domain task](show%20disk_domain%20task.htm#disk_domain_show-disk_domain-task)
--   [show disk_remove_task general](show%20disk_remove_task%20general.htm#disk_domain_show-disk_remove_task-general)
+-   [add disk_domain disk](#add-disk_domain-disk)
+-   [change disk_domain general](#change-disk_domain-general)
+-   [change disk_domain rekey](#change-disk_domain-rekey)
+-   [create disk_domain](#create-disk_domain)
+-   [delete disk_domain](#delete-disk_domain)
+-   [show bst configuration](#show-bst-configuration)
+-   [show disk_domain available_capacity](#show-disk_domain-available_capacity)
+-   [show disk_domain general](#show-disk_domain-general)
+-   [show disk_domain redundancy_recovery_task](#show-disk_domain-redundancy_recovery_task)
+-   [show disk_domain task](#show-disk_domain-task)
+-   [show disk_remove_task general](#show-disk_remove_task-general)
 
 #### add disk_domain disk
 
@@ -27403,17 +27403,17 @@ The following table describes the parameter meanings.
 
 This section describes commands related to file_system.
 
--   [add hyper_cdp_schedule fs](add%20hyper_cdp_schedule%20fs.htm#file_system_add-hyper_cdp_schedule-fs)
--   [change file_system enabled](change%20file_system%20enabled.htm#file_system_change-file_system-enabled)
--   [change file_system general](change%20file_system%20general.htm#file_system_change-file_system-general)
--   [create file_system general](create%20file_system%20general.htm#file_system_create-file_system-general)
--   [create fs_clone general](create%20fs_clone%20general.htm#file_system_create-fs_clone-general)
--   [delete file_system general](delete%20file_system%20general.htm#file_system_delete-file_system-general)
--   [remove hyper_cdp_schedule fs](remove%20hyper_cdp_schedule%20fs.htm#file_system_remove-hyper_cdp_schedule-fs)
--   [show file_system general](show%20file_system%20general.htm#file_system_show-file_system-general)
--   [show file_system reduction_info](show%20file_system%20reduction_info.htm#file_system_show-file_system-reduction_info)
--   [show fs_clone general](show%20fs_clone%20general.htm#file_system_show-fs_clone-general)
--   [show hyper_cdp_schedule fs](show%20hyper_cdp_schedule%20fs.htm#file_system_show-hyper_cdp_schedule-fs)
+-   [add hyper_cdp_schedule fs](#add-hyper_cdp_schedule-fs)
+-   [change file_system enabled](#change-file_system-enabled)
+-   [change file_system general](#change-file_system-general)
+-   [create file_system general](#create-file_system-general)
+-   [create fs_clone general](#create-fs_clone-general)
+-   [delete file_system general](#delete-file_system-general)
+-   [remove hyper_cdp_schedule fs](#remove-hyper_cdp_schedule-fs)
+-   [show file_system general](#show-file_system-general)
+-   [show file_system reduction_info](#show-file_system-reduction_info)
+-   [show fs_clone general](#show-fs_clone-general)
+-   [show hyper_cdp_schedule fs](#show-hyper_cdp_schedule-fs)
 
 #### add hyper_cdp_schedule fs
 
@@ -28438,21 +28438,21 @@ The following table describes the parameter meanings.
 
 This section describes commands related to host.
 
--   [add host initiator](add%20host%20initiator.htm#host_add-host-initiator)
--   [change host](change%20host.htm#host_change-host)
--   [change host_auto_scan](change%20host_auto_scan.htm#host_change-host_auto_scan)
--   [create host](create%20host.htm#host_create-host)
--   [delete host](delete%20host.htm#host_delete-host)
--   [remove host initiator](remove%20host%20initiator.htm#host_remove-host-initiator)
--   [scan host](scan%20host.htm#host_scan-host)
--   [show host general](show%20host%20general.htm#host_show-host-general)
--   [show host host_group](show%20host%20host_group.htm#host_show-host-host_group)
--   [show host link](show%20host%20link.htm#host_show-host-link)
--   [show host lun](show%20host%20lun.htm#host_show-host-lun)
--   [show host mapping_view](show%20host%20mapping_view.htm#host_show-host-mapping_view)
--   [show host snapshot](show%20host%20snapshot.htm#host_show-host-snapshot)
--   [show host_auto_scan](show%20host_auto_scan.htm#host_show-host_auto_scan)
--   [show lun host](show%20lun%20host.htm#host_show-lun-host)
+-   [add host initiator](#add-host-initiator)
+-   [change host](#change-host)
+-   [change host_auto_scan](#change-host_auto_scan)
+-   [create host](#create-host)
+-   [delete host](#delete-host)
+-   [remove host initiator](#remove-host-initiator)
+-   [scan host](#scan-host)
+-   [show host general](#show-host-general)
+-   [show host host_group](#show-host-host_group)
+-   [show host link](#show-host-link)
+-   [show host lun](#show-host-lun)
+-   [show host mapping_view](#show-host-mapping_view)
+-   [show host snapshot](#show-host-snapshot)
+-   [show host_auto_scan](#show-host_auto_scan)
+-   [show lun host](#show-lun-host)
 
 #### add host initiator
 
@@ -29292,14 +29292,14 @@ The following table describes the parameter meanings.
 
 This section describes commands related to host_group.
 
--   [add host_group host](add%20host_group%20host.htm#host_group_add-host_group-host)
--   [change host_group general](change%20host_group%20general.htm#host_group_change-host_group-general)
--   [create host_group](create%20host_group.htm#host_group_create-host_group)
--   [delete host_group](delete%20host_group.htm#host_group_delete-host_group)
--   [remove host_group host](remove%20host_group%20host.htm#host_group_remove-host_group-host)
--   [show host_group general](show%20host_group%20general.htm#host_group_show-host_group-general)
--   [show host_group host](show%20host_group%20host.htm#host_group_show-host_group-host)
--   [show host_group mapping_view](show%20host_group%20mapping_view.htm#host_group_show-host_group-mapping_view)
+-   [add host_group host](#add-host_group-host)
+-   [change host_group general](#change-host_group-general)
+-   [create host_group](#create-host_group)
+-   [delete host_group](#delete-host_group)
+-   [remove host_group host](#remove-host_group-host)
+-   [show host_group general](#show-host_group-general)
+-   [show host_group host](#show-host_group-host)
+-   [show host_group mapping_view](#show-host_group-mapping_view)
 
 #### add host_group host
 
@@ -29737,23 +29737,23 @@ The following table describes the parameter meanings.
 
 This section describes commands related to initiator.
 
--   [add host nvme_over_roce_initiator](add%20host%20nvme_over_roce_initiator.htm#initiator_add-host-nvme_over_roce_initiator)
--   [change initiator](change%20initiator.htm#initiator_change-initiator)
--   [change iscsi initiator_name](change%20iscsi%20initiator_name.htm#initiator_change-iscsi-initiator_name)
--   [change iscsi initiator_name_v2](change%20iscsi%20initiator_name_v2.htm#initiator_change-iscsi-initiator_name_v2)
--   [change nvme_over_roce_initiator general](change%20nvme_over_roce_initiator%20general.htm#initiator_change-nvme_over_roce_initiator-general)
--   [create initiator fc](create%20initiator%20fc.htm#initiator_create-initiator-fc)
--   [create initiator iscsi](create%20initiator%20iscsi.htm#initiator_create-initiator-iscsi)
--   [create nvme_over_roce_initiator general](create%20nvme_over_roce_initiator%20general.htm#initiator_create-nvme_over_roce_initiator-general)
--   [delete initiator fc](delete%20initiator%20fc.htm#initiator_delete-initiator-fc)
--   [delete initiator iscsi](delete%20initiator%20iscsi.htm#initiator_delete-initiator-iscsi)
--   [delete nvme_over_roce_initiator general](delete%20nvme_over_roce_initiator%20general.htm#initiator_delete-nvme_over_roce_initiator-general)
--   [remove host nvme_over_roce_initiator](remove%20host%20nvme_over_roce_initiator.htm#initiator_remove-host-nvme_over_roce_initiator)
--   [show initiator](show%20initiator.htm#initiator_show-initiator)
--   [show iscsi initiator_name](show%20iscsi%20initiator_name.htm#initiator_show-iscsi-initiator_name)
--   [show iscsi initiator_name_v2](show%20iscsi%20initiator_name_v2.htm#initiator_show-iscsi-initiator_name_v2)
--   [show nvme_over_roce_initiator general](show%20nvme_over_roce_initiator%20general.htm#initiator_show-nvme_over_roce_initiator-general)
--   [show port nvme_over_roce_initiator](show%20port%20nvme_over_roce_initiator.htm#initiator_show-port-nvme_over_roce_initiator)
+-   [add host nvme_over_roce_initiator](#add-host-nvme_over_roce_initiator)
+-   [change initiator](#change-initiator)
+-   [change iscsi initiator_name](#change-iscsi-initiator_name)
+-   [change iscsi initiator_name_v2](#change-iscsi-initiator_name_v2)
+-   [change nvme_over_roce_initiator general](#change-nvme_over_roce_initiator-general)
+-   [create initiator fc](#create-initiator-fc)
+-   [create initiator iscsi](#create-initiator-iscsi)
+-   [create nvme_over_roce_initiator general](#create-nvme_over_roce_initiator-general)
+-   [delete initiator fc](#delete-initiator-fc)
+-   [delete initiator iscsi](#delete-initiator-iscsi)
+-   [delete nvme_over_roce_initiator general](#delete-nvme_over_roce_initiator-general)
+-   [remove host nvme_over_roce_initiator](#remove-host-nvme_over_roce_initiator)
+-   [show initiator](#show-initiator)
+-   [show iscsi initiator_name](#show-iscsi-initiator_name)
+-   [show iscsi initiator_name_v2](#show-iscsi-initiator_name_v2)
+-   [show nvme_over_roce_initiator general](#show-nvme_over_roce_initiator-general)
+-   [show port nvme_over_roce_initiator](#show-port-nvme_over_roce_initiator)
 
 #### add host nvme_over_roce_initiator
 
@@ -30611,44 +30611,44 @@ The following table describes the parameter meanings.
 
 This section describes commands related to lun.
 
--   [add lun_consistency_group lun](add%20lun_consistency_group%20lun.htm#lun_add-lun_consistency_group-lun)
--   [change lun](change%20lun.htm#lun_change-lun)
--   [change lun_clone split](change%20lun_clone%20split.htm#lun_change-lun_clone-split)
--   [change lun_consistency_group general](change%20lun_consistency_group%20general.htm#lun_change-lun_consistency_group-general)
--   [change lun_takeover disable_switch_path](change%20lun_takeover%20disable_switch_path.htm#lun_change-lun_takeover-disable_switch_path)
--   [change lun_takeover enhance_switch](change%20lun_takeover%20enhance_switch.htm#lun_change-lun_takeover-enhance_switch)
--   [change lun_takeover finish_switch_path](change%20lun_takeover%20finish_switch_path.htm#lun_change-lun_takeover-finish_switch_path)
--   [change lun_workload_type general](change%20lun_workload_type%20general.htm#lun_change-lun_workload_type-general)
--   [change workload_type general](change%20workload_type%20general.htm#lun_change-workload_type-general)
--   [create lun](create%20lun.htm#lun_create-lun)
--   [create lun_clone general](create%20lun_clone%20general.htm#lun_create-lun_clone-general)
--   [create lun_consistency_group](create%20lun_consistency_group.htm#lun_create-lun_consistency_group)
--   [create lun_takeover general](create%20lun_takeover%20general.htm#lun_create-lun_takeover-general)
--   [create lun_workload_type general](create%20lun_workload_type%20general.htm#lun_create-lun_workload_type-general)
--   [create workload_type general](create%20workload_type%20general.htm#lun_create-workload_type-general)
--   [delete lun](delete%20lun.htm#lun_delete-lun)
--   [delete lun_consistency_group](delete%20lun_consistency_group.htm#lun_delete-lun_consistency_group)
--   [delete lun_workload_type general](delete%20lun_workload_type%20general.htm#lun_delete-lun_workload_type-general)
--   [delete workload_type general](delete%20workload_type%20general.htm#lun_delete-workload_type-general)
--   [remove lun_consistency_group lun](remove%20lun_consistency_group%20lun.htm#lun_remove-lun_consistency_group-lun)
--   [remove lun_takeover general](remove%20lun_takeover%20general.htm#lun_remove-lun_takeover-general)
--   [show disk_domain lun](show%20disk_domain%20lun.htm#lun_show-disk_domain-lun)
--   [show hyper_cdp_schedule lun](show%20hyper_cdp_schedule%20lun.htm#lun_show-hyper_cdp_schedule-lun)
--   [show hyper_cdp_schedule lun_consistency_group](show%20hyper_cdp_schedule%20lun_consistency_group.htm#lun_show-hyper_cdp_schedule-lun_consistency_group)
--   [show lun general](show%20lun%20general.htm#lun_show-lun-general)
--   [show lun hyper_metro_pair](show%20lun%20hyper_metro_pair.htm#lun_show-lun-hyper_metro_pair)
--   [show lun lun_group](show%20lun%20lun_group.htm#lun_show-lun-lun_group)
--   [show lun mapping_view](show%20lun%20mapping_view.htm#lun_show-lun-mapping_view)
--   [show lun protection](show%20lun%20protection.htm#lun_show-lun-protection)
--   [show lun_clone available_lun](show%20lun_clone%20available_lun.htm#lun_show-lun_clone-available_lun)
--   [show lun_clone general](show%20lun_clone%20general.htm#lun_show-lun_clone-general)
--   [show lun_consistency_group general](show%20lun_consistency_group%20general.htm#lun_show-lun_consistency_group-general)
--   [show lun_consistency_group lun](show%20lun_consistency_group%20lun.htm#lun_show-lun_consistency_group-lun)
--   [show lun_consistency_group snapshot_consistency_group](show%20lun_consistency_group%20snapshot_consistency_group.htm#lun_show-lun_consistency_group-snapshot_consistency_group)
--   [show lun_takeover general](show%20lun_takeover%20general.htm#lun_show-lun_takeover-general)
--   [show lun_workload_type general](show%20lun_workload_type%20general.htm#lun_show-lun_workload_type-general)
--   [show protect_group lun](show%20protect_group%20lun.htm#lun_show-protect_group-lun)
--   [show workload_type general](show%20workload_type%20general.htm#lun_show-workload_type-general)
+-   [add lun_consistency_group lun](#add-lun_consistency_group-lun)
+-   [change lun](#change-lun)
+-   [change lun_clone split](#change-lun_clone-split)
+-   [change lun_consistency_group general](#change-lun_consistency_group-general)
+-   [change lun_takeover disable_switch_path](#change-lun_takeover-disable_switch_path)
+-   [change lun_takeover enhance_switch](#change-lun_takeover-enhance_switch)
+-   [change lun_takeover finish_switch_path](#change-lun_takeover-finish_switch_path)
+-   [change lun_workload_type general](#change-lun_workload_type-general)
+-   [change workload_type general](#change-workload_type-general)
+-   [create lun](#create-lun)
+-   [create lun_clone general](#create-lun_clone-general)
+-   [create lun_consistency_group](#create-lun_consistency_group)
+-   [create lun_takeover general](#create-lun_takeover-general)
+-   [create lun_workload_type general](#create-lun_workload_type-general)
+-   [create workload_type general](#create-workload_type-general)
+-   [delete lun](#delete-lun)
+-   [delete lun_consistency_group](#delete-lun_consistency_group)
+-   [delete lun_workload_type general](#delete-lun_workload_type-general)
+-   [delete workload_type general](#delete-workload_type-general)
+-   [remove lun_consistency_group lun](#remove-lun_consistency_group-lun)
+-   [remove lun_takeover general](#remove-lun_takeover-general)
+-   [show disk_domain lun](#show-disk_domain-lun)
+-   [show hyper_cdp_schedule lun](#show-hyper_cdp_schedule-lun)
+-   [show hyper_cdp_schedule lun_consistency_group](#show-hyper_cdp_schedule-lun_consistency_group)
+-   [show lun general](#show-lun-general)
+-   [show lun hyper_metro_pair](#show-lun-hyper_metro_pair)
+-   [show lun lun_group](#show-lun-lun_group)
+-   [show lun mapping_view](#show-lun-mapping_view)
+-   [show lun protection](#show-lun-protection)
+-   [show lun_clone available_lun](#show-lun_clone-available_lun)
+-   [show lun_clone general](#show-lun_clone-general)
+-   [show lun_consistency_group general](#show-lun_consistency_group-general)
+-   [show lun_consistency_group lun](#show-lun_consistency_group-lun)
+-   [show lun_consistency_group snapshot_consistency_group](#show-lun_consistency_group-snapshot_consistency_group)
+-   [show lun_takeover general](#show-lun_takeover-general)
+-   [show lun_workload_type general](#show-lun_workload_type-general)
+-   [show protect_group lun](#show-protect_group-lun)
+-   [show workload_type general](#show-workload_type-general)
 
 #### add lun_consistency_group lun
 
@@ -32843,15 +32843,15 @@ The following table describes the parameter meanings.
 
 This section describes commands related to lun_group.
 
--   [add lun_group lun](add%20lun_group%20lun.htm#lun_group_add-lun_group-lun)
--   [change lun_group](change%20lun_group.htm#lun_group_change-lun_group)
--   [create lun_group](create%20lun_group.htm#lun_group_create-lun_group)
--   [delete lun_group](delete%20lun_group.htm#lun_group_delete-lun_group)
--   [remove lun_group lun](remove%20lun_group%20lun.htm#lun_group_remove-lun_group-lun)
--   [show lun_group general](show%20lun_group%20general.htm#lun_group_show-lun_group-general)
--   [show lun_group lun](show%20lun_group%20lun.htm#lun_group_show-lun_group-lun)
--   [show lun_group mapping_view](show%20lun_group%20mapping_view.htm#lun_group_show-lun_group-mapping_view)
--   [show lun_group snapshot](show%20lun_group%20snapshot.htm#lun_group_show-lun_group-snapshot)
+-   [add lun_group lun](#add-lun_group-lun)
+-   [change lun_group](#change-lun_group)
+-   [create lun_group](#create-lun_group)
+-   [delete lun_group](#delete-lun_group)
+-   [remove lun_group lun](#remove-lun_group-lun)
+-   [show lun_group general](#show-lun_group-general)
+-   [show lun_group lun](#show-lun_group-lun)
+-   [show lun_group mapping_view](#show-lun_group-mapping_view)
+-   [show lun_group snapshot](#show-lun_group-snapshot)
 
 #### add lun_group lun
 
@@ -33394,19 +33394,19 @@ The following table describes the parameter meanings.
 
 This section describes commands related to mapping_view.
 
--   [add mapping_view host_group](add%20mapping_view%20host_group.htm#mapping_view_add-mapping_view-host_group)
--   [add mapping_view lun_group](add%20mapping_view%20lun_group.htm#mapping_view_add-mapping_view-lun_group)
--   [add mapping_view port_group](add%20mapping_view%20port_group.htm#mapping_view_add-mapping_view-port_group)
--   [change mapping_view](change%20mapping_view.htm#mapping_view_change-mapping_view)
--   [create mapping_view](create%20mapping_view.htm#mapping_view_create-mapping_view)
--   [delete mapping_view](delete%20mapping_view.htm#mapping_view_delete-mapping_view)
--   [remove mapping_view host_group](remove%20mapping_view%20host_group.htm#mapping_view_remove-mapping_view-host_group)
--   [remove mapping_view lun_group](remove%20mapping_view%20lun_group.htm#mapping_view_remove-mapping_view-lun_group)
--   [remove mapping_view port_group](remove%20mapping_view%20port_group.htm#mapping_view_remove-mapping_view-port_group)
--   [show mapping_view general](show%20mapping_view%20general.htm#mapping_view_show-mapping_view-general)
--   [show mapping_view host_group](show%20mapping_view%20host_group.htm#mapping_view_show-mapping_view-host_group)
--   [show mapping_view lun_group](show%20mapping_view%20lun_group.htm#mapping_view_show-mapping_view-lun_group)
--   [show mapping_view port_group](show%20mapping_view%20port_group.htm#mapping_view_show-mapping_view-port_group)
+-   [add mapping_view host_group](#add-mapping_view-host_group)
+-   [add mapping_view lun_group](#add-mapping_view-lun_group)
+-   [add mapping_view port_group](#add-mapping_view-port_group)
+-   [change mapping_view](#change-mapping_view)
+-   [create mapping_view](#create-mapping_view)
+-   [delete mapping_view](#delete-mapping_view)
+-   [remove mapping_view host_group](#remove-mapping_view-host_group)
+-   [remove mapping_view lun_group](#remove-mapping_view-lun_group)
+-   [remove mapping_view port_group](#remove-mapping_view-port_group)
+-   [show mapping_view general](#show-mapping_view-general)
+-   [show mapping_view host_group](#show-mapping_view-host_group)
+-   [show mapping_view lun_group](#show-mapping_view-lun_group)
+-   [show mapping_view port_group](#show-mapping_view-port_group)
 
 #### add mapping_view host_group
 
@@ -34299,13 +34299,13 @@ The following table describes the parameter meanings.
 
 This section describes commands related to ndmp_service.
 
--   [change service ndmp_config](change%20service%20ndmp_config.htm#ndmp_service_change-service-ndmp_config)
--   [change service ndmp_reset_password](change%20service%20ndmp_reset_password.htm#ndmp_service_change-service-ndmp_reset_password)
--   [change service ndmp_restart_service](change%20service%20ndmp_restart_service.htm#ndmp_service_change-service-ndmp_restart_service)
--   [change service ndmp_scanbus](change%20service%20ndmp_scanbus.htm#ndmp_service_change-service-ndmp_scanbus)
--   [change service ndmp_user](change%20service%20ndmp_user.htm#ndmp_service_change-service-ndmp_user)
--   [show service ndmp](show%20service%20ndmp.htm#ndmp_service_show-service-ndmp)
--   [show service ndmp_tape](show%20service%20ndmp_tape.htm#ndmp_service_show-service-ndmp_tape)
+-   [change service ndmp_config](#change-service-ndmp_config)
+-   [change service ndmp_reset_password](#change-service-ndmp_reset_password)
+-   [change service ndmp_restart_service](#change-service-ndmp_restart_service)
+-   [change service ndmp_scanbus](#change-service-ndmp_scanbus)
+-   [change service ndmp_user](#change-service-ndmp_user)
+-   [show service ndmp](#show-service-ndmp)
+-   [show service ndmp_tape](#show-service-ndmp_tape)
 
 #### change service ndmp_config
 
@@ -34661,8 +34661,8 @@ The following table describes the parameter meanings.
 
 This section describes commands related to nfs_service.
 
--   [change service nfs_config](change%20service%20nfs_config.htm#nfs_service_change-service-nfs_config)
--   [show service nfs_config](show%20service%20nfs_config.htm#nfs_service_show-service-nfs_config)
+-   [change service nfs_config](#change-service-nfs_config)
+-   [show service nfs_config](#show-service-nfs_config)
 
 #### change service nfs_config
 
@@ -35155,21 +35155,21 @@ The following table describes the parameter meanings.
 
 This section describes commands related to port_group.
 
--   [add port_group port](add%20port_group%20port.htm#port_group_add-port_group-port)
--   [add rep_port_group port](add%20rep_port_group%20port.htm#port_group_add-rep_port_group-port)
--   [change port_group general](change%20port_group%20general.htm#port_group_change-port_group-general)
--   [change rep_port_group](change%20rep_port_group.htm#port_group_change-rep_port_group)
--   [create port_group](create%20port_group.htm#port_group_create-port_group)
--   [create rep_port_group](create%20rep_port_group.htm#port_group_create-rep_port_group)
--   [delete port_group](delete%20port_group.htm#port_group_delete-port_group)
--   [delete rep_port_group](delete%20rep_port_group.htm#port_group_delete-rep_port_group)
--   [remove port_group port](remove%20port_group%20port.htm#port_group_remove-port_group-port)
--   [remove rep_port_group port](remove%20rep_port_group%20port.htm#port_group_remove-rep_port_group-port)
--   [show port_group general](show%20port_group%20general.htm#port_group_show-port_group-general)
--   [show port_group mapping_view](show%20port_group%20mapping_view.htm#port_group_show-port_group-mapping_view)
--   [show port_group port](show%20port_group%20port.htm#port_group_show-port_group-port)
--   [show rep_port_group general](show%20rep_port_group%20general.htm#port_group_show-rep_port_group-general)
--   [show rep_port_group port](show%20rep_port_group%20port.htm#port_group_show-rep_port_group-port)
+-   [add port_group port](#add-port_group-port)
+-   [add rep_port_group port](#add-rep_port_group-port)
+-   [change port_group general](#change-port_group-general)
+-   [change rep_port_group](#change-rep_port_group)
+-   [create port_group](#create-port_group)
+-   [create rep_port_group](#create-rep_port_group)
+-   [delete port_group](#delete-port_group)
+-   [delete rep_port_group](#delete-rep_port_group)
+-   [remove port_group port](#remove-port_group-port)
+-   [remove rep_port_group port](#remove-rep_port_group-port)
+-   [show port_group general](#show-port_group-general)
+-   [show port_group mapping_view](#show-port_group-mapping_view)
+-   [show port_group port](#show-port_group-port)
+-   [show rep_port_group general](#show-rep_port_group-general)
+-   [show rep_port_group port](#show-rep_port_group-port)
 
 #### add port_group port
 
@@ -35910,8 +35910,8 @@ The following table describes the parameter meanings.
 
 This section describes commands related to qos.
 
--   [change smartqos_policy min_goal_reserved](change%20smartqos_policy%20min_goal_reserved.htm#qos_change-smartqos_policy-min_goal_reserved)
--   [show smartqos_policy min_goal_reserved](show%20smartqos_policy%20min_goal_reserved.htm#qos_show-smartqos_policy-min_goal_reserved)
+-   [change smartqos_policy min_goal_reserved](#change-smartqos_policy-min_goal_reserved)
+-   [show smartqos_policy min_goal_reserved](#show-smartqos_policy-min_goal_reserved)
 
 #### change smartqos_policy min_goal_reserved
 
@@ -36004,11 +36004,11 @@ The following table describes the parameter meanings.
 
 This section describes commands related to quota.
 
--   [change quota general](change%20quota%20general.htm#quota_change-quota-general)
--   [create quota dtree](create%20quota%20dtree.htm#quota_create-quota-dtree)
--   [create quota file_system](create%20quota%20file_system.htm#quota_create-quota-file_system)
--   [delete quota general](delete%20quota%20general.htm#quota_delete-quota-general)
--   [show quota general](show%20quota%20general.htm#quota_show-quota-general)
+-   [change quota general](#change-quota-general)
+-   [create quota dtree](#create-quota-dtree)
+-   [create quota file_system](#create-quota-file_system)
+-   [delete quota general](#delete-quota-general)
+-   [show quota general](#show-quota-general)
 
 #### change quota general
 
@@ -36317,11 +36317,11 @@ The following table describes the parameter meanings.
 
 This section describes commands related to quota_tree.
 
--   [change dtree](change%20dtree.htm#quota_tree_change-dtree)
--   [create dtree general](create%20dtree%20general.htm#quota_tree_create-dtree-general)
--   [delete dtree general](delete%20dtree%20general.htm#quota_tree_delete-dtree-general)
--   [show dtree count](show%20dtree%20count.htm#quota_tree_show-dtree-count)
--   [show dtree general](show%20dtree%20general.htm#quota_tree_show-dtree-general)
+-   [change dtree](#change-dtree)
+-   [create dtree general](#create-dtree-general)
+-   [delete dtree general](#delete-dtree-general)
+-   [show dtree count](#show-dtree-count)
+-   [show dtree general](#show-dtree-general)
 
 #### change dtree
 
@@ -36574,14 +36574,14 @@ The following table describes the parameter meanings.
 
 This section describes commands related to remote_resource.
 
--   [scan remote_lun](scan%20remote_lun.htm#remote_resource_scan-remote_lun)
--   [show remote_lun count](show%20remote_lun%20count.htm#remote_resource_show-remote_lun-count)
--   [show remote_lun general](show%20remote_lun%20general.htm#remote_resource_show-remote_lun-general)
--   [show remote_lun path](show%20remote_lun%20path.htm#remote_resource_show-remote_lun-path)
--   [show remote_lun path_status](show%20remote_lun%20path_status.htm#remote_resource_show-remote_lun-path_status)
--   [show remote_lun single_link](show%20remote_lun%20single_link.htm#remote_resource_show-remote_lun-single_link)
--   [show remote_lun status](show%20remote_lun%20status.htm#remote_resource_show-remote_lun-status)
--   [show remote_replication available_file_system](show%20remote_replication%20available_file_system.htm#remote_resource_show-remote_replication-available_file_system)
+-   [scan remote_lun](#scan-remote_lun)
+-   [show remote_lun count](#show-remote_lun-count)
+-   [show remote_lun general](#show-remote_lun-general)
+-   [show remote_lun path](#show-remote_lun-path)
+-   [show remote_lun path_status](#show-remote_lun-path_status)
+-   [show remote_lun single_link](#show-remote_lun-single_link)
+-   [show remote_lun status](#show-remote_lun-status)
+-   [show remote_replication available_file_system](#show-remote_replication-available_file_system)
 
 #### scan remote_lun
 
@@ -37075,49 +37075,49 @@ The following table describes the parameter meanings.
 
 This section describes commands related to resource_user.
 
--   [add identity_mapping rule](add%20identity_mapping%20rule.htm#resource_user_add-identity_mapping-rule)
--   [add unix_group_member](add%20unix_group_member.htm#resource_user_add-unix_group_member)
--   [add windows_group ad_group](add%20windows_group%20ad_group.htm#resource_user_add-windows_group-ad_group)
--   [add windows_group ad_user](add%20windows_group%20ad_user.htm#resource_user_add-windows_group-ad_user)
--   [add windows_group windows_user](add%20windows_group%20windows_user.htm#resource_user_add-windows_group-windows_user)
--   [change identity_mapping config](change%20identity_mapping%20config.htm#resource_user_change-identity_mapping-config)
--   [change identity_mapping rule](change%20identity_mapping%20rule.htm#resource_user_change-identity_mapping-rule)
--   [change unix_group general](change%20unix_group%20general.htm#resource_user_change-unix_group-general)
--   [change unix_user general](change%20unix_user%20general.htm#resource_user_change-unix_user-general)
--   [change windows_group general](change%20windows_group%20general.htm#resource_user_change-windows_group-general)
--   [change windows_user general](change%20windows_user%20general.htm#resource_user_change-windows_user-general)
--   [change windows_user password](change%20windows_user%20password.htm#resource_user_change-windows_user-password)
--   [change windows_user safe_strategy](change%20windows_user%20safe_strategy.htm#resource_user_change-windows_user-safe_strategy)
--   [clear identity_mapping cache](clear%20identity_mapping%20cache.htm#resource_user_clear-identity_mapping-cache)
--   [clear identity_mapping config](clear%20identity_mapping%20config.htm#resource_user_clear-identity_mapping-config)
--   [create unix_group](create%20unix_group.htm#resource_user_create-unix_group)
--   [create unix_user general](create%20unix_user%20general.htm#resource_user_create-unix_user-general)
--   [create windows_group general](create%20windows_group%20general.htm#resource_user_create-windows_group-general)
--   [create windows_user general](create%20windows_user%20general.htm#resource_user_create-windows_user-general)
--   [delete identity_mapping rule](delete%20identity_mapping%20rule.htm#resource_user_delete-identity_mapping-rule)
--   [delete unix_group](delete%20unix_group.htm#resource_user_delete-unix_group)
--   [delete unix_user](delete%20unix_user.htm#resource_user_delete-unix_user)
--   [delete windows_group](delete%20windows_group.htm#resource_user_delete-windows_group)
--   [delete windows_user](delete%20windows_user.htm#resource_user_delete-windows_user)
--   [remove unix_group_member](remove%20unix_group_member.htm#resource_user_remove-unix_group_member)
--   [remove windows_group ad_group](remove%20windows_group%20ad_group.htm#resource_user_remove-windows_group-ad_group)
--   [remove windows_group ad_user](remove%20windows_group%20ad_user.htm#resource_user_remove-windows_group-ad_user)
--   [remove windows_group windows_user](remove%20windows_group%20windows_user.htm#resource_user_remove-windows_group-windows_user)
--   [show identity_mapping config](show%20identity_mapping%20config.htm#resource_user_show-identity_mapping-config)
--   [show identity_mapping mapped_user](show%20identity_mapping%20mapped_user.htm#resource_user_show-identity_mapping-mapped_user)
--   [show identity_mapping rule](show%20identity_mapping%20rule.htm#resource_user_show-identity_mapping-rule)
--   [show unix_group count](show%20unix_group%20count.htm#resource_user_show-unix_group-count)
--   [show unix_group general](show%20unix_group%20general.htm#resource_user_show-unix_group-general)
--   [show unix_user count](show%20unix_user%20count.htm#resource_user_show-unix_user-count)
--   [show unix_user general](show%20unix_user%20general.htm#resource_user_show-unix_user-general)
--   [show windows_group ad_group](show%20windows_group%20ad_group.htm#resource_user_show-windows_group-ad_group)
--   [show windows_group ad_user](show%20windows_group%20ad_user.htm#resource_user_show-windows_group-ad_user)
--   [show windows_group count](show%20windows_group%20count.htm#resource_user_show-windows_group-count)
--   [show windows_group general](show%20windows_group%20general.htm#resource_user_show-windows_group-general)
--   [show windows_group windows_user](show%20windows_group%20windows_user.htm#resource_user_show-windows_group-windows_user)
--   [show windows_user count](show%20windows_user%20count.htm#resource_user_show-windows_user-count)
--   [show windows_user general](show%20windows_user%20general.htm#resource_user_show-windows_user-general)
--   [show windows_user safe_strategy](show%20windows_user%20safe_strategy.htm#resource_user_show-windows_user-safe_strategy)
+-   [add identity_mapping rule](#add-identity_mapping-rule)
+-   [add unix_group_member](#add-unix_group_member)
+-   [add windows_group ad_group](#add-windows_group-ad_group)
+-   [add windows_group ad_user](#add-windows_group-ad_user)
+-   [add windows_group windows_user](#add-windows_group-windows_user)
+-   [change identity_mapping config](#change-identity_mapping-config)
+-   [change identity_mapping rule](#change-identity_mapping-rule)
+-   [change unix_group general](#change-unix_group-general)
+-   [change unix_user general](#change-unix_user-general)
+-   [change windows_group general](#change-windows_group-general)
+-   [change windows_user general](#change-windows_user-general)
+-   [change windows_user password](#change-windows_user-password)
+-   [change windows_user safe_strategy](#change-windows_user-safe_strategy)
+-   [clear identity_mapping cache](#clear-identity_mapping-cache)
+-   [clear identity_mapping config](#clear-identity_mapping-config)
+-   [create unix_group](#create-unix_group)
+-   [create unix_user general](#create-unix_user-general)
+-   [create windows_group general](#create-windows_group-general)
+-   [create windows_user general](#create-windows_user-general)
+-   [delete identity_mapping rule](#delete-identity_mapping-rule)
+-   [delete unix_group](#delete-unix_group)
+-   [delete unix_user](#delete-unix_user)
+-   [delete windows_group](#delete-windows_group)
+-   [delete windows_user](#delete-windows_user)
+-   [remove unix_group_member](#remove-unix_group_member)
+-   [remove windows_group ad_group](#remove-windows_group-ad_group)
+-   [remove windows_group ad_user](#remove-windows_group-ad_user)
+-   [remove windows_group windows_user](#remove-windows_group-windows_user)
+-   [show identity_mapping config](#show-identity_mapping-config)
+-   [show identity_mapping mapped_user](#show-identity_mapping-mapped_user)
+-   [show identity_mapping rule](#show-identity_mapping-rule)
+-   [show unix_group count](#show-unix_group-count)
+-   [show unix_group general](#show-unix_group-general)
+-   [show unix_user count](#show-unix_user-count)
+-   [show unix_user general](#show-unix_user-general)
+-   [show windows_group ad_group](#show-windows_group-ad_group)
+-   [show windows_group ad_user](#show-windows_group-ad_user)
+-   [show windows_group count](#show-windows_group-count)
+-   [show windows_group general](#show-windows_group-general)
+-   [show windows_group windows_user](#show-windows_group-windows_user)
+-   [show windows_user count](#show-windows_user-count)
+-   [show windows_user general](#show-windows_user-general)
+-   [show windows_user safe_strategy](#show-windows_user-safe_strategy)
 
 #### add identity_mapping rule
 
@@ -38935,26 +38935,26 @@ The following table describes the parameter meanings.
 
 This section describes commands related to share.
 
--   [change share cifs](change%20share%20cifs.htm#share_change-share-cifs)
--   [change share nfs](change%20share%20nfs.htm#share_change-share-nfs)
--   [change share_homedir_rule cifs](change%20share_homedir_rule%20cifs.htm#share_change-share_homedir_rule-cifs)
--   [change share_permission cifs](change%20share_permission%20cifs.htm#share_change-share_permission-cifs)
--   [create share cifs](create%20share%20cifs.htm#share_create-share-cifs)
--   [create share nfs](create%20share%20nfs.htm#share_create-share-nfs)
--   [create share_homedir_rule cifs](create%20share_homedir_rule%20cifs.htm#share_create-share_homedir_rule-cifs)
--   [create share_permission cifs](create%20share_permission%20cifs.htm#share_create-share_permission-cifs)
--   [delete share cifs](delete%20share%20cifs.htm#share_delete-share-cifs)
--   [delete share nfs](delete%20share%20nfs.htm#share_delete-share-nfs)
--   [delete share_homedir_rule cifs](delete%20share_homedir_rule%20cifs.htm#share_delete-share_homedir_rule-cifs)
--   [delete share_permission cifs](delete%20share_permission%20cifs.htm#share_delete-share_permission-cifs)
--   [show share cifs](show%20share%20cifs.htm#share_show-share-cifs)
--   [show share cifs_count](show%20share%20cifs_count.htm#share_show-share-cifs_count)
--   [show share nfs](show%20share%20nfs.htm#share_show-share-nfs)
--   [show share nfs_count](show%20share%20nfs_count.htm#share_show-share-nfs_count)
--   [show share_homedir_rule cifs](show%20share_homedir_rule%20cifs.htm#share_show-share_homedir_rule-cifs)
--   [show share_homedir_rule cifs_count](show%20share_homedir_rule%20cifs_count.htm#share_show-share_homedir_rule-cifs_count)
--   [show share_permission cifs](show%20share_permission%20cifs.htm#share_show-share_permission-cifs)
--   [show share_permission cifs_count](show%20share_permission%20cifs_count.htm#share_show-share_permission-cifs_count)
+-   [change share cifs](#change-share-cifs)
+-   [change share nfs](#change-share-nfs)
+-   [change share_homedir_rule cifs](#change-share_homedir_rule-cifs)
+-   [change share_permission cifs](#change-share_permission-cifs)
+-   [create share cifs](#create-share-cifs)
+-   [create share nfs](#create-share-nfs)
+-   [create share_homedir_rule cifs](#create-share_homedir_rule-cifs)
+-   [create share_permission cifs](#create-share_permission-cifs)
+-   [delete share cifs](#delete-share-cifs)
+-   [delete share nfs](#delete-share-nfs)
+-   [delete share_homedir_rule cifs](#delete-share_homedir_rule-cifs)
+-   [delete share_permission cifs](#delete-share_permission-cifs)
+-   [show share cifs](#show-share-cifs)
+-   [show share cifs_count](#show-share-cifs_count)
+-   [show share nfs](#show-share-nfs)
+-   [show share nfs_count](#show-share-nfs_count)
+-   [show share_homedir_rule cifs](#show-share_homedir_rule-cifs)
+-   [show share_homedir_rule cifs_count](#show-share_homedir_rule-cifs_count)
+-   [show share_permission cifs](#show-share_permission-cifs)
+-   [show share_permission cifs_count](#show-share_permission-cifs_count)
 
 #### change share cifs
 
@@ -40438,11 +40438,11 @@ The following table describes the parameter meanings.
 
 This section describes commands related to share_permission.
 
--   [change share_permission nfs](change%20share_permission%20nfs.htm#share_permission_change-share_permission-nfs)
--   [create share_permission nfs](create%20share_permission%20nfs.htm#share_permission_create-share_permission-nfs)
--   [delete share_permission nfs](delete%20share_permission%20nfs.htm#share_permission_delete-share_permission-nfs)
--   [show share_permission nfs](show%20share_permission%20nfs.htm#share_permission_show-share_permission-nfs)
--   [show share_permission nfs_count](show%20share_permission%20nfs_count.htm#share_permission_show-share_permission-nfs_count)
+-   [change share_permission nfs](#change-share_permission-nfs)
+-   [create share_permission nfs](#create-share_permission-nfs)
+-   [delete share_permission nfs](#delete-share_permission-nfs)
+-   [show share_permission nfs](#show-share_permission-nfs)
+-   [show share_permission nfs_count](#show-share_permission-nfs_count)
 
 #### change share_permission nfs
 
@@ -40830,24 +40830,24 @@ The following table describes the parameter meanings.
 
 This section describes commands related to smart_cache.
 
--   [add smart_cache_partition file_system](add%20smart_cache_partition%20file_system.htm#smart_cache_add-smart_cache_partition-file_system)
--   [add smart_cache_partition lun](add%20smart_cache_partition%20lun.htm#smart_cache_add-smart_cache_partition-lun)
--   [add smart_cache_pool](add%20smart_cache_pool.htm#smart_cache_add-smart_cache_pool)
--   [change smart_cache_partition general](change%20smart_cache_partition%20general.htm#smart_cache_change-smart_cache_partition-general)
--   [change smart_cache_pool general](change%20smart_cache_pool%20general.htm#smart_cache_change-smart_cache_pool-general)
--   [change smart_cache_pool switch](change%20smart_cache_pool%20switch.htm#smart_cache_change-smart_cache_pool-switch)
--   [create smart_cache_partition](create%20smart_cache_partition.htm#smart_cache_create-smart_cache_partition)
--   [create smart_cache_pool](create%20smart_cache_pool.htm#smart_cache_create-smart_cache_pool)
--   [delete smart_cache_partition](delete%20smart_cache_partition.htm#smart_cache_delete-smart_cache_partition)
--   [delete smart_cache_pool](delete%20smart_cache_pool.htm#smart_cache_delete-smart_cache_pool)
--   [remove smart_cache_partition file_system](remove%20smart_cache_partition%20file_system.htm#smart_cache_remove-smart_cache_partition-file_system)
--   [remove smart_cache_partition lun](remove%20smart_cache_partition%20lun.htm#smart_cache_remove-smart_cache_partition-lun)
--   [show performance smart_cache_pool](show%20performance%20smart_cache_pool.htm#smart_cache_show-performance-smart_cache_pool)
--   [show smart_cache_partition file_system](show%20smart_cache_partition%20file_system.htm#smart_cache_show-smart_cache_partition-file_system)
--   [show smart_cache_partition general](show%20smart_cache_partition%20general.htm#smart_cache_show-smart_cache_partition-general)
--   [show smart_cache_partition lun](show%20smart_cache_partition%20lun.htm#smart_cache_show-smart_cache_partition-lun)
--   [show smart_cache_pool general](show%20smart_cache_pool%20general.htm#smart_cache_show-smart_cache_pool-general)
--   [show smart_cache_pool smart_cache_partition](show%20smart_cache_pool%20smart_cache_partition.htm#smart_cache_show-smart_cache_pool-smart_cache_partition)
+-   [add smart_cache_partition file_system](#add-smart_cache_partition-file_system)
+-   [add smart_cache_partition lun](#add-smart_cache_partition-lun)
+-   [add smart_cache_pool](#add-smart_cache_pool)
+-   [change smart_cache_partition general](#change-smart_cache_partition-general)
+-   [change smart_cache_pool general](#change-smart_cache_pool-general)
+-   [change smart_cache_pool switch](#change-smart_cache_pool-switch)
+-   [create smart_cache_partition](#create-smart_cache_partition)
+-   [create smart_cache_pool](#create-smart_cache_pool)
+-   [delete smart_cache_partition](#delete-smart_cache_partition)
+-   [delete smart_cache_pool](#delete-smart_cache_pool)
+-   [remove smart_cache_partition file_system](#remove-smart_cache_partition-file_system)
+-   [remove smart_cache_partition lun](#remove-smart_cache_partition-lun)
+-   [show performance smart_cache_pool](#show-performance-smart_cache_pool)
+-   [show smart_cache_partition file_system](#show-smart_cache_partition-file_system)
+-   [show smart_cache_partition general](#show-smart_cache_partition-general)
+-   [show smart_cache_partition lun](#show-smart_cache_partition-lun)
+-   [show smart_cache_pool general](#show-smart_cache_pool-general)
+-   [show smart_cache_pool smart_cache_partition](#show-smart_cache_pool-smart_cache_partition)
 
 #### add smart_cache_partition file_system
 
@@ -41811,14 +41811,14 @@ The following table describes the parameter meanings.
 
 This section describes commands related to smart_migration.
 
--   [change lun_migration](change%20lun_migration.htm#smart_migration_change-lun_migration)
--   [change lun_migration_pause](change%20lun_migration_pause.htm#smart_migration_change-lun_migration_pause)
--   [change lun_migration_split consistency](change%20lun_migration_split%20consistency.htm#smart_migration_change-lun_migration_split-consistency)
--   [change lun_migration_synchronize](change%20lun_migration_synchronize.htm#smart_migration_change-lun_migration_synchronize)
--   [create lun_migration](create%20lun_migration.htm#smart_migration_create-lun_migration)
--   [delete lun_migration](delete%20lun_migration.htm#smart_migration_delete-lun_migration)
--   [show lun_migration count](show%20lun_migration%20count.htm#smart_migration_show-lun_migration-count)
--   [show lun_migration general](show%20lun_migration%20general.htm#smart_migration_show-lun_migration-general)
+-   [change lun_migration](#change-lun_migration)
+-   [change lun_migration_pause](#change-lun_migration_pause)
+-   [change lun_migration_split consistency](#change-lun_migration_split-consistency)
+-   [change lun_migration_synchronize](#change-lun_migration_synchronize)
+-   [create lun_migration](#create-lun_migration)
+-   [delete lun_migration](#delete-lun_migration)
+-   [show lun_migration count](#show-lun_migration-count)
+-   [show lun_migration general](#show-lun_migration-general)
 
 #### change lun_migration
 
@@ -42251,26 +42251,26 @@ The following table describes the parameter meanings.
 
 This section describes commands related to smart_qos.
 
--   [add smartqos_policy file_system](add%20smartqos_policy%20file_system.htm#smart_qos_add-smartqos_policy-file_system)
--   [add smartqos_policy hierarchical](add%20smartqos_policy%20hierarchical.htm#smart_qos_add-smartqos_policy-hierarchical)
--   [add smartqos_policy lun](add%20smartqos_policy%20lun.htm#smart_qos_add-smartqos_policy-lun)
--   [add smartqos_policy lun_group](add%20smartqos_policy%20lun_group.htm#smart_qos_add-smartqos_policy-lun_group)
--   [change smartqos_policy enabled](change%20smartqos_policy%20enabled.htm#smart_qos_change-smartqos_policy-enabled)
--   [change smartqos_policy general](change%20smartqos_policy%20general.htm#smart_qos_change-smartqos_policy-general)
--   [change smartqos_policy normalized_io_switch](change%20smartqos_policy%20normalized_io_switch.htm#smart_qos_change-smartqos_policy-normalized_io_switch)
--   [create smartqos_policy](create%20smartqos_policy.htm#smart_qos_create-smartqos_policy)
--   [delete smartqos_policy](delete%20smartqos_policy.htm#smart_qos_delete-smartqos_policy)
--   [remove smartqos_policy hierarchical](remove%20smartqos_policy%20hierarchical.htm#smart_qos_remove-smartqos_policy-hierarchical)
--   [remove smartqos_policy host](remove%20smartqos_policy%20host.htm#smart_qos_remove-smartqos_policy-host)
--   [remove smartqos_policy lun](remove%20smartqos_policy%20lun.htm#smart_qos_remove-smartqos_policy-lun)
--   [remove smartqos_policy lun_group](remove%20smartqos_policy%20lun_group.htm#smart_qos_remove-smartqos_policy-lun_group)
--   [show smartqos_policy file_system](show%20smartqos_policy%20file_system.htm#smart_qos_show-smartqos_policy-file_system)
--   [show smartqos_policy general](show%20smartqos_policy%20general.htm#smart_qos_show-smartqos_policy-general)
--   [show smartqos_policy hierarchical](show%20smartqos_policy%20hierarchical.htm#smart_qos_show-smartqos_policy-hierarchical)
--   [show smartqos_policy host](show%20smartqos_policy%20host.htm#smart_qos_show-smartqos_policy-host)
--   [show smartqos_policy lun](show%20smartqos_policy%20lun.htm#smart_qos_show-smartqos_policy-lun)
--   [show smartqos_policy lun_group](show%20smartqos_policy%20lun_group.htm#smart_qos_show-smartqos_policy-lun_group)
--   [show smartqos_policy snapshot](show%20smartqos_policy%20snapshot.htm#smart_qos_show-smartqos_policy-snapshot)
+-   [add smartqos_policy file_system](#add-smartqos_policy-file_system)
+-   [add smartqos_policy hierarchical](#add-smartqos_policy-hierarchical)
+-   [add smartqos_policy lun](#add-smartqos_policy-lun)
+-   [add smartqos_policy lun_group](#add-smartqos_policy-lun_group)
+-   [change smartqos_policy enabled](#change-smartqos_policy-enabled)
+-   [change smartqos_policy general](#change-smartqos_policy-general)
+-   [change smartqos_policy normalized_io_switch](#change-smartqos_policy-normalized_io_switch)
+-   [create smartqos_policy](#create-smartqos_policy)
+-   [delete smartqos_policy](#delete-smartqos_policy)
+-   [remove smartqos_policy hierarchical](#remove-smartqos_policy-hierarchical)
+-   [remove smartqos_policy host](#remove-smartqos_policy-host)
+-   [remove smartqos_policy lun](#remove-smartqos_policy-lun)
+-   [remove smartqos_policy lun_group](#remove-smartqos_policy-lun_group)
+-   [show smartqos_policy file_system](#show-smartqos_policy-file_system)
+-   [show smartqos_policy general](#show-smartqos_policy-general)
+-   [show smartqos_policy hierarchical](#show-smartqos_policy-hierarchical)
+-   [show smartqos_policy host](#show-smartqos_policy-host)
+-   [show smartqos_policy lun](#show-smartqos_policy-lun)
+-   [show smartqos_policy lun_group](#show-smartqos_policy-lun_group)
+-   [show smartqos_policy snapshot](#show-smartqos_policy-snapshot)
 
 #### add smartqos_policy file_system
 
@@ -43222,9 +43222,9 @@ The following table describes the parameter meanings.
 
 This section describes commands related to smartqos.
 
--   [add smartqos_policy host](add%20smartqos_policy%20host.htm#smartqos_add-smartqos_policy-host)
--   [remove smartqos_policy file_system](remove%20smartqos_policy%20file_system.htm#smartqos_remove-smartqos_policy-file_system)
--   [show smartqos_policy normalized_io_switch](show%20smartqos_policy%20normalized_io_switch.htm#smartqos_show-smartqos_policy-normalized_io_switch)
+-   [add smartqos_policy host](#add-smartqos_policy-host)
+-   [remove smartqos_policy file_system](#remove-smartqos_policy-file_system)
+-   [show smartqos_policy normalized_io_switch](#show-smartqos_policy-normalized_io_switch)
 
 #### add smartqos_policy host
 
@@ -43349,17 +43349,17 @@ The following table describes the parameter meanings.
 
 This section describes commands related to space.
 
--   [add protect_group lun](add%20protect_group%20lun.htm#space_add-protect_group-lun)
--   [change recycle_bin_policy](change%20recycle_bin_policy.htm#space_change-recycle_bin_policy)
--   [change protect_group](change%20protect_group.htm#space_change-protect_group)
--   [create protect_group](create%20protect_group.htm#space_create-protect_group)
--   [delete protect_group](delete%20protect_group.htm#space_delete-protect_group)
--   [delete recycle_bin_view](delete%20recycle_bin_view.htm#space_delete-recycle_bin_view)
--   [remove protect_group lun](remove%20protect_group%20lun.htm#space_remove-protect_group-lun)
--   [show lun protect_group](show%20lun%20protect_group.htm#space_show-lun-protect_group)
--   [show protect_group general](show%20protect_group%20general.htm#space_show-protect_group-general)
--   [show recycle_bin_policy general](show%20recycle_bin_policy%20general.htm#space_show-recycle_bin_policy-general)
--   [show recycle_bin_view general](show%20recycle_bin_view%20general.htm#space_show-recycle_bin_view-general)
+-   [add protect_group lun](#add-protect_group-lun)
+-   [change recycle_bin_policy](#change-recycle_bin_policy)
+-   [change protect_group](#change-protect_group)
+-   [create protect_group](#create-protect_group)
+-   [delete protect_group](#delete-protect_group)
+-   [delete recycle_bin_view](#delete-recycle_bin_view)
+-   [remove protect_group lun](#remove-protect_group-lun)
+-   [show lun protect_group](#show-lun-protect_group)
+-   [show protect_group general](#show-protect_group-general)
+-   [show recycle_bin_policy general](#show-recycle_bin_policy-general)
+-   [show recycle_bin_view general](#show-recycle_bin_view-general)
 
 #### add protect_group lun
 
@@ -43912,11 +43912,11 @@ The following table describes the parameter meanings.
 
 This section describes commands related to storage_pool.
 
--   [add storage_pool disk](add%20storage_pool%20disk.htm#storage_pool_add-storage_pool-disk)
--   [change storage_pool general](change%20storage_pool%20general.htm#storage_pool_change-storage_pool-general)
--   [create storage_pool](create%20storage_pool.htm#storage_pool_create-storage_pool)
--   [delete storage_pool](delete%20storage_pool.htm#storage_pool_delete-storage_pool)
--   [show storage_pool general](show%20storage_pool%20general.htm#storage_pool_show-storage_pool-general)
+-   [add storage_pool disk](#add-storage_pool-disk)
+-   [change storage_pool general](#change-storage_pool-general)
+-   [create storage_pool](#create-storage_pool)
+-   [delete storage_pool](#delete-storage_pool)
+-   [show storage_pool general](#show-storage_pool-general)
 
 #### add storage_pool disk
 
@@ -44329,11 +44329,11 @@ The following table describes the parameter meanings.
 
 This section describes commands related to vstore.
 
--   [change vstore info](change%20vstore%20info.htm#vstore_change-vstore-info)
--   [change vstore view](change%20vstore%20view.htm#vstore_change-vstore-view)
--   [create vstore general](create%20vstore%20general.htm#vstore_create-vstore-general)
--   [delete vstore general](delete%20vstore%20general.htm#vstore_delete-vstore-general)
--   [show vstore](show%20vstore.htm#vstore_show-vstore)
+-   [change vstore info](#change-vstore-info)
+-   [change vstore view](#change-vstore-view)
+-   [create vstore general](#create-vstore-general)
+-   [delete vstore general](#delete-vstore-general)
+-   [show vstore](#show-vstore)
 
 #### change vstore info
 
@@ -44673,52 +44673,52 @@ The following table describes the parameter meanings.
 
 Storage performance management commands are used to enable or disable system performance statistical functions and the querying function for storage performance statistics. Those commands can configure and query the following items: status of the performance statisticsswitch, performance statistical policies, performance statistics on ports, LUNs, links, hard disks, storage pools, snapshots, remote replication tasks, and hosts, performance file dumping, and performance statistics export.
 
--   [performance](performance.htm#performance_130)
+-   [performance](#performance)
 
 ### performance
 
 This section describes commands related to performance.
 
--   [change performance restore](change%20performance%20restore.htm#performance_change-performance-restore)
--   [change performance retention_strategy](change%20performance%20retention_strategy.htm#performance_change-performance-retention_strategy)
--   [change performance statistic_enabled](change%20performance%20statistic_enabled.htm#performance_change-performance-statistic_enabled)
--   [change performance strategy](change%20performance%20strategy.htm#performance_change-performance-strategy)
--   [change performance threshold](change%20performance%20threshold.htm#performance_change-performance-threshold)
--   [delete performance file](delete%20performance%20file.htm#performance_delete-performance-file)
--   [export performance file](export%20performance%20file.htm#performance_export-performance-file)
--   [show performance bond_port](show%20performance%20bond_port.htm#performance_show-performance-bond_port)
--   [show performance cifs_service](show%20performance%20cifs_service.htm#performance_show-performance-cifs_service)
--   [show performance consistency_group](show%20performance%20consistency_group.htm#performance_show-performance-consistency_group)
--   [show performance controller](show%20performance%20controller.htm#performance_show-performance-controller)
--   [show performance disk](show%20performance%20disk.htm#performance_show-performance-disk)
--   [show performance disk_domain](show%20performance%20disk_domain.htm#performance_show-performance-disk_domain)
--   [show performance elink](show%20performance%20elink.htm#performance_show-performance-elink)
--   [show performance file](show%20performance%20file.htm#performance_show-performance-file)
--   [show performance file_system](show%20performance%20file_system.htm#performance_show-performance-file_system)
--   [show performance host](show%20performance%20host.htm#performance_show-performance-host)
--   [show performance ip_port](show%20performance%20ip_port.htm#performance_show-performance-ip_port)
--   [show performance link](show%20performance%20link.htm#performance_show-performance-link)
--   [show performance logical_port](show%20performance%20logical_port.htm#performance_show-performance-logical_port)
--   [show performance lun](show%20performance%20lun.htm#performance_show-performance-lun)
--   [show performance lun_migration](show%20performance%20lun_migration.htm#performance_show-performance-lun_migration)
--   [show performance lun_priority](show%20performance%20lun_priority.htm#performance_show-performance-lun_priority)
--   [show performance mode](show%20performance%20mode.htm#performance_show-performance-mode)
--   [show performance nfs_service](show%20performance%20nfs_service.htm#performance_show-performance-nfs_service)
--   [show performance nfsv3](show%20performance%20nfsv3.htm#performance_show-performance-nfsv3)
--   [show performance nfsv41](show%20performance%20nfsv41.htm#performance_show-performance-nfsv41)
--   [show performance port](show%20performance%20port.htm#performance_show-performance-port)
--   [show performance remote_device](show%20performance%20remote_device.htm#performance_show-performance-remote_device)
--   [show performance remote_replication](show%20performance%20remote_replication.htm#performance_show-performance-remote_replication)
--   [show performance restore](show%20performance%20restore.htm#performance_show-performance-restore)
--   [show performance retention_strategy](show%20performance%20retention_strategy.htm#performance_show-performance-retention_strategy)
--   [show performance smartqos_policy](show%20performance%20smartqos_policy.htm#performance_show-performance-smartqos_policy)
--   [show performance smb2](show%20performance%20smb2.htm#performance_show-performance-smb2)
--   [show performance snapshot](show%20performance%20snapshot.htm#performance_show-performance-snapshot)
--   [show performance statistic_enabled](show%20performance%20statistic_enabled.htm#performance_show-performance-statistic_enabled)
--   [show performance storage_pool](show%20performance%20storage_pool.htm#performance_show-performance-storage_pool)
--   [show performance strategy](show%20performance%20strategy.htm#performance_show-performance-strategy)
--   [show performance system](show%20performance%20system.htm#performance_show-performance-system)
--   [show performance threshold](show%20performance%20threshold.htm#performance_show-performance-threshold)
+-   [change performance restore](#change-performance-restore)
+-   [change performance retention_strategy](#change-performance-retention_strategy)
+-   [change performance statistic_enabled](#change-performance-statistic_enabled)
+-   [change performance strategy](#change-performance-strategy)
+-   [change performance threshold](#change-performance-threshold)
+-   [delete performance file](#delete-performance-file)
+-   [export performance file](#export-performance-file)
+-   [show performance bond_port](#show-performance-bond_port)
+-   [show performance cifs_service](#show-performance-cifs_service)
+-   [show performance consistency_group](#show-performance-consistency_group)
+-   [show performance controller](#show-performance-controller)
+-   [show performance disk](#show-performance-disk)
+-   [show performance disk_domain](#show-performance-disk_domain)
+-   [show performance elink](#show-performance-elink)
+-   [show performance file](#show-performance-file)
+-   [show performance file_system](#show-performance-file_system)
+-   [show performance host](#show-performance-host)
+-   [show performance ip_port](#show-performance-ip_port)
+-   [show performance link](#show-performance-link)
+-   [show performance logical_port](#show-performance-logical_port)
+-   [show performance lun](#show-performance-lun)
+-   [show performance lun_migration](#show-performance-lun_migration)
+-   [show performance lun_priority](#show-performance-lun_priority)
+-   [show performance mode](#show-performance-mode)
+-   [show performance nfs_service](#show-performance-nfs_service)
+-   [show performance nfsv3](#show-performance-nfsv3)
+-   [show performance nfsv41](#show-performance-nfsv41)
+-   [show performance port](#show-performance-port)
+-   [show performance remote_device](#show-performance-remote_device)
+-   [show performance remote_replication](#show-performance-remote_replication)
+-   [show performance restore](#show-performance-restore)
+-   [show performance retention_strategy](#show-performance-retention_strategy)
+-   [show performance smartqos_policy](#show-performance-smartqos_policy)
+-   [show performance smb2](#show-performance-smb2)
+-   [show performance snapshot](#show-performance-snapshot)
+-   [show performance statistic_enabled](#show-performance-statistic_enabled)
+-   [show performance storage_pool](#show-performance-storage_pool)
+-   [show performance strategy](#show-performance-strategy)
+-   [show performance system](#show-performance-system)
+-   [show performance threshold](#show-performance-threshold)
 
 #### change performance restore
 
@@ -48025,22 +48025,22 @@ The following table describes the parameter meanings.
 
 Storage system management commands are used to configure and query the storage system's running information. The command functions include setting iSCSI initiators and targets, modifying Simple Network Management Protocol (SNMP) settings, upgrading the storage system, querying and modifying the common system settings such as the time and name.
 
--   [audit_strategy](audit_strategy.htm#audit_strategy_287)
--   [call_home](call_home.htm#call_home_378)
--   [dns_server](dns_server.htm#dns_server_155)
--   [isns](isns.htm#isns_151)
--   [snmp](snmp.htm#snmp_150)
--   [system](system.htm#system_153)
--   [target](target.htm#target_149)
--   [upgrade](upgrade.htm#upgrade_152)
--   [version](version.htm#version_154)
+-   [audit_strategy](#audit_strategy)
+-   [call_home](#call_home)
+-   [dns_server](#dns_server)
+-   [isns](#isns)
+-   [snmp](#snmp)
+-   [system](#system)
+-   [target](#target)
+-   [upgrade](#upgrade)
+-   [version](#version)
 
 ### audit_strategy
 
 This section describes commands related to audit_strategy.
 
--   [change audit_log_strategy](change%20audit_log_strategy.htm#audit_strategy_change-audit_log_strategy)
--   [show audit_log_strategy](show%20audit_log_strategy.htm#audit_strategy_show-audit_log_strategy)
+-   [change audit_log_strategy](#change-audit_log_strategy)
+-   [show audit_log_strategy](#show-audit_log_strategy)
 
 #### change audit_log_strategy
 
@@ -48212,22 +48212,22 @@ The following table describes the parameter meanings.
 
 This section describes commands related to call_home.
 
--   [add remote_support user_contact](add%20remote_support%20user_contact.htm#call_home_add-remote_support-user_contact)
--   [change call_home authenticate](change%20call_home%20authenticate.htm#call_home_change-call_home-authenticate)
--   [change call_home general](change%20call_home%20general.htm#call_home_change-call_home-general)
--   [change remote_support agreement](change%20remote_support%20agreement.htm#call_home_change-remote_support-agreement)
--   [change remote_support general](change%20remote_support%20general.htm#call_home_change-remote_support-general)
--   [change remote_support user_contact](change%20remote_support%20user_contact.htm#call_home_change-remote_support-user_contact)
--   [clear remote_support proxy_user_password](clear%20remote_support%20proxy_user_password.htm#call_home_clear-remote_support-proxy_user_password)
--   [import remote_support agreement](import%20remote_support%20agreement.htm#call_home_import-remote_support-agreement)
--   [import remote_support smtp_publickey](import%20remote_support%20smtp_publickey.htm#call_home_import-remote_support-smtp_publickey)
--   [remove remote_support user_contact](remove%20remote_support%20user_contact.htm#call_home_remove-remote_support-user_contact)
--   [show call_home general](show%20call_home%20general.htm#call_home_show-call_home-general)
--   [show remote_support agreement](show%20remote_support%20agreement.htm#call_home_show-remote_support-agreement)
--   [show remote_support general](show%20remote_support%20general.htm#call_home_show-remote_support-general)
--   [show remote_support technical_support_center](show%20remote_support%20technical_support_center.htm#call_home_show-remote_support-technical_support_center)
--   [show remote_support user_contact](show%20remote_support%20user_contact.htm#call_home_show-remote_support-user_contact)
--   [test call_home service](test%20call_home%20service.htm#call_home_test-call_home-service)
+-   [add remote_support user_contact](#add-remote_support-user_contact)
+-   [change call_home authenticate](#change-call_home-authenticate)
+-   [change call_home general](#change-call_home-general)
+-   [change remote_support agreement](#change-remote_support-agreement)
+-   [change remote_support general](#change-remote_support-general)
+-   [change remote_support user_contact](#change-remote_support-user_contact)
+-   [clear remote_support proxy_user_password](#clear-remote_support-proxy_user_password)
+-   [import remote_support agreement](#import-remote_support-agreement)
+-   [import remote_support smtp_publickey](#import-remote_support-smtp_publickey)
+-   [remove remote_support user_contact](#remove-remote_support-user_contact)
+-   [show call_home general](#show-call_home-general)
+-   [show remote_support agreement](#show-remote_support-agreement)
+-   [show remote_support general](#show-remote_support-general)
+-   [show remote_support technical_support_center](#show-remote_support-technical_support_center)
+-   [show remote_support user_contact](#show-remote_support-user_contact)
+-   [test call_home service](#test-call_home-service)
 
 #### add remote_support user_contact
 
@@ -48973,10 +48973,10 @@ The following table describes the parameter meanings.
 
 This section describes commands related to dns_server.
 
--   [change dns_server general](change%20dns_server%20general.htm#dns_server_change-dns_server-general)
--   [remove dns_server general](remove%20dns_server%20general.htm#dns_server_remove-dns_server-general)
--   [show dns_server general](show%20dns_server%20general.htm#dns_server_show-dns_server-general)
--   [test dns_server general](test%20dns_server%20general.htm#dns_server_test-dns_server-general)
+-   [change dns_server general](#change-dns_server-general)
+-   [remove dns_server general](#remove-dns_server-general)
+-   [show dns_server general](#show-dns_server-general)
+-   [test dns_server general](#test-dns_server-general)
 
 #### change dns_server general
 
@@ -49120,9 +49120,9 @@ None
 
 This section describes commands related to isns.
 
--   [change isns server_ip](change%20isns%20server_ip.htm#isns_change-isns-server_ip)
--   [delete isns server_ip](delete%20isns%20server_ip.htm#isns_delete-isns-server_ip)
--   [show isns server_ip](show%20isns%20server_ip.htm#isns_show-isns-server_ip)
+-   [change isns server_ip](#change-isns-server_ip)
+-   [delete isns server_ip](#delete-isns-server_ip)
+-   [show isns server_ip](#show-isns-server_ip)
 
 #### change isns server_ip
 
@@ -49235,23 +49235,23 @@ The following table describes the parameter meanings.
 
 This section describes commands related to snmp.
 
--   [add snmp cache](add%20snmp%20cache.htm#snmp_add-snmp-cache)
--   [add snmp usm](add%20snmp%20usm.htm#snmp_add-snmp-usm)
--   [change snmp cache](change%20snmp%20cache.htm#snmp_change-snmp-cache)
--   [change snmp community](change%20snmp%20community.htm#snmp_change-snmp-community)
--   [change snmp port](change%20snmp%20port.htm#snmp_change-snmp-port)
--   [change snmp safe_strategy](change%20snmp%20safe_strategy.htm#snmp_change-snmp-safe_strategy)
--   [change snmp usm](change%20snmp%20usm.htm#snmp_change-snmp-usm)
--   [change snmp version](change%20snmp%20version.htm#snmp_change-snmp-version)
--   [delete snmp usm](delete%20snmp%20usm.htm#snmp_delete-snmp-usm)
--   [remove snmp cache](remove%20snmp%20cache.htm#snmp_remove-snmp-cache)
--   [show snmp cache](show%20snmp%20cache.htm#snmp_show-snmp-cache)
--   [show snmp context_name](show%20snmp%20context_name.htm#snmp_show-snmp-context_name)
--   [show snmp engineid](show%20snmp%20engineid.htm#snmp_show-snmp-engineid)
--   [show snmp port](show%20snmp%20port.htm#snmp_show-snmp-port)
--   [show snmp safe_strategy](show%20snmp%20safe_strategy.htm#snmp_show-snmp-safe_strategy)
--   [show snmp usm](show%20snmp%20usm.htm#snmp_show-snmp-usm)
--   [show snmp version](show%20snmp%20version.htm#snmp_show-snmp-version)
+-   [add snmp cache](#add-snmp-cache)
+-   [add snmp usm](#add-snmp-usm)
+-   [change snmp cache](#change-snmp-cache)
+-   [change snmp community](#change-snmp-community)
+-   [change snmp port](#change-snmp-port)
+-   [change snmp safe_strategy](#change-snmp-safe_strategy)
+-   [change snmp usm](#change-snmp-usm)
+-   [change snmp version](#change-snmp-version)
+-   [delete snmp usm](#delete-snmp-usm)
+-   [remove snmp cache](#remove-snmp-cache)
+-   [show snmp cache](#show-snmp-cache)
+-   [show snmp context_name](#show-snmp-context_name)
+-   [show snmp engineid](#show-snmp-engineid)
+-   [show snmp port](#show-snmp-port)
+-   [show snmp safe_strategy](#show-snmp-safe_strategy)
+-   [show snmp usm](#show-snmp-usm)
+-   [show snmp version](#show-snmp-version)
 
 #### add snmp cache
 
@@ -50044,44 +50044,44 @@ The following table describes the parameter meanings.
 
 This section describes commands related to system.
 
--   [add ntp_server general](add%20ntp_server%20general.htm#system_add-ntp_server-general)
--   [change cli](change%20cli.htm#system_change-cli)
--   [change nas_service active](change%20nas_service%20active.htm#system_change-nas_service-active)
--   [change ntp_server config](change%20ntp_server%20config.htm#system_change-ntp_server-config)
--   [change system description](change%20system%20description.htm#system_change-system-description)
--   [change system dns_load_balance](change%20system%20dns_load_balance.htm#system_change-system-dns_load_balance)
--   [change system location](change%20system%20location.htm#system_change-system-location)
--   [change system media_scan](change%20system%20media_scan.htm#system_change-system-media_scan)
--   [change system name](change%20system%20name.htm#system_change-system-name)
--   [change system ntp](change%20system%20ntp.htm#system_change-system-ntp)
--   [change system server_port](change%20system%20server_port.htm#system_change-system-server_port)
--   [change system time](change%20system%20time.htm#system_change-system-time)
--   [change system timezone](change%20system%20timezone.htm#system_change-system-timezone)
--   [change system write_policy](change%20system%20write_policy.htm#system_change-system-write_policy)
--   [change user_session number](change%20user_session%20number.htm#system_change-user_session-number)
--   [delete container_image](delete%20container_image.htm#system_delete-container_image)
--   [delete helm_chart](delete%20helm_chart.htm#system_delete-helm_chart)
--   [import container_image](import%20container_image.htm#system_import-container_image)
--   [import helm_chart](import%20helm_chart.htm#system_import-helm_chart)
--   [poweroff system](poweroff%20system.htm#system_poweroff-system)
--   [reboot system](reboot%20system.htm#system_reboot-system)
--   [remove ntp_server general](remove%20ntp_server%20general.htm#system_remove-ntp_server-general)
--   [show bst enabled](show%20bst%20enabled.htm#system_show-bst-enabled)
--   [show container_image general](show%20container_image%20general.htm#system_show-container_image-general)
--   [show helm_chart general](show%20helm_chart%20general.htm#system_show-helm_chart-general)
--   [show ntp status](show%20ntp%20status.htm#system_show-ntp-status)
--   [show ntp_server general](show%20ntp_server%20general.htm#system_show-ntp_server-general)
--   [show system client_name](show%20system%20client_name.htm#system_show-system-client_name)
--   [show system dns_load_balance](show%20system%20dns_load_balance.htm#system_show-system-dns_load_balance)
--   [show system dst](show%20system%20dst.htm#system_show-system-dst)
--   [show system manufactory](show%20system%20manufactory.htm#system_show-system-manufactory)
--   [show system media_scan](show%20system%20media_scan.htm#system_show-system-media_scan)
--   [show system ntp](show%20system%20ntp.htm#system_show-system-ntp)
--   [show system power_consumption](show%20system%20power_consumption.htm#system_show-system-power_consumption)
--   [show system server_port](show%20system%20server_port.htm#system_show-system-server_port)
--   [show system timezone](show%20system%20timezone.htm#system_show-system-timezone)
--   [show system write_policy](show%20system%20write_policy.htm#system_show-system-write_policy)
--   [show user_session number](show%20user_session%20number.htm#system_show-user_session-number)
+-   [add ntp_server general](#add-ntp_server-general)
+-   [change cli](#change-cli)
+-   [change nas_service active](#change-nas_service-active)
+-   [change ntp_server config](#change-ntp_server-config)
+-   [change system description](#change-system-description)
+-   [change system dns_load_balance](#change-system-dns_load_balance)
+-   [change system location](#change-system-location)
+-   [change system media_scan](#change-system-media_scan)
+-   [change system name](#change-system-name)
+-   [change system ntp](#change-system-ntp)
+-   [change system server_port](#change-system-server_port)
+-   [change system time](#change-system-time)
+-   [change system timezone](#change-system-timezone)
+-   [change system write_policy](#change-system-write_policy)
+-   [change user_session number](#change-user_session-number)
+-   [delete container_image](#delete-container_image)
+-   [delete helm_chart](#delete-helm_chart)
+-   [import container_image](#import-container_image)
+-   [import helm_chart](#import-helm_chart)
+-   [poweroff system](#poweroff-system)
+-   [reboot system](#reboot-system)
+-   [remove ntp_server general](#remove-ntp_server-general)
+-   [show bst enabled](#show-bst-enabled)
+-   [show container_image general](#show-container_image-general)
+-   [show helm_chart general](#show-helm_chart-general)
+-   [show ntp status](#show-ntp-status)
+-   [show ntp_server general](#show-ntp_server-general)
+-   [show system client_name](#show-system-client_name)
+-   [show system dns_load_balance](#show-system-dns_load_balance)
+-   [show system dst](#show-system-dst)
+-   [show system manufactory](#show-system-manufactory)
+-   [show system media_scan](#show-system-media_scan)
+-   [show system ntp](#show-system-ntp)
+-   [show system power_consumption](#show-system-power_consumption)
+-   [show system server_port](#show-system-server_port)
+-   [show system timezone](#show-system-timezone)
+-   [show system write_policy](#show-system-write_policy)
+-   [show user_session number](#show-user_session-number)
 
 #### add ntp_server general
 
@@ -51648,12 +51648,12 @@ The following table describes the parameter meanings.
 
 This section describes commands related to target.
 
--   [change iscsi target](change%20iscsi%20target.htm#target_change-iscsi-target)
--   [change iscsi target_name](change%20iscsi%20target_name.htm#target_change-iscsi-target_name)
--   [create iscsi target](create%20iscsi%20target.htm#target_create-iscsi-target)
--   [delete iscsi target](delete%20iscsi%20target.htm#target_delete-iscsi-target)
--   [show iscsi target](show%20iscsi%20target.htm#target_show-iscsi-target)
--   [show iscsi target_name](show%20iscsi%20target_name.htm#target_show-iscsi-target_name)
+-   [change iscsi target](#change-iscsi-target)
+-   [change iscsi target_name](#change-iscsi-target_name)
+-   [create iscsi target](#create-iscsi-target)
+-   [delete iscsi target](#delete-iscsi-target)
+-   [show iscsi target](#show-iscsi-target)
+-   [show iscsi target_name](#show-iscsi-target_name)
 
 #### change iscsi target
 
@@ -51922,8 +51922,8 @@ The following table describes the parameter meanings.
 
 This section describes commands related to upgrade.
 
--   [show upgrade package](show%20upgrade%20package.htm#upgrade_show-upgrade-package)
--   [show upgrade redundant_link](show%20upgrade%20redundant_link.htm#upgrade_show-upgrade-redundant_link)
+-   [show upgrade package](#show-upgrade-package)
+-   [show upgrade redundant_link](#show-upgrade-redundant_link)
 
 #### show upgrade package
 
@@ -52019,7 +52019,7 @@ The following table describes the parameter meanings.
 
 This section describes commands related to version.
 
--   [show version all](show%20version%20all.htm#version_show-version-all)
+-   [show version all](#show-version-all)
 
 #### show version all
 
@@ -52090,26 +52090,26 @@ None
 
 The storage system provides multiple storage security functions including the access authentication for Lightweight Directory Application Protocol (LDAP) domains and the whitelist mechanism. This prevents unauthorized access to the storage system for improved system security.
 
--   [certificate](certificate.htm#certificate_136)
--   [certificate_management](certificate_management.htm#certificate_management_306)
--   [domain](domain.htm#domain_134)
--   [ldap](ldap.htm#ldap_137)
--   [security_rule](security_rule.htm#security_rule_135)
+-   [certificate](#certificate)
+-   [certificate_management](#certificate_management)
+-   [domain](#domain)
+-   [ldap](#ldap)
+-   [security_rule](#security_rule)
 
 ### certificate
 
 This section describes commands related to certificate.
 
--   [change certificate auto_update](change%20certificate%20auto_update.htm#certificate_change-certificate-auto_update)
--   [change certificate password](change%20certificate%20password.htm#certificate_change-certificate-password)
--   [change certificate prewarning_time](change%20certificate%20prewarning_time.htm#certificate_change-certificate-prewarning_time)
--   [delete certificate general](delete%20certificate%20general.htm#certificate_delete-certificate-general)
--   [delete crl general](delete%20crl%20general.htm#certificate_delete-crl-general)
--   [export certificate](export%20certificate.htm#certificate_export-certificate)
--   [import certificate](import%20certificate.htm#certificate_import-certificate)
--   [import crl file](import%20crl%20file.htm#certificate_import-crl-file)
--   [show certificate general](show%20certificate%20general.htm#certificate_show-certificate-general)
--   [show crl general](show%20crl%20general.htm#certificate_show-crl-general)
+-   [change certificate auto_update](#change-certificate-auto_update)
+-   [change certificate password](#change-certificate-password)
+-   [change certificate prewarning_time](#change-certificate-prewarning_time)
+-   [delete certificate general](#delete-certificate-general)
+-   [delete crl general](#delete-crl-general)
+-   [export certificate](#export-certificate)
+-   [import certificate](#import-certificate)
+-   [import crl file](#import-crl-file)
+-   [show certificate general](#show-certificate-general)
+-   [show crl general](#show-crl-general)
 
 #### change certificate auto_update
 
@@ -52693,9 +52693,9 @@ The following table describes the parameter meanings.
 
 This section describes commands related to certificate_management.
 
--   [change ca_server](change%20ca_server.htm#certificate_management_change-ca_server)
--   [show ca_server](show%20ca_server.htm#certificate_management_show-ca_server)
--   [test ca_server](test%20ca_server.htm#certificate_management_test-ca_server)
+-   [change ca_server](#change-ca_server)
+-   [show ca_server](#show-ca_server)
+-   [test ca_server](#test-ca_server)
 
 #### change ca_server
 
@@ -52819,30 +52819,30 @@ None
 
 This section describes commands related to domain.
 
--   [change domain ad_config](change%20domain%20ad_config.htm#domain_change-domain-ad_config)
--   [change domain ad_prefdc](change%20domain%20ad_prefdc.htm#domain_change-domain-ad_prefdc)
--   [change domain dns_config](change%20domain%20dns_config.htm#domain_change-domain-dns_config)
--   [change domain ldap_config](change%20domain%20ldap_config.htm#domain_change-domain-ldap_config)
--   [change domain ldap_schema](change%20domain%20ldap_schema.htm#domain_change-domain-ldap_schema)
--   [change domain monitor](change%20domain%20monitor.htm#domain_change-domain-monitor)
--   [change domain nis_config](change%20domain%20nis_config.htm#domain_change-domain-nis_config)
--   [delete domain dns](delete%20domain%20dns.htm#domain_delete-domain-dns)
--   [delete domain ldap](delete%20domain%20ldap.htm#domain_delete-domain-ldap)
--   [delete domain ldap_schema](delete%20domain%20ldap_schema.htm#domain_delete-domain-ldap_schema)
--   [delete domain nis](delete%20domain%20nis.htm#domain_delete-domain-nis)
--   [show domain ad](show%20domain%20ad.htm#domain_show-domain-ad)
--   [show domain ad_prefdc](show%20domain%20ad_prefdc.htm#domain_show-domain-ad_prefdc)
--   [show domain controller](show%20domain%20controller.htm#domain_show-domain-controller)
--   [show domain dns](show%20domain%20dns.htm#domain_show-domain-dns)
--   [show domain ldap](show%20domain%20ldap.htm#domain_show-domain-ldap)
--   [show domain ldap_schema](show%20domain%20ldap_schema.htm#domain_show-domain-ldap_schema)
--   [show domain monitor](show%20domain%20monitor.htm#domain_show-domain-monitor)
--   [show domain nis](show%20domain%20nis.htm#domain_show-domain-nis)
--   [show domain session](show%20domain%20session.htm#domain_show-domain-session)
--   [test domain ad](test%20domain%20ad.htm#domain_test-domain-ad)
--   [test domain dns](test%20domain%20dns.htm#domain_test-domain-dns)
--   [test domain ldap](test%20domain%20ldap.htm#domain_test-domain-ldap)
--   [test domain nis](test%20domain%20nis.htm#domain_test-domain-nis)
+-   [change domain ad_config](#change-domain-ad_config)
+-   [change domain ad_prefdc](#change-domain-ad_prefdc)
+-   [change domain dns_config](#change-domain-dns_config)
+-   [change domain ldap_config](#change-domain-ldap_config)
+-   [change domain ldap_schema](#change-domain-ldap_schema)
+-   [change domain monitor](#change-domain-monitor)
+-   [change domain nis_config](#change-domain-nis_config)
+-   [delete domain dns](#delete-domain-dns)
+-   [delete domain ldap](#delete-domain-ldap)
+-   [delete domain ldap_schema](#delete-domain-ldap_schema)
+-   [delete domain nis](#delete-domain-nis)
+-   [show domain ad](#show-domain-ad)
+-   [show domain ad_prefdc](#show-domain-ad_prefdc)
+-   [show domain controller](#show-domain-controller)
+-   [show domain dns](#show-domain-dns)
+-   [show domain ldap](#show-domain-ldap)
+-   [show domain ldap_schema](#show-domain-ldap_schema)
+-   [show domain monitor](#show-domain-monitor)
+-   [show domain nis](#show-domain-nis)
+-   [show domain session](#show-domain-session)
+-   [test domain ad](#test-domain-ad)
+-   [test domain dns](#test-domain-dns)
+-   [test domain ldap](#test-domain-ldap)
+-   [test domain nis](#test-domain-nis)
 
 #### change domain ad_config
 
@@ -54092,10 +54092,10 @@ None
 
 This section describes commands related to ldap.
 
--   [change ldap configuration](change%20ldap%20configuration.htm#ldap_change-ldap-configuration)
--   [create ldap configuration](create%20ldap%20configuration.htm#ldap_create-ldap-configuration)
--   [delete ldap configuration](delete%20ldap%20configuration.htm#ldap_delete-ldap-configuration)
--   [show ldap configuration](show%20ldap%20configuration.htm#ldap_show-ldap-configuration)
+-   [change ldap configuration](#change-ldap-configuration)
+-   [create ldap configuration](#create-ldap-configuration)
+-   [delete ldap configuration](#delete-ldap-configuration)
+-   [show ldap configuration](#show-ldap-configuration)
 
 #### change ldap configuration
 
@@ -54298,12 +54298,12 @@ The following table describes the parameter meanings.
 
 This section describes commands related to security_rule.
 
--   [add security_rule](add%20security_rule.htm#security_rule_add-security_rule)
--   [change nas security](change%20nas%20security.htm#security_rule_change-nas-security)
--   [change security_rule enabled](change%20security_rule%20enabled.htm#security_rule_change-security_rule-enabled)
--   [delete security_rule](delete%20security_rule.htm#security_rule_delete-security_rule)
--   [show nas security](show%20nas%20security.htm#security_rule_show-nas-security)
--   [show security_rule](show%20security_rule.htm#security_rule_show-security_rule)
+-   [add security_rule](#add-security_rule)
+-   [change nas security](#change-nas-security)
+-   [change security_rule enabled](#change-security_rule-enabled)
+-   [delete security_rule](#delete-security_rule)
+-   [show nas security](#show-nas-security)
+-   [show security_rule](#show-security_rule)
 
 #### add security_rule
 
@@ -54547,23 +54547,23 @@ None
 
 User management commands are used to create or delete users, change or initialize user passwords, force users to go offline, and query user information.
 
--   [role](role.htm#role_359)
--   [safe_strategy](safe_strategy.htm#safe_strategy_9)
--   [ssh](ssh.htm#ssh_361)
--   [sso](sso.htm#sso_406)
--   [user](user.htm#user_4)
--   [user_mode](user_mode.htm#user_mode_5)
+-   [role](#role)
+-   [safe_strategy](#safe_strategy)
+-   [ssh](#ssh)
+-   [sso](#sso)
+-   [user](#user)
+-   [user_mode](#user_mode)
 
 ### role
 
 This section describes commands related to role.
 
--   [add role permit](add%20role%20permit.htm#role_add-role-permit)
--   [change role general](change%20role%20general.htm#role_change-role-general)
--   [create role general](create%20role%20general.htm#role_create-role-general)
--   [delete role general](delete%20role%20general.htm#role_delete-role-general)
--   [remove role permit](remove%20role%20permit.htm#role_remove-role-permit)
--   [show role system](show%20role%20system.htm#role_show-role-system)
+-   [add role permit](#add-role-permit)
+-   [change role general](#change-role-general)
+-   [create role general](#create-role-general)
+-   [delete role general](#delete-role-general)
+-   [remove role permit](#remove-role-permit)
+-   [show role system](#show-role-system)
 
 #### add role permit
 
@@ -54809,14 +54809,14 @@ The following table describes the parameter meanings.
 
 This section describes commands related to safe_strategy.
 
--   [add weak_password](add%20weak_password.htm#safe_strategy_add-weak_password)
--   [change safe_strategy](change%20safe_strategy.htm#safe_strategy_change-safe_strategy)
--   [change weak_password_dictionary switch](change%20weak_password_dictionary%20switch.htm#safe_strategy_change-weak_password_dictionary-switch)
--   [delete weak_password](delete%20weak_password.htm#safe_strategy_delete-weak_password)
--   [import weak_password_dictionary](import%20weak_password_dictionary.htm#safe_strategy_import-weak_password_dictionary)
--   [show safe_strategy](show%20safe_strategy.htm#safe_strategy_show-safe_strategy)
--   [show weak_password_dictionary](show%20weak_password_dictionary.htm#safe_strategy_show-weak_password_dictionary)
--   [show weak_password_switch](show%20weak_password_switch.htm#safe_strategy_show-weak_password_switch)
+-   [add weak_password](#add-weak_password)
+-   [change safe_strategy](#change-safe_strategy)
+-   [change weak_password_dictionary switch](#change-weak_password_dictionary-switch)
+-   [delete weak_password](#delete-weak_password)
+-   [import weak_password_dictionary](#import-weak_password_dictionary)
+-   [show safe_strategy](#show-safe_strategy)
+-   [show weak_password_dictionary](#show-weak_password_dictionary)
+-   [show weak_password_switch](#show-weak_password_switch)
 
 #### add weak_password
 
@@ -55220,8 +55220,8 @@ The following table describes the parameter meanings.
 
 This section describes commands related to ssh.
 
--   [delete ssh known_hosts](delete%20ssh%20known_hosts.htm#ssh_delete-ssh-known_hosts)
--   [import ssh_host_key_file](import%20ssh_host_key_file.htm#ssh_import-ssh_host_key_file)
+-   [delete ssh known_hosts](#delete-ssh-known_hosts)
+-   [import ssh_host_key_file](#import-ssh_host_key_file)
 
 #### delete ssh known_hosts
 
@@ -55325,9 +55325,9 @@ None
 
 This section describes commands related to SSO.
 
--   [change sso general](change%20sso%20general.htm#sso_change-sso-general)
--   [show sso general](show%20sso%20general.htm#sso_show-sso-general)
--   [test sso general](test%20sso%20general.htm#sso_test-sso-general)
+-   [change sso general](#change-sso-general)
+-   [show sso general](#show-sso-general)
+-   [test sso general](#test-sso-general)
 
 #### change sso general
 
@@ -55448,15 +55448,15 @@ None
 
 This section describes commands related to user.
 
--   [change radius configuration](change%20radius%20configuration.htm#user_change-radius-configuration)
--   [change user](change%20user.htm#user_change-user)
--   [change user_lock](change%20user_lock.htm#user_change-user_lock)
--   [change user_unlock](change%20user_unlock.htm#user_change-user_unlock)
--   [create user](create%20user.htm#user_create-user)
--   [delete user](delete%20user.htm#user_delete-user)
--   [show host reachable](show%20host%20reachable.htm#user_show-host-reachable)
--   [show radius configuration](show%20radius%20configuration.htm#user_show-radius-configuration)
--   [test radius configuration](test%20radius%20configuration.htm#user_test-radius-configuration)
+-   [change radius configuration](#change-radius-configuration)
+-   [change user](#change-user)
+-   [change user_lock](#change-user_lock)
+-   [change user_unlock](#change-user_unlock)
+-   [create user](#create-user)
+-   [delete user](#delete-user)
+-   [show host reachable](#show-host-reachable)
+-   [show radius configuration](#show-radius-configuration)
+-   [test radius configuration](#test-radius-configuration)
 
 #### change radius configuration
 
@@ -55944,8 +55944,8 @@ None
 
 This section describes commands related to user_mode.
 
--   [change user_mode enabled](change%20user_mode%20enabled.htm#user_mode_change-user_mode-enabled)
--   [show user_mode enabled](show%20user_mode%20enabled.htm#user_mode_show-user_mode-enabled)
+-   [change user_mode enabled](#change-user_mode-enabled)
+-   [show user_mode enabled](#show-user_mode-enabled)
 
 #### change user_mode enabled
 
@@ -56349,17 +56349,17 @@ Table 13-1 High-risk command list
 
 If a tough or critical problem persists in routine maintenance or troubleshooting, contact Huawei for technical support.
 
--   [Preparations for Contacting Huawei](Preparations%20for%20Contacting%20Huawei.htm#EN-US_TOPIC_0000001088975686)
--   [How to Use the Document](How%20to%20Use%20the%20Document.htm#EN-US_TOPIC_0000001135877515)
--   [How to Obtain Help from Website](How%20to%20Obtain%20Help%20from%20Website.htm#EN-US_TOPIC_0000001088847192)
--   [Ways to Contact Huawei](Ways%20to%20Contact%20Huawei.htm#EN-US_TOPIC_0000001088975682)
+-   [Preparations for Contacting Huawei](#preparations-for-contacting-huawei)
+-   [How to Use the Document](#how-to-use-the-document)
+-   [How to Obtain Help from Website](#how-to-obtain-help-from-website)
+-   [Ways to Contact Huawei](#ways-to-contact-huawei)
 
 ### Preparations for Contacting Huawei
 
 To better solve the problem, you need to collect troubleshooting information and make debugging preparations before contacting Huawei.
 
--   [Collecting Troubleshooting Information](Collecting%20Troubleshooting%20Information.htm#EN-US_TOPIC_0000001089135346)
--   [Making Debugging Preparations](Making%20Debugging%20Preparations.htm#EN-US_TOPIC_0000001088975688)
+-   [Collecting Troubleshooting Information](#collecting-troubleshooting-information)
+-   [Making Debugging Preparations](#making-debugging-preparations)
 
 #### Collecting Troubleshooting Information
 
