@@ -114,7 +114,7 @@ Storage space management commands functionally involve the entire process of con
 - change lun_clone split: start and stop splitting a clone pair or modify the split speed of a clone pair.
 - change lun_consistency_group general: modify the properties of a LUN consistency group.
 - change lun_takeover disable_switch_path: forbid the specified LUN's paths to be switched back to the source array and to allow the LUN to be used as the source LUN for online takeover.
-- change lun_takeover enhance_switch: The **change lun_takeover enhance_switch** is used to set the enhanced masquerading switch of a specified LUN.
+- change lun_takeover enhance_switch: set the enhanced masquerading switch of a specified LUN.
 - change lun_takeover finish_switch_path: confirm that the host paths of the specified LUN have been switched to the paths between the host and the target disk array.
 - change lun_workload_type general: modify the settings of an application type, including the name, I/O size, and so on.
 - change workload_type general: modify parameters of an application type, including "name", "io_size", and so on.

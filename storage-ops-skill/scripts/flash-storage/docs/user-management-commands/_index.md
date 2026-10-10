@@ -7,7 +7,7 @@ User management commands are used to create or delete users, change or initializ
 - add role permit: add permissions to roles.
 - change role general: modify basic information about roles.
 - create role general: create roles.
-- delete role general: The **delete role general** command to used to delete roles.
+- delete role general: delete roles.
 - remove role permit: remove role permissions.
 - show role system: query information about system roles.
 

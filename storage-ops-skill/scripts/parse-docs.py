@@ -30,8 +30,11 @@ EXCLUDED_TOPICS = {"About This Document", "CLI Use Guidance"}
 
 # Redundant prefix removed from command function descriptions,
 # e.g. 'The **create lun** command is used to create LUNs.' -> 'create LUNs.'
+# The word 'command' is optional (some entries omit it), and a few source
+# entries contain typos like 'command to used to' instead of 'command is used to'.
 _FUNCTION_PREFIX_RE = re.compile(
-    r"^The\s+\*{0,2}[^*]+\*{0,2}\s+command\s+is\s+used\s+to\s+", re.IGNORECASE
+    r"^The\s+\*{0,2}[^*]+\*{0,2}\s+(?:command\s+)?(?:is|to)?\s*used\s+to\s+",
+    re.IGNORECASE,
 )
 
 _LINK_RE = re.compile(r"\[([^\]]+)\]\([^)]*\)")
