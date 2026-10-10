@@ -28,7 +28,7 @@ export STORAGE_TIMEOUT=60                  # command timeout in seconds (default
 Then run commands without putting any secret on the command line:
 
 ```bash
-python3 scripts/flash-storage/cli.py "cmd1\ncmd2\ncmd3"
+python3 scripts/flash-storage/cli.py "show system general\nshow storage_pool general"
 ```
 
 ## Command Line Interface
@@ -36,7 +36,7 @@ python3 scripts/flash-storage/cli.py "cmd1\ncmd2\ncmd3"
 Run `scripts/flash-storage/cli.py` to execute one or more commands on the device:
 
 ```bash
-python3 scripts/flash-storage/cli.py --address <IP> --username <user> "cmd1\ncmd2\ncmd3"
+python3 scripts/flash-storage/cli.py --address <IP> --username <user> "show system general\nshow storage_pool general"
 ```
 
 ### Arguments
@@ -55,7 +55,7 @@ python3 scripts/flash-storage/cli.py --address <IP> --username <user> "cmd1\ncmd
 
 ### Notes
 
-- Batch commands are separated by the literal two-character sequence `\n` (backslash-n). Pass them inside double quotes, e.g. `"show version\nshow alarm"`, or build the string with `printf`.
+- Batch commands are separated by the literal two-character sequence `\n` (backslash-n). Pass them inside double quotes, e.g. `"show system general\nshow storage_pool general"`, or build the string with `printf`.
 - The CLI connects via SSH, enters the device CLI, executes the commands sequentially, and prints the device output.
 
 > Note: The command-line help is available in English only. If the user asks in another language, **extract the English keywords** of the intended commands (e.g., translate "创建LUN" → `create lun`) and search the help with those English keywords.
@@ -70,7 +70,7 @@ python3 scripts/flash-storage/cli.py --address <IP> --username <user> "cmd1\ncmd
    If the user's request is not in English, extract the English keywords first and use them with the help parameters.
 2. **Assemble the batch commands**: Build the batch command string, **one command per line**, joined with `\n`.
 3. **Risk check and confirmation**: Determine whether any command is a risky command (see [Risk Commands](#risk-commands)). Show the full command list that is about to run, mark the risky ones, and ask the user whether to continue.
-4. **Execute**: After the user confirms, run `python3 scripts/flash-storage/cli.py "cmd1\ncmd2\n..."` and capture the output.
+4. **Execute**: After the user confirms, run `python3 scripts/flash-storage/cli.py "show system general\nshow storage_pool general"` and capture the output.
 5. **Summarize**: Summarize the execution results based on the output (success/failure per command, returned data, task status).
 6. **Suggest next steps**: Recommend the next actions based on the results and the available command help.
 
