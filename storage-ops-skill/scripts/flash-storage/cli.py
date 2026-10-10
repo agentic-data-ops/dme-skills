@@ -248,17 +248,17 @@ def _parse_args(argv: List[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--list-topics",
         action="store_true",
-        help="list all topics (no device connection needed)",
+        help="list all command topics (command help, no device connection needed)",
     )
     parser.add_argument(
         "--list-commands",
         metavar="GROUP",
-        help="list the commands of a command group, e.g. base (no device connection needed)",
+        help="list the commands of a command group, e.g. base (command help, no device connection needed)",
     )
     parser.add_argument(
         "--show-command-help",
         metavar="COMMAND",
-        help="show the help of a command, e.g. \"create lun\" (no device connection needed)",
+        help="show the command help (Format, Parameters, Example) of a command, e.g. \"create lun\" (no device connection needed)",
     )
     parser.add_argument(
         "commands",

@@ -48,6 +48,9 @@ python3 scripts/flash-storage/cli.py --address <IP> --username <user> "cmd1\ncmd
 | `--password` | Login password (prefer environment variable) | `STORAGE_PASSWORD` |
 | `--timeout` | Command timeout in seconds, default 60 | `STORAGE_TIMEOUT` |
 | `--logfile` | Write the interaction log to a file (for debugging) | — |
+| `--list-topics` | List all command topics (command help, no device connection needed) | — |
+| `--list-commands` | List the commands of a command group, e.g. `base` (command help, no device connection needed) | — |
+| `--show-command-help` | Show the help of a command, e.g. `"create lun"` (no device connection needed) | — |
 | `commands` | Positional argument: batch commands separated by literal `\n`, **one command per line** | — |
 
 ### Notes
@@ -59,7 +62,12 @@ python3 scripts/flash-storage/cli.py --address <IP> --username <user> "cmd1\ncmd
 
 ## Standard Workflow
 
-1. **Query command help**: Obtain the command help (Format, Parameters, Example) provided by the CLI script. If the user's request is not in English, extract the English keywords first and use them to look up the help.
+1. **Query command help**: Use the CLI help parameters to look up command help before executing:
+   - `--list-topics` — browse all command topics
+   - `--list-commands <group>` — list the commands of a command group (e.g. `base`, `lun`, `user`)
+   - `--show-command-help <command>` — view the full help (Format, Parameters, Example) of a command
+   
+   If the user's request is not in English, extract the English keywords first and use them with the help parameters.
 2. **Assemble the batch commands**: Build the batch command string, **one command per line**, joined with `\n`.
 3. **Risk check and confirmation**: Determine whether any command is a risky command (see [Risk Commands](#risk-commands)). Show the full command list that is about to run, mark the risky ones, and ask the user whether to continue.
 4. **Execute**: After the user confirms, run `python3 scripts/flash-storage/cli.py "cmd1\ncmd2\n..."` and capture the output.
