@@ -56,9 +56,50 @@ flash-storage-cli --address <IP> --username <user> "show system general\nshow st
 | `--accept-risk` | Accept high-risk commands: print warnings and continue instead of rejecting execution | `STORAGE_ACCEPT_RISK=true` |
 | `--dry-run` | Validate commands (existence, required parameters, risk) without executing them or connecting to the device | — |
 | `--list-topics` | List all command topics (command help, no device connection needed) | — |
-| `--list-commands` | List the commands of a command group, e.g. `base` (command help, no device connection needed) | — |
-| `--show-command-help` | Show the help of a command, e.g. `"create lun"` (no device connection needed) | — |
+| `--list-commands GROUP[,GROUP...]` | List the commands of one or more comma-separated command groups, e.g. `base,lun` (command help, no device connection needed) | — |
+| `--show-command-help COMMAND[,COMMAND...]` | Show the help of one or more comma-separated commands, e.g. `"create lun,delete lun"` (no device connection needed) | — |
 | `commands` | Positional argument: batch commands separated by literal `\n`, **one command per line** | — |
+
+The full command-line help (same as `flash-storage-cli --help`):
+
+```
+usage: flash-storage-cli [-h] [--address ADDRESS] [--username USERNAME]
+                         [--password PASSWORD] [--timeout TIMEOUT]
+                         [--logfile LOGFILE] [--accept-risk] [--dry-run]
+                         [--list-topics] [--list-commands GROUP[,GROUP...]]
+                         [--show-command-help COMMAND[,COMMAND...]]
+                         [commands]
+
+SSH login to a Huawei flash storage device CLI and execute commands
+
+positional arguments:
+  commands              commands to execute (multiple commands separated by
+                        \n)
+
+options:
+  -h, --help            show this help message and exit
+  --address ADDRESS     device IP address (env STORAGE_ADDRESS)
+  --username USERNAME   login username (env STORAGE_USERNAME)
+  --password PASSWORD   login password (env STORAGE_PASSWORD; prefer passing
+                        it via the environment)
+  --timeout TIMEOUT     command timeout in seconds, default 60 (env
+                        STORAGE_TIMEOUT)
+  --logfile LOGFILE     write the interaction log to this file (for debugging)
+  --accept-risk         accept high-risk commands: print warnings and continue
+                        instead of rejecting (env STORAGE_ACCEPT_RISK=true)
+  --dry-run             validate commands (existence, required parameters,
+                        risk) without executing them
+  --list-topics         list all command topics (command help, no device
+                        connection needed)
+  --list-commands GROUP[,GROUP...]
+                        list the commands of one or more command groups,
+                        comma-separated, e.g. base,lun (command help, no
+                        device connection needed)
+  --show-command-help COMMAND[,COMMAND...]
+                        show the command help (Format, Parameters, Example) of
+                        one or more commands, comma-separated, e.g. "create
+                        lun,delete lun" (no device connection needed)
+```
 
 ### Notes
 
@@ -135,8 +176,8 @@ Example: the `change user user_name=? { level=? \| action=? }` command implies t
 
 1. **Query command help**: Use the CLI help parameters to look up command help before executing:
    - `--list-topics` — browse all command topics
-   - `--list-commands <group>` — list the commands of a command group (e.g. `base`, `lun`, `user`)
-   - `--show-command-help <command>` — view the full help (Format, Parameters, Example) of a command
+   - `--list-commands <group>[,<group>...]` — list the commands of one or more comma-separated command groups (e.g. `base,lun,user`)
+   - `--show-command-help <command>[,<command>...]` — view the full help (Format, Parameters, Example) of one or more comma-separated commands
    
    If the user's request is not in English, extract the English keywords first and use them with the help parameters.
 2. **Assemble the batch commands**: Build the batch command string, **one command per line**, joined with `\n`.

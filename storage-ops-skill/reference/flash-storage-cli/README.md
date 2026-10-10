@@ -65,8 +65,8 @@ flash-storage-cli [options] [commands]
 | `--accept-risk` | Accept high-risk commands: print warnings and continue instead of rejecting. Env: `STORAGE_ACCEPT_RISK=true`. |
 | `--dry-run` | Validate commands (existence, required parameters, risk) without executing them. |
 | `--list-topics` | List all command topics (offline help, no device connection). |
-| `--list-commands GROUP` | List the commands of a topic, e.g. `base` (offline help). |
-| `--show-command-help COMMAND` | Show the help of a command, e.g. `"create lun"` (offline help). |
+| `--list-commands GROUP[,GROUP...]` | List the commands of one or more comma-separated groups, e.g. `base,lun` (offline help). |
+| `--show-command-help COMMAND[,COMMAND...]` | Show the help of one or more comma-separated commands, e.g. `"create lun,delete lun"` (offline help). |
 | `commands` | Commands to execute, multiple commands separated by `\n`. |
 
 Credentials are required unless one of the offline help options (`--list-topics`, `--list-commands`, `--show-command-help`) or `--dry-run` is used.
@@ -132,9 +132,13 @@ Browse offline command help (no device connection required):
 ```bash
 flash-storage-cli --list-topics
 flash-storage-cli --list-commands base
+flash-storage-cli --list-commands base,lun
 flash-storage-cli --show-command-help "show system general"
-flash-storage-cli --show-command-help "show storage_pool general"
+flash-storage-cli --show-command-help "show system general,show storage_pool general"
+flash-storage-cli --show-command-help "create lun,delete lun"
 ```
+
+`--list-commands` and `--show-command-help` accept multiple comma-separated values. With more than one value, each result is printed under a `=== <item> ===` heading; an item that fails (unknown group/command) is reported individually without interrupting the others.
 
 ## Disclaimer
 
