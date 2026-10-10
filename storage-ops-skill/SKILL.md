@@ -1,18 +1,23 @@
 ---
 name: storage-ops-skill
-description: Huawei storage device operations skill, currently supporting Huawei all-flash storage devices. Executes CLI commands on the device via SSH (scripts/flash-storage/cli.py).
+description: Huawei storage device operations skill, currently supporting Huawei all-flash storage devices. Executes CLI commands on the device via SSH using the flash-storage-cli command.
 ---
 
 # Huawei Storage Operations Skill
 
-Huawei storage device operations skill. It currently supports **Huawei all-flash (flash) storage devices** (e.g., OceanStor Dorado V6 series) by logging in to the device CLI over SSH and executing commands through `scripts/flash-storage/cli.py`.
+Huawei storage device operations skill. It currently supports **Huawei all-flash (flash) storage devices** (e.g., OceanStor Dorado V6 series) by logging in to the device CLI over SSH and executing commands through the `flash-storage-cli` command.
 
 ## Prerequisites
 
-- Python 3 with the `paramiko` library installed: `pip install paramiko`
-- Network reachability from the execution host to the storage device management port (SSH)
+- Python 3 with the `flash-storage-cli` package installed:
 
-> Note: The CLI is implemented purely in Python (paramiko) and works on both Windows and Linux — no system `expect` command is required.
+  ```bash
+  pip install git+https://github.com/agentic-data-ops/flash-storage-cli.git
+  ```
+
+  This installs the `flash-storage-cli` console command (together with the bundled command help docs and the high-risk command list).
+
+- Network reachability from the execution host to the storage device management port (SSH)
 
 ## Setting Environment Variables
 
@@ -28,15 +33,15 @@ export STORAGE_TIMEOUT=60                  # command timeout in seconds (default
 Then run commands without putting any secret on the command line:
 
 ```bash
-python3 scripts/flash-storage/cli.py "show system general\nshow storage_pool general"
+flash-storage-cli "show system general\nshow storage_pool general"
 ```
 
 ## Command Line Interface
 
-Run `scripts/flash-storage/cli.py` to execute one or more commands on the device:
+Run `flash-storage-cli` to execute one or more commands on the device:
 
 ```bash
-python3 scripts/flash-storage/cli.py --address <IP> --username <user> "show system general\nshow storage_pool general"
+flash-storage-cli --address <IP> --username <user> "show system general\nshow storage_pool general"
 ```
 
 ### Arguments
@@ -48,6 +53,8 @@ python3 scripts/flash-storage/cli.py --address <IP> --username <user> "show syst
 | `--password` | Login password (prefer environment variable) | `STORAGE_PASSWORD` |
 | `--timeout` | Command timeout in seconds, default 60 | `STORAGE_TIMEOUT` |
 | `--logfile` | Write the interaction log to a file (for debugging) | — |
+| `--accept-risk` | Accept high-risk commands: print warnings and continue instead of rejecting execution | `STORAGE_ACCEPT_RISK=true` |
+| `--dry-run` | Validate commands (existence, required parameters, risk) without executing them or connecting to the device | — |
 | `--list-topics` | List all command topics (command help, no device connection needed) | — |
 | `--list-commands` | List the commands of a command group, e.g. `base` (command help, no device connection needed) | — |
 | `--show-command-help` | Show the help of a command, e.g. `"create lun"` (no device connection needed) | — |
@@ -57,20 +64,19 @@ python3 scripts/flash-storage/cli.py --address <IP> --username <user> "show syst
 
 - Batch commands are separated by the literal two-character sequence `\n` (backslash-n). Pass them inside double quotes, e.g. `"show system general\nshow storage_pool general"`, or build the string with `printf`.
 - The CLI connects via SSH, enters the device CLI, executes the commands sequentially, and prints the device output.
+- `--dry-run` is a pure offline validation: it reports whether each command exists, whether required parameters are missing, and whether any command hits the high-risk command list — no device connection is made.
 
 > Note: The command-line help is available in English only. If the user asks in another language, **extract the English keywords** of the intended commands (e.g., translate "创建LUN" → `create lun`) and search the help with those English keywords.
 
 ## Reference Document Key Sections
 
-`reference/flash-storage/command-reference.md` — OceanStor Flash Storage Command Reference. Key sections for command-line usage:
+`reference/flash-storage-cli/README.md` — the flash-storage-cli project README. Key sections for command-line usage:
 
 | Section | Description |
 |---|---|
-| CLI Escape Characters | Lists the characters that have special meanings on the CLI and must be escaped before being entered, together with their escaped forms. |
-| Column Filtering Command | Filters columns off a command output: `show xxx\|filterColumn { exclude \| include } columnList=?`. |
-| Row Filtering Command | Filters rows off a command output: `show xxx \|filterRow column=? predict=? value=? [logicOp=?]`. |
-| Glossary | Defines the terminology used in this document. |
-| Acronyms and Abbreviations | Lists the acronyms and abbreviations used in this document. |
+| Installation | How to install the `flash-storage-cli` package with pip from the Git repository. |
+| Command-line options | The full list of `flash-storage-cli` options and their meanings. |
+| Examples | Sample invocations: single command, multiple commands, environment-variable based, and offline command help. |
 
 ## Standard Workflow
 
@@ -81,21 +87,15 @@ python3 scripts/flash-storage/cli.py --address <IP> --username <user> "show syst
    
    If the user's request is not in English, extract the English keywords first and use them with the help parameters.
 2. **Assemble the batch commands**: Build the batch command string, **one command per line**, joined with `\n`.
-3. **Risk check and confirmation**: Determine whether any command is a risky command (see [Risk Commands](#risk-commands)). Show the full command list that is about to run, mark the risky ones, and ask the user whether to continue.
-4. **Execute**: After the user confirms, run `python3 scripts/flash-storage/cli.py "show system general\nshow storage_pool general"` and capture the output.
-5. **Summarize**: Summarize the execution results based on the output (success/failure per command, returned data, task status).
-6. **Suggest next steps**: Recommend the next actions based on the results and the available command help.
-
-## Risk Commands
-
-A command is considered **risky** if:
-
-- It is a high-risk operation (e.g., destructive or irreversible operations listed in the device's high-risk command list), or
-- It is a change-type operation: `create`, `delete`, `modify`, `add`, `remove`, `change`, `set`, `reset`, `clear`, `enable`, `disable`, etc.
-
-Read-only query commands (`show`, `display`, `list`, `get`, `query`) are generally **not** risky and may be executed without confirmation when the user has already asked for the information.
-
-Before executing any batch that contains risky commands, present the full command list with the risky commands annotated, and ask the user for explicit confirmation.
+3. **Validate with `--dry-run`**: Run `flash-storage-cli --dry-run "<commands>"` to check every command offline. The output is an aligned table with columns `[#]`, `valid` (`OK`/`FAIL`), `risk` (`LOW`/`HIGH`) and `command`:
+   - `valid = FAIL` means the command does not exist or required parameters are missing (the missing ones are listed under the row),
+   - `risk = HIGH` means the command hits the high-risk command list (otherwise `LOW`).
+   No device connection is made at this step.
+4. **Fix invalid commands**: If the dry-run reports a command as `FAIL`, look up its help with `--show-command-help` (e.g. `flash-storage-cli --show-command-help "create lun"`), determine the required parameters, and rebuild the command. Repeat the dry-run until every command is `OK`.
+5. **Risk confirmation**: If the dry-run output shows any `HIGH` risk and ends with "Contains HIGH-risk command(s). Present the risky commands to the user and ask whether to accept the risk.
+6. **Execute**: After the user confirms, run `flash-storage-cli "show system general\nshow storage_pool general"` and capture the output. The same dry-run validation runs again before execution: it stops if a command is invalid, and it stops on `HIGH` risk unless `--accept-risk` is given. If the user accepted the risk, append `--accept-risk` to the execution command; otherwise do not execute the risky batch.
+7. **Summarize**: Summarize the execution results based on the output (success/failure per command, returned data, task status).
+8. **Suggest next steps**: Recommend the next actions based on the results and the available command help.
 
 ## Notes
 
