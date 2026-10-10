@@ -30,7 +30,7 @@ DOCS_DIR = os.path.join(
 # Used when generating _topics.md and <group>/_index.md.
 _DESC_PATH = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
-    "_group_descriptions.json",
+    "config", "command-group-description.json",
 )
 with open(_DESC_PATH, encoding="utf-8") as _f:
     GROUP_DESCRIPTIONS: Dict[str, str] = json.load(_f)
