@@ -2,8 +2,6 @@
 
 Manage interface modules, including power on/off and configuration.
 
-Manage interface modules, including power on/off and configuration.
-
 | command | function |
 |---|---|
 | change interface_module | The "**change interface_module**" command is used to configure an interface module mode. |

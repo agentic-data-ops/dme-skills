@@ -2,8 +2,6 @@
 
 Manage the NDMP service for tape backup, including configuration, users, and service restart.
 
-Manage the NDMP service for tape backup, including configuration, users, and service restart.
-
 | command | function |
 |---|---|
 | change service ndmp_config | modify NDMP configurations. |

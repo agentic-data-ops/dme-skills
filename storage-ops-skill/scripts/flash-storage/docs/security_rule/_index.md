@@ -2,8 +2,6 @@
 
 Manage security rules and NAS security settings.
 
-Manage security rules and NAS security settings.
-
 | command | function |
 |---|---|
 | add security_rule | add a security rule to control the maintenance terminals that attempt to access the storage system. |

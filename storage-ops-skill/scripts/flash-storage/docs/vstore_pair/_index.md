@@ -2,8 +2,6 @@
 
 Manage vStore pairs for HyperMetro and remote replication between vStores.
 
-Manage vStore pairs for HyperMetro and remote replication between vStores.
-
 | command | function |
 |---|---|
 | create vstore_pair general | create a vStore pair. |

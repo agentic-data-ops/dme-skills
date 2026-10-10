@@ -2,8 +2,6 @@
 
 Configure and query CIFS file sharing services and connections.
 
-Configure and query CIFS file sharing services and connections.
-
 | command | function |
 |---|---|
 | change service cifs | modify the settings of the CIFS share service. |

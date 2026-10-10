@@ -2,8 +2,6 @@
 
 Manage support and maintenance functions, including user modes, diagnostics, and protocol services.
 
-Manage support and maintenance functions, including user modes, diagnostics, and protocol services.
-
 | command | function |
 |---|---|
 | change dsm copy_num | modify the number of DSM copies. |

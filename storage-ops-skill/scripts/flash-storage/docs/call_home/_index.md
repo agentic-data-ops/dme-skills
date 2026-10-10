@@ -2,8 +2,6 @@
 
 Manage Call Home and remote support services, including user contacts and support agreements.
 
-Manage Call Home and remote support services, including user contacts and support agreements.
-
 | command | function |
 |---|---|
 | add remote_support user_contact | add the contacts of eService. |

@@ -2,8 +2,6 @@
 
 Manage storage pools, including creation, disk addition, and modification.
 
-Manage storage pools, including creation, disk addition, and modification.
-
 | command | function |
 |---|---|
 | add storage_pool disk | add disks to a storage pool. |

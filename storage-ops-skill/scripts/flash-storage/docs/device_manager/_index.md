@@ -2,8 +2,6 @@
 
 Configure device manager settings, including cipher suites, web configuration, and REST message return types.
 
-Configure device manager settings, including cipher suites, web configuration, and REST message return types.
-
 | command | function |
 |---|---|
 | change devicemanager ciphersuite | configure the OpenSSL cipher suite used by the DeviceManager service. |

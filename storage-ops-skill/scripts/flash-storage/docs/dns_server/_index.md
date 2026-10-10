@@ -2,8 +2,6 @@
 
 Configure and query DNS server settings.
 
-Configure and query DNS server settings.
-
 | command | function |
 |---|---|
 | change dns_server general | modify information about the management DNS server of a disk array. |

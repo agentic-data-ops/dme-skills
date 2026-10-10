@@ -2,8 +2,6 @@
 
 Manage HyperCopy clone relationships and consistency groups for local data replication.
 
-Manage HyperCopy clone relationships and consistency groups for local data replication.
-
 | command | function |
 |---|---|
 | add clone_consistency_group clone | add clone pairs to a specified clone consistency group. Use this command if consistency management is required for clone pairs. |

@@ -2,8 +2,6 @@
 
 Manage logical ports, including creation, routes, failover, and VLAN configuration.
 
-Manage logical ports, including creation, routes, failover, and VLAN configuration.
-
 | command | function |
 |---|---|
 | add logical_port ipv4_route | add an IPv4 route for the logical port. |

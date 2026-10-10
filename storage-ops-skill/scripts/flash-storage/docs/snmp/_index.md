@@ -2,8 +2,6 @@
 
 Manage SNMP settings, including communities, users, versions, and ports.
 
-Manage SNMP settings, including communities, users, versions, and ports.
-
 | command | function |
 |---|---|
 | add snmp cache | add an SNMP cache object. No cache object is added by default. |

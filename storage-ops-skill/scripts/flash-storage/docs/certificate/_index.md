@@ -2,8 +2,6 @@
 
 Manage device certificates and certificate revocation lists (CRLs), including import, export, and automatic update.
 
-Manage device certificates and certificate revocation lists (CRLs), including import, export, and automatic update.
-
 | command | function |
 |---|---|
 | change certificate auto_update | modify the automatic certificate update configuration. |

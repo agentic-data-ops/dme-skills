@@ -2,8 +2,6 @@
 
 Manage resource users and identity mapping (Unix/Windows users, groups, and identity mapping rules).
 
-Manage resource users and identity mapping (Unix/Windows users, groups, and identity mapping rules).
-
 | command | function |
 |---|---|
 | add identity_mapping rule | add user mapping rules. |

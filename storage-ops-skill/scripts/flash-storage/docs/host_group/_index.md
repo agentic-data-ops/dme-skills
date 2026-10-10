@@ -2,8 +2,6 @@
 
 Manage host groups, including adding or removing hosts and querying mappings.
 
-Manage host groups, including adding or removing hosts and querying mappings.
-
 | command | function |
 |---|---|
 | add host_group host | add hosts to a host group. |

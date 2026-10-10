@@ -2,8 +2,6 @@
 
 Manage HyperMetro domains, including quorum servers and domain creation.
 
-Manage HyperMetro domains, including quorum servers and domain creation.
-
 | command | function |
 |---|---|
 | add hyper_metro_domain quorum_server | add a quorum server to HyperMetro domains. |

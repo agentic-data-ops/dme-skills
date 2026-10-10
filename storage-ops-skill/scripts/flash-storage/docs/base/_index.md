@@ -2,8 +2,6 @@
 
 Perform basic CLI operations, including bond port routes, user password changes, CLI history, and system/task queries.
 
-Perform basic CLI operations, including bond port routes, user password changes, CLI history, and system/task queries.
-
 | command | function |
 |---|---|
 | add bond_port ipv4_route | add an IPv4 route to the bond port. You can run this command to add a route to connect the storage system to the application server when their IPv4 addresses are not at the same network segment. |

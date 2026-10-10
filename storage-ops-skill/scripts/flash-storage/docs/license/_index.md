@@ -2,8 +2,6 @@
 
 Manage device licenses, including import, export, and query.
 
-Manage device licenses, including import, export, and query.
-
 | command | function |
 |---|---|
 | export license | **export license** files. |

@@ -2,8 +2,6 @@
 
 Manage authentication domains (AD, LDAP, NIS), including configuration, monitoring, and testing.
 
-Manage authentication domains (AD, LDAP, NIS), including configuration, monitoring, and testing.
-
 | command | function |
 |---|---|
 | change domain ad_config | change the name, site, and machine account of the domain controller, determine whether to overwrite the existing machine account when the storage array joins the AD domain, as well as determine whether to join or exit the domain. |

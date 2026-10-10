@@ -2,8 +2,6 @@
 
 Manage DNS zones, including creation, modification, and deletion.
 
-Manage DNS zones, including creation, modification, and deletion.
-
 | command | function |
 |---|---|
 | change dns_zone general | modify the name a DNS zone. |

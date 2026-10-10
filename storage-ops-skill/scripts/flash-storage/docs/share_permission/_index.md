@@ -2,8 +2,6 @@
 
 Manage NFS share permissions.
 
-Manage NFS share permissions.
-
 | command | function |
 |---|---|
 | change share_permission nfs | modify NFS share permission settings. |

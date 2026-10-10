@@ -2,8 +2,6 @@
 
 Manage file systems, including creation, modification, cloning, and HyperCDP schedules.
 
-Manage file systems, including creation, modification, cloning, and HyperCDP schedules.
-
 | command | function |
 |---|---|
 | add hyper_cdp_schedule fs | add file systems to a HyperCDP schedule. |

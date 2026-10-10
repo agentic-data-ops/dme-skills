@@ -2,8 +2,6 @@
 
 Manage HyperMetro pairs for synchronous replication between storage systems.
 
-Manage HyperMetro pairs for synchronous replication between storage systems.
-
 | command | function |
 |---|---|
 | change hyper_metro_pair general | change HyperMetro pair attributes. |

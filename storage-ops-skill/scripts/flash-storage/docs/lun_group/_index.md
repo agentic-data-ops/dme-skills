@@ -2,8 +2,6 @@
 
 Manage LUN groups, including adding or removing LUNs and querying mappings.
 
-Manage LUN groups, including adding or removing LUNs and querying mappings.
-
 | command | function |
 |---|---|
 | add lun_group lun | add LUNs to a specified LUN group. |

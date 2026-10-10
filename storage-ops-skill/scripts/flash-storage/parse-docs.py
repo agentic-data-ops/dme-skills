@@ -16,6 +16,8 @@ import sys
 from collections import defaultdict
 from typing import Dict, List, Optional, Tuple
 
+import json
+
 REF_PATH = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
     "..", "..", "reference", "flash-storage", "command-reference.md",
@@ -24,6 +26,14 @@ DOCS_DIR = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
     "docs",
 )
+# Command group descriptions (LLM-generated summaries), keyed by group slug.
+# Used when generating _topics.md and <group>/_index.md.
+_DESC_PATH = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "_group_descriptions.json",
+)
+with open(_DESC_PATH, encoding="utf-8") as _f:
+    GROUP_DESCRIPTIONS: Dict[str, str] = json.load(_f)
 
 # Topics excluded from the topic list (intro/guide chapters, not command topics)
 EXCLUDED_TOPICS = {
@@ -188,7 +198,8 @@ def write_docs(topics: List[Topic]) -> None:
         topic_lines.append("|---|---|")
         for g in t.groups:
             name = g.name.replace("|", "\\|")
-            topic_lines.append(f"| {name} |  |")
+            desc = GROUP_DESCRIPTIONS.get(slugify(g.name), "")
+            topic_lines.append(f"| {name} | {desc} |")
         topic_lines.append("")
     with open(os.path.join(DOCS_DIR, "_topics.md"), "w", encoding="utf-8") as f:
         f.write("\n".join(topic_lines))
@@ -201,13 +212,12 @@ def write_docs(topics: List[Topic]) -> None:
             group_dir = os.path.join(DOCS_DIR, slugify(g.name))
             os.makedirs(group_dir, exist_ok=True)
 
-            # Command group index: _index.md (markdown table: command | function)
-            index_lines = [
-                f"# {g.name}",
-                "",
-                "| command | function |",
-                "|---|---|",
-            ]
+            # Command group index: _index.md (description + markdown table)
+            index_lines = [f"# {g.name}", ""]
+            desc = GROUP_DESCRIPTIONS.get(slugify(g.name), "")
+            if desc:
+                index_lines += [desc, ""]
+            index_lines += ["| command | function |", "|---|---|"]
             for cmd in g.commands:
                 name = cmd.name.replace("|", "\\|")
                 function = (cmd.function or "").replace("|", "\\|")

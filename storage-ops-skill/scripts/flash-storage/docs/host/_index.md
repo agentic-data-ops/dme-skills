@@ -2,8 +2,6 @@
 
 Manage hosts and their initiators, including creation, modification, and mapping queries.
 
-Manage hosts and their initiators, including creation, modification, and mapping queries.
-
 | command | function |
 |---|---|
 | add host initiator | add an initiator to a host. |

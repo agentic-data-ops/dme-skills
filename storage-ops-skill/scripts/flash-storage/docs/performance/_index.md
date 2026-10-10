@@ -2,8 +2,6 @@
 
 Query and manage performance statistics, including thresholds, retention strategies, and per-object performance data.
 
-Query and manage performance statistics, including thresholds, retention strategies, and per-object performance data.
-
 | command | function |
 |---|---|
 | change performance restore | configure the policies for dumping the performance statistics of the storage system. |

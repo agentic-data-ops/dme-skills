@@ -2,8 +2,6 @@
 
 Manage mapping views by associating host groups, LUN groups, and port groups.
 
-Manage mapping views by associating host groups, LUN groups, and port groups.
-
 | command | function |
 |---|---|
 | add mapping_view host_group | add a host group to a mapping view. |

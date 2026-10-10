@@ -2,8 +2,6 @@
 
 Query cooling unit and fan status.
 
-Query cooling unit and fan status.
-
 | command | function |
 |---|---|
 | show assistant_cooling_unit | query details on assistant cooling units. |

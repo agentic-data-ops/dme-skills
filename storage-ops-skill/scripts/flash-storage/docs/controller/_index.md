@@ -2,8 +2,6 @@
 
 Configure and query controller settings, such as service sessions and I/O information.
 
-Configure and query controller settings, such as service sessions and I/O information.
-
 | command | function |
 |---|---|
 | change controller service_session | change the service duration of a controller. |

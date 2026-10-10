@@ -2,8 +2,6 @@
 
 Manage LUN migration for relocating data between storage pools.
 
-Manage LUN migration for relocating data between storage pools.
-
 | command | function |
 |---|---|
 | change lun_migration | change the LUN migration properties. |

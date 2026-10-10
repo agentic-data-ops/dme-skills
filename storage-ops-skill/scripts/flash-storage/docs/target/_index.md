@@ -2,8 +2,6 @@
 
 Manage iSCSI targets, including creation, modification, and name configuration.
 
-Manage iSCSI targets, including creation, modification, and name configuration.
-
 | command | function |
 |---|---|
 | change iscsi target | modify information about the iSCSI link between two disk arrays. |

@@ -2,8 +2,6 @@
 
 Manage SSH host keys, including deletion and import.
 
-Manage SSH host keys, including deletion and import.
-
 | command | function |
 |---|---|
 | delete ssh known_hosts | delete the server "known_hosts" file or a certain record in the file that is saved by the SSH client. |

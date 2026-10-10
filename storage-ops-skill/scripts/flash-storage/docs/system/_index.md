@@ -2,8 +2,6 @@
 
 Manage system-level settings, including time, NTP, name, description, containers, and power control.
 
-Manage system-level settings, including time, NTP, name, description, containers, and power control.
-
 | command | function |
 |---|---|
 | add ntp_server general | add an NTP server for time synchronization. |

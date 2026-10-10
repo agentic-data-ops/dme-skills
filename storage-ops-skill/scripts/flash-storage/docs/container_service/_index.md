@@ -2,8 +2,6 @@
 
 Manage container services, including activation, deployment, and configuration.
 
-Manage container services, including activation, deployment, and configuration.
-
 | command | function |
 |---|---|
 | add container_service general | add container service resources. |

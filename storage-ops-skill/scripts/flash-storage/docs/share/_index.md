@@ -2,8 +2,6 @@
 
 Manage CIFS/NFS shares and share permissions, including home directory rules.
 
-Manage CIFS/NFS shares and share permissions, including home directory rules.
-
 | command | function |
 |---|---|
 | change share cifs | modify CIFS share configurations. |

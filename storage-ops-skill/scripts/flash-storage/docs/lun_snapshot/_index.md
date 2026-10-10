@@ -2,8 +2,6 @@
 
 Manage LUN snapshots and HyperCDP (continuous data protection), including snapshots, consistency groups, and schedules.
 
-Manage LUN snapshots and HyperCDP (continuous data protection), including snapshots, consistency groups, and schedules.
-
 | command | function |
 |---|---|
 | add hyper_cdp_schedule lun | add LUNs to a HyperCDP schedule. |
