@@ -32,6 +32,7 @@ EXCLUDED_TOPICS = {
     "High-Risk Command List",
     "How to Obtain Help",
     "Glossary",
+    "Acronyms and Abbreviations",
 }
 
 # Redundant prefix removed from command function descriptions,
