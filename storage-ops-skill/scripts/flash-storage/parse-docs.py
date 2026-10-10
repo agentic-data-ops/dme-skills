@@ -18,11 +18,11 @@ from typing import Dict, List, Optional, Tuple
 
 REF_PATH = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
-    "..", "reference", "flash-storage", "command-reference.md",
+    "..", "..", "reference", "flash-storage", "command-reference.md",
 )
 DOCS_DIR = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
-    "flash-storage", "docs",
+    "docs",
 )
 
 # Topics excluded from the topic list (intro/guide chapters, not command topics)
@@ -211,11 +211,12 @@ def write_docs(topics: List[Topic]) -> None:
                 base = slugify(cmd.name)
                 slug_used[base] += 1
                 n = slug_used[base]
-                fname = base if n == 1 else f"{base}-{n}"
                 if n > 1:
-                    conflict_log.append(f"{cmd.name} -> {fname}.md")
+                    # Keep only the first variant of a duplicated command slug
+                    conflict_log.append(f"{cmd.name} skipped (duplicate slug '{base}')")
+                    continue
                 content = [f"# {cmd.name}", ""] + cmd.body
-                with open(os.path.join(topic_dir, f"{fname}.md"), "w", encoding="utf-8") as f:
+                with open(os.path.join(topic_dir, f"{base}.md"), "w", encoding="utf-8") as f:
                     f.write("\n".join(content))
 
     # stats
