@@ -38,7 +38,7 @@ pydme --lang en_US storage list --help
 
 ## Standard Workflow
 
-1. **Get help information**: Run `pydme --list-topics` to list all available topics and actions
+1. **Get help information**: Run `pydme --list-topics` to list all available topics and subtopics with descriptions
 2. **Plan execution steps**: Plan the execution steps based on the user's request
 3. **Execute action steps**:
    - Run `pydme <topic> <subtopic> <action> --help` to get action parameter help
@@ -84,7 +84,7 @@ pydme <topic> <subtopic> <action> --param1 value1 --param2 value2
 - `--user` / `-u`: DME API username, can be passed via the `DME_API_USERNAME` environment variable
 - `--password` / `-p`: DME API password, can be passed via the `DME_API_PASSWORD` environment variable
 - `--timeout`: API request timeout in seconds, default 90 seconds
-- `--list-topics`: List all available topics (tree structure)
+- `--list-topics`: List all available topics and subtopics (tree structure)
 - `--accept-risk`: Confirm acceptance of risk, can be passed via the `DME_ACCEPT_RISK` environment variable (not recommended via environment variable)
 
 **Positional arguments**:
@@ -95,13 +95,13 @@ pydme <topic> <subtopic> <action> --param1 value1 --param2 value2
 ### Help
 
 ```bash
-# View all topics and actions (tree structure)
+# View all topics and subtopics with descriptions (tree structure)
 pydme --list-topics
 
-# View topic help (shows all direct actions and subtopics)
+# View topic help (topic description, direct actions and subtopics with descriptions)
 pydme <topic> --help
 
-# View subtopic help
+# View subtopic help (subtopic description and its actions)
 pydme <topic> <subtopic> --help
 
 # View action parameter help

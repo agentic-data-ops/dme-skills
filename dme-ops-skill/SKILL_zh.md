@@ -38,7 +38,7 @@ pydme --lang en_US storage list --help
 
 ## 标准流程
 
-1. **获取帮助信息**：调用 `pydme --list-topics` 获取所有可用的主题和动作
+1. **获取帮助信息**：调用 `pydme --list-topics` 获取所有可用的主题和子主题（含描述）
 2. **规划执行步骤**：根据用户请求规划执行步骤
 3. **执行动作步骤**：
    - 调用 `pydme <topic> <subtopic> <action> --help` 获取动作参数帮助
@@ -84,7 +84,7 @@ pydme <topic> <subtopic> <action> --param1 value1 --param2 value2
 - `--user` / `-u`: DME API 的用户名，可通过 `DME_API_USERNAME` 环境变量传入
 - `--password` / `-p`: DME API 的密码，可通过 `DME_API_PASSWORD` 环境变量传入
 - `--timeout`: API 请求超时时间（秒），默认 90 秒
-- `--list-topics`: 列出所有可用的主题（树形结构展示）
+- `--list-topics`: 列出所有可用的主题和子主题（树形结构展示）
 - `--accept-risk`: 确认接受风险，可通过`DME_ACCEPT_RISK`环境变量传入（不建议通过环境变量传入）
 
 **位置参数**：
@@ -95,13 +95,13 @@ pydme <topic> <subtopic> <action> --param1 value1 --param2 value2
 ### 帮助信息
 
 ```bash
-# 查看所有主题动作（树形结构）
+# 查看所有主题和子主题（含描述，树形结构）
 pydme --list-topics
 
-# 查看主题帮助（显示所有直接动作和子主题）
+# 查看主题帮助（主题描述、直接动作和带描述的子主题）
 pydme <topic> --help
 
-# 查看子主题帮助
+# 查看子主题帮助（子主题描述及其动作）
 pydme <topic> <subtopic> --help
 
 # 查看动作参数帮助
