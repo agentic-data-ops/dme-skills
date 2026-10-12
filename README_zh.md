@@ -49,23 +49,33 @@ pydme system show
 
 ## storage-ops-skill
 
-华为闪存存储设备运维技能，通过 SSH 登录设备 CLI 执行批量命令。核心组件：
+华为闪存存储设备运维技能，通过 SSH 登录设备 CLI 执行批量命令。依赖独立的 [`flash-storage-cli`](https://github.com/agentic-data-ops/flash-storage-cli) 命令行工具（纯 Python/paramiko，跨平台 Windows/Linux）。
+
+核心组件：
 
 - `SKILL.md` — 技能定义与标准流程
-- `scripts/flash-storage/cli.py` — 基于 Python（paramiko，跨平台 Windows/Linux）的 SSH CLI 执行器
+- `reference/flash-storage-cli/` — 参考文档：README、glossary、acronyms and abbreviations
 
 ### 标准流程
 
-1. **查询命令帮助**：通过 CLI 脚本获取命令帮助（非英文输入先提取英文关键字搜索，因为命令行帮助仅有英文）
-2. **组装批量命令**：组装批量命令行，每个命令 1 行，用 `\n` 分隔
-3. **风险检查与确认**：识别风险命令（变更类命令及 High-Risk Command List 中的命令），展示即将执行的命令列表并标注风险命令，征得用户确认
-4. **执行**：用户确认后调用 `scripts/flash-storage/cli.py` 执行命令
-5. **总结**：根据输出总结执行情况
-6. **推荐下一步**：基于结果推荐下一步动作
+1. **安装 flash-storage-cli**：`pip install git+https://github.com/agentic-data-ops/flash-storage-cli.git`
+2. **查询命令帮助**：使用 `flash-storage-cli --list-topics`、`--list-commands <group>[,<group>...]`、`--show-command-help <command>[,<command>...]`（非英文输入先提取英文关键字搜索，因为命令行帮助仅有英文）
+3. **组装批量命令**：组装批量命令行，每个命令 1 行，用 `\n` 分隔
+4. **用 `--dry-run` 校验**：运行 `flash-storage-cli --dry-run "<commands>"`，在不连接设备的情况下检查命令是否存在、必选参数是否完整、风险级别（`LOW`/`HIGH`）；对不合法命令通过命令帮助修正后重新校验，直到全部 `OK`
+5. **风险确认**：若存在 `HIGH` 风险命令，将风险命令列表展示给用户，征询是否接受风险
+6. **执行**：用户确认后运行 `flash-storage-cli "<commands>"`（用户接受风险时追加 `--accept-risk`）；执行前会再次运行同样的校验，存在不合法命令或未接受的 `HIGH` 风险命令时停止
+7. **总结**：根据输出总结执行情况
+8. **推荐下一步**：基于结果推荐下一步动作
 
 ### 快速开始
 
-#### 1. 设置环境变量（密码建议通过环境变量传入）
+#### 1. 安装 flash-storage-cli
+
+```bash
+pip install git+https://github.com/agentic-data-ops/flash-storage-cli.git
+```
+
+#### 2. 设置环境变量（密码建议通过环境变量传入）
 
 ```bash
 export STORAGE_ADDRESS=192.168.1.10
@@ -74,13 +84,13 @@ export STORAGE_PASSWORD='your-password'
 export STORAGE_TIMEOUT=60
 ```
 
-#### 2. 执行命令
+#### 3. 执行命令
 
 ```bash
-python3 storage-ops-skill/scripts/flash-storage/cli.py "show version\nshow storage pool"
+flash-storage-cli "show system general\nshow storage_pool general"
 ```
 
-#### 3. 使用技能
+#### 4. 使用技能
 
 ```text
 安装storage-ops-skill
@@ -90,7 +100,7 @@ python3 storage-ops-skill/scripts/flash-storage/cli.py "show version\nshow stora
 
 ### 注意事项
 
-- **风险确认**：风险命令（如 `delete`、`create`、`modify` 等变更类命令及 High-Risk Command List 中的命令）执行前必须获得用户确认
+- **风险确认**：风险命令（如 `delete`、`create`、`modify` 等变更类命令及 High-Risk Command List 中的命令）会被 CLI 标记为 `HIGH`；执行前必须获得用户确认，用户接受风险后通过 `--accept-risk` 执行
 - **语言**：命令行帮助仅有英文，非英文请求需提取英文关键字搜索；总结响应语言与用户输入语言保持一致
 - **密码安全**：强烈建议通过 `STORAGE_PASSWORD` 环境变量传入密码，避免密码出现在命令行参数中
 

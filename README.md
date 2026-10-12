@@ -48,23 +48,33 @@ List storage devices, select the most idle Dorado storage device, and create two
 
 ## storage-ops-skill
 
-Huawei all-flash storage device operations skill that logs in to the device CLI over SSH and executes batch commands. Core components:
+Huawei all-flash storage device operations skill that logs in to the device CLI over SSH and executes batch commands. It depends on the standalone [`flash-storage-cli`](https://github.com/agentic-data-ops/flash-storage-cli) command-line tool (pure Python/paramiko, cross-platform Windows/Linux).
+
+Core components:
 
 - `SKILL.md` — skill definition and standard workflow
-- `scripts/flash-storage/cli.py` — SSH CLI executor built on Python (paramiko, cross-platform Windows/Linux)
+- `reference/flash-storage-cli/` — reference docs: README, glossary, acronyms and abbreviations
 
 ### Standard Workflow
 
-1. **Query command help**: Obtain command help from the CLI script (for non-English requests, first extract English keywords to search, as the command-line help is English-only)
-2. **Assemble batch commands**: Build the batch command string, one command per line, separated by `\n`
-3. **Risk check and confirmation**: Identify risky commands (change-type commands and commands in the High-Risk Command List), show the command list with risky ones annotated, and obtain user confirmation
-4. **Execute**: After user confirmation, run `scripts/flash-storage/cli.py` to execute the commands
-5. **Summarize**: Summarize the execution results based on the output
-6. **Suggest next steps**: Recommend next actions based on the results
+1. **Install flash-storage-cli**: `pip install git+https://github.com/agentic-data-ops/flash-storage-cli.git`
+2. **Query command help**: Use `flash-storage-cli --list-topics`, `--list-commands <group>[,<group>...]` and `--show-command-help <command>[,<command>...]` (for non-English requests, first extract English keywords to search, as the command-line help is English-only)
+3. **Assemble batch commands**: Build the batch command string, one command per line, separated by `\n`
+4. **Validate with `--dry-run`**: Run `flash-storage-cli --dry-run "<commands>"` to check command existence, required parameters and risk level (`LOW`/`HIGH`) without touching the device; fix invalid commands via command help and repeat until all are `OK`
+5. **Risk confirmation**: If any command is `HIGH` risk, present the risky commands to the user and ask whether to accept the risk
+6. **Execute**: After user confirmation, run `flash-storage-cli "<commands>"` (append `--accept-risk` if the user accepted the risk); the same validation runs again before execution and stops on invalid or unaccepted `HIGH`-risk commands
+7. **Summarize**: Summarize the execution results based on the output
+8. **Suggest next steps**: Recommend next actions based on the results
 
 ### Quick Start
 
-#### 1. Set Environment Variables (password via environment variable is strongly recommended)
+#### 1. Install flash-storage-cli
+
+```bash
+pip install git+https://github.com/agentic-data-ops/flash-storage-cli.git
+```
+
+#### 2. Set Environment Variables (password via environment variable is strongly recommended)
 
 ```bash
 export STORAGE_ADDRESS=192.168.1.10
@@ -73,13 +83,13 @@ export STORAGE_PASSWORD='your-password'
 export STORAGE_TIMEOUT=60
 ```
 
-#### 2. Execute Commands
+#### 3. Execute Commands
 
 ```bash
-python3 storage-ops-skill/scripts/flash-storage/cli.py "show version\nshow storage pool"
+flash-storage-cli "show system general\nshow storage_pool general"
 ```
 
-#### 3. Use the Skill
+#### 4. Use the Skill
 
 ```text
 Install storage-ops-skill
@@ -89,7 +99,7 @@ Query the device version and storage pool information, and check for alarms
 
 ### Notes
 
-- **Risk confirmation**: Risky commands (e.g., change-type commands such as `delete`, `create`, `modify`, and commands in the High-Risk Command List) must be confirmed by the user before execution
+- **Risk confirmation**: Risky commands (e.g., change-type commands such as `delete`, `create`, `modify`, and commands in the High-Risk Command List) are marked `HIGH` by the CLI; execution requires the user to accept the risk via `--accept-risk`
 - **Language**: The command-line help is English-only; for non-English requests, extract English keywords to search. The final summary should be in the same language as the user's input
 - **Password security**: Strongly recommended to pass the password via the `STORAGE_PASSWORD` environment variable to avoid exposing it on the command line
 
