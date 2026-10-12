@@ -38,7 +38,9 @@ pydme --lang en_US storage list --help
 
 ## 标准流程
 
-1. **获取帮助信息**：调用 `pydme --list-topics` 获取所有可用的主题和子主题（含描述）
+1. **获取帮助信息**：
+   - 调用 `pydme --list-topics` 获取所有可用的主题和子主题（含描述）
+   - 调用 `pydme <topic> [<subtopic>] --help` 获取主题下动作列表
 2. **规划执行步骤**：根据用户请求规划执行步骤
 3. **执行动作步骤**：
    - 调用 `pydme <topic> <subtopic> <action> --help` 获取动作参数帮助

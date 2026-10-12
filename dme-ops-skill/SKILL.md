@@ -38,7 +38,9 @@ pydme --lang en_US storage list --help
 
 ## Standard Workflow
 
-1. **Get help information**: Run `pydme --list-topics` to list all available topics and subtopics with descriptions
+1. **Get help information**:
+   - Run `pydme --list-topics` to list all available topics and subtopics with descriptions
+   - Run `pydme <topic> [<subtopic>] --help` to list the actions under a topic
 2. **Plan execution steps**: Plan the execution steps based on the user's request
 3. **Execute action steps**:
    - Run `pydme <topic> <subtopic> <action> --help` to get action parameter help
