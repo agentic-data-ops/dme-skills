@@ -48,8 +48,7 @@ pydme --lang en_US storage list --help
    - If the user accepts the risk → continue with the remaining steps; append `--accept-risk` when executing high-risk actions
    - If the user rejects the risk → end the workflow without executing any action
 4. **Execute action steps**:
-   - Run `pydme <topic> <subtopic> <action> --help` to get action parameter help
-   - Run `pydme <topic> <subtopic> <action> --param1 value1 --param2 value2` to execute the action (ask the user for confirmation before executing change operations)
+   - Assemble and execute the command directly: `pydme <topic> <subtopic> <action> --param1 value1 --param2 value2` (ask the user for confirmation before executing change operations)
    - If the action returns an asynchronous task ID, run `pydme system task wait` to wait for the task to complete
    - Plan the subsequent actions
 5. **Summarize output**: Format the output information and provide a summary
