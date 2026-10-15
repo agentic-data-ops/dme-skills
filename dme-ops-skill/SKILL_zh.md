@@ -49,6 +49,7 @@ pydme --lang en_US storage list --help
    - 用户不接受风险 → 流程结束，不执行任何动作
 4. **执行动作步骤**：
    - 直接组装并执行命令：`pydme <topic> <subtopic> <action> --param1 value1 --param2 value2`（变更类动作需提示用户确认后执行）
+   - 如果命令返回会话过期（如 "Session expired"），调用 `pydme system login` 重新登录，然后重新执行该命令
    - 如果动作返回异步任务ID，调用 `pydme system task wait` 等待任务完成
    - 规划后续要执行的动作
 5. **总结输出**：格式化输出信息，并进行总结
