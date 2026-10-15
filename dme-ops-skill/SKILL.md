@@ -42,13 +42,18 @@ pydme --lang en_US storage list --help
    - Run `pydme --list-topics` to list all available topics and subtopics with descriptions
    - Run `pydme <topic> [<subtopic>] --help` to list the actions under a topic
 2. **Plan execution steps**: Plan the execution steps based on the user's request
-3. **Execute action steps**:
+3. **Risk assessment**:
+   - Check whether the planned steps include high-risk actions: for each planned action, run `pydme <topic> <subtopic> <action> --help` and check its `Risk Level` (`High` means high-risk)
+   - If any planned action is high-risk, present the list of risk actions to be executed and ask the user to confirm whether to accept the risk
+   - If the user accepts the risk → continue with the remaining steps; append `--accept-risk` when executing high-risk actions
+   - If the user rejects the risk → end the workflow without executing any action
+4. **Execute action steps**:
    - Run `pydme <topic> <subtopic> <action> --help` to get action parameter help
    - Run `pydme <topic> <subtopic> <action> --param1 value1 --param2 value2` to execute the action (ask the user for confirmation before executing change operations)
    - If the action returns an asynchronous task ID, run `pydme system task wait` to wait for the task to complete
    - Plan the subsequent actions
-4. **Summarize output**: Format the output information and provide a summary
-5. **Suggest next steps**: Based on the output and the help information of related topics, suggest next steps to the user
+5. **Summarize output**: Format the output information and provide a summary
+6. **Suggest next steps**: Based on the output and the help information of related topics, suggest next steps to the user
 
 ## Notes
 
