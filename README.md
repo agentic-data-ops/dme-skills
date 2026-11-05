@@ -53,7 +53,7 @@ Huawei all-flash storage device operations skill that logs in to the device CLI 
 Core components:
 
 - `SKILL.md` — skill definition and standard workflow
-- `reference/flash-storage-cli/` — reference docs: README, glossary, acronyms and abbreviations
+- `references/flash-storage-cli/` — reference docs: README, glossary, acronyms and abbreviations
 
 ### Standard Workflow
 

@@ -66,7 +66,7 @@ pydme --lang en_US storage list --help
 
 ## Reference
 
-- `reference/dme-python-sdk/README.md` - DME Python SDK reference documentation
+- `references/dme-python-sdk/README.md` - DME Python SDK reference documentation
 
 ## Command Line Tool
 

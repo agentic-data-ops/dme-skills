@@ -66,7 +66,7 @@ pydme --lang en_US storage list --help
 
 ## 参考信息
 
-- `reference/dme-python-sdk/README_zh.md` - DME Python SDK 参考文档
+- `references/dme-python-sdk/README_zh.md` - DME Python SDK 参考文档
 
 ## 命令行工具
 

@@ -111,7 +111,7 @@ options:
 
 ## Reference Document Key Sections
 
-`reference/flash-storage-cli/README.md` — the flash-storage-cli project README. Key sections for command-line usage:
+`references/flash-storage-cli/README.md` — the flash-storage-cli project README. Key sections for command-line usage:
 
 | Section | Description |
 |---|---|

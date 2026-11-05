@@ -54,7 +54,7 @@ pydme system show
 核心组件：
 
 - `SKILL.md` — 技能定义与标准流程
-- `reference/flash-storage-cli/` — 参考文档：README、glossary、acronyms and abbreviations
+- `references/flash-storage-cli/` — 参考文档：README、glossary、acronyms and abbreviations
 
 ### 标准流程
 
